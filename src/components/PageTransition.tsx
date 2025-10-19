@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { gsap } from "gsap";
-import Logo from "./Logo";
+import Image from 'next/image';
 
 type PageTransitionProps = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const logoOverlayRef = useRef<HTMLDivElement | null>(null);
-  const logoRef = useRef<SVGSVGElement | null>(null);
+  const logoRef = useRef<HTMLDivElement | null>(null);
   const blocksRef = useRef<HTMLDivElement[]>([]);
   const isTransitioning = useRef(false);
   const pathLengthRef = useRef(0);
@@ -25,17 +25,18 @@ export default function PageTransition({ children }: PageTransitionProps) {
       clearTimeout(revealTimeoutRef.current);
     }
 
-    gsap.set(blocksRef.current, { scaleX: 1, transformOrigin: "right" });
+    gsap.set(blocksRef.current, { scaleX: 1, transformOrigin: 'right' });
     gsap.to(blocksRef.current, {
       scaleX: 0,
       duration: 0.4,
       stagger: 0.02,
-      ease: "power2.out",
-      transformOrigin: "right",
+      ease: 'power2.out',
+      transformOrigin: 'right',
       onComplete: () => {
         isTransitioning.current = false;
-        if (overlayRef.current) overlayRef.current.style.pointerEvents = "none";
-        if (logoOverlayRef.current) logoOverlayRef.current.style.pointerEvents = "none";
+        if (overlayRef.current) overlayRef.current.style.pointerEvents = 'none';
+        if (logoOverlayRef.current)
+          logoOverlayRef.current.style.pointerEvents = 'none';
       },
     });
 
@@ -43,17 +44,19 @@ export default function PageTransition({ children }: PageTransitionProps) {
     revealTimeoutRef.current = setTimeout(() => {
       if (blocksRef.current.length > 0) {
         const firstBlock = blocksRef.current[0];
-        const val = Number(gsap.getProperty(firstBlock, "scaleX"));
+        const val = Number(gsap.getProperty(firstBlock, 'scaleX'));
         if (firstBlock && val > 0.01) {
           gsap.to(blocksRef.current, {
             scaleX: 0,
             duration: 0.18,
-            ease: "power2.out",
-            transformOrigin: "right",
+            ease: 'power2.out',
+            transformOrigin: 'right',
             onComplete: () => {
               isTransitioning.current = false;
-              if (overlayRef.current) overlayRef.current.style.pointerEvents = "none";
-              if (logoOverlayRef.current) logoOverlayRef.current.style.pointerEvents = "none";
+              if (overlayRef.current)
+                overlayRef.current.style.pointerEvents = 'none';
+              if (logoOverlayRef.current)
+                logoOverlayRef.current.style.pointerEvents = 'none';
             },
           });
         }
@@ -63,8 +66,9 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
   const coverPage = useCallback(
     (url: string) => {
-      if (overlayRef.current) overlayRef.current.style.pointerEvents = "auto";
-      if (logoOverlayRef.current) logoOverlayRef.current.style.pointerEvents = "auto";
+      if (overlayRef.current) overlayRef.current.style.pointerEvents = 'auto';
+      if (logoOverlayRef.current)
+        logoOverlayRef.current.style.pointerEvents = 'auto';
 
       const tl = gsap.timeline();
 
@@ -73,33 +77,28 @@ export default function PageTransition({ children }: PageTransitionProps) {
         scaleX: 1,
         duration: 0.4,
         stagger: 0.02,
-        ease: "power2.out",
-        transformOrigin: "left",
+        ease: 'power2.out',
+        transformOrigin: 'left',
         onComplete: () => {
           // begin navigation while logo animation plays over the cover
           router.push(url);
         },
       })
         // 2) Play logo animation while new page loads
-        .set(logoOverlayRef.current, { opacity: 1 }, "-=0.2")
-        .set(
-          logoRef.current?.querySelector("path"),
-          { strokeDashoffset: pathLengthRef.current, fill: "transparent" },
-          "-=0.25"
+        .set(logoOverlayRef.current, { opacity: 1 }, '-=0.2')
+        .fromTo(
+          logoRef.current,
+          { opacity: 0, scale: 0.8 },
+          { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' },
+          '-=0.3',
         )
-        .to(
-          logoRef.current?.querySelector("path"),
-          { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut" },
-          "-=0.3"
-        )
-        .to(
-          logoRef.current?.querySelector("path"),
-          { fill: "#e3e4d8", duration: 0.6, ease: "power2.out" },
-          "-=0.4"
-        )
-        .to(logoOverlayRef.current, { opacity: 0, duration: 0.25, ease: "power2.out" });
+        .to(logoOverlayRef.current, {
+          opacity: 0,
+          duration: 0.25,
+          ease: 'power2.out',
+        });
     },
-    [router]
+    [router],
   );
 
   const handleRouteChange = useCallback(
@@ -108,7 +107,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
       isTransitioning.current = true;
       coverPage(url);
     },
-    [coverPage]
+    [coverPage],
   );
 
   const onAnchorClick = useCallback(
@@ -125,7 +124,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
         mev.shiftKey ||
         mev.altKey ||
         mev.button !== 0 ||
-        target.target === "_blank"
+        target.target === '_blank'
       ) {
         return;
       }
@@ -136,44 +135,34 @@ export default function PageTransition({ children }: PageTransitionProps) {
         handleRouteChange(url);
       }
     },
-    [pathname, handleRouteChange]
+    [pathname, handleRouteChange],
   );
 
   useEffect(() => {
     const createBlocks = () => {
       if (!overlayRef.current) return;
-      overlayRef.current.innerHTML = "";
+      overlayRef.current.innerHTML = '';
       blocksRef.current = [];
       for (let i = 0; i < 20; i++) {
-        const block = document.createElement("div");
-        block.className = "block";
+        const block = document.createElement('div');
+        block.className = 'block';
         overlayRef.current.appendChild(block);
         blocksRef.current.push(block);
       }
     };
 
     createBlocks();
-    gsap.set(blocksRef.current, { scaleX: 0, transformOrigin: "left" });
-
-    if (logoRef.current) {
-      const path = logoRef.current.querySelector("path");
-      if (path) {
-        pathLengthRef.current = (path as SVGPathElement).getTotalLength();
-        gsap.set(path, {
-          strokeDasharray: pathLengthRef.current,
-          strokeDashoffset: pathLengthRef.current,
-          fill: "transparent",
-        });
-      }
-    }
+    gsap.set(blocksRef.current, { scaleX: 0, transformOrigin: 'left' });
 
     revealPage();
 
-    const links = Array.from(document.querySelectorAll('a[href^="/"]')) as HTMLAnchorElement[];
-    links.forEach((link) => link.addEventListener("click", onAnchorClick));
+    const links = Array.from(
+      document.querySelectorAll('a[href^="/"]'),
+    ) as HTMLAnchorElement[];
+    links.forEach((link) => link.addEventListener('click', onAnchorClick));
 
     return () => {
-      links.forEach((link) => link.removeEventListener("click", onAnchorClick));
+      links.forEach((link) => link.removeEventListener('click', onAnchorClick));
       if (revealTimeoutRef.current) clearTimeout(revealTimeoutRef.current);
     };
   }, [router, pathname, onAnchorClick, revealPage]);
@@ -183,7 +172,15 @@ export default function PageTransition({ children }: PageTransitionProps) {
       <div ref={overlayRef} className="transition-overlay" />
       <div ref={logoOverlayRef} className="logo-overlay">
         <div className="logo-container">
-          <Logo ref={logoRef} />
+          <div ref={logoRef} className="transition-logo">
+            <Image
+              src="/images/logo.png"
+              alt="PROGIX Logo"
+              width={1200}
+              height={1200}
+              className="w-full h-auto object-contain"
+            />
+          </div>
         </div>
       </div>
       {children}

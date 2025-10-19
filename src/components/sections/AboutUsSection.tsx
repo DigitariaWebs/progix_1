@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { colors } from '@/config/colors';
+import AnimatedButton from '../AnimatedButton';
 
 const AboutUsSection = () => {
   // Simple right-side image rotation (lightweight crossfade)
@@ -25,8 +26,7 @@ const AboutUsSection = () => {
   }, [rightImages.length]);
 
   return (
-    <section className="bg-white pb-20 mt-24 md:mt-32">
-
+    <section className="bg-white pb-20 mt-5 pt-24 md:pt-32">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -43,27 +43,34 @@ const AboutUsSection = () => {
             </h2>
 
             <p className="text-lg text-gray-700 leading-relaxed font-semibold mb-8">
-              Progix tire son nom de notre passion pour la programmation et l&apos;innovation technologique. Notre équipe de 9 ingénieurs logiciels, majoritairement diplômés de l&apos;UQAM, forme un collectif soudé où la collaboration et l&apos;excellence technique sont au cœur de notre approche.
+              Progix tire son nom de notre passion pour la programmation et
+              l&apos;innovation technologique. Notre équipe de 9 ingénieurs
+              logiciels, majoritairement diplômés de l&apos;UQAM, forme un
+              collectif soudé où la collaboration et l&apos;excellence technique
+              sont au cœur de notre approche.
             </p>
 
             <div className="flex items-center space-x-6">
-              <Link
-                href="/contact"
-                className="text-white px-8 py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block"
-                style={{
-                  backgroundColor: colors.secondary,
-                  fontFamily: 'Hubot Sans, Inter, sans-serif',
-                }}
-              >
-                En savoir plus
-              </Link>
+              <style jsx>{`
+                .custom-animated-btn :global(.animated-button) {
+                  background-color: ${colors.secondary} !important;
+                }
+                .custom-animated-btn-outline :global(.animated-button) {
+                  background-color: transparent !important;
+                }
+              `}</style>
+              <AnimatedButton
+                text="Notre équipe"
+                textColor={colors.secondary}
+                borderColor={colors.secondary}
+                circleColor={colors.secondary}
+                arrowColor="#ffffff"
+                hoverTextColor="#ffffff"
+                hoverArrowColor="#ffffff"
+                className="custom-animated-btn"
+              />
 
-              <Link
-                href="/contact"
-                className="text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white px-8 py-4 rounded-lg font-bold transition-all duration-300 inline-block"
-              >
-                Notre équipe
-              </Link>
+              
             </div>
           </div>
 
@@ -86,7 +93,9 @@ const AboutUsSection = () => {
         {/* Stats replaced by simple statement */}
         <div className="mt-20 text-center">
           <p className="text-xl md:text-2xl font-semibold text-gray-700">
-            PROGIX, c’est plus de <span className="font-bold text-gray-900">60 projets</span> depuis 2021
+            PROGIX, c’est plus de{' '}
+            <span className="font-bold text-gray-900">60 projets</span> depuis
+            2021
           </p>
         </div>
       </div>

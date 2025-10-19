@@ -178,7 +178,7 @@ export default function ExpertiseSection() {
     <section className={`${styles.exhSection} ${isDark ? styles.exhDark : ''}`} ref={sectionRef} style={{ ['--contact-bg' as any]: '#1D4760' }}>
       <div className={styles.exhHeading}>
         <h2
-          className={styles.exhHeadingText + ' text-4xl md:text-5xl font-bold text-gray-900'}
+          className={styles.exhHeadingText + ' text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'}
         >
           Ce que nous faisons
         </h2>

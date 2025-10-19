@@ -154,10 +154,14 @@ body {
 }
 
 .logo-container {
-  width: 200px;
-  height: 200px;
+  width: 500px;
+  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
+}
+.transition-logo {
+  opacity: 0;
+  transform: scale(0.8);
 }

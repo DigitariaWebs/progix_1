@@ -7,14 +7,25 @@ import { colors } from '@/config/colors';
 const TestimonialsSection = () => {
   return (
     <section className="bg-white pb-20">
-      {/* Decorative white rectangle at top */}
-      <div
-        className="w-full h-8 bg-gray-900 mb-20"
-        style={{
-          borderBottomLeftRadius: '100px',
-          borderBottomRightRadius: '100px',
-        }}
-      ></div>
+      {/* Creative wavy separator */}
+      <div className="relative w-full h-16 mb-16 overflow-hidden">
+        <svg
+          className="absolute bottom-0 left-0 w-full h-8"
+          viewBox="0 0 1200 40"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,25 Q300,5 600,25 T1200,25 L1200,35 Q900,40 600,35 T0,40 Z"
+            fill="#0A2456"
+            opacity="0.6"
+          />
+          <path
+            d="M0,25 Q300,5 600,25 T1200,25 L1200,35 Q900,40 600,35 T0,40 Z"
+            fill="#1D4760"
+            opacity="0.8"
+          />
+        </svg>
+      </div>
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         {/* Header */}
         <div className="text-center mb-16">
@@ -103,15 +114,13 @@ const TestimonialsSection = () => {
                   Je n&apos;ai pas hésité une seule seconde à le contacter
                 </span>{' '}
                 pour développer un CRM interne pour ma deuxième entreprise
-                RecrutementPlus. Toute l&apos;équipe est plus que satisfaite
-                du résultat.
+                RecrutementPlus. Toute l&apos;équipe est plus que satisfaite du
+                résultat.
               </p>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-gray-900">
-                    Hakim Safa
-                  </div>
+                  <div className="font-semibold text-gray-900">Hakim Safa</div>
                   <div className="text-sm text-gray-500">
                     CEO de iBusiness Consulting Inc.
                   </div>
