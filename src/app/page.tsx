@@ -51,8 +51,8 @@ export default function Home() {
             scrollerStyle={{ gap: '2rem' }}
           />
         </div>
-        <TeamSection />
       </SectionFadeBg>
+        <TeamSection />
 
       <BlogSection />
 

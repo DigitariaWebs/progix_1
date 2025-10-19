@@ -128,13 +128,15 @@ const caseStudies: Record<string, CaseStudy> = {
     title: 'FruitExotic',
     subtitle: 'SITE WEB MULTILINGUE',
     logo: '/images/crustys.png',
-    heroImage: '/fruitexo.mp4',
+    heroVideo: '/fruitexo.mp4',
     client: 'FruitExotic Inc.',
     date: '2024',
     role: 'Développement Web Frontend & UI/UX',
     collaborators: [
-      { name: 'Design Team', role: 'UI/UX Design' },
-      { name: 'Frontend Team', role: 'Development' },
+      { name: 'Frontend Team', role: 'React & Next.js Development' },
+      { name: 'UI/UX Team', role: 'Design & User Experience' },
+      { name: 'Backend Team', role: 'API & Content Management' },
+      { name: 'DevOps Team', role: 'Deployment & Infrastructure' },
     ],
     description:
       "FruitExotic Inc. est une entreprise spécialisée dans l'exportation de fruits exotiques de qualité premium. Nous avons développé leur site web international multilingue (7 langues) pour mettre en valeur leurs services de la meilleure façon grâce à nos développeurs frontend et designers UI/UX d'élite, créant une expérience digitale exceptionnelle qui reflète l'excellence de leurs produits exotiques.",

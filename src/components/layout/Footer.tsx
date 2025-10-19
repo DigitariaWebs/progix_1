@@ -162,7 +162,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
           <p  >
-            &copy; 2024 PROGIX. Tous droits réservés.
+            &copy; 2025 PROGIX. Tous droits réservés.
           </p>
         </div>
       </div>
