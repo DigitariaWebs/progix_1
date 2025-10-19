@@ -1,0 +1,184 @@
+.exhSection {
+  width: 100%;
+}
+
+.exhDark {
+  background-color: #0a0a0a;
+  color: #fff;
+  transition: background-color .5s ease, color .5s ease;
+}
+
+.exhHeading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  padding: 2rem 1rem;
+}
+
+.exhHeadingText {
+  line-height: 1.15;
+  text-align: center;
+}
+
+.exhScrollSection {
+  overflow: hidden;
+}
+
+.exhWrapper {
+  height: 100vh;
+}
+
+.exhList {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.2rem;
+}
+
+.exhItem {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: #ffffff;
+}
+
+.exhDark .exhItem {
+  background-color: #0a0a0a;
+}
+
+.exhItemNumber {
+  position: absolute;
+  top: 6rem;
+  left: 3rem;
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 9999px;
+  background-color: var(--contact-bg, #1D4760);
+  color: #fff;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.exhItemContent {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3rem;
+  background-color: #fff;
+  color: #292929;
+  position: relative;
+}
+
+.exhDark .exhItemContent {
+  background-color: #0f1115;
+  color: #f3f4f6;
+}
+
+.exhBlurAccent {
+  position: absolute;
+  left: -15%;
+  top: -20%;
+  width: 60%;
+  height: 140%;
+  background: radial-gradient(closest-side, var(--brand-blue, #0A2456) 0%, transparent 70%);
+  filter: blur(40px);
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.exhItemTitle {
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 0.75rem 0;
+  color: inherit;
+  position: relative;
+  z-index: 1;
+}
+
+.exhItemCopy {
+  font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.6;
+  color: #444;
+  position: relative;
+  z-index: 1;
+}
+
+.exhDark .exhItemCopy {
+  color: #d1d5db;
+}
+
+.exhItemMedia {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.exhVideoWrap {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.exhVideoWrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.exhTint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: var(--brand-blue, #0A2456);
+  mix-blend-mode: color;
+  opacity: 0.8;
+}
+
+.exhFooterHeading {
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 575.98px) {
+  .exhHeadingText {
+    font-size: 2.5rem;
+  }
+
+  .exhItem {
+    flex-direction: column;
+  }
+
+  .exhItemContent,
+  .exhItemMedia {
+    width: 100%;
+    height: 50vh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .exhItemNumber {
+    font-size: 0.75rem;
+    top: 1.5rem;
+  }
+}
+
+

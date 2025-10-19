@@ -27,7 +27,8 @@ export default function Home() {
       <ClientLogosSection />
 
       <ServicesSection />
-      {/* Expertise Section */}
+
+      {/* Expertise Section (horizontal) */}
       <ExpertiseSection />
 
       {/* About Section */}
