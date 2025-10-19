@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { colors } from '@/config/colors';
 import Footer from '@/components/layout/Footer';
+import AnimatedButton from '@/components/AnimatedButton';
 // Navbar removed to use global StaggeredMenu header
 import { Squares } from '@/components/ui/squares-background';
 
@@ -177,7 +178,7 @@ const caseStudies: Record<string, CaseStudy> = {
     title: 'CoRide',
     subtitle: 'APPLICATION DE MOBILITÉ',
     logo: '/images/logo-gold.png',
-    heroVideo: '/Projects/CoRide/CaseStudyImage.mp4',
+    heroVideo: '/Projects/CoRide/CoRideVideo.mp4',
     client: 'CoRide',
     date: '2024',
     role: 'Développement Mobile & Web Full Stack',
@@ -199,10 +200,6 @@ const caseStudies: Record<string, CaseStudy> = {
         'Développer une application mobile Flutter performante et fluide',
         'Créer un backend Node.js scalable et sécurisé',
         'Intégrer trois services distincts : transport, livraison et food delivery',
-        'Développer un système de géolocalisation en temps réel',
-        'Implémenter un système de paiement sécurisé et flexible',
-        'Créer un tableau de bord pour les chauffeurs et livreurs',
-        'Refondre complètement le site vitrine avec une UX moderne',
         "Assurer une synchronisation parfaite entre l'app et le backend",
       ],
     },
@@ -244,74 +241,13 @@ export default function CaseStudyPage() {
   const caseStudy = caseStudies[slug];
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Scroll-triggered video playback with directional control
+  // Auto-play video when component mounts
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
-    let lastScrollY = window.scrollY;
-    let animationFrame: number;
-
-    const handleScroll = () => {
-      if (!videoRef.current || !caseStudy.heroVideo) return;
-
-      const currentScrollY = window.scrollY;
-      const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
-      const scrollDelta = Math.abs(currentScrollY - lastScrollY);
-      lastScrollY = currentScrollY;
-
-      // Clear existing timeout and animation frame
-      clearTimeout(scrollTimeout);
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-
-      if (scrollDirection === 'down') {
-        // Scrolling down - play forward
-        videoRef.current.playbackRate = 1;
-        videoRef.current.play().catch(() => {
-          // Ignore play promise rejection
-        });
-      } else {
-        // Scrolling up - seek backwards based on scroll speed
-        const seekAmount = (scrollDelta * 0.01); // Adjust multiplier for sensitivity
-        const newTime = Math.max(0, videoRef.current.currentTime - seekAmount);
-        videoRef.current.currentTime = newTime;
-
-        // Continue seeking backwards while scrolling
-        const continueReverse = () => {
-          if (videoRef.current && videoRef.current.currentTime > 0) {
-            const currentTime = videoRef.current.currentTime;
-            const nextTime = Math.max(0, currentTime - 0.05); // Small continuous seek
-            videoRef.current.currentTime = nextTime;
-
-            if (Math.abs(window.scrollY - lastScrollY) < 5) { // If scrolling has slowed
-              animationFrame = requestAnimationFrame(continueReverse);
-            }
-          }
-        };
-
-        animationFrame = requestAnimationFrame(continueReverse);
-      }
-
-      // Set timeout to pause video when scrolling stops
-      scrollTimeout = setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.pause();
-          videoRef.current.playbackRate = 1; // Reset to normal speed
-        }
-        if (animationFrame) {
-          cancelAnimationFrame(animationFrame);
-        }
-      }, 150); // Wait 150ms after scroll stops
-    };
-
-    // Add scroll listener
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout);
-    };
+    if (videoRef.current && caseStudy.heroVideo) {
+      videoRef.current.play().catch(() => {
+        // Ignore play promise rejection
+      });
+    }
   }, [caseStudy.heroVideo]);
 
   if (!caseStudy) {
@@ -382,7 +318,7 @@ export default function CaseStudyPage() {
       {/* Navbar removed */}
 
       {/* Hero Section */}
-      <div className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/30 to-cyan-50/20 overflow-hidden">
+      <div className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         {/* Squares Background */}
         <div className="absolute inset-0 z-0">
           <Squares
@@ -562,7 +498,7 @@ export default function CaseStudyPage() {
 
           {/* Curved Loop Text at bottom of hero section */}
           <div className="relative mt-16 z-10">
-            <CurvedLoop 
+            <CurvedLoop
               marqueeText="FAHE CRM • PROGIX • UNE FIRME DE DÉVELOPPEMENT LOGICIEL FIÈREMENT MONTRÉALAISE • "
               speed={2}
               curveAmount={300}
@@ -576,28 +512,16 @@ export default function CaseStudyPage() {
 
       {/* Mission Section - Only for FAHE CRM */}
       {caseStudy.heroVideo && (
-        <div className="relative py-20 overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+        <div className="relative py-20 overflow-hidden bg-gray-50">
           {/* Background Pattern */}
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/60 to-white/80"></div>
-            
-            {/* Decorative blur elements */}
-            <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/15 rounded-full blur-3xl"></div>
-            <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-cyan-300/10 rounded-full blur-3xl"></div>
-            
-            {/* Vertical lines */}
-            <div className="absolute left-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300/40 to-transparent"></div>
-            <div className="absolute left-[25%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-blue-300/30 to-transparent"></div>
-            <div className="absolute left-[50%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-indigo-300/30 to-transparent"></div>
-            <div className="absolute left-[75%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-purple-300/30 to-transparent"></div>
-            <div className="absolute left-[90%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-white/70"></div>
           </div>
 
           {/* Content Layout */}
           <div className="relative z-10 flex items-center">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div className="grid lg:grid-cols-2 gap-16 items-start">
                 {/* Left Side - Title */}
                 <div className="text-left">
                   <div className="inline-block mb-6">
@@ -606,17 +530,25 @@ export default function CaseStudyPage() {
                     </span>
                   </div>
 
-                    <h2
-                      className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
-                      style={{ fontFamily: 'Hubot Sans, Inter, sans-serif', color: '#0A2456' }}
-                    >
-                      Notre
-                      <br />
-                      Mission
-                    </h2>
+                  <h2
+                    className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+                    style={{
+                      fontFamily: 'Hubot Sans, Inter, sans-serif',
+                      color: '#0A2456',
+                    }}
+                  >
+                    Notre
+                    <br />
+                    Mission
+                  </h2>
 
                   {/* Decorative Line */}
-                  <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-cyan-600 mb-8"></div>
+                  <div
+                    className="w-20 h-1 mb-8"
+                    style={{
+                      backgroundColor: colors.secondary,
+                    }}
+                  ></div>
                 </div>
 
                 {/* Right Side - Content */}
@@ -628,47 +560,56 @@ export default function CaseStudyPage() {
                     </p>
 
                     {/* Decorative underline */}
-                    <div className="absolute -bottom-4 left-0 w-24 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-600"></div>
+                    <div
+                      className="absolute -bottom-4 left-0 w-24 h-0.5"
+                      style={{
+                        backgroundColor: colors.secondary,
+                      }}
+                    ></div>
                   </div>
 
                   {/* Key points as floating elements */}
                   <div className="mt-12 space-y-6">
                     <div className="flex items-start space-x-4 group">
-                      <div className="w-2 h-2 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"></div>
+                      <div
+                        className="w-2 h-2 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"
+                        style={{
+                          backgroundColor: colors.secondary,
+                        }}
+                      ></div>
                       <p className="text-gray-700 font-medium">
                         Solution CRM complète et moderne
                       </p>
                     </div>
 
                     <div className="flex items-start space-x-4 group">
-                      <div className="w-2 h-2 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"></div>
+                      <div
+                        className="w-2 h-2 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"
+                        style={{
+                          backgroundColor: colors.secondary,
+                        }}
+                      ></div>
                       <p className="text-gray-700 font-medium">
                         Expérience utilisateur repensée et intuitive
                       </p>
                     </div>
 
                     <div className="flex items-start space-x-4 group">
-                      <div className="w-2 h-2 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"></div>
+                      <div
+                        className="w-2 h-2 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"
+                        style={{
+                          backgroundColor: colors.secondary,
+                        }}
+                      ></div>
                       <p className="text-gray-700 font-medium">
                         Identité de marque FAHE Automotive mise en valeur
                       </p>
                     </div>
                   </div>
-
-                  {/* Floating accent elements */}
-                  <div className="absolute -top-8 -right-8 w-20 h-20 border border-gray-200 rounded-full animate-pulse"></div>
-                  <div className="absolute -bottom-8 -left-8 w-16 h-16 border border-gray-100 rounded-full animate-pulse delay-1000"></div>
                 </div>
               </div>
 
               {/* Bottom Decorative Elements */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-                <div className="flex space-x-4">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse delay-300"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse delay-600"></div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -709,84 +650,116 @@ export default function CaseStudyPage() {
 
       {/* Impact & Résultats - clean white section */}
       <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 z-0">
-          {/* Decorative blur elements */}
-          <div className="absolute top-10 right-20 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 left-20 w-72 h-72 bg-indigo-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-purple-300/8 rounded-full blur-3xl"></div>
-          
-          {/* Vertical lines */}
-          <div className="absolute left-[15%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-200/50 to-transparent"></div>
-          <div className="absolute left-[35%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-blue-200/40 to-transparent"></div>
-          <div className="absolute left-[50%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-indigo-200/40 to-transparent"></div>
-          <div className="absolute left-[65%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-purple-200/40 to-transparent"></div>
-          <div className="absolute left-[85%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-200/50 to-transparent"></div>
-        </div>
-        
-        <div className="max-w-4xl mx-auto relative z-10">
-          <div className="text-center mb-10">
-            <h2
-              className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight"
-              style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-            >
-              IMPACT & RÉSULTATS
-            </h2>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left Side - Content */}
+            <div className="relative">
+              <ul
+                className="space-y-6 text-lg leading-relaxed list-none"
+                style={{ color: colors.tertiary }}
+              >
+                <li className="flex items-start space-x-4 group">
+                  <div
+                    className="flex-shrink-0 w-3 h-3 rounded-full mt-2 group-hover:scale-125 transition-transform duration-300"
+                    style={{ backgroundColor: colors.primary }}
+                  ></div>
+                  <div className="flex-1">
+                    <p className="font-medium group-hover:translate-x-2 transition-transform duration-300">
+                      Vue complète et centralisée des stocks et des historiques.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4 group">
+                  <div
+                    className="flex-shrink-0 w-3 h-3 rounded-full mt-2 group-hover:scale-125 transition-transform duration-300"
+                    style={{ backgroundColor: colors.primary }}
+                  ></div>
+                  <div className="flex-1">
+                    <p className="font-medium group-hover:translate-x-2 transition-transform duration-300">
+                      60% d'absences en moins grâce aux rappels automatiques
+                      (SMS / email).
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4 group">
+                  <div
+                    className="flex-shrink-0 w-3 h-3 rounded-full mt-2 group-hover:scale-125 transition-transform duration-300"
+                    style={{ backgroundColor: colors.primary }}
+                  ></div>
+                  <div className="flex-1">
+                    <p className="font-medium group-hover:translate-x-2 transition-transform duration-300">
+                      Processus d'accueil et de vente simplifiés, temps de
+                      traitement réduit.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4 group">
+                  <div
+                    className="flex-shrink-0 w-3 h-3 rounded-full mt-2 group-hover:scale-125 transition-transform duration-300"
+                    style={{ backgroundColor: colors.primary }}
+                  ></div>
+                  <div className="flex-1">
+                    <p className="font-medium group-hover:translate-x-2 transition-transform duration-300">
+                      Données client sécurisées et accessibles par
+                      autorisations.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4 group">
+                  <div
+                    className="flex-shrink-0 w-3 h-3 rounded-full mt-2 group-hover:scale-125 transition-transform duration-300"
+                    style={{ backgroundColor: colors.primary }}
+                  ></div>
+                  <div className="flex-1">
+                    <p className="font-medium group-hover:translate-x-2 transition-transform duration-300">
+                      Indicateurs clairs pour piloter les opérations au
+                      quotidien.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* Right Side - Title */}
+            <div className="text-left ml-62">
+              <div className="inline-block mb-6">
+                <span className="text-sm font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-4 py-2 rounded-full">
+                  RÉSULTATS
+                </span>
+              </div>
+
+              <h2
+                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+                style={{
+                  fontFamily: 'Hubot Sans, Inter, sans-serif',
+                  color: colors.primary,
+                }}
+              >
+                Impact &
+                <br />
+                Résultats
+              </h2>
+
+              {/* Decorative Line */}
+              <div
+                className="w-20 h-1 mb-8"
+                style={{
+                  backgroundColor: colors.secondary,
+                }}
+              ></div>
+            </div>
           </div>
-          <ul className="space-y-4 text-gray-900 text-lg leading-relaxed list-none">
-            <li className="flex items-start">
-              <span className="mt-3 mr-3 w-2 h-2 bg-gray-900 rounded-full"></span>{' '}
-              Vue complète et centralisée des stocks et des historiques.
-            </li>
-            <li className="flex items-start">
-              <span className="mt-3 mr-3 w-2 h-2 bg-gray-900 rounded-full"></span>{' '}
-              60% d'absences en moins grâce aux rappels automatiques (SMS /
-              email).
-            </li>
-            <li className="flex items-start">
-              <span className="mt-3 mr-3 w-2 h-2 bg-gray-900 rounded-full"></span>{' '}
-              Processus d'accueil et de vente simplifiés, temps de traitement
-              réduit.
-            </li>
-            <li className="flex items-start">
-              <span className="mt-3 mr-3 w-2 h-2 bg-gray-900 rounded-full"></span>{' '}
-              Données client sécurisées et accessibles par autorisations.
-            </li>
-            <li className="flex items-start">
-              <span className="mt-3 mr-3 w-2 h-2 bg-gray-900 rounded-full"></span>{' '}
-              Indicateurs clairs pour piloter les opérations au quotidien.
-            </li>
-          </ul>
         </div>
       </div>
 
       {/* Objectifs Section */}
-      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/20 to-white overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 z-0">
-          {/* Decorative blur elements */}
-          <div className="absolute top-32 left-20 w-80 h-80 bg-blue-400/15 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-32 right-20 w-96 h-96 bg-cyan-400/12 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-indigo-300/10 rounded-full blur-3xl"></div>
-          
-          {/* Vertical lines */}
-          <div className="absolute left-[8%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-blue-200/30 to-transparent"></div>
-          <div className="absolute left-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-cyan-200/40 to-transparent"></div>
-          <div className="absolute left-[30%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-indigo-200/35 to-transparent"></div>
-          <div className="absolute left-[42%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-blue-300/30 to-transparent"></div>
-          <div className="absolute left-[50%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-cyan-200/35 to-transparent"></div>
-          <div className="absolute left-[58%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-indigo-300/30 to-transparent"></div>
-          <div className="absolute left-[70%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-blue-200/35 to-transparent"></div>
-          <div className="absolute left-[82%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-cyan-200/40 to-transparent"></div>
-          <div className="absolute left-[92%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-indigo-200/30 to-transparent"></div>
-        </div>
-        
+      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-36 items-center">
             {/* Left Side - Image */}
             <div className="order-2 lg:order-1">
               <div className="relative">
-                <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                <div className="relative h-[640px] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="/images/1757001640677.jpg"
                     alt="Objectifs FAHE CRM"
@@ -795,9 +768,18 @@ export default function CaseStudyPage() {
                   />
                 </div>
 
-                {/* Floating elements */}
-                <div className="absolute -top-6 -right-6 w-20 h-20 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
-                <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+                <div
+                  className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-xl animate-pulse"
+                  style={{
+                    background: `linear-gradient(to bottom right, ${colors.secondary}33, ${colors.quaternary}33)`,
+                  }}
+                ></div>
+                <div
+                  className="absolute -bottom-6 -left-6 w-16 h-16 rounded-full blur-xl animate-pulse delay-1000"
+                  style={{
+                    background: `linear-gradient(to bottom right, ${colors.quaternary}33, ${colors.primary}33)`,
+                  }}
+                ></div>
               </div>
             </div>
 
@@ -805,7 +787,13 @@ export default function CaseStudyPage() {
             <div className="order-1 lg:order-2">
               <div className="mb-8">
                 <div className="inline-block mb-4">
-                  <span className="text-sm font-bold uppercase tracking-wider text-blue-600 bg-blue-100 px-4 py-2 rounded-full">
+                  <span
+                    className="text-sm font-bold uppercase tracking-wider px-4 py-2 rounded-full"
+                    style={{
+                      color: colors.secondary,
+                      backgroundColor: `${colors.primary}15`,
+                    }}
+                  >
                     {caseStudy.objectifs.title}
                   </span>
                 </div>
@@ -819,18 +807,32 @@ export default function CaseStudyPage() {
                 >
                   Nos objectifs
                   <br />
-                  <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                  <span
+                    style={{
+                      color: colors.primary,
+                    }}
+                  >
                     stratégiques
                   </span>
                 </h2>
 
-                <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mb-8"></div>
+                <div
+                  className="w-20 h-1 mb-8"
+                  style={{
+                    backgroundColor: colors.secondary,
+                  }}
+                ></div>
               </div>
 
               <div className="space-y-6">
                 {caseStudy.objectifs.items.map((item: string, idx: number) => (
                   <div key={idx} className="flex items-start group">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-1 mr-4 bg-gradient-to-r from-blue-500 to-cyan-500 group-hover:scale-110 transition-transform duration-300">
+                    <div
+                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-1 mr-4 group-hover:scale-110 transition-transform duration-300"
+                      style={{
+                        backgroundColor: colors.secondary,
+                      }}
+                    >
                       <svg
                         className="w-4 h-4 text-white"
                         fill="none"
@@ -858,8 +860,17 @@ export default function CaseStudyPage() {
               </div>
 
               {/* Bottom accent */}
-              <div className="mt-12 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border-l-4 border-blue-500">
-                <p className="text-gray-700 font-medium italic">
+              <div
+                className="mt-12 p-6 rounded-xl border-l-4"
+                style={{
+                  backgroundColor: `${colors.primary}10`,
+                  borderColor: colors.primary,
+                }}
+              >
+                <p
+                  className="font-medium italic"
+                  style={{ color: colors.tertiary }}
+                >
                   &ldquo;Chaque objectif a été soigneusement défini pour
                   garantir le succès du projet FAHE CRM et maximiser
                   l&apos;impact sur leur activité.&rdquo;
@@ -870,1175 +881,367 @@ export default function CaseStudyPage() {
         </div>
       </div>
 
-      {/* Dynamic Sections */}
-      {caseStudy.sections.map((section: CaseStudySection, idx: number) => (
-        <div
-          key={idx}
-          className={`py-20 px-4 sm:px-6 lg:px-8 ${idx % 2 === 0 ? 'bg-white' : 'bg-gradient-to-br from-blue-50/20 via-white to-cyan-50/10'}`}
-        >
-          <div className="max-w-6xl mx-auto">
-            {section.layout !== 'gallery' && (
-              <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
-                <div>
-                  <h2 className="text-5xl font-bold mb-2 leading-tight" style={{ color: colors.primary }}>
-                    {section.title}
-                  </h2>
-                  <p className="text-xl font-light" style={{ color: colors.secondary }}>
-                    {section.subtitle}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-lg leading-relaxed font-medium" style={{ color: colors.tertiary }}>
-                    {section.content}
-                  </p>
-                </div>
+      {/* Technologies & Stack Section */}
+      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+        {/* Decorative background elements (consistent with ServicesSection) */}
+        <div className="absolute inset-0 z-0" aria-hidden="true">
+          {/* Blurry circles */}
+          <div
+            className="absolute top-10 right-12 w-80 h-80 rounded-full blur-3xl"
+            style={{ backgroundColor: `${colors.primary}15` }}
+          ></div>
+          <div
+            className="absolute bottom-10 left-16 w-96 h-96 rounded-full blur-3xl"
+            style={{ backgroundColor: `${colors.secondary}15` }}
+          ></div>
+          <div
+            className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full blur-3xl"
+            style={{ backgroundColor: `${colors.primary}10` }}
+          ></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="mb-20">
+            <div className="mb-6">
+              <span className="text-xs font-bold uppercase tracking-wide text-gray-500">
+                / TECHNOLOGIES
+              </span>
+            </div>
+
+            <h2
+              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+              style={{
+                fontFamily: 'Hubot Sans, Inter, sans-serif',
+                color: colors.primary,
+              }}
+            >
+              Stack Technique &
+              <br />
+              <span style={{ color: colors.secondary }}>Architecture</span>
+            </h2>
+
+            <p
+              className="text-lg leading-relaxed max-w-3xl font-semibold"
+              style={{ color: colors.tertiary }}
+            >
+              Une architecture robuste et moderne, conçue pour la scalabilité,
+              la performance et la maintenabilité. Découvrez les technologies
+              qui alimentent nos solutions.
+            </p>
+          </div>
+
+          {/* Tech Stack Grid - 4 columns */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {/* Frontend */}
+            <div className="bg-gradient-to-br from-white to-gray-50/50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100/50">
+              <div
+                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+                style={{ backgroundColor: `${colors.primary}15` }}
+              >
+                <svg
+                  className="w-7 h-7"
+                  style={{ color: colors.primary }}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
               </div>
-            )}
-
-            {/* Images */}
-            {section.layout === 'gallery' ? (
-              <div className="w-full">
-                <SectionFadeBg threshold={0.3}>
-                  <div className="w-full py-4">
-                    <ScrollVelocity
-                      texts={["NOTRE MISSION", "NOTRE MISSION"]}
-                      velocity={90}
-                      parallaxStyle={{ padding: '0.5rem 0', width: '100%' }}
-                      scrollerStyle={{ gap: '2rem', width: '100%' }}
-                    />
-                  </div>
-
-                  <div className="w-full relative">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="grid md:grid-cols-2 gap-10 items-center">
-                        {/* Left column: title + subtitle */}
-                        <div>
-                          <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Un CRM pensé pour les vrais besoins du terrain.</h3>
-                          <p className="text-gray-600 text-lg">Suivi des clients, automatisation des tâches, facturation, communication interne — tout est intégré. Chaque module a été conçu à partir de retours réels d'entreprises, pour offrir un outil à la fois puissant et intuitif.</p>
-                        </div>
-
-                        {/* Right column: CardSwap gallery */}
-                        <div style={{ height: '600px', position: 'relative' }}>
-                          <CardSwap cardDistance={60} verticalDistance={70} delay={5000} pauseOnHover={false}>
-                            {section.images.slice(0, 6).map((img: string, idx: number) => (
-                              <Card key={idx}>
-                                <div className="w-full h-full relative rounded-xl bg-white">
-                                  <Image src={img} alt={`FAHE ${idx + 1}`} fill className="object-contain" />
-                                  {/* Top-left badge with icon and label */}
-                                  <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 bg-white/95 border border-[#1D4760] rounded-md shadow-sm">
-                                    <svg className="w-3.5 h-3.5 text-[#1D4760]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6l-2 4-4 .5 3 3-.8 4.5L12 16l3.8 2-1-4.5 3-3-4-.5z" />
-                                    </svg>
-                                    <span className="text-xs font-semibold text-[#1B363C]">
-                                      {idx === 0 && 'Tableau de bord'}
-                                      {idx === 1 && 'Gestion clients'}
-                                      {idx === 2 && 'Rendez-vous'}
-                                      {idx === 3 && 'Rapports'}
-                                      {idx === 4 && 'Configuration'}
-                                      {idx > 4 && 'Aperçu'}
-                                    </span>
-                                  </div>
-                                </div>
-                              </Card>
-                            ))}
-                          </CardSwap>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </SectionFadeBg>
-              </div>
-            ) : section.layout === 'architecture' ? (
-              <div className="relative">
-                {/* Architecture Diagram */}
-                <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-8 border border-gray-200">
-                  <div className="text-center mb-8">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                      Architecture FAHE CRM
-                    </h3>
-                    <p className="text-gray-600">
-                      Architecture en couches pour une évolutivité optimale
-                    </p>
-                  </div>
-
-                  {/* Custom Progix Architecture Diagram */}
-                  <div className="relative max-w-6xl mx-auto">
-                    {/* Custom SVG Architecture */}
-                    <svg viewBox="0 0 1000 700" className="w-full h-auto">
-                      {/* Background */}
-                      <defs>
-                        <linearGradient
-                          id="progixBg"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                        >
-                          <stop offset="0%" stopColor="#f8fafc" />
-                          <stop offset="100%" stopColor="#e0f2fe" />
-                        </linearGradient>
-                        <linearGradient
-                          id="progixPrimary"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                        >
-                          <stop offset="0%" stopColor="#0A2456" />
-                          <stop offset="100%" stopColor="#1e3a8a" />
-                        </linearGradient>
-                        <linearGradient
-                          id="progixSecondary"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                        >
-                          <stop offset="0%" stopColor="#1D4760" />
-                          <stop offset="100%" stopColor="#3b82f6" />
-                        </linearGradient>
-                        <linearGradient
-                          id="progixAccent"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                        >
-                          <stop offset="0%" stopColor="#B2BEC3" />
-                          <stop offset="100%" stopColor="#94a3b8" />
-                        </linearGradient>
-                        <filter
-                          id="progixShadow"
-                          x="-20%"
-                          y="-20%"
-                          width="140%"
-                          height="140%"
-                        >
-                          <feDropShadow
-                            dx="0"
-                            dy="4"
-                            stdDeviation="8"
-                            floodColor="#0A2456"
-                            floodOpacity="0.2"
-                          />
-                        </filter>
-                      </defs>
-
-                      {/* Background */}
-                      <rect
-                        width="1000"
-                        height="700"
-                        fill="url(#progixBg)"
-                        rx="20"
-                      />
-
-                      {/* Title */}
-                      <text
-                        x="500"
-                        y="40"
-                        textAnchor="middle"
-                        fill="#0A2456"
-                        fontSize="24"
-                        fontWeight="bold"
-                        fontFamily="Hubot Sans, Inter, sans-serif"
-                      >
-                        Architecture FAHE CRM
-                      </text>
-                      <text
-                        x="500"
-                        y="65"
-                        textAnchor="middle"
-                        fill="#64748b"
-                        fontSize="14"
-                      >
-                        Conçue par Progix - Architecture moderne et évolutive
-                      </text>
-
-                      {/* Layer 1: Frontend */}
-                      <rect
-                        x="100"
-                        y="100"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixPrimary)"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="190"
-                        y="130"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        Frontend
-                      </text>
-                      <text
-                        x="190"
-                        y="150"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        React & Next.js
-                      </text>
-                      <text
-                        x="190"
-                        y="165"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Interface Utilisateur
-                      </text>
-
-                      <rect
-                        x="320"
-                        y="100"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixPrimary)"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="410"
-                        y="130"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        Mobile App
-                      </text>
-                      <text
-                        x="410"
-                        y="150"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        React Native
-                      </text>
-                      <text
-                        x="410"
-                        y="165"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Application Mobile
-                      </text>
-
-                      <rect
-                        x="540"
-                        y="100"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixPrimary)"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="630"
-                        y="130"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        Admin Panel
-                      </text>
-                      <text
-                        x="630"
-                        y="150"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Dashboard
-                      </text>
-                      <text
-                        x="630"
-                        y="165"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Gestion & Analytics
-                      </text>
-
-                      {/* Layer 2: API Gateway */}
-                      <rect
-                        x="250"
-                        y="220"
-                        width="200"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixSecondary)"
-                        stroke="#1D4760"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="350"
-                        y="250"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="16"
-                        fontWeight="bold"
-                      >
-                        API Gateway
-                      </text>
-                      <text
-                        x="350"
-                        y="270"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Express.js & Node.js
-                      </text>
-                      <text
-                        x="350"
-                        y="285"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Authentification & Routage
-                      </text>
-
-                      <rect
-                        x="500"
-                        y="220"
-                        width="200"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixSecondary)"
-                        stroke="#1D4760"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="600"
-                        y="250"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="16"
-                        fontWeight="bold"
-                      >
-                        WebSocket
-                      </text>
-                      <text
-                        x="600"
-                        y="270"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Temps Réel
-                      </text>
-                      <text
-                        x="600"
-                        y="285"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Notifications Live
-                      </text>
-
-                      {/* Layer 3: Business Logic */}
-                      <rect
-                        x="200"
-                        y="340"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixAccent)"
-                        stroke="#B2BEC3"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="290"
-                        y="370"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        CRM Service
-                      </text>
-                      <text
-                        x="290"
-                        y="390"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Gestion Clients
-                      </text>
-                      <text
-                        x="290"
-                        y="405"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Prospects & Ventes
-                      </text>
-
-                      <rect
-                        x="420"
-                        y="340"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixAccent)"
-                        stroke="#B2BEC3"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="510"
-                        y="370"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        Notification Service
-                      </text>
-                      <text
-                        x="510"
-                        y="390"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        SMS & Email
-                      </text>
-                      <text
-                        x="510"
-                        y="405"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Alertes Automatiques
-                      </text>
-
-                      <rect
-                        x="640"
-                        y="340"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="url(#progixAccent)"
-                        stroke="#B2BEC3"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="730"
-                        y="370"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        Analytics Service
-                      </text>
-                      <text
-                        x="730"
-                        y="390"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Rapports & Stats
-                      </text>
-                      <text
-                        x="730"
-                        y="405"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Données & Insights
-                      </text>
-
-                      {/* Layer 4: Data Layer */}
-                      <rect
-                        x="200"
-                        y="460"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="#0A2456"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="290"
-                        y="490"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        PostgreSQL
-                      </text>
-                      <text
-                        x="290"
-                        y="510"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Base de Données
-                      </text>
-                      <text
-                        x="290"
-                        y="525"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Données Principales
-                      </text>
-
-                      <rect
-                        x="420"
-                        y="460"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="#0A2456"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="510"
-                        y="490"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        Redis Cache
-                      </text>
-                      <text
-                        x="510"
-                        y="510"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Cache & Session
-                      </text>
-                      <text
-                        x="510"
-                        y="525"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Performance
-                      </text>
-
-                      <rect
-                        x="640"
-                        y="460"
-                        width="180"
-                        height="80"
-                        rx="12"
-                        fill="#0A2456"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="730"
-                        y="490"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        File Storage
-                      </text>
-                      <text
-                        x="730"
-                        y="510"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        Documents & Images
-                      </text>
-                      <text
-                        x="730"
-                        y="525"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="10"
-                      >
-                        Stockage Fichiers
-                      </text>
-
-                      {/* External Services */}
-                      <rect
-                        x="50"
-                        y="340"
-                        width="120"
-                        height="60"
-                        rx="8"
-                        fill="#10b981"
-                        stroke="#059669"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="110"
-                        y="365"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                        fontWeight="bold"
-                      >
-                        SMS API
-                      </text>
-                      <text
-                        x="110"
-                        y="380"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="10"
-                      >
-                        Twilio
-                      </text>
-                      <text
-                        x="110"
-                        y="390"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="9"
-                      >
-                        Notifications
-                      </text>
-
-                      <rect
-                        x="50"
-                        y="420"
-                        width="120"
-                        height="60"
-                        rx="8"
-                        fill="#10b981"
-                        stroke="#059669"
-                        strokeWidth="2"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="110"
-                        y="445"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                        fontWeight="bold"
-                      >
-                        Email API
-                      </text>
-                      <text
-                        x="110"
-                        y="460"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="10"
-                      >
-                        SendGrid
-                      </text>
-                      <text
-                        x="110"
-                        y="470"
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="9"
-                      >
-                        Campagnes
-                      </text>
-
-                      {/* Arrows */}
-                      <defs>
-                        <marker
-                          id="progixArrow"
-                          markerWidth="8"
-                          markerHeight="6"
-                          refX="7"
-                          refY="3"
-                          orient="auto"
-                        >
-                          <polygon points="0,0 0,6 8,3" fill="#0A2456" />
-                        </marker>
-                        <marker
-                          id="progixArrowBlue"
-                          markerWidth="8"
-                          markerHeight="6"
-                          refX="7"
-                          refY="3"
-                          orient="auto"
-                        >
-                          <polygon points="0,0 0,6 8,3" fill="#1D4760" />
-                        </marker>
-                        <marker
-                          id="progixArrowGray"
-                          markerWidth="8"
-                          markerHeight="6"
-                          refX="7"
-                          refY="3"
-                          orient="auto"
-                        >
-                          <polygon points="0,0 0,6 8,3" fill="#B2BEC3" />
-                        </marker>
-                        <marker
-                          id="progixArrowGreen"
-                          markerWidth="4"
-                          markerHeight="3"
-                          refX="3"
-                          refY="1.5"
-                          orient="auto"
-                        >
-                          <polygon points="0,0 0,3 4,1.5" fill="#10b981" />
-                        </marker>
-                      </defs>
-
-                      {/* Flow arrows - shorter */}
-                      <path
-                        d="M190 180 L320 220"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrow)"
-                      />
-                      <path
-                        d="M410 180 L380 220"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrow)"
-                      />
-                      <path
-                        d="M630 180 L620 220"
-                        stroke="#0A2456"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrow)"
-                      />
-
-                      <path
-                        d="M350 300 L320 340"
-                        stroke="#1D4760"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrowBlue)"
-                      />
-                      <path
-                        d="M600 300 L540 340"
-                        stroke="#1D4760"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrowBlue)"
-                      />
-                      <path
-                        d="M600 300 L680 340"
-                        stroke="#4FA3D1"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrowBlue)"
-                      />
-
-                      <path
-                        d="M290 420 L290 450"
-                        stroke="#B2BEC3"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrowGray)"
-                      />
-                      <path
-                        d="M510 420 L510 450"
-                        stroke="#B2BEC3"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrowGray)"
-                      />
-                      <path
-                        d="M730 420 L730 450"
-                        stroke="#B2BEC3"
-                        strokeWidth="2"
-                        fill="none"
-                        markerEnd="url(#progixArrowGray)"
-                      />
-
-                      {/* External connections - much shorter */}
-                      <path
-                        d="M170 370 L200 370"
-                        stroke="#10b981"
-                        strokeWidth="1"
-                        fill="none"
-                        markerEnd="url(#progixArrowGreen)"
-                      />
-                      <path
-                        d="M170 450 L200 450"
-                        stroke="#10b981"
-                        strokeWidth="1"
-                        fill="none"
-                        markerEnd="url(#progixArrowGreen)"
-                      />
-
-                      {/* Layer labels */}
-                      <text
-                        x="30"
-                        y="140"
-                        fill="#64748b"
-                        fontSize="12"
-                        fontWeight="bold"
-                        transform="rotate(-90 30 140)"
-                      >
-                        Frontend
-                      </text>
-                      <text
-                        x="30"
-                        y="260"
-                        fill="#64748b"
-                        fontSize="12"
-                        fontWeight="bold"
-                        transform="rotate(-90 30 260)"
-                      >
-                        API Layer
-                      </text>
-                      <text
-                        x="30"
-                        y="380"
-                        fill="#64748b"
-                        fontSize="12"
-                        fontWeight="bold"
-                        transform="rotate(-90 30 380)"
-                      >
-                        Business
-                      </text>
-                      <text
-                        x="30"
-                        y="500"
-                        fill="#64748b"
-                        fontSize="12"
-                        fontWeight="bold"
-                        transform="rotate(-90 30 500)"
-                      >
-                        Data
-                      </text>
-
-                      {/* Progix Logo */}
-                      <circle
-                        cx="900"
-                        cy="100"
-                        r="40"
-                        fill="url(#progixPrimary)"
-                        stroke="#0A2456"
-                        strokeWidth="3"
-                        filter="url(#progixShadow)"
-                      />
-                      <text
-                        x="900"
-                        y="95"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="16"
-                        fontWeight="bold"
-                      >
-                        P
-                      </text>
-                      <text
-                        x="900"
-                        y="110"
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="12"
-                      >
-                        ROGIX
-                      </text>
-                    </svg>
-
-                    {/* Architecture Description */}
-                    <div className="mt-8 text-center">
-                      <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                        Architecture FAHE CRM
-                      </h3>
-                      <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Architecture moderne en couches conçue par Progix pour
-                        FAHE Automotive. Cette structure garantit la
-                        scalabilité, la sécurité et les performances optimales
-                        avec une séparation claire des responsabilités et une
-                        évolutivité maximale.
-                      </p>
-                    </div>
-
-                    {/* Architecture Benefits */}
-                    <div className="mt-8 grid md:grid-cols-3 gap-6">
-                      <div className="text-center p-4 bg-white/50 rounded-xl">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <svg
-                            className="w-6 h-6 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 10V3L4 14h7v7l9-11h-7z"
-                            />
-                          </svg>
-                        </div>
-                        <h4 className="font-bold text-gray-800 mb-2">
-                          Performance
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          Architecture optimisée pour des temps de réponse
-                          rapides
-                        </p>
-                      </div>
-
-                      <div className="text-center p-4 bg-white/50 rounded-xl">
-                        <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <svg
-                            className="w-6 h-6 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                            />
-                          </svg>
-                        </div>
-                        <h4 className="font-bold text-gray-800 mb-2">
-                          Évolutivité
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          Facile d&apos;ajouter de nouvelles fonctionnalités
-                        </p>
-                      </div>
-
-                      <div className="text-center p-4 bg-white/50 rounded-xl">
-                        <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <svg
-                            className="w-6 h-6 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                            />
-                          </svg>
-                        </div>
-                        <h4 className="font-bold text-gray-800 mb-2">
-                          Sécurité
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          Architecture sécurisée avec validation des données
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : section.layout === 'two-column' ? (
-              <div className="grid md:grid-cols-2 gap-8">
-                {section.images.map((img: string, imgIdx: number) => (
-                  <div
-                    key={imgIdx}
-                    className="relative h-[400px] rounded-xl overflow-hidden shadow-2xl border-2 hover:scale-105 transition-transform duration-300"
-                    style={{ borderColor: colors.secondary }}
-                  >
-                    <Image
-                      src={img}
-                      alt={`${section.title} ${imgIdx + 1}`}
-                      fill
-                      className="object-cover"
-                    />
+              <h3
+                className="text-lg font-bold mb-4 uppercase tracking-wide"
+                style={{ color: colors.primary }}
+              >
+                Frontend
+              </h3>
+              <div className="space-y-3">
+                {[
+                  'React 18.x',
+                  'Next.js 14.x',
+                  'TypeScript 5.x',
+                  'Tailwind CSS',
+                ].map((tech, i) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: colors.tertiary }}
+                    >
+                      {tech}
+                    </span>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-transparent to-gray-300"></div>
                   </div>
                 ))}
               </div>
-            ) : (
+            </div>
+
+            {/* Backend */}
+            <div className="bg-gradient-to-br from-white to-gray-50/50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100/50">
               <div
-                className="relative h-[500px] rounded-xl overflow-hidden shadow-2xl border-2 hover:scale-[1.02] transition-transform duration-300"
-                style={{ borderColor: colors.secondary }}
+                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+                style={{ backgroundColor: `${colors.primary}15` }}
               >
-                <Image
-                  src={section.images[0]}
-                  alt={section.title}
-                  fill
-                  className="object-cover"
-                />
+                <svg
+                  className="w-7 h-7"
+                  style={{ color: colors.primary }}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
+                  />
+                </svg>
               </div>
-            )}
+              <h3
+                className="text-lg font-bold mb-4 uppercase tracking-wide"
+                style={{ color: colors.primary }}
+              >
+                Backend
+              </h3>
+              <div className="space-y-3">
+                {[
+                  'Node.js 20.x',
+                  'Express.js 4.x',
+                  'PostgreSQL 15.x',
+                  'Redis 7.x',
+                ].map((tech, i) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: colors.tertiary }}
+                    >
+                      {tech}
+                    </span>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-transparent to-gray-300"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile */}
+            <div className="bg-gradient-to-br from-white to-gray-50/50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100/50">
+              <div
+                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+                style={{ backgroundColor: `${colors.primary}15` }}
+              >
+                <svg
+                  className="w-7 h-7"
+                  style={{ color: colors.primary }}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h3
+                className="text-lg font-bold mb-4 uppercase tracking-wide"
+                style={{ color: colors.primary }}
+              >
+                Mobile
+              </h3>
+              <div className="space-y-3">
+                {['Flutter 3.x', 'Dart 3.x', 'Firebase SDK', 'Google Maps'].map(
+                  (tech, i) => (
+                    <div key={i} className="flex items-center justify-between">
+                      <span
+                        className="text-sm font-medium"
+                        style={{ color: colors.tertiary }}
+                      >
+                        {tech}
+                      </span>
+                      <div className="w-12 h-0.5 bg-gradient-to-r from-transparent to-gray-300"></div>
+                    </div>
+                  ),
+                )}
+              </div>
+            </div>
+
+            {/* DevOps & Tools */}
+            <div className="bg-gradient-to-br from-white to-gray-50/50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100/50">
+              <div
+                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+                style={{ backgroundColor: `${colors.primary}15` }}
+              >
+                <svg
+                  className="w-7 h-7"
+                  style={{ color: colors.primary }}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
+              <h3
+                className="text-lg font-bold mb-4 uppercase tracking-wide"
+                style={{ color: colors.primary }}
+              >
+                DevOps & Outils
+              </h3>
+              <div className="space-y-3">
+                {[
+                  'Docker 24.x',
+                  'AWS Cloud',
+                  'GitHub Actions',
+                  'Vercel Deploy',
+                ].map((tech, i) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: colors.tertiary }}
+                    >
+                      {tech}
+                    </span>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-transparent to-gray-300"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Technical Highlights - Single Column */}
+          <div>
+            {/* Left - Content */}
+            <div>
+              <h3
+                className="text-3xl md:text-4xl font-bold mb-8 leading-tight"
+                style={{ color: colors.primary }}
+              >
+                Défis Techniques &
+                <br />
+                <span style={{ color: colors.secondary }}>
+                  Solutions Innovantes
+                </span>
+              </h3>
+
+              <div className="space-y-6 mb-12">
+                {[
+                  {
+                    title: 'Performance & Scalabilité',
+                    desc: "Architecture microservices avec cache Redis et optimisation des requêtes pour gérer des milliers d'utilisateurs simultanément.",
+                  },
+                  {
+                    title: 'Sécurité Renforcée',
+                    desc: 'Authentification JWT, chiffrement des données sensibles, et conformité RGPD avec audit trails complets.',
+                  },
+                  {
+                    title: 'Intégration Temps Réel',
+                    desc: 'WebSocket pour les notifications push, géolocalisation en temps réel, et synchronisation multi-appareils.',
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start space-x-4">
+                    <div
+                      className="flex-shrink-0 w-2 h-2 rounded-full mt-2"
+                      style={{ backgroundColor: colors.secondary }}
+                    ></div>
+                    <div>
+                      <h4
+                        className="font-bold mb-2"
+                        style={{ color: colors.primary }}
+                      >
+                        {item.title}
+                      </h4>
+                      <p className="text-gray-600 leading-relaxed text-sm">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Stats - Below Content */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { metric: '99.9%', label: 'Uptime' },
+                  { metric: '< 200ms', label: 'Response Time' },
+                  { metric: '10k+', label: 'Concurrent Users' },
+                  { metric: '0 Critical', label: 'Security Issues' },
+                ].map((stat, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-100 text-center hover:border-opacity-50 transition-colors duration-300"
+                    style={{ borderColor: colors.secondary }}
+                  >
+                    <div
+                      className="text-3xl md:text-4xl font-bold mb-2"
+                      style={{ color: colors.primary }}
+                    >
+                      {stat.metric}
+                    </div>
+                    <div className="text-sm text-gray-600 uppercase font-semibold tracking-wide">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      ))}
+      </div>
 
-      {/* Immersive CTA Section - Only for FAHE CRM */}
-      {caseStudy.heroVideo && (
-        <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          {/* Parallax Background */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
+      {/* CTA Section - Blog Style */}
+      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <div className="p-8 md:p-12 bg-gradient-to-r from-[#1a3a52]/30 to-[#2d5369]/30 rounded-2xl border border-[#2d5369]/20 relative overflow-hidden group">
+            {/* Animated background effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#2d5369]/0 via-[#2d5369]/10 to-[#2d5369]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
 
-            {/* Floating Geometric Shapes */}
-            <div
-              className="absolute top-20 left-20 w-20 h-20 border-2 border-white/20 rotate-45 animate-spin"
-              style={{ animationDuration: '20s' }}
-            ></div>
-            <div className="absolute top-40 right-32 w-16 h-16 bg-white/10 rounded-full animate-bounce"></div>
-            <div className="absolute bottom-32 left-40 w-24 h-24 border-2 border-white/30 rotate-12 animate-pulse"></div>
-            <div className="absolute bottom-20 right-20 w-12 h-12 bg-white/20 rounded-full animate-ping"></div>
-
-            {/* Grid Pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <div
-                className="w-full h-full"
-                style={{
-                  backgroundImage: `radial-gradient(circle at 25% 25%, white 1px, transparent 1px)`,
-                  backgroundSize: '50px 50px',
-                }}
-              ></div>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="relative z-10 max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <div className="mb-12">
-              <h2
-                className="text-6xl md:text-7xl font-bold text-white mb-6"
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
+            <div className="relative z-10">
+              <h3
+                className="text-3xl md:text-4xl font-bold mb-4"
+                style={{ color: colors.primary }}
               >
-                PRÊT À TRANSFORMER
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  VOTRE BUSINESS ?
-                </span>
-              </h2>
-              <div className="w-32 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mb-8"></div>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/20 mb-12">
-              <p className="text-2xl md:text-3xl text-white font-light leading-relaxed mb-8">
-                Comme FAHE Automotive, donnez vie à votre vision digitale avec
-                notre équipe d&apos;experts.
-                <br />
-                <span className="font-semibold text-blue-300">
-                  Une solution sur mesure vous attend.
-                </span>
+                Prêt à transformer votre projet ?
+              </h3>
+              <p
+                className="text-lg mb-8 opacity-90"
+                style={{ color: colors.tertiary }}
+              >
+                Découvrez comment notre expertise en architecture technique et
+                développement full-stack peut propulser votre vision en réalité.
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Link
-                  href="/contact"
-                  className="group relative px-12 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden"
-                >
-                  <span className="relative z-10">Démarrer mon projet</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
-
-                <Link
-                  href="/portfolio"
-                  className="px-12 py-4 border-2 border-white/30 text-white font-semibold text-lg rounded-full transition-all duration-300 hover:bg-white/10 hover:border-white/50"
-                >
-                  Voir nos projets
-                </Link>
-              </div>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-white/70">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium">
-                  Réponse garantie 24h
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-500"></div>
-                <span className="text-sm font-medium">
-                  Consultation gratuite
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse delay-1000"></div>
-                <span className="text-sm font-medium">
-                  Solutions sur mesure
-                </span>
-              </div>
+              <Link href="/contact">
+                <AnimatedButton
+                  text="Démarrer un projet"
+                  textColor="white"
+                  borderColor={colors.primary}
+                  circleColor={colors.primary}
+                  arrowColor="white"
+                  hoverTextColor="white"
+                  hoverArrowColor="white"
+                />
+              </Link>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Traditional CTA Section - For other case studies */}
-      {!caseStudy.heroVideo && (
-        <div
-          className="text-white py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
-          style={{ backgroundColor: colors.primary }}
-        >
-          <div className="absolute inset-0 opacity-10">
-            <div
-              className="absolute -top-20 -right-20 w-96 h-96 rounded-full"
-              style={{ backgroundColor: colors.secondary }}
-            ></div>
-            <div
-              className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full"
-              style={{ backgroundColor: colors.secondary }}
-            ></div>
-          </div>
-          <div className="max-w-5xl mx-auto text-center relative z-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Prêt à démarrer votre projet&apos;?
-            </h2>
-            <p className="text-xl text-white/90 mb-8 font-medium">
-              Discutons de vos besoins et créons quelque chose
-              d&apos;exceptionnel ensemble.
-            </p>
-            <Link
-              href="/#contact"
-              className="inline-block text-white px-10 py-4 rounded-full font-bold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-              style={{ backgroundColor: colors.secondary }}
-            >
-              Contactez-nous
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Footer */}
       <Footer />
     </div>
   );
