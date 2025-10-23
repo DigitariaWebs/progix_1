@@ -63,6 +63,11 @@
   display: flex;
   align-items: center;
   user-select: none;
+  transition: opacity 1.2s ease;
+  -webkit-transition: opacity 1.2s ease;
+  -moz-transition: opacity 1.2s ease;
+  -ms-transition: opacity 1.2s ease;
+  -o-transition: opacity 1.2s ease;
 }
 
 .sm-logo-img {
@@ -411,8 +416,10 @@
     right: 0;
   }
 
-  .staggered-menu-wrapper[data-open] .sm-logo-img {
-    filter: invert(100%);
+  .staggered-menu-wrapper[data-open] .sm-logo {
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
   }
 }
 
@@ -423,7 +430,9 @@
     right: 0;
   }
 
-  .staggered-menu-wrapper[data-open] .sm-logo-img {
-    filter: invert(100%);
+  .staggered-menu-wrapper[data-open] .sm-logo {
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
   }
 }

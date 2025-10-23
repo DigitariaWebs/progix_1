@@ -7,7 +7,7 @@ import CircularText from '@/components/CircularText';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a3a52] via-[#2d5369] to-[#1a3a52]">
+    <section className="relative h-dvh flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a3a52] via-[#2d5369] to-[#1a3a52]">
       {/* Subtle Grid Pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div
@@ -27,7 +27,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="absolute left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-20"
+        className="absolute left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-4 z-20"
       >
         <span
           className="text-white/30 text-xs tracking-widest uppercase font-light"
@@ -45,15 +45,15 @@ const HeroSection = () => {
       </motion.div>
 
       {/* Main Content Container */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center mt-10">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center mt-4 sm:mt-8 md:mt-10">
         {/* Small Label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-8"
+          className="mb-4 sm:mb-8"
         >
-          <span className="text-white/50 text-sm tracking-[0.3em] uppercase font-light">
+          <span className="text-white/50 text-xs sm:text-sm tracking-[0.3em] uppercase font-light">
             Nous sommes
           </span>
         </motion.div>
@@ -63,9 +63,9 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="text-white font-bold tracking-tight mb-6"
+          className="text-white font-bold tracking-tight mb-4 sm:mb-6"
           style={{
-            fontSize: 'clamp(4rem, 15vw, 12rem)',
+            fontSize: 'clamp(2.5rem, 12vw, 12rem)',
             lineHeight: '1',
             fontFamily: 'Hubot Sans, Inter, sans-serif',
             letterSpacing: '-0.02em',
@@ -79,9 +79,9 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mb-20"
+          className="mb-8 sm:mb-16 md:mb-20"
         >
-          <p className="text-white/80 text-lg md:text-xl tracking-[0.1em] uppercase font-semibold max-w-4xl mx-auto">
+          <p className="text-white/80 text-xs sm:text-sm md:text-lg lg:text-xl tracking-[0.05em] sm:tracking-[0.1em] uppercase font-semibold max-w-4xl mx-auto px-2">
             UNE FIRME DE DÉVELOPPEMENT LOGICIEL FIÈREMENT MONTRÉALAISE
           </p>
         </motion.div>
@@ -96,8 +96,8 @@ const HeroSection = () => {
             href="/contact"
             className="inline-block group relative overflow-hidden"
           >
-            <div className="relative px-10 py-4 border border-white/20 rounded-full bg-white/5 backdrop-blur-sm transition-all duration-500 hover:bg-white/10 hover:border-white/40">
-              <span className="text-white text-sm tracking-wider uppercase font-medium">
+            <div className="relative px-6 sm:px-10 py-3 sm:py-4 border border-white/20 rounded-full bg-white/5 backdrop-blur-sm transition-all duration-500 hover:bg-white/10 hover:border-white/40">
+              <span className="text-white text-xs sm:text-sm tracking-wider uppercase font-medium whitespace-nowrap">
                 Discuter de votre projet
               </span>
             </div>
@@ -110,7 +110,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 1.4 }}
-        className="absolute bottom-8 left-8 flex flex-col gap-4 z-20"
+        className="absolute bottom-8 left-4 sm:left-8 flex flex-col gap-2 sm:gap-4 z-20"
       >
         <a
           href="https://linkedin.com/company/progix"
@@ -149,12 +149,12 @@ const HeroSection = () => {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 1.6 }}
-        className="absolute bottom-8 right-8 z-20"
+        className="absolute bottom-8 right-4 sm:right-8 z-20"
         style={{
-          width: '90px',
-          height: '90px',
-          minWidth: '90px',
-          minHeight: '90px',
+          width: 'clamp(80px, 18vw, 110px)',
+          height: 'clamp(80px, 18vw, 110px)',
+          minWidth: '80px',
+          minHeight: '80px',
         }}
       >
         <div
@@ -167,17 +167,7 @@ const HeroSection = () => {
             onHover="speedUp"
             className="hero-scroll-circular"
           />
-          <div
-            className="absolute z-10"
-            style={{
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
             <svg
               className="w-5 h-5 text-white/60"
               fill="none"
