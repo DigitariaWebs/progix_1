@@ -14,7 +14,6 @@ const AboutUsSection = () => {
     '/imagesculture/Picsart_25-09-29_19-39-46-733.jpg',
     '/imagesculture/Picsart_25-09-29_19-38-30-170.jpg',
     '/imagesculture/Picsart_25-09-29_19-37-55-797.jpg',
-    '/imagesculture/Picsart_25-09-29_19-36-58-899.jpg',
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

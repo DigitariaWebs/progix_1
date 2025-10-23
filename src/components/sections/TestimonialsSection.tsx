@@ -6,9 +6,9 @@ import { colors } from '@/config/colors';
 
 const TestimonialsSection = () => {
   return (
-    <section className="bg-white pb-20">
+    <section className="bg-white pb-12 md:pb-20">
       {/* Creative wavy separator */}
-      <div className="relative w-full h-16 mb-16 overflow-hidden">
+      <div className="relative w-full h-16 mb-8 md:mb-16 overflow-hidden">
         <svg
           className="absolute bottom-0 left-0 w-full h-8"
           viewBox="0 0 1200 40"
@@ -28,7 +28,7 @@ const TestimonialsSection = () => {
       </div>
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             <span style={{ color: colors.secondary }}>Témoignages</span> de
             projets réussis
@@ -36,11 +36,11 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {/* Testimonial 1 */}
-          <div className="bg-gray-50 rounded-2xl p-8 relative">
+          <div className="bg-gray-50 rounded-2xl p-4 md:p-8 relative">
             {/* Avatar */}
-            <div className="absolute -top-6 left-8">
+            <div className="absolute -top-4 md:-top-6 left-4 md:left-8">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg border-4 border-white">
                 <Image
                   src="/imagesreview/1517492082228.jpg"
@@ -53,7 +53,7 @@ const TestimonialsSection = () => {
             </div>
 
             <div className="pt-8">
-              <p className="text-gray-700 leading-relaxed font-bold mb-6">
+              <p className="text-gray-700 leading-relaxed font-bold mb-4 md:mb-6 text-sm md:text-base text-justify">
                 J&apos;ai développé une plateforme web pour ma société
                 spécialisée dans l&apos;acquisition d&apos;actifs immobiliers
                 résidentiels et fonciers.{' '}
@@ -92,9 +92,9 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Testimonial 2 */}
-          <div className="bg-gray-50 rounded-2xl p-8 relative">
+          <div className="bg-gray-50 rounded-2xl p-4 md:p-8 relative">
             {/* Avatar */}
-            <div className="absolute -top-6 left-8">
+            <div className="absolute -top-4 md:-top-6 left-4 md:left-8">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg border-4 border-white">
                 <Image
                   src="/imagesreview/1751852017364.jpg"
@@ -107,7 +107,7 @@ const TestimonialsSection = () => {
             </div>
 
             <div className="pt-8">
-              <p className="text-gray-700 leading-relaxed font-bold mb-6">
+              <p className="text-gray-700 leading-relaxed font-bold mb-4 md:mb-6 text-sm md:text-base text-justify">
                 Ilyes avait travaillé en tant que product owner pour iBusiness
                 Consulting et avait su gérer mon équipe IT à la perfection.{' '}
                 <span style={{ color: colors.secondary }}>
@@ -144,9 +144,9 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Testimonial 3 */}
-          <div className="bg-gray-50 rounded-2xl p-8 relative">
+          <div className="bg-gray-50 rounded-2xl p-4 md:p-8 relative">
             {/* Avatar */}
-            <div className="absolute -top-6 left-8">
+            <div className="absolute -top-4 md:-top-6 left-4 md:left-8">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg border-4 border-white">
                 <Image
                   src="/imagesreview/images.jpg"
@@ -159,7 +159,7 @@ const TestimonialsSection = () => {
             </div>
 
             <div className="pt-8">
-              <p className="text-gray-700 leading-relaxed font-bold mb-6">
+              <p className="text-gray-700 leading-relaxed font-bold mb-4 md:mb-6 text-sm md:text-base text-justify">
                 L&apos;équipe était à l&apos;écoute et réactive. Le projet a
                 pris un petit peu plus de temps que prévu mais{' '}
                 <span style={{ color: colors.secondary }}>
@@ -200,9 +200,9 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-8 md:mt-16">
           <button
-            className="text-white px-8 py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm md:text-base"
             style={{
               backgroundColor: colors.secondary,
               fontFamily: 'Hubot Sans, Inter, sans-serif',

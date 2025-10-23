@@ -11,6 +11,7 @@ const CaseStudiesSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
   const faheVideoRef = useRef<HTMLVideoElement>(null);
   const coRideVideoRef = useRef<HTMLVideoElement>(null);
 
@@ -26,32 +27,50 @@ const CaseStudiesSection = () => {
       setIsMobile(isMobileDevice);
     };
 
+    // Check for reduced motion preference
+    const checkReducedMotion = () => {
+      setIsReducedMotion(
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      );
+    };
+
     checkMobile();
+    checkReducedMotion();
+
     window.addEventListener('resize', checkMobile);
+
+    // Media query for reduced motion preference
+    const motionMediaQuery = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    );
+    motionMediaQuery.addEventListener('change', checkReducedMotion);
 
     return () => {
       window.removeEventListener('resize', checkMobile);
+      motionMediaQuery.removeEventListener('change', checkReducedMotion);
     };
   }, []);
 
-  // Mouse position tracking for custom cursor
+  // Mouse position tracking for custom cursor - only on desktop
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+    if (!isMobile) {
+      const handleMouseMove = (e: MouseEvent) => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [isMobile]);
 
   return (
     <section className="bg-cyan-800">
       <DecorativeElements type="wave-top" />
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-16">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-12 sm:mb-16 space-y-4 sm:space-y-0">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
               Discover our
               <br />
               latest{' '}
@@ -59,7 +78,7 @@ const CaseStudiesSection = () => {
             </h2>
           </div>
           <button
-            className="text-white px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="text-white px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-base w-full sm:w-auto"
             style={{
               backgroundColor: colors.secondary,
               fontFamily: 'Hubot Sans, Inter, sans-serif',
@@ -82,16 +101,33 @@ const CaseStudiesSection = () => {
               backgroundColor: '#1B363C',
             }}
             onMouseEnter={() => {
-              setHoveredImage('fahe');
-              if (faheVideoRef.current) {
-                faheVideoRef.current.play();
+              if (!isMobile) {
+                setHoveredImage('fahe');
+                if (faheVideoRef.current && !isReducedMotion) {
+                  faheVideoRef.current
+                    .play()
+                    .catch((err) => console.log('Video play prevented:', err));
+                }
               }
             }}
             onMouseLeave={() => {
-              setHoveredImage(null);
-              if (faheVideoRef.current) {
-                faheVideoRef.current.pause();
-                faheVideoRef.current.currentTime = 0;
+              if (!isMobile) {
+                setHoveredImage(null);
+                if (faheVideoRef.current && !isReducedMotion) {
+                  faheVideoRef.current.pause();
+                  faheVideoRef.current.currentTime = 0;
+                }
+              }
+            }}
+            onClick={() => {
+              if (isMobile && faheVideoRef.current) {
+                if (faheVideoRef.current.paused) {
+                  faheVideoRef.current
+                    .play()
+                    .catch((err) => console.log('Video play prevented:', err));
+                } else {
+                  faheVideoRef.current.pause();
+                }
               }
             }}
           >
@@ -111,12 +147,12 @@ const CaseStudiesSection = () => {
                 </h3>
 
                 <p className="text-gray-600 group-hover:text-gray-200 leading-relaxed font-bold mb-8 transition-colors duration-200">
-                  Centre Fahe Mechanics est une référence à
-                  Rivière-des-Prairies dans le domaine de la réparation
-                  automobile. Nous avons développé pour eux un CRM complet
-                  permettant de tracker leur visibilité en ligne, gérer leurs
-                  prospects, automatiser le check-in des véhicules et
-                  optimiser leur processus de service client.
+                  Centre Fahe Mechanics est une référence à Rivière-des-Prairies
+                  dans le domaine de la réparation automobile. Nous avons
+                  développé pour eux un CRM complet permettant de tracker leur
+                  visibilité en ligne, gérer leurs prospects, automatiser le
+                  check-in des véhicules et optimiser leur processus de service
+                  client.
                 </p>
 
                 <Link
@@ -144,28 +180,31 @@ const CaseStudiesSection = () => {
                 </Link>
               </div>
 
-              <div className="relative h-64 lg:h-full bg-white/20">
+              <div className="relative h-72 sm:h-64 lg:h-full bg-white/20">
                 <div className="absolute inset-0 flex items-center justify-center p-4">
                   <div className="w-full h-full bg-black/10 rounded-lg overflow-hidden shadow-lg">
                     {isMounted && (
-                      <video
-                        ref={faheVideoRef}
-                        className="w-full h-full object-cover"
-                        loop
-                        muted
-                        playsInline
-                        autoPlay={isMobile}
-                        style={{
-                          filter: 'brightness(0.9) contrast(1.1)',
-                          transform: 'scaleX(-1) rotate(-90deg)',
-                        }}
-                      >
-                        <source
-                          src="/imagesculture/WhatsApp Video 2025-09-28 at 11.59.54 (1).mp4"
-                          type="video/mp4"
-                        />
-                        Votre navigateur ne supporte pas la lecture vidéo.
-                      </video>
+                      <>
+                        <video
+                          ref={faheVideoRef}
+                          className="w-full h-full object-cover"
+                          loop
+                          muted
+                          playsInline
+                          autoPlay={isMobile && !isReducedMotion}
+                          preload="metadata"
+                          style={{
+                            filter: 'brightness(0.9) contrast(1.1)',
+                            transform: 'scaleX(-1) rotate(-90deg)',
+                          }}
+                        >
+                          <source
+                            src="/imagesculture/WhatsApp Video 2025-09-28 at 11.59.54 (1).mp4"
+                            type="video/mp4"
+                          />
+                          Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                      </>
                     )}
                   </div>
                 </div>
@@ -183,8 +222,16 @@ const CaseStudiesSection = () => {
             whileHover={{
               backgroundColor: '#1B363C',
             }}
-            onMouseEnter={() => setHoveredImage('confortplus')}
-            onMouseLeave={() => setHoveredImage(null)}
+            onMouseEnter={() => {
+              if (!isMobile) {
+                setHoveredImage('confortplus');
+              }
+            }}
+            onMouseLeave={() => {
+              if (!isMobile) {
+                setHoveredImage(null);
+              }
+            }}
           >
             <div className="grid lg:grid-cols-2 gap-0">
               <div className="p-8 lg:p-12 flex flex-col justify-center">
@@ -206,10 +253,10 @@ const CaseStudiesSection = () => {
                   l&apos;exportation de fruits exotiques de qualité premium.
                   Nous avons développé leur site web international multilingue
                   (7 langues) pour mettre en valeur leurs services de la
-                  meilleure façon grâce à nos développeurs frontend et
-                  designers UI/UX d&apos;élite, créant une expérience digitale
-                  exceptionnelle qui reflète l&apos;excellence de leurs
-                  produits exotiques.
+                  meilleure façon grâce à nos développeurs frontend et designers
+                  UI/UX d&apos;élite, créant une expérience digitale
+                  exceptionnelle qui reflète l&apos;excellence de leurs produits
+                  exotiques.
                 </p>
 
                 <Link
@@ -237,24 +284,27 @@ const CaseStudiesSection = () => {
                 </Link>
               </div>
 
-              <div className="relative h-64 lg:h-full bg-white/20">
+              <div className="relative h-72 sm:h-64 lg:h-full bg-white/20">
                 <div className="absolute inset-0 flex items-center justify-center p-4">
                   <div className="w-full h-full bg-black/10 rounded-lg overflow-hidden shadow-lg">
                     {isMounted && (
-                      <video
-                        ref={coRideVideoRef}
-                        className="w-full h-full object-cover"
-                        loop
-                        muted
-                        playsInline
-                        autoPlay={isMobile}
-                        style={{
-                          filter: 'brightness(0.9) contrast(1.1)',
-                        }}
-                      >
-                        <source src="/fruitexo.mp4" type="video/mp4" />
-                        Votre navigateur ne supporte pas la lecture vidéo.
-                      </video>
+                      <>
+                        <video
+                          ref={coRideVideoRef}
+                          className="w-full h-full object-cover"
+                          loop
+                          muted
+                          playsInline
+                          autoPlay={isMobile && !isReducedMotion}
+                          preload="metadata"
+                          style={{
+                            filter: 'brightness(0.9) contrast(1.1)',
+                          }}
+                        >
+                          <source src="/fruitexo.mp4" type="video/mp4" />
+                          Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                      </>
                     )}
                   </div>
                 </div>
@@ -273,16 +323,33 @@ const CaseStudiesSection = () => {
               backgroundColor: '#1B363C',
             }}
             onMouseEnter={() => {
-              setHoveredImage('coride');
-              if (coRideVideoRef.current) {
-                coRideVideoRef.current.play();
+              if (!isMobile) {
+                setHoveredImage('coride');
+                if (coRideVideoRef.current && !isReducedMotion) {
+                  coRideVideoRef.current
+                    .play()
+                    .catch((err) => console.log('Video play prevented:', err));
+                }
               }
             }}
             onMouseLeave={() => {
-              setHoveredImage(null);
-              if (coRideVideoRef.current) {
-                coRideVideoRef.current.pause();
-                coRideVideoRef.current.currentTime = 0;
+              if (!isMobile) {
+                setHoveredImage(null);
+                if (coRideVideoRef.current && !isReducedMotion) {
+                  coRideVideoRef.current.pause();
+                  coRideVideoRef.current.currentTime = 0;
+                }
+              }
+            }}
+            onClick={() => {
+              if (isMobile && coRideVideoRef.current) {
+                if (coRideVideoRef.current.paused) {
+                  coRideVideoRef.current
+                    .play()
+                    .catch((err) => console.log('Video play prevented:', err));
+                } else {
+                  coRideVideoRef.current.pause();
+                }
               }
             }}
           >
@@ -335,27 +402,30 @@ const CaseStudiesSection = () => {
                 </Link>
               </div>
 
-              <div className="relative h-64 lg:h-full bg-white/20">
+              <div className="relative h-72 sm:h-64 lg:h-full bg-white/20">
                 <div className="absolute inset-0 flex items-center justify-center p-4">
                   <div className="w-full h-full bg-black/10 rounded-lg overflow-hidden shadow-lg">
                     {isMounted && (
-                      <video
-                        ref={coRideVideoRef}
-                        className="w-full h-full object-cover"
-                        loop
-                        muted
-                        playsInline
-                        autoPlay={isMobile}
-                        style={{
-                          filter: 'brightness(0.9) contrast(1.1)',
-                        }}
-                      >
-                        <source
-                          src="/images/WhatsApp Video 2025-09-26 at 10.22.25.mp4"
-                          type="video/mp4"
-                        />
-                        Votre navigateur ne supporte pas la lecture vidéo.
-                      </video>
+                      <>
+                        <video
+                          ref={coRideVideoRef}
+                          className="w-full h-full object-cover"
+                          loop
+                          muted
+                          playsInline
+                          autoPlay={isMobile && !isReducedMotion}
+                          preload="metadata"
+                          style={{
+                            filter: 'brightness(0.9) contrast(1.1)',
+                          }}
+                        >
+                          <source
+                            src="/images/WhatsApp Video 2025-09-26 at 10.22.25.mp4"
+                            type="video/mp4"
+                          />
+                          Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                      </>
                     )}
                   </div>
                 </div>
@@ -366,50 +436,52 @@ const CaseStudiesSection = () => {
       </div>
       <DecorativeElements type="wave-bottom" />
 
-      {/* Global Custom Cursor for Case Studies */}
-      <AnimatePresence>
-        {hoveredImage && (
-          <motion.div
-            className="fixed pointer-events-none w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-gray-300"
-            style={{
-              backgroundColor: '#FFFFFF',
-              zIndex: 9999,
-              left: 0,
-              top: 0,
-            }}
-            animate={{
-              x: mousePosition.x - 24,
-              y: mousePosition.y - 24,
-              opacity: 1,
-            }}
-            transition={{
-              x: { type: 'spring', stiffness: 800, damping: 30, mass: 0.1 },
-              y: { type: 'spring', stiffness: 800, damping: 30, mass: 0.1 },
-              opacity: { duration: 0.05 },
-            }}
-            initial={{
-              opacity: 0,
-              x: mousePosition.x - 24,
-              y: mousePosition.y - 24,
-            }}
-            exit={{ opacity: 0, transition: { duration: 0.05 } }}
-          >
-            <svg
-              className="w-6 h-6 text-black"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {/* Global Custom Cursor for Case Studies - Only visible on desktop */}
+      {!isMobile && (
+        <AnimatePresence>
+          {hoveredImage && (
+            <motion.div
+              className="fixed pointer-events-none w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-gray-300"
+              style={{
+                backgroundColor: '#FFFFFF',
+                zIndex: 9999,
+                left: 0,
+                top: 0,
+              }}
+              animate={{
+                x: mousePosition.x - 24,
+                y: mousePosition.y - 24,
+                opacity: 1,
+              }}
+              transition={{
+                x: { type: 'spring', stiffness: 800, damping: 30, mass: 0.1 },
+                y: { type: 'spring', stiffness: 800, damping: 30, mass: 0.1 },
+                opacity: { duration: 0.05 },
+              }}
+              initial={{
+                opacity: 0,
+                x: mousePosition.x - 24,
+                y: mousePosition.y - 24,
+              }}
+              exit={{ opacity: 0, transition: { duration: 0.05 } }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M7 17l9.2-9.2M17 17V7H7"
-              />
-            </svg>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <svg
+                className="w-6 h-6 text-black"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 17l9.2-9.2M17 17V7H7"
+                />
+              </svg>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </section>
   );
 };

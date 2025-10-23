@@ -72,7 +72,7 @@ export default function ScrollVelocity({
     parallaxClassName,
     scrollerClassName,
     parallaxStyle,
-    scrollerStyle
+    scrollerStyle,
   }: {
     children: React.ReactNode;
     baseVelocity?: number;
@@ -88,22 +88,26 @@ export default function ScrollVelocity({
     scrollerStyle?: React.CSSProperties;
   }) {
     const baseX = useMotionValue(0);
-    const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
+    const scrollOptions = scrollContainerRef
+      ? { container: scrollContainerRef }
+      : {};
     const { scrollY } = useScroll(scrollOptions as any);
     const scrollVelocity = useVelocity(scrollY);
     const smoothVelocity = useSpring(scrollVelocity, {
       damping: damping ?? 50,
-      stiffness: stiffness ?? 400
+      stiffness: stiffness ?? 400,
     });
     const velocityFactor = useTransform(
       smoothVelocity,
       velocityMapping?.input || [0, 1000],
       velocityMapping?.output || [0, 5],
-      { clamp: false }
+      { clamp: false },
     );
 
     const copyRef = useRef<HTMLSpanElement | null>(null);
-    const copyWidth = useElementWidth(copyRef as unknown as React.RefObject<HTMLElement>);
+    const copyWidth = useElementWidth(
+      copyRef as unknown as React.RefObject<HTMLElement>,
+    );
 
     function wrap(min: number, max: number, v: number): number {
       const range = max - min;
@@ -111,14 +115,15 @@ export default function ScrollVelocity({
       return mod + min;
     }
 
-    const x = useTransform(baseX, v => {
+    const x = useTransform(baseX, (v) => {
       if (copyWidth === 0) return '0px';
       return `${wrap(-copyWidth, 0, v)}px`;
     });
 
     const directionFactor = useRef(1);
     useAnimationFrame((_, delta) => {
-      let moveBy = directionFactor.current * (baseVelocity ?? 100) * (delta / 1000);
+      let moveBy =
+        directionFactor.current * (baseVelocity ?? 100) * (delta / 1000);
 
       if (velocityFactor.get() < 0) {
         directionFactor.current = -1;
@@ -147,15 +152,25 @@ export default function ScrollVelocity({
 
     for (let i = 0; i < (numCopies ?? 6); i++) {
       spans.push(
-        <span className={`sv-word ${className}`} key={i} ref={i === 0 ? (copyRef as any) : null}>
+        <span
+          className={`sv-word ${className}`}
+          key={i}
+          ref={i === 0 ? (copyRef as any) : null}
+        >
           {renderParts(children)}
-        </span>
+        </span>,
       );
     }
 
     return (
-      <div className={parallaxClassName} style={parallaxStyle}>
-        <motion.div className={scrollerClassName} style={{ x, ...(scrollerStyle || {}) }}>
+      <div
+        className={`${parallaxClassName} overflow-hidden`}
+        style={parallaxStyle}
+      >
+        <motion.div
+          className={scrollerClassName}
+          style={{ x, ...(scrollerStyle || {}) }}
+        >
           {spans}
         </motion.div>
       </div>
@@ -163,12 +178,14 @@ export default function ScrollVelocity({
   }
 
   return (
-    <section>
+    <section className="overflow-hidden w-full">
       {texts.map((text, index) => (
         <VelocityText
           key={index}
           className={className}
-          baseVelocity={index % 2 !== 0 ? -(velocity ?? 100) : (velocity ?? 100)}
+          baseVelocity={
+            index % 2 !== 0 ? -(velocity ?? 100) : (velocity ?? 100)
+          }
           scrollContainerRef={scrollContainerRef}
           damping={damping}
           stiffness={stiffness}

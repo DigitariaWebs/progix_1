@@ -17,12 +17,12 @@ import ScrollVelocity from '@/components/ScrollVelocity';
 export default function Home() {
 
   return (
-    <div className="landing-page font-montserrat relative">
+    <div className="landing-page font-montserrat relative overflow-x-hidden">
       {/* Navbar removed per user request; StaggeredMenu is global */}
       {/* Menu global géré par GlobalMenu dans layout */}
       {/* This is your branch's hero section */}
       <HeroSection />
-      
+
       {/* Client Logos Section */}
       <ClientLogosSection />
 
@@ -42,9 +42,9 @@ export default function Home() {
 
       {/* ScrollVelocity separator + Team wrapped together for dark transition */}
       <SectionFadeBg threshold={0.35}>
-        <div className="py-8">
+        <div className="py-8 overflow-hidden">
           <ScrollVelocity
-            texts={["NOTRE ÉQUIPE", "NOTRE ÉQUIPE"]}
+            texts={['NOTRE ÉQUIPE', 'NOTRE ÉQUIPE']}
             velocity={90}
             className=""
             parallaxStyle={{ padding: '0.5rem 0' }}
@@ -52,7 +52,7 @@ export default function Home() {
           />
         </div>
       </SectionFadeBg>
-        <TeamSection />
+      <TeamSection />
 
       <BlogSection />
 

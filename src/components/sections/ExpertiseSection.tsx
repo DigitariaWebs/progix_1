@@ -55,6 +55,21 @@ const EXPERTISE_ITEMS: ExpertiseItem[] = [
 export default function ExpertiseSection() {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
   const [isDark, setIsDark] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  // Handle resize and check if mobile
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Check on mount
+    checkMobile();
+
+    // Listen for resize events
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   React.useEffect(() => {
     const section = sectionRef.current;
@@ -69,6 +84,20 @@ export default function ExpertiseSection() {
       .map((item) => item.querySelector('video'))
       .filter(Boolean) as HTMLVideoElement[];
 
+    // Mobile optimization - set lower quality attributes
+    if (isMobile) {
+      videos.forEach((video) => {
+        // Set lower playback quality for mobile
+        video.setAttribute('playsinline', '');
+        video.setAttribute('preload', 'metadata');
+
+        // Only auto-play the first video on mobile
+        if (video !== videos[0]) {
+          video.autoplay = false;
+        }
+      });
+    }
+
     const pauseAll = () => {
       videos.forEach((v) => {
         try {
@@ -79,10 +108,13 @@ export default function ExpertiseSection() {
 
     const primeVideo = (video: HTMLVideoElement) => {
       if (!video) return;
-      if (video.preload !== 'auto') {
-        video.preload = 'auto';
+      // Use different preload strategy based on device
+      const desiredPreload = isMobile ? 'metadata' : 'auto';
+
+      if (video.preload !== desiredPreload) {
+        video.preload = desiredPreload;
         try {
-          // Hint the browser to fetch quickly
+          // Hint the browser to fetch quickly (but only metadata on mobile)
           video.load();
         } catch {}
       }
@@ -111,7 +143,12 @@ export default function ExpertiseSection() {
       // Set stacking order so later cards appear above earlier ones
       (item as HTMLElement).style.zIndex = String(10 + index);
       if (index !== 0) {
-        gsap.set(item, { xPercent: 100 });
+        // Different initial positioning for mobile vs desktop
+        if (isMobile) {
+          gsap.set(item, { yPercent: 100, xPercent: 0 });
+        } else {
+          gsap.set(item, { xPercent: 100 });
+        }
       }
     });
 
@@ -120,8 +157,9 @@ export default function ExpertiseSection() {
         trigger: wrapper,
         pin: true,
         start: 'top top',
-        end: `+=${items.length * 100}%`,
-        scrub: 1,
+        // Reduce pinned scroll distance on mobile
+        end: isMobile ? `+=${items.length * 70}%` : `+=${items.length * 100}%`,
+        scrub: isMobile ? 0.5 : 1, // Faster scrub on mobile for more responsive feel
         invalidateOnRefresh: true,
         // anticipatePin slightly delays pin to avoid jank on mobile
         anticipatePin: 1,
@@ -149,22 +187,41 @@ export default function ExpertiseSection() {
       if (index === 0) {
         tl.to({}, { duration: 0.05 });
       }
-      tl.to(item, { scale: 0.9, borderRadius: '10px' });
+      // Simplified animations for mobile
+      if (isMobile) {
+        // Use opacity and y-transform for better mobile performance
+        tl.to(item, {
+          scale: 0.95,
+          borderRadius: '10px',
+          opacity: 0.7,
+          yPercent: -5,
+        });
+      } else {
+        tl.to(item, { scale: 0.9, borderRadius: '10px' });
+      }
+
       const next = items[index + 1];
       if (next) {
-        tl.to(next, { xPercent: 0 }, '<');
+        // Use Y-direction animation for mobile
+        if (isMobile) {
+          gsap.set(next, { yPercent: 100, xPercent: 0 }); // Reset X and set initial Y
+          tl.to(next, { yPercent: 0 }, '<');
+        } else {
+          tl.to(next, { xPercent: 0 }, '<');
+        }
         // When the next item arrives, mark it active and preload the following
         tl.call(() => setActive(index + 1));
       }
     });
 
     // Safety: pause videos when leaving the section
-    tl.scrollTrigger?.vars && Object.assign(tl.scrollTrigger.vars, {
-      onLeave: () => pauseAll(),
-      onLeaveBack: () => pauseAll(),
-      onEnter: () => setActive(0),
-      onEnterBack: () => setActive(Math.min(videos.length - 1, 1)),
-    });
+    tl.scrollTrigger?.vars &&
+      Object.assign(tl.scrollTrigger.vars, {
+        onLeave: () => pauseAll(),
+        onLeaveBack: () => pauseAll(),
+        onEnter: () => setActive(0),
+        onEnterBack: () => setActive(Math.min(videos.length - 1, 1)),
+      });
 
     return () => {
       tl.scrollTrigger?.kill();
@@ -175,10 +232,17 @@ export default function ExpertiseSection() {
   }, []);
 
   return (
-    <section className={`${styles.exhSection} ${isDark ? styles.exhDark : ''}`} ref={sectionRef} style={{ ['--contact-bg' as any]: '#1D4760' }}>
+    <section
+      className={`${styles.exhSection} ${isDark ? styles.exhDark : ''} ${isMobile ? styles.exhMobile : ''}`}
+      ref={sectionRef}
+      style={{ ['--contact-bg' as any]: '#1D4760' }}
+    >
       <div className={styles.exhHeading}>
         <h2
-          className={styles.exhHeadingText + ' text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'}
+          className={
+            styles.exhHeadingText +
+            ' text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'
+          }
         >
           Ce que nous faisons
         </h2>
@@ -195,14 +259,17 @@ export default function ExpertiseSection() {
                   <h3 className={styles.exhItemTitle}>{item.title}</h3>
                   <p className={styles.exhItemCopy}>{item.copy}</p>
                 </div>
-                <div className={styles.exhVideoWrap} style={{ ['--brand-blue' as any]: '#0A2456' }}>
+                <div
+                  className={styles.exhVideoWrap}
+                  style={{ ['--brand-blue' as any]: '#0A2456' }}
+                >
                   <video
                     src={item.mediaSrc}
                     className={styles.exhItemMedia}
-                    preload="none"
+                    preload={isMobile ? 'metadata' : 'none'}
                     muted
                     loop
-                    autoPlay
+                    autoPlay={!isMobile || item.number === '1'}
                     playsInline
                   />
                   <div className={styles.exhTint} aria-hidden="true" />
