@@ -156,10 +156,10 @@ export default function ExpertiseSection() {
       scrollTrigger: {
         trigger: wrapper,
         pin: true,
-        start: 'top top',
-        // Reduce pinned scroll distance on mobile
-        end: isMobile ? `+=${items.length * 70}%` : `+=${items.length * 100}%`,
-        scrub: isMobile ? 0.5 : 1, // Faster scrub on mobile for more responsive feel
+        start: isMobile ? 'top 5%' : 'top top',
+        // Significantly reduce pinned scroll distance on mobile
+        end: isMobile ? `+=${items.length * 40}%` : `+=${items.length * 100}%`,
+        scrub: isMobile ? 0.3 : 1, // Even faster scrub on mobile for more responsive feel
         invalidateOnRefresh: true,
         // anticipatePin slightly delays pin to avoid jank on mobile
         anticipatePin: 1,
@@ -178,12 +178,13 @@ export default function ExpertiseSection() {
       }
       // Simplified animations for mobile
       if (isMobile) {
-        // Use opacity and y-transform for better mobile performance
+        // Use opacity and y-transform for better mobile performance, with faster transition
         tl.to(item, {
-          scale: 0.95,
+          scale: 0.9,
           borderRadius: '10px',
-          opacity: 0.7,
-          yPercent: -5,
+          opacity: 0.6,
+          yPercent: -10,
+          duration: 0.6,
         });
       } else {
         tl.to(item, { scale: 0.9, borderRadius: '10px' });
@@ -191,10 +192,10 @@ export default function ExpertiseSection() {
 
       const next = items[index + 1];
       if (next) {
-        // Use Y-direction animation for mobile
+        // Use Y-direction animation for mobile with faster transition
         if (isMobile) {
           gsap.set(next, { yPercent: 100, xPercent: 0 }); // Reset X and set initial Y
-          tl.to(next, { yPercent: 0 }, '<');
+          tl.to(next, { yPercent: 0, duration: 0.8 }, '<');
         } else {
           tl.to(next, { xPercent: 0 }, '<');
         }
