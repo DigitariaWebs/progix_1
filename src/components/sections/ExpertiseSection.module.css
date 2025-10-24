@@ -140,6 +140,10 @@
   width: 50%;
   height: 100%;
   overflow: hidden;
+  isolation: isolate;
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .exhVideoWrap video {
@@ -178,6 +182,13 @@
 
 .exhMobile .exhVideoWrap {
   height: 40%;
+  will-change: opacity;
+  }
+  
+  .exhMobile .exhVideoWrap video {
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 
 /* Improve performance by reducing repaints */
@@ -217,6 +228,12 @@
   .exhVideoWrap {
     height: 65%;
     background-color: transparent;
+    isolation: isolate;
+    }
+    
+    .exhVideoWrap video {
+      isolation: isolate;
+      contain: paint;
   }
   .exhBlurAccent {
     left: -5%;

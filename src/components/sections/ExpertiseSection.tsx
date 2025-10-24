@@ -252,6 +252,7 @@ export default function ExpertiseSection() {
                   style={{ ['--brand-blue' as any]: '#0A2456' }}
                 >
                   <video
+                    key={`video-${item.number}`}
                     src={item.mediaSrc}
                     className={styles.exhItemMedia}
                     preload={isMobile ? 'metadata' : 'none'}
