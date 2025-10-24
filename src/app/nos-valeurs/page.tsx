@@ -50,37 +50,35 @@ const NosValeursPage = () => {
 
   return (
     <div className="min-h-screen bg-white font-montserrat relative">
-      
-      {/* BlobCursor avec couleur bleue Progix */}
-      <div className="fixed inset-0 pointer-events-none z-60">
+      {/* BlobCursor avec couleur bleue Progix - Hidden on mobile, smaller on desktop */}
+      <div className="fixed inset-0 pointer-events-none z-60 hidden md:block">
         <BlobCursor
           blobType="circle"
           fillColor="#1D4760"
           trailCount={3}
-          sizes={[60, 125, 75]}
-          innerSizes={[20, 35, 25]}
+          sizes={[20, 40, 30]}
+          innerSizes={[8, 15, 12]}
           innerColor="rgba(255,255,255,0.8)"
           opacities={[0.6, 0.6, 0.6]}
           shadowColor="rgba(0,0,0,0.75)"
-          shadowBlur={5}
-          shadowOffsetX={10}
-          shadowOffsetY={10}
-          filterStdDeviation={30}
+          shadowBlur={2}
+          shadowOffsetX={4}
+          shadowOffsetY={4}
+          filterStdDeviation={10}
           useFilter={true}
-          fastDuration={0.1}
-          slowDuration={0.5}
+          fastDuration={0.01}
+          slowDuration={0.03}
           zIndex={100}
         />
       </div>
-      
+
       {/* Hero Section - Geometric Style */}
       <div className="relative">
-        <HeroGeometric 
+        <HeroGeometric
           badge="Progix Values"
           title1="Our Core Values"
           description="We are a team of strategists, developers, communicators, researchers. Together, we believe that progress only happens when you refuse to play things safe."
         />
-      
       </div>
 
       {/* Tomorrow Section - Left Aligned */}
@@ -106,7 +104,7 @@ const NosValeursPage = () => {
                   <span className="absolute -bottom-2 left-0 w-full h-3 bg-green-200 -z-10"></span>
                 </span>
               </motion.h2>
-              
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -114,8 +112,10 @@ const NosValeursPage = () => {
                 className="text-xl text-black leading-relaxed mb-8"
                 style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
               >
-                Nous sommes une équipe de stratèges, développeurs, communicateurs et chercheurs. 
-                Ensemble, nous croyons que le progrès ne se produit que lorsque vous refusez de jouer la sécurité.
+                Nous sommes une équipe de stratèges, développeurs,
+                communicateurs et chercheurs. Ensemble, nous croyons que le
+                progrès ne se produit que lorsque vous refusez de jouer la
+                sécurité.
               </motion.p>
 
               <motion.a
@@ -124,8 +124,18 @@ const NosValeursPage = () => {
                 style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
               >
                 En savoir plus
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-5 h-5 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </motion.a>
             </div>
@@ -152,15 +162,15 @@ const NosValeursPage = () => {
       </section>
 
       {/* Progress Section - Right Aligned */}
-      <motion.section 
-        id="principles" 
+      <motion.section
+        id="principles"
         className={`pt-20 transition-all duration-1000 ease-in-out ${
           isProgressSectionVisible ? 'bg-cyan-800' : 'bg-white'
         }`}
         animate={{
-          backgroundColor: isProgressSectionVisible ? '#155e75' : '#ffffff'
+          backgroundColor: isProgressSectionVisible ? '#155e75' : '#ffffff',
         }}
-        transition={{ duration: 1, ease: "easeInOut" }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
       >
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -196,31 +206,37 @@ const NosValeursPage = () => {
                 Voyez comment nous{' '}
                 <span className="relative">
                   pouvons
-                  <motion.span 
+                  <motion.span
                     className={`absolute -bottom-2 left-0 w-full h-3 -z-10 transition-colors duration-1000 ${
                       isProgressSectionVisible ? 'bg-green-400' : 'bg-green-200'
                     }`}
                     animate={{
-                      backgroundColor: isProgressSectionVisible ? '#4ade80' : '#bbf7d0'
+                      backgroundColor: isProgressSectionVisible
+                        ? '#4ade80'
+                        : '#bbf7d0',
                     }}
-                    transition={{ duration: 1, ease: "easeInOut" }}
+                    transition={{ duration: 1, ease: 'easeInOut' }}
                   />
                 </span>{' '}
                 vous aider à{' '}
                 <span className="relative">
                   progresser
-                  <motion.span 
+                  <motion.span
                     className={`absolute -bottom-2 left-0 w-full h-3 -z-10 transition-colors duration-1000 ${
-                      isProgressSectionVisible ? 'bg-yellow-400' : 'bg-yellow-300'
+                      isProgressSectionVisible
+                        ? 'bg-yellow-400'
+                        : 'bg-yellow-300'
                     }`}
                     animate={{
-                      backgroundColor: isProgressSectionVisible ? '#facc15' : '#fde047'
+                      backgroundColor: isProgressSectionVisible
+                        ? '#facc15'
+                        : '#fde047',
                     }}
-                    transition={{ duration: 1, ease: "easeInOut" }}
+                    transition={{ duration: 1, ease: 'easeInOut' }}
                   />
                 </span>
               </motion.h2>
-              
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -230,9 +246,11 @@ const NosValeursPage = () => {
                 }`}
                 style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
               >
-                Nous ajoutons une couche d&apos;insights et d&apos;actions audacieuses qui permet aux 
-                créateurs de changement d&apos;accélérer leur progrès dans des domaines tels que 
-                le développement, la conception, le numérique, les communications et la recherche.
+                Nous ajoutons une couche d&apos;insights et d&apos;actions
+                audacieuses qui permet aux créateurs de changement
+                d&apos;accélérer leur progrès dans des domaines tels que le
+                développement, la conception, le numérique, les communications
+                et la recherche.
               </motion.p>
 
               <motion.a
@@ -243,8 +261,18 @@ const NosValeursPage = () => {
                 style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
               >
                 En savoir plus
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-5 h-5 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </motion.a>
             </div>
@@ -255,7 +283,7 @@ const NosValeursPage = () => {
 
       {/* Values Section with Hover Effects */}
       <section id="values" className="  bg-cyan-800">
-      <DecorativeElements type="wave-top" />
+        <DecorativeElements type="wave-top" />
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
           <div className="text-center mb-16">
             <motion.h2
@@ -281,7 +309,8 @@ const NosValeursPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg text-white/80 max-w-2xl mx-auto"
             >
-              Les principes qui guident notre approche du développement logiciel et façonnent notre culture d&apos;entreprise.
+              Les principes qui guident notre approche du développement logiciel
+              et façonnent notre culture d&apos;entreprise.
             </motion.p>
           </div>
 
@@ -306,7 +335,7 @@ const NosValeursPage = () => {
           >
             Abonnez-vous à notre newsletter
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -316,7 +345,7 @@ const NosValeursPage = () => {
           >
             Pour rendre votre expérience spéciale et encore plus mémorable
           </motion.p>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
