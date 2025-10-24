@@ -54,7 +54,7 @@ const EXPERTISE_ITEMS: ExpertiseItem[] = [
 
 export default function ExpertiseSection() {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
-  const [isDark, setIsDark] = React.useState(false);
+  const [isDark] = React.useState(true); // Always use dark mode for this section
   const [isMobile, setIsMobile] = React.useState(false);
 
   // Handle resize and check if mobile
@@ -167,17 +167,6 @@ export default function ExpertiseSection() {
       defaults: { ease: 'none' },
     });
 
-    // Dark mode toggle while the section is in view
-    const darkTrigger = ScrollTrigger.create({
-      trigger: section,
-      start: 'top 70%',
-      end: 'bottom 30%',
-      onEnter: () => setIsDark(true),
-      onEnterBack: () => setIsDark(true),
-      onLeave: () => setIsDark(false),
-      onLeaveBack: () => setIsDark(false),
-    });
-
     // Start with first video primed/playing
     setActive(0);
 
@@ -226,7 +215,6 @@ export default function ExpertiseSection() {
     return () => {
       tl.scrollTrigger?.kill();
       tl.kill();
-      darkTrigger.kill();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
