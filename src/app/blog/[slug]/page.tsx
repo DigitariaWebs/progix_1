@@ -97,7 +97,7 @@ export default function BlogPostPage({
         className="fixed top-0 left-0 right-0 h-1 bg-[#00d4ff] origin-left z-[60]"
         style={{ scaleX }}
       />
-       
+
       {/* Navbar removed */}
 
       {/* Hero Section with Featured Image */}
@@ -380,7 +380,10 @@ export default function BlogPostPage({
                 );
               } else if (paragraph.trim().startsWith('## ')) {
                 return (
-                  <div key={index} className="bg-gradient-to-r from-[#00d4ff]/20 to-transparent p-6 rounded-xl border border-[#00d4ff]/30 mt-12 mb-6">
+                  <div
+                    key={index}
+                    className="bg-gradient-to-r from-[#00d4ff]/20 to-transparent p-6 rounded-xl border border-[#00d4ff]/30 mt-12 mb-6"
+                  >
                     <h2 className="text-2xl font-bold text-white mb-0">
                       {paragraph.replace('## ', '')}
                     </h2>
@@ -388,13 +391,19 @@ export default function BlogPostPage({
                 );
               } else if (paragraph.trim().startsWith('### ')) {
                 return (
-                  <h3 key={index} className="text-lg font-semibold text-[#00d4ff] uppercase tracking-wider mb-4 mt-8 border-b border-[#00d4ff]/50 pb-2">
+                  <h3
+                    key={index}
+                    className="text-lg font-semibold text-[#00d4ff] uppercase tracking-wider mb-4 mt-8 border-b border-[#00d4ff]/50 pb-2"
+                  >
                     {paragraph.replace('### ', '')}
                   </h3>
                 );
               } else if (paragraph.trim().startsWith('- ')) {
                 return (
-                  <div key={index} className="bg-gray-800/30 p-4 rounded-lg border-l-4 border-[#00d4ff] mb-4 ml-12 pl-8 relative">
+                  <div
+                    key={index}
+                    className="bg-gray-800/30 p-4 rounded-lg border-l-4 border-[#00d4ff] mb-4 ml-12 pl-8 relative"
+                  >
                     <span className="text-[#00d4ff] text-xl font-bold absolute left-2 top-4">
                       •
                     </span>
@@ -405,7 +414,10 @@ export default function BlogPostPage({
                 );
               } else if (paragraph.trim() !== '') {
                 return (
-                  <div key={index} className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700/50 shadow-lg">
+                  <div
+                    key={index}
+                    className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700/50 shadow-lg"
+                  >
                     <p className="text-gray-100 leading-relaxed text-lg mb-0">
                       {paragraph}
                     </p>
@@ -579,7 +591,7 @@ export default function BlogPostPage({
             {/* Logo and description */}
             <div>
               <Image
-                src="/images/logo (3).webp"
+                src="/images/logo.png"
                 alt="PROGIX Logo"
                 width={120}
                 height={120}

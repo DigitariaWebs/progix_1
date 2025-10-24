@@ -17,13 +17,15 @@ const ServicesPage = () => {
 
   return (
     <div className="bg-white">
-       
       {/* Navbar removed to use global StaggeredMenu header */}
 
       {/* Hero Section */}
-      <section className="relative pt-48 md:pt-56 pb-20 overflow-hidden">
+      <section className="relative pt-32 md:pt-56 pb-12 md:pb-20 overflow-hidden">
         {/* Right-side SVG blur only (no squares) */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-blur-yield opacity-60 z-0" aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-blur-yield opacity-60 z-0"
+          aria-hidden="true"
+        />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -32,7 +34,7 @@ const ServicesPage = () => {
             className="text-center"
           >
             <h1
-              className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 md:mb-6"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Services de développement logiciel
@@ -42,7 +44,7 @@ const ServicesPage = () => {
               </span>
             </h1>
             <p
-              className="text-xl text-gray-600 max-w-3xl mx-auto mb-8"
+              className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 md:mb-8 px-4 sm:px-0"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Tous nos services font partie de votre réussite. Notre expertise
@@ -54,7 +56,7 @@ const ServicesPage = () => {
       </section>
 
       {/* Services Section - Horizontal Layout */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-24">
             {/* Management & Automation Software - Image Left */}
@@ -65,7 +67,7 @@ const ServicesPage = () => {
               viewport={{ once: true }}
               onMouseEnter={() => setHoveredCard(1)}
               onMouseLeave={() => setHoveredCard(null)}
-              className="rounded-3xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border"
+              className="rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border"
               style={{
                 backgroundColor: hoveredCard === 1 ? colors.primary : 'white',
                 borderColor: hoveredCard === 1 ? colors.primary : '#f3f4f6',
@@ -87,7 +89,7 @@ const ServicesPage = () => {
                 {/* Content */}
                 <div className="order-2">
                   <h2
-                    className="text-3xl md:text-4xl font-bold mb-6 transition-colors duration-500"
+                    className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 transition-colors duration-500"
                     style={{
                       fontFamily: 'Hubot Sans, Inter, sans-serif',
                       color: hoveredCard === 1 ? 'white' : '#111827',
@@ -97,7 +99,7 @@ const ServicesPage = () => {
                   </h2>
 
                   <p
-                    className="text-lg leading-relaxed mb-8 transition-colors duration-500"
+                    className="text-base sm:text-lg leading-relaxed mb-6 md:mb-8 transition-colors duration-500"
                     style={{
                       fontFamily: 'Hubot Sans, Inter, sans-serif',
                       color: hoveredCard === 1 ? '#e0e0e0' : '#4b5563',
@@ -316,7 +318,7 @@ const ServicesPage = () => {
               viewport={{ once: true }}
               onMouseEnter={() => setHoveredCard(2)}
               onMouseLeave={() => setHoveredCard(null)}
-              className="rounded-3xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border"
+              className="rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border"
               style={{
                 backgroundColor: hoveredCard === 2 ? colors.primary : 'white',
                 borderColor: hoveredCard === 2 ? colors.primary : '#f3f4f6',
@@ -326,7 +328,7 @@ const ServicesPage = () => {
                 {/* Content */}
                 <div className="order-2 md:order-1">
                   <h2
-                    className="text-3xl md:text-4xl font-bold mb-6 transition-colors duration-500"
+                    className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 transition-colors duration-500"
                     style={{
                       fontFamily: 'Hubot Sans, Inter, sans-serif',
                       color: hoveredCard === 2 ? 'white' : '#111827',
@@ -336,7 +338,7 @@ const ServicesPage = () => {
                   </h2>
 
                   <p
-                    className="text-lg leading-relaxed mb-8 transition-colors duration-500"
+                    className="text-base sm:text-lg leading-relaxed mb-6 md:mb-8 transition-colors duration-500"
                     style={{
                       fontFamily: 'Hubot Sans, Inter, sans-serif',
                       color: hoveredCard === 2 ? '#e0e0e0' : '#4b5563',
@@ -519,7 +521,7 @@ const ServicesPage = () => {
               viewport={{ once: true }}
               onMouseEnter={() => setHoveredCard(3)}
               onMouseLeave={() => setHoveredCard(null)}
-              className="rounded-3xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border"
+              className="rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-500 border"
               style={{
                 backgroundColor: hoveredCard === 3 ? colors.primary : 'white',
                 borderColor: hoveredCard === 3 ? colors.primary : '#f3f4f6',
@@ -541,7 +543,7 @@ const ServicesPage = () => {
                 {/* Content */}
                 <div className="order-2">
                   <h2
-                    className="text-3xl md:text-4xl font-bold mb-6 transition-colors duration-500"
+                    className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 transition-colors duration-500"
                     style={{
                       fontFamily: 'Hubot Sans, Inter, sans-serif',
                       color: hoveredCard === 3 ? 'white' : '#111827',
@@ -551,7 +553,7 @@ const ServicesPage = () => {
                   </h2>
 
                   <p
-                    className="text-lg leading-relaxed mb-8 transition-colors duration-500"
+                    className="text-base sm:text-lg leading-relaxed mb-6 md:mb-8 transition-colors duration-500"
                     style={{
                       fontFamily: 'Hubot Sans, Inter, sans-serif',
                       color: hoveredCard === 3 ? '#e0e0e0' : '#4b5563',
@@ -718,7 +720,7 @@ const ServicesPage = () => {
       </section>
 
       {/* Mission Statement Section */}
-      <section className="py-20 bg-gradient-to-br from-cyan-800 to-cyan-900">
+      <section className="py-12 md:py-20 bg-gradient-to-br from-cyan-800 to-cyan-900">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -727,13 +729,13 @@ const ServicesPage = () => {
             viewport={{ once: true }}
           >
             <h2
-              className="text-3xl md:text-4xl font-bold text-white mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 md:mb-6"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Nous voulons éliminer les inefficacités dans vos opérations
             </h2>
             <p
-              className="text-xl text-white/90 mb-8"
+              className="text-base sm:text-lg md:text-xl text-white/90 mb-6 md:mb-8"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Simplifiez votre gestion. De la conception technique au
@@ -743,7 +745,7 @@ const ServicesPage = () => {
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-white text-cyan-800 px-8 py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="inline-block bg-white text-cyan-800 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Réserver une consultation gratuite
@@ -753,7 +755,7 @@ const ServicesPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -762,7 +764,7 @@ const ServicesPage = () => {
             viewport={{ once: true }}
           >
             <h2
-              className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Intéressé à{' '}
@@ -771,7 +773,7 @@ const ServicesPage = () => {
               </span>
             </h2>
             <p
-              className="text-xl text-gray-600 mb-8"
+              className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 md:mb-8"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Discutons de votre projet et découvrez comment nous pouvons vous
@@ -780,14 +782,14 @@ const ServicesPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="text-white px-8 py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
                 style={{ backgroundColor: colors.secondary }}
               >
                 Démarrer un projet
               </Link>
               <Link
                 href="/portfolio"
-                className="border-2 px-8 py-4 rounded-lg font-bold transition-all duration-300 hover:bg-gray-50"
+                className="border-2 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all duration-300 hover:bg-gray-50 text-sm sm:text-base"
                 style={{
                   borderColor: colors.secondary,
                   color: colors.secondary,
@@ -801,12 +803,12 @@ const ServicesPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-10 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <div>
               <Image
-                src="/images/logo (3).webp"
+                src="/images/logo.png"
                 alt="PROGIX Logo"
                 width={120}
                 height={120}

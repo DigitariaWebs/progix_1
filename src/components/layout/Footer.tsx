@@ -22,21 +22,13 @@ const Footer = () => {
               <Image
                 src={assets.logo}
                 alt="PROGIX Logo"
-                width={32}
-                height={32}
+                width={442}
+                height={442}
                 className="h-8 w-auto"
               />
-              <span
-                className="ml-2 text-xl font-bold"
-                 
-              >
-                PROGIX
-              </span>
+              <span className="ml-2 text-xl font-bold">PROGIX</span>
             </div>
-            <p
-              className="text-gray-400 mb-6"
-               
-            >
+            <p className="text-gray-400 mb-6">
               Votre partenaire de confiance pour tous vos projets digitaux.
             </p>
             <div className="flex space-x-4">
@@ -62,16 +54,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3
-              className="text-lg font-semibold mb-6"
-               
-            >
-              Services
-            </h3>
-            <ul
-              className="space-y-3 text-gray-400"
-               
-            >
+            <h3 className="text-lg font-semibold mb-6">Services</h3>
+            <ul className="space-y-3 text-gray-400">
               <li>
                 <a href="#" className="hover:text-white transition-colors">
                   Développement Web
@@ -96,16 +80,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3
-              className="text-lg font-semibold mb-6"
-               
-            >
-              Entreprise
-            </h3>
-            <ul
-              className="space-y-3 text-gray-400"
-               
-            >
+            <h3 className="text-lg font-semibold mb-6">Entreprise</h3>
+            <ul className="space-y-3 text-gray-400">
               <li>
                 <a href="/team" className="hover:text-white transition-colors">
                   Notre équipe
@@ -130,16 +106,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3
-              className="text-lg font-semibold mb-6"
-               
-            >
-              Contact
-            </h3>
-            <div
-              className="space-y-4 text-gray-400"
-               
-            >
+            <h3 className="text-lg font-semibold mb-6">Contact</h3>
+            <div className="space-y-4 text-gray-400">
               <div className="flex items-center">
                 <FaEnvelope size={16} className="mr-3" />
                 <span>contact@progix.pro</span>
@@ -161,9 +129,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p  >
-            &copy; 2025 PROGIX. Tous droits réservés.
-          </p>
+          <p>&copy; 2025 PROGIX. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

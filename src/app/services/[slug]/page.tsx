@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { getServiceBySlug, ServiceDetail } from '@/data/servicesData';
+import { assets } from '@/config/assets';
 import {
   FiClipboard,
   FiLayers,
@@ -71,11 +72,10 @@ export default function ServiceDetailPage({
 
   return (
     <div className="bg-white">
-       
       {/* Navbar removed */}
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-blue-50 to-white">
+      <section className="pt-46 sm:pt-64 pb-12 sm:pb-20 bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -83,7 +83,7 @@ export default function ServiceDetailPage({
             transition={{ duration: 0.6 }}
           >
             <h1
-              className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               {service.title}
@@ -91,7 +91,7 @@ export default function ServiceDetailPage({
 
             <div className="max-w-4xl">
               <h2
-                className="text-2xl md:text-3xl font-bold mb-6"
+                className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6"
                 style={{
                   color: colors.secondary,
                   fontFamily: 'Hubot Sans, Inter, sans-serif',
@@ -100,7 +100,7 @@ export default function ServiceDetailPage({
                 {service.hero.subtitle}
               </h2>
               <p
-                className="text-lg text-gray-600 leading-relaxed"
+                className="text-base sm:text-lg text-gray-600 leading-relaxed"
                 style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
               >
                 {service.hero.description}
@@ -110,7 +110,7 @@ export default function ServiceDetailPage({
             <div className="mt-8">
               <Link
                 href="/contact"
-                className="inline-block text-white px-8 py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="inline-block text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
                 style={{ backgroundColor: colors.secondary }}
               >
                 Discuter de votre projet
@@ -121,7 +121,7 @@ export default function ServiceDetailPage({
       </section>
 
       {/* Why Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -131,7 +131,7 @@ export default function ServiceDetailPage({
             className="mb-16"
           >
             <h2
-              className="text-4xl md:text-5xl font-bold mb-4"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               <span className="text-gray-900">Why start with a </span>
@@ -144,7 +144,7 @@ export default function ServiceDetailPage({
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {service.whySection.reasons.map((reason, index) => {
               // Map icons based on index or reason type
               const IconComponent =
@@ -161,7 +161,7 @@ export default function ServiceDetailPage({
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-gray-50 rounded-3xl p-8 hover:shadow-lg transition-shadow duration-300"
+                  className="bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-lg transition-shadow duration-300"
                 >
                   <div
                     className="w-16 h-16 rounded-xl flex items-center justify-center mb-6"
@@ -189,7 +189,7 @@ export default function ServiceDetailPage({
       </section>
 
       {/* Process Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -199,7 +199,7 @@ export default function ServiceDetailPage({
             className="mb-16"
           >
             <h2
-              className="text-4xl md:text-5xl font-bold mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               <span className="text-gray-900">Our business and</span>
@@ -208,7 +208,7 @@ export default function ServiceDetailPage({
               <span style={{ color: colors.secondary }}>process</span>
             </h2>
             <p
-              className="text-base text-gray-600 max-w-3xl leading-relaxed"
+              className="text-sm sm:text-base text-gray-600 max-w-3xl leading-relaxed px-1 sm:px-0"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               {service.process.description}
@@ -225,10 +225,10 @@ export default function ServiceDetailPage({
                 viewport={{ once: true }}
                 className="border-b border-gray-200 last:border-b-0"
               >
-                <div className="py-12 grid md:grid-cols-12 gap-8 md:gap-16 items-start">
-                  <div className="md:col-span-2">
+                <div className="py-8 sm:py-12 grid grid-cols-12 gap-4 sm:gap-8 md:gap-16 items-start">
+                  <div className="col-span-3 sm:col-span-2 md:col-span-2">
                     <div
-                      className="text-6xl md:text-7xl font-bold leading-none w-20 md:w-24"
+                      className="text-5xl sm:text-6xl md:text-7xl font-bold leading-none w-16 sm:w-20 md:w-24"
                       style={{
                         color: colors.secondary,
                         fontFamily: 'Hubot Sans, Inter, sans-serif',
@@ -237,9 +237,9 @@ export default function ServiceDetailPage({
                       {step.number}
                     </div>
                   </div>
-                  <div className="md:col-span-10">
+                  <div className="col-span-9 sm:col-span-10 md:col-span-10">
                     <h3
-                      className="text-2xl md:text-3xl font-bold text-gray-900 mb-4"
+                      className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-4"
                       style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
                     >
                       {step.title}
@@ -273,7 +273,7 @@ export default function ServiceDetailPage({
 
       {/* Testimonial Section */}
       {service.testimonial && (
-        <section className="py-20 bg-white">
+        <section className="py-12 sm:py-16 md:py-20 bg-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -283,7 +283,7 @@ export default function ServiceDetailPage({
               className="text-center mb-12"
             >
               <h2
-                className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6"
                 style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
               >
                 Ce que nos{' '}
@@ -296,7 +296,7 @@ export default function ServiceDetailPage({
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="bg-gray-50 rounded-3xl p-8 md:p-12 relative"
+              className="bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 relative"
             >
               <div className="absolute -top-6 left-8">
                 <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg border-4 border-white">
@@ -321,7 +321,7 @@ export default function ServiceDetailPage({
                 </svg>
 
                 <p
-                  className="text-xl text-gray-700 leading-relaxed mb-8 italic"
+                  className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed mb-6 sm:mb-8 italic"
                   style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
                 >
                   &ldquo;{service.testimonial.quote}&rdquo;
@@ -346,9 +346,9 @@ export default function ServiceDetailPage({
       )}
 
       {/* FAQ Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             {/* Left Column - Title & Contact Card */}
             <div className="lg:col-span-5">
               <div className="lg:sticky lg:top-32 space-y-8">
@@ -359,7 +359,7 @@ export default function ServiceDetailPage({
                   viewport={{ once: true }}
                 >
                   <h2
-                    className="text-4xl md:text-5xl font-bold mb-4"
+                    className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
                     style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
                   >
                     <span className="text-gray-900">Questions</span>
@@ -375,13 +375,13 @@ export default function ServiceDetailPage({
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-gray-50 rounded-3xl p-8"
+                  className="bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8"
                 >
                   <div className="flex items-center gap-6">
                     <div className="flex-shrink-0">
                       <div className="w-32  rounded-2xl flex items-center justify-center p-4">
                         <Image
-                          src="/images/logo (3).webp"
+                          src={assets.logo}
                           alt="PROGIX Logo"
                           width={120}
                           height={120}
@@ -431,7 +431,7 @@ export default function ServiceDetailPage({
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="bg-gray-50 rounded-2xl overflow-hidden"
+                    className="bg-gray-50 rounded-xl sm:rounded-2xl overflow-hidden"
                   >
                     <button
                       onClick={() =>
@@ -477,7 +477,7 @@ export default function ServiceDetailPage({
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-cyan-800 to-cyan-900">
+      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-cyan-800 to-cyan-900">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -486,13 +486,13 @@ export default function ServiceDetailPage({
             viewport={{ once: true }}
           >
             <h2
-              className="text-4xl md:text-5xl font-bold text-white mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Prêt à démarrer votre projet?
             </h2>
             <p
-              className="text-xl text-white/90 mb-8"
+              className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8"
               style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
             >
               Discutons de vos besoins et découvrez comment nous pouvons vous
@@ -501,14 +501,14 @@ export default function ServiceDetailPage({
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="inline-block bg-white px-8 py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="inline-block bg-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
                 style={{ color: colors.primary }}
               >
                 Réserver une consultation gratuite
               </Link>
               <Link
                 href="/services"
-                className="inline-block border-2 border-white text-white hover:bg-white px-8 py-4 rounded-lg font-bold transition-all duration-300"
+                className="inline-block border-2 border-white text-white hover:bg-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all duration-300 text-sm sm:text-base"
                 style={{
                   fontFamily: 'Hubot Sans, Inter, sans-serif',
                 }}
@@ -527,12 +527,12 @@ export default function ServiceDetailPage({
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-10 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <div>
               <Image
-                src="/images/logo (3).webp"
+                src={assets.logo}
                 alt="PROGIX Logo"
                 width={120}
                 height={120}
