@@ -3,119 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
-
-type Project = {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
-  services: string[];
-  tech: string[];
-  image: string;
-  preview?: string;
-  longTitle?: string;
-  longDescription?: string[];
-  video?: string;
-  bgClass?: string;
-};
-
-const projects: Project[] = [
-  {
-    id: 1,
-    title: 'Rideau Vert',
-    category: 'Culture',
-    description:
-      "Théâtre du Rideau Vert – L’excellence théâtrale au cœur de Montréal.",
-    services: ['Site vitrine', 'Design UI/UX'],
-    tech: ['Next.js', 'Tailwind CSS'],
-    image: '/portfoliominiature/hovertheatre.png',
-    preview: '/imagescursorfollowup/theatrerideauvertfondblanc.png',
-    longTitle: 'Théâtre du Rideau Vert – L’excellence théâtrale au cœur de Montréal',
-    longDescription: [
-      "Fondé en 1948, le Théâtre du Rideau Vert est le plus ancien théâtre professionnel francophone encore actif au Canada et un pilier de la culture montréalaise sur l’avenue Saint‑Denis.",
-      "Programmation éclectique, création d’ici et expérience accessible: notre mandat a été de concevoir une vitrine moderne, claire et fidèle à son identité.",
-    ],
-    bgClass: 'bg-white',
-  },
-  {
-    id: 2,
-    title: 'Fruit Exotic Inc.',
-    category: 'Agroalimentaire',
-    description:
-      'Vitrine internationale multilingue pour un acteur majeur de l’import de fruits exotiques.',
-    services: ['Site vitrine', 'Internationalisation (7 langues)'],
-    tech: ['Next.js', 'Tailwind CSS'],
-    image: '/portfoliominiature/hovertheatre.png',
-    preview: '/imagescursorfollowup/logofruitexotic.avif',
-    video: '/fruitexo.mp4',
-  },
-  {
-    id: 3,
-    title: 'MONDEV',
-    category: 'Site vitrine',
-    description:
-      'Vitrine web pour promoteur immobilier montréalais, axée sur la clarté des offres et la conversion.',
-    services: ['Site vitrine', 'Performance & SEO'],
-    tech: ['Next.js', 'Tailwind CSS'],
-    image: '/imagescursorfollowup/Header_rentals_1900x500.jpg',
-    preview: '/imagescursorfollowup/mondev-logo-black (1).svg',
-  },
-  {
-    id: 4,
-    title: 'NovaPay',
-    category: 'Fintech',
-    description:
-      'Modern payment experience focusing on speed, compliance and delightful UX.',
-    services: ['BACKEND', 'FRONTEND'],
-    tech: ['NEXT.JS', 'NODE.JS'],
-    image: '/portfoliominiature/hovertheatre.png',
-    preview: '/portfoliominiature/hovertheatre.png',
-  },
-  {
-    id: 5,
-    title: 'Mercato',
-    category: 'E‑Commerce',
-    description:
-      'Composable storefront with blazing performance and an opinionated design system.',
-    services: ['HEADLESS CMS', 'UI SYSTEM'],
-    tech: ['NEXT.JS', 'TAILWIND'],
-    image: '/portfoliominiature/hovertheatre.png',
-    preview: '/portfoliominiature/hovertheatre.png',
-  },
-  {
-    id: 6,
-    title: 'PulseCare',
-    category: 'Healthcare',
-    description:
-      'Clinic operations suite with scheduling, EMR integrations and analytics.',
-    services: ['PRODUCT DESIGN', 'INTEGRATIONS'],
-    tech: ['REACT', 'NODE.JS'],
-    image: '/portfoliominiature/hovertheatre.png',
-    preview: '/portfoliominiature/hovertheatre.png',
-  },
-  {
-    id: 7,
-    title: 'Horizon IoT',
-    category: 'IoT',
-    description:
-      'Device telemetry, control panels and realtime alerts for industrial fleets.',
-    services: ['REALTIME', 'DASHBOARDS'],
-    tech: ['WEBSOCKETS', 'TS'],
-    image: '/portfoliominiature/hovertheatre.png',
-    preview: '/portfoliominiature/hovertheatre.png',
-  },
-  {
-    id: 8,
-    title: 'Nebula SaaS',
-    category: 'SaaS',
-    description:
-      'Subscription-based analytics platform with multi-tenant architecture.',
-    services: ['MULTI‑TENANT', 'BILLING'],
-    tech: ['NEXT.JS', 'POSTGRES'],
-    image: '/portfoliominiature/hovertheatre.png',
-    preview: '/portfoliominiature/hovertheatre.png',
-  },
-];
+import { type Project, projects } from '@/data/project';
 
 function ProjectItem({
   project,
@@ -148,10 +36,18 @@ function ProjectItem({
         onMouseLeave={onPreviewLeave}
         aria-expanded={isOpen}
       >
-        <span className="text-6xl md:text-7xl font-bold tabular-nums leading-none text-white group-hover:text-black transition-colors">{String(index + 1).padStart(2, '0')}</span>
-        <span className="text-5xl md:text-6xl font-bold leading-tight ml-12 md:ml-16 text-white group-hover:text-black transition-colors">{project.title}</span>
-        <span className="ml-auto hidden md:block mr-8 md:mr-12 text-gray-400 group-hover:text-gray-800 uppercase tracking-wider font-light text-sm md:text-base transition-colors">{project.category}</span>
-        <span className="text-4xl md:text-5xl font-light leading-none text-white/80 group-hover:text-black transition-colors">{isOpen ? '–' : '+'}</span>
+        <span className="text-6xl md:text-7xl font-bold tabular-nums leading-none text-white group-hover:text-black transition-colors">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <span className="text-5xl md:text-6xl font-bold leading-tight ml-12 md:ml-16 text-white group-hover:text-black transition-colors">
+          {project.title}
+        </span>
+        <span className="ml-auto hidden md:block mr-8 md:mr-12 text-gray-400 group-hover:text-gray-800 uppercase tracking-wider font-light text-sm md:text-base transition-colors">
+          {project.category}
+        </span>
+        <span className="text-4xl md:text-5xl font-light leading-none text-white/80 group-hover:text-black transition-colors">
+          {isOpen ? '–' : '+'}
+        </span>
       </button>
 
       {/* Open panel */}
@@ -168,10 +64,14 @@ function ProjectItem({
             <div className="py-10 px-5 sm:px-8">
               <div className="grid md:grid-cols-2 gap-12 items-start">
                 {/* Left: media (video preferred if present) */}
-                <div className={`relative rounded-xl overflow-hidden ${project.bgClass ? '' : ''}`}>
-                  <div className={`absolute inset-0 ${project.bgClass ? project.bgClass : 'bg-[#3BA7FF]'}`} />
+                <div
+                  className={`relative rounded-xl overflow-hidden ${project.bgClass ? '' : ''}`}
+                >
+                  <div
+                    className={`absolute inset-0 ${project.bgClass ? project.bgClass : 'bg-[#3BA7FF]'}`}
+                  />
                   <div className="relative p-6 md:p-8">
-                    <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden shadow-lg">
+                    <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden ">
                       {project.video ? (
                         <video
                           src={project.video}
@@ -183,7 +83,12 @@ function ProjectItem({
                           controls={false}
                         />
                       ) : (
-                        <Image src={project.image} alt={project.title} fill className="object-contain" />
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-contain"
+                        />
                       )}
                     </div>
                   </div>
@@ -191,11 +96,18 @@ function ProjectItem({
 
                 {/* Right: text block */}
                 <div className="max-w-3xl ml-auto">
-                  <h3 className="text-6xl font-bold leading-tight mb-6">{project.longTitle || project.title}</h3>
+                  <h3 className="text-6xl font-bold leading-tight mb-6">
+                    {project.longTitle || project.title}
+                  </h3>
                   {project.longDescription ? (
                     <div className="space-y-4 text-white/80">
                       {project.longDescription.map((para, idx) => (
-                        <p key={idx} className="text-lg md:text-xl leading-relaxed">{para}</p>
+                        <p
+                          key={idx}
+                          className="text-lg md:text-xl leading-relaxed"
+                        >
+                          {para}
+                        </p>
                       ))}
                     </div>
                   ) : (
@@ -206,7 +118,9 @@ function ProjectItem({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pb-10 border-b border-dotted border-white/20 mt-8">
                     <div>
-                      <div className="text-sm text-white/60 tracking-widest mb-2">SERVICES</div>
+                      <div className="text-sm text-white/60 tracking-widest mb-2">
+                        SERVICES
+                      </div>
                       <div className="font-mono text-sm uppercase space-y-1">
                         {project.services.map((s) => (
                           <div key={s}>{s}</div>
@@ -214,7 +128,9 @@ function ProjectItem({
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-white/60 tracking-widest mb-2">TECH</div>
+                      <div className="text-sm text-white/60 tracking-widest mb-2">
+                        TECH
+                      </div>
                       <div className="font-mono text-sm uppercase space-y-1">
                         {project.tech.map((t) => (
                           <div key={t}>{t}</div>
@@ -228,7 +144,7 @@ function ProjectItem({
                       href="#"
                       className="inline-flex items-center justify-center px-8 py-4 border border-white rounded-md text-base font-semibold hover:bg-white hover:text-black transition-colors"
                     >
-                      VIEW PROJECT 
+                      VIEW PROJECT
                       <span className="ml-2">→</span>
                     </a>
                   </div>
@@ -252,10 +168,13 @@ export default function ProjectsSection() {
     setPreviewSrc(src);
   }, []);
 
-  const handlePreviewMove = React.useCallback((e: React.MouseEvent) => {
-    mouseX.set(e.clientX + 24);
-    mouseY.set(e.clientY + 24);
-  }, [mouseX, mouseY]);
+  const handlePreviewMove = React.useCallback(
+    (e: React.MouseEvent) => {
+      mouseX.set(e.clientX + 24);
+      mouseY.set(e.clientY + 24);
+    },
+    [mouseX, mouseY],
+  );
 
   const handlePreviewLeave = React.useCallback(() => {
     setPreviewSrc(null);
@@ -265,8 +184,12 @@ export default function ProjectsSection() {
     <section className="bg-black text-white">
       {/* Pills header - full width but padded */}
       <div className="flex gap-4 py-6 px-5 sm:px-8">
-        <span className="inline-flex items-center px-5 py-2 bg-white text-black rounded-md text-sm font-semibold">WEB 3</span>
-        <span className="inline-flex items-center px-5 py-2 border border-white/50 rounded-md text-sm font-semibold text-white/80">WEB 2</span>
+        <span className="inline-flex items-center px-5 py-2 bg-white text-black rounded-md text-sm font-semibold">
+          WEB 3
+        </span>
+        <span className="inline-flex items-center px-5 py-2 border border-white/50 rounded-md text-sm font-semibold text-white/80">
+          WEB 2
+        </span>
       </div>
 
       <ul className="pb-4">
@@ -295,20 +218,20 @@ export default function ProjectsSection() {
             animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.98, y: 3, filter: 'blur(2px)' }}
             transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed z-[60] pointer-events-none rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10"
+            className="fixed z-[60] pointer-events-none rounded-2xl overflow-hidden shadow-2xl"
             style={{ left: mouseX, top: mouseY }}
           >
             <motion.div
               initial={{ scale: 0.98 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.14 }}
-              className="w-[360px] h-[260px] bg-white"
+              className="w-[420px] max-h-[400px] rounded-2xl overflow-hidden ring-1 ring-white/10"
             >
               <Image
                 src={previewSrc}
                 alt="preview"
-                width={720}
-                height={520}
+                width={840}
+                height={560}
                 className="w-full h-full object-contain"
                 priority={false}
               />
