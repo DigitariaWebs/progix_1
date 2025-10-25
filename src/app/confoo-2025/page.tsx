@@ -9,15 +9,15 @@ import CircularGallery from '@/components/CircularGallery';
 export default function ConFoo2025Page() {
   // Images pour le CircularGallery
   const galleryItems = [
-    { image: '/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.54_2e01351d-1024x768 (1).jpg', text: 'ConFoo 2025' },
-    { image: '/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_0254ee6f.jpg', text: 'Conférence' },
-    { image: '/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_3e600391.jpg', text: 'Équipe Progix' },
-    { image: '/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_7dc632c5.jpg', text: 'Développement' },
-    { image: '/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_883147e9-768x1024 (1).jpg', text: 'Innovation' },
-    { image: '/CONFOO2025/volunteers (2).png', text: 'Volontaires' },
-    { image: '/CONFOO2025/2.jpg', text: 'Moments forts' },
-    { image: '/CONFOO2025/3.jpg', text: 'Réseautage' },
-    { image: '/CONFOO2025/5.jpg', text: 'Partage' }
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.54_2e01351d-1024x768%20(1).jpg', text: 'ConFoo 2025' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_0254ee6f.jpg', text: 'Conférence' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_3e600391.jpg', text: 'Équipe Progix' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_7dc632c5.jpg', text: 'Développement' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_883147e9-768x1024%20(1).jpg', text: 'Innovation' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/volunteers%20(2).png', text: 'Volontaires' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/2.jpg', text: 'Moments forts' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/3.jpg', text: 'Réseautage' },
+    { image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/5.jpg', text: 'Partage' }
   ];
 
   return (

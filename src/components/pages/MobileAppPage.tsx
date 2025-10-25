@@ -517,7 +517,7 @@ const MobileAppPage = () => {
               <div className="mb-8 flex justify-center">
                 <div className="relative">
                   <Image
-                    src="/imagesmobileapp/imagesblc3.webp"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/imagesblc3.webp"
                     alt="Focus utilisateur"
                     width={300}
                     height={200}

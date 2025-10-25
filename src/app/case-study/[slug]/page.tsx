@@ -57,9 +57,9 @@ const caseStudies: Record<string, CaseStudy> = {
   'fahe-crm': {
     title: 'FAHE CRM',
     subtitle: 'UNE FIRME DE DÉVELOPPEMENT LOGICIEL FIÈREMENT MONTRÉALAISE',
-    logo: '/images/photo_2019-03-21_11-48-55-2-6-233x91.jpg',
-    heroImage: '/images/WhatsApp Image 2025-10-08 at 20.20.25.jpeg',
-    heroVideo: '/images/video.mp4',
+    logo: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/photo_2019-03-21_11-48-55-2-6-233x91.jpg',
+    heroImage: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/WhatsApp%20Image%202025-10-08%20at%2020.20.25.jpeg',
+    heroVideo: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/video.mp4',
     client: 'FAHE Automotive',
     date: '2024',
     role: 'Développement Web & Mobile',
@@ -67,17 +67,17 @@ const caseStudies: Record<string, CaseStudy> = {
       {
         name: 'Daani Abderrahman',
         role: 'Lead Developer',
-        image: '/images of the team/1758914011397.jpg',
+        image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/1758914011397.jpg',
       },
       {
         name: 'Mohamed Duneche',
         role: 'Full Stack Developer',
-        image: '/images of the team/1757886357065.jpg',
+        image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/1757886357065.jpg',
       },
       {
         name: 'Jean Boissoneault',
         role: 'Design & Development',
-        image: '/images of the team/1649105009859.jpg',
+        image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/1649105009859.jpg',
       },
     ],
     description:
@@ -106,11 +106,11 @@ const caseStudies: Record<string, CaseStudy> = {
         content:
           "Plongez dans l'univers FAHE avec cette démonstration interactive qui vous montre toutes les fonctionnalités de notre solution CRM. De la gestion des prospects à l'automatisation des processus, découvrez comment nous avons transformé leur façon de travailler.",
         images: [
-          '/CRMFAHE/CRMSCREEN1.png',
-          '/CRMFAHE/Screenshot 2025-10-08 224826.png',
-          '/CRMFAHE/Screenshot 2025-10-08 225008.png',
-          '/CRMFAHE/Screenshot 2025-10-08 225558.png',
-          '/CRMFAHE/Screenshot 2025-10-08 230044.png',
+          'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CRMFAHE/CRMSCREEN1.png',
+          'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CRMFAHE/Screenshot%202025-10-08%20224826.png',
+          'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CRMFAHE/Screenshot%202025-10-08%20225008.png',
+          'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CRMFAHE/Screenshot%202025-10-08%20225558.png',
+          'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CRMFAHE/Screenshot%202025-10-08%20230044.png',
         ],
         layout: 'gallery',
       },
@@ -127,8 +127,8 @@ const caseStudies: Record<string, CaseStudy> = {
   fruitexotic: {
     title: 'FruitExotic',
     subtitle: 'SITE WEB MULTILINGUE',
-    logo: '/images/crustys.png',
-    heroVideo: '/fruitexo.mp4',
+    logo: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/crustys.png',
+    heroVideo: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/fruitexo.mp4',
     client: 'FruitExotic Inc.',
     date: '2024',
     role: 'Développement Web Frontend & UI/UX',
@@ -163,7 +163,7 @@ const caseStudies: Record<string, CaseStudy> = {
         subtitle: 'ACCESSIBLE À TOUS',
         content:
           'Nous avons développé un système de gestion multilingue sophistiqué permettant une navigation fluide entre 7 langues. Chaque langue a été soigneusement adaptée pour respecter les nuances culturelles et offrir une expérience authentique.',
-        images: ['/images/crustys.png'],
+        images: ['https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/crustys.png'],
         layout: 'single',
       },
       {
@@ -171,7 +171,7 @@ const caseStudies: Record<string, CaseStudy> = {
         subtitle: "L'EXCELLENCE DES PRODUITS EXOTIQUES",
         content:
           "Notre équipe de designers UI/UX d'élite a créé une interface visuellement époustouflante qui met en valeur la beauté et la qualité des fruits exotiques. Chaque élément du design a été pensé pour évoquer l'exotisme et le premium.",
-        images: ['/images/crustys (1).png'],
+        images: ['https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/crustys%20(1).png'],
         layout: 'single',
       },
     ],
@@ -179,8 +179,8 @@ const caseStudies: Record<string, CaseStudy> = {
   coride: {
     title: 'CoRide',
     subtitle: 'APPLICATION DE MOBILITÉ',
-    logo: '/images/logo-gold.png',
-    heroVideo: '/Projects/CoRide/CoRideVideo.mp4',
+    logo: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/logo-gold.png',
+    heroVideo: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/CoRideVideo.mp4',
     client: 'CoRide',
     date: '2024',
     role: 'Développement Mobile & Web Full Stack',
@@ -212,8 +212,8 @@ const caseStudies: Record<string, CaseStudy> = {
         content:
           "Nous avons développé une application mobile native avec Flutter, offrant des performances exceptionnelles et une expérience utilisateur fluide sur iOS et Android. L'application intègre trois services dans une interface intuitive et élégante.",
         images: [
-          '/imagesmobileapp/659b09824ee19afb14262ffe_yield-studio-app-levitation-p-800.webp',
-          '/imagesmobileapp/appmobile image du bloc 1.png',
+          'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/659b09824ee19afb14262ffe_yield-studio-app-levitation-p-800.webp',
+          'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/appmobile%20image%20du%20bloc%201.png',
         ],
         layout: 'two-column',
       },
@@ -222,7 +222,7 @@ const caseStudies: Record<string, CaseStudy> = {
         subtitle: 'NODE.JS & ARCHITECTURE SCALABLE',
         content:
           'Notre équipe backend a développé une architecture robuste avec Node.js, capable de gérer des milliers de requêtes simultanées. Le système inclut la gestion en temps réel des courses, la géolocalisation, les notifications push et un système de paiement sécurisé.',
-        images: ['/images/data_management_illustration.svg'],
+        images: ['https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/data_management_illustration.svg'],
         layout: 'single',
       },
       {
@@ -230,7 +230,7 @@ const caseStudies: Record<string, CaseStudy> = {
         subtitle: 'REFONTE COMPLÈTE',
         content:
           "Nous avons entièrement repensé le site web de CoRide avec une approche moderne et engageante. Le nouveau site met en avant les trois services offerts, facilite les téléchargements de l'app et offre une expérience utilisateur exceptionnelle.",
-        images: ['/imagesmobileapp/images bloc2 app mobile.png'],
+        images: ['https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/images%20bloc2%20app%20mobile.png'],
         layout: 'single',
       },
     ],
@@ -766,6 +766,7 @@ export default function CaseStudyPage() {
                     src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/1757001640677.jpg"
                     alt="Objectifs FAHE CRM"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
                 </div>

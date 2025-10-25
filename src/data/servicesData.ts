@@ -118,7 +118,7 @@ export const servicesData: ServiceDetail[] = [
       author: 'Yves Hennekens',
       position: 'Président',
       company: 'YHC Environnement',
-      image: '/imagesreview/1517492082228.jpg',
+      image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesreview/1517492082228.jpg',
     },
     faqs: [
       {
