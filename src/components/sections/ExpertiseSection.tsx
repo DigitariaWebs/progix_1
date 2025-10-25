@@ -20,35 +20,35 @@ const EXPERTISE_ITEMS: ExpertiseItem[] = [
     title: 'Advisory',
     copy:
       'Insights stratégiques, revues techniques complètes et accélération produit avec CTO fractionné.',
-    mediaSrc: '/VIDEOHORIZONTALCARDS/advisory_compressed_hW5CFWb.mp4',
+    mediaSrc: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/VIDEOHORIZONTALCARDS/advisory_compressed_hW5CFWb.mp4',
   },
   {
     number: '2',
     title: 'Artificial Intelligence',
     copy:
       'LLM apps, pipelines de retrieval, évals et déploiements privacy-first adaptés à votre domaine.',
-    mediaSrc: '/VIDEOHORIZONTALCARDS/ai_compressed.mp4',
+    mediaSrc: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/VIDEOHORIZONTALCARDS/ai_compressed.mp4',
   },
   {
     number: '3',
     title: 'Blockchain',
     copy:
       'Applications blockchain, smart contracts, infra scalable et audits rigoureux prêts pour la prod.',
-    mediaSrc: '/VIDEOHORIZONTALCARDS/blockchain_compressed_SctBxX6.mp4',
+    mediaSrc: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/VIDEOHORIZONTALCARDS/blockchain_compressed_SctBxX6.mp4',
   },
   {
     number: '4',
     title: 'Product Development',
     copy:
       'De la discovery au delivery: prototypage rapide, design centré utilisateur, full‑stack shipping.',
-    mediaSrc: '/VIDEOHORIZONTALCARDS/product-development_compressed.mp4',
+    mediaSrc: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/VIDEOHORIZONTALCARDS/product-development_compressed.mp4',
   },
   {
     number: '5',
     title: 'Team Augmentation',
     copy:
       'Renfort d’équipe backend, frontend et DevOps, process robustes et vélocité maîtrisée.',
-    mediaSrc: '/VIDEOHORIZONTALCARDS/team-augmentation_compressed_bcVk2PB.mp4',
+    mediaSrc: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/VIDEOHORIZONTALCARDS/team-augmentation_compressed_bcVk2PB.mp4',
   },
 ];
 

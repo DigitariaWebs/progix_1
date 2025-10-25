@@ -9,11 +9,11 @@ import AnimatedButton from '../AnimatedButton';
 const AboutUsSection = () => {
   // Simple right-side image rotation (lightweight crossfade)
   const rightImages = [
-    '/imagesculture/Picsart_25-09-29_19-39-01-194.jpg',
-    '/imagesculture/Picsart_25-09-29_19-34-34-749.jpg',
-    '/imagesculture/Picsart_25-09-29_19-39-46-733.jpg',
-    '/imagesculture/Picsart_25-09-29_19-38-30-170.jpg',
-    '/imagesculture/Picsart_25-09-29_19-37-55-797.jpg',
+    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-39-01-194.jpg',
+    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-34-34-749.jpg',
+    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-39-46-733.jpg',
+    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-38-30-170.jpg',
+    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-37-55-797.jpg',
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

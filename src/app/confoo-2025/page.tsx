@@ -27,7 +27,7 @@ export default function ConFoo2025Page() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.54_2e01351d-1024x768 (1).jpg"
+            src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.54_2e01351d-1024x768%20(1).jpg"
             alt="ConFoo 2025 Background"
             fill
             className="object-cover"
@@ -75,7 +75,7 @@ export default function ConFoo2025Page() {
             <div className="relative">
               <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_0254ee6f.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_0254ee6f.jpg"
                   alt="ConFoo 2025 Conference"
                   fill
                   className="object-cover"
@@ -115,7 +115,7 @@ export default function ConFoo2025Page() {
             <div className="order-2 lg:order-1">
               <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_3e600391.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.55_3e600391.jpg"
                   alt="Équipe Progix à ConFoo"
                   fill
                   className="object-cover"
@@ -186,7 +186,7 @@ export default function ConFoo2025Page() {
               <div className="relative">
                 <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl">
                   <Image
-                    src="/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_7dc632c5.jpg"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_7dc632c5.jpg"
                     alt="IA et développement"
                     fill
                     className="object-cover"
@@ -200,7 +200,7 @@ export default function ConFoo2025Page() {
               <div className="order-2 lg:order-1">
                 <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl">
                   <Image
-                    src="/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_883147e9-768x1024 (1).jpg"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_883147e9-768x1024%20(1).jpg"
                     alt="Développement responsable"
                     fill
                     className="object-cover"
@@ -236,7 +236,7 @@ export default function ConFoo2025Page() {
               <div className="relative">
                 <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl">
                   <Image
-                    src="/CONFOO2025/volunteers (2).png"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/volunteers%20(2).png"
                     alt="Frameworks et tendances"
                     fill
                     className="object-cover"

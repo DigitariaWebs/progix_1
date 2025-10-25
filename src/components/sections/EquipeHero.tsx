@@ -66,7 +66,7 @@ const EquipeHero = () => {
             {/* Team Photo */}
             <div className="relative transform -rotate-1 sm:-rotate-2 hover:rotate-0 transition-transform duration-500">
               <Image
-                src="/imagesculture/Picsart_25-09-29_19-39-01-194.jpg"
+                src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-39-01-194.jpg"
                 alt="Équipe PROGIX"
                 width={600}
                 height={400}

@@ -12,10 +12,13 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     slug: 'vortex-solution-accueille-imacom',
-    title: "Vortex Solution accueille les clients d'Imacom en hébergement de site web",
+    title:
+      "Vortex Solution accueille les clients d'Imacom en hébergement de site web",
     date: '1 octobre 2025',
-    excerpt: "Vortex Solution accueille les clients d'Imacom en hébergement de site web...",
-    image: '/images/premierbloc.jpg',
+    excerpt:
+      "Vortex Solution accueille les clients d'Imacom en hébergement de site web...",
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/premierbloc.jpg',
     author: 'Équipe Progix',
     category: 'Hébergement',
     content: `
@@ -39,14 +42,14 @@ Chez Progix, nous offrons :
 ## Contactez-nous
 
 Pour toute question concernant votre migration ou nos services d'hébergement, n'hésitez pas à nous contacter.
-    `
+    `,
   },
   {
     slug: 'nouveau-site-mont-saint-hilaire',
     title: 'Découvrez le nouveau site web de la Ville de Mont-Saint-Hilaire',
     date: '30 septembre 2025',
     excerpt: 'Découvrez le nouveau site web de la Ville de Mont-Saint-Hilaire',
-    image: '/images/logoaquaa.png',
+    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/logoaquaa.png',
     author: 'Équipe Progix',
     category: 'Projets',
     content: `
@@ -75,14 +78,16 @@ Nous avons utilisé les technologies les plus récentes pour garantir performanc
 - Hébergement sécurisé
 
 Visitez le nouveau site et découvrez toutes ses fonctionnalités !
-    `
+    `,
   },
   {
     slug: 'agence-wordpress-canadienne-seo',
-    title: 'Pourquoi choisir une agence WordPress canadienne pour votre stratégie GEO',
+    title:
+      'Pourquoi choisir une agence WordPress canadienne pour votre stratégie GEO',
     date: '29 septembre 2025',
-    excerpt: 'Pourquoi choisir une agence WordPress canadienne pour votre stratégie GEO',
-    image: '/images/data_management_illustration.svg',
+    excerpt:
+      'Pourquoi choisir une agence WordPress canadienne pour votre stratégie GEO',
+    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/data_management_illustration.svg',
     author: 'Équipe Progix',
     category: 'SEO & Marketing',
     content: `
@@ -117,6 +122,6 @@ Nos clients constatent en moyenne :
 - Amélioration du taux de conversion
 
 Contactez-nous pour discuter de votre projet WordPress et SEO !
-    `
-  }
+    `,
+  },
 ];

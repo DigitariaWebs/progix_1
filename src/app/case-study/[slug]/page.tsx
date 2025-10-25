@@ -763,7 +763,7 @@ export default function CaseStudyPage() {
               <div className="relative">
                 <div className="relative h-[640px] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/images/1757001640677.jpg"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/1757001640677.jpg"
                     alt="Objectifs FAHE CRM"
                     fill
                     className="object-cover"

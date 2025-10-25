@@ -136,7 +136,7 @@ const MobileAppPage = () => {
                 {/* Hero Image - Ready for bloc1.png */}
                 <div className="relative">
                   <Image
-                    src="/imagesmobileapp/appmobile image du bloc 1.png"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/appmobile%20image%20du%20bloc%201.png"
                     alt="Application mobile PROGIX Studio"
                     width={500}
                     height={400}
@@ -228,7 +228,7 @@ const MobileAppPage = () => {
             >
               <div className="relative">
                 <Image
-                  src="/imagesmobileapp/images bloc2 app mobile.png"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/images%20bloc2%20app%20mobile.png"
                   alt="Applications mobiles développées par PROGIX Studio"
                   width={600}
                   height={500}
@@ -257,7 +257,7 @@ const MobileAppPage = () => {
             >
               <div className="relative h-64">
                 <Image
-                  src="/images/WhatsApp Image 2025-08-13 at 00.44.10_07507c30.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/WhatsApp%20Image%202025-08-13%20at%2000.44.10_07507c30.jpg"
                   alt="Équipe PROGIX Studio"
                   fill
                   className="object-cover"
@@ -278,7 +278,7 @@ const MobileAppPage = () => {
             >
               <div className="relative h-64">
                 <Image
-                  src="/images/WhatsApp Image 2025-08-12 at 21.39.27_c4662c30.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/WhatsApp%20Image%202025-08-12%20at%2021.39.27_c4662c30.jpg"
                   alt="Bureau PROGIX Studio"
                   fill
                   className="object-cover"
@@ -299,7 +299,7 @@ const MobileAppPage = () => {
             >
               <div className="relative h-64">
                 <Image
-                  src="/images/WhatsApp Image 2025-08-02 at 20.15.25_5ef95b34.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/WhatsApp%20Image%202025-08-02%20at%2020.15.25_5ef95b34.jpg"
                   alt="Projets PROGIX Studio"
                   fill
                   className="object-cover"
@@ -333,7 +333,7 @@ const MobileAppPage = () => {
         <div className="absolute top-0 right-0 w-full h-full pointer-events-none overflow-hidden">
           <div className="absolute -top-10 -right-20 w-[940px] h-[636px] opacity-80">
             <Image
-              src="/images/67daffc416ecbb596d6e0a47_trsu-blur.svg"
+              src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/67daffc416ecbb596d6e0a47_trsu-blur.svg"
               alt=""
               fill
               className="object-contain"
@@ -490,7 +490,7 @@ const MobileAppPage = () => {
               <div className="mb-8 flex justify-center">
                 <div className="relative">
                   <Image
-                    src="/imagesmobileapp/images bloc3.webp"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/images%20bloc3.webp"
                     alt="Code de qualité"
                     width={300}
                     height={200}
@@ -544,7 +544,7 @@ const MobileAppPage = () => {
               <div className="mb-8 flex justify-center">
                 <div className="relative">
                   <Image
-                    src="/imagesmobileapp/imagesbloc3.webp"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/imagesbloc3.webp"
                     alt="Time To Market"
                     width={300}
                     height={200}
@@ -692,7 +692,7 @@ const MobileAppPage = () => {
                 }}
               >
                 <Image
-                  src="/imagesmobileapp/images bloc4.svg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesmobileapp/images%20bloc4.svg"
                   alt="PROGIX Studio compétences"
                   fill
                   className="object-cover object-center"

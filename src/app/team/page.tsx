@@ -94,7 +94,7 @@ const TeamPage = () => {
               style={{ aspectRatio: '4 / 3' }}
             >
               <Image
-                src="/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_7dc632c5.jpg"
+                src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/CONFOO2025/WhatsApp-Image-2025-03-03-at-02.33.57_7dc632c5.jpg"
                 alt="Notre histoire - PROGIX"
                 width={1200}
                 height={900}

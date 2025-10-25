@@ -6,15 +6,15 @@ import Image from 'next/image';
 const LogoCarousel = () => {
   // Liste des logos avec leurs informations
   const logos = [
-    { src: "/images/barbershop-logo.png", alt: "Barbershop" },
-    { src: "/images/crustys.png", alt: "Crustys" },
-    { src: "/images/LogoFr.webp", alt: "LogoFr" },
-    { src: "/images/logoibox.png", alt: "iBox" },
-    { src: "/images/logoaquaa.png", alt: "Aquaa" },
-    { src: "/images/logo-gold.png", alt: "Gold Logo" },
-    { src: "/images/LogoEle-1024x724.webp", alt: "Ele Logo" },
-    { src: "/images/rp-logo-1.png", alt: "RP Logo" },
-    { src: "/images/logo (1).png", alt: "Logo 1" }
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/barbershop-logo.png", alt: "Barbershop" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/crustys.png", alt: "Crustys" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/LogoFr.webp", alt: "LogoFr" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/logoibox.png", alt: "iBox" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/logoaquaa.png", alt: "Aquaa" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/logo-gold.png", alt: "Gold Logo" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/LogoEle-1024x724.webp", alt: "Ele Logo" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/rp-logo-1.png", alt: "RP Logo" },
+    { src: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/logo%20(1).png", alt: "Logo 1" }
   ];
 
   return (

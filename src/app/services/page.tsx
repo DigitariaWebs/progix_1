@@ -77,7 +77,7 @@ const ServicesPage = () => {
                 {/* Image */}
                 <div className="order-1">
                   <Image
-                    src="/images/management_automation_software_illustration (1).svg"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/management_automation_software_illustration%20(1).svg"
                     alt="Management & automation software"
                     width={500}
                     height={400}
@@ -502,7 +502,7 @@ const ServicesPage = () => {
                 {/* Image */}
                 <div className="order-1 md:order-2">
                   <Image
-                    src="/images/witify_lab_illustration (1).svg"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/witify_lab_illustration%20(1).svg"
                     alt="Laboratoire PROGIX"
                     width={500}
                     height={400}
@@ -531,7 +531,7 @@ const ServicesPage = () => {
                 {/* Image */}
                 <div className="order-1">
                   <Image
-                    src="/images/data_management_illustration.svg"
+                    src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/data_management_illustration.svg"
                     alt="Gestion des données"
                     width={500}
                     height={400}

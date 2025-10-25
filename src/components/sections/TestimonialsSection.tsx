@@ -43,7 +43,7 @@ const TestimonialsSection = () => {
             <div className="absolute -top-4 md:-top-6 left-4 md:left-8">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg border-4 border-white">
                 <Image
-                  src="/imagesreview/1517492082228.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesreview/1517492082228.jpg"
                   alt="Yves Hennekens"
                   width={64}
                   height={64}
@@ -97,7 +97,7 @@ const TestimonialsSection = () => {
             <div className="absolute -top-4 md:-top-6 left-4 md:left-8">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg border-4 border-white">
                 <Image
-                  src="/imagesreview/1751852017364.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesreview/1751852017364.jpg"
                   alt="Maude Rondeau"
                   width={64}
                   height={64}
@@ -149,7 +149,7 @@ const TestimonialsSection = () => {
             <div className="absolute -top-4 md:-top-6 left-4 md:left-8">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg border-4 border-white">
                 <Image
-                  src="/imagesreview/images.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesreview/images.jpg"
                   alt="Kenya Kondo"
                   width={64}
                   height={64}

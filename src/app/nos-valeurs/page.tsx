@@ -149,7 +149,7 @@ const NosValeursPage = () => {
                 className="w-80 h-80 rounded-full overflow-hidden shadow-2xl"
               >
                 <Image
-                  src="/imagesculture/Picsart_25-09-29_19-34-34-749.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-34-34-749.jpg"
                   alt="Équipe Progix en collaboration"
                   width={400}
                   height={400}
@@ -183,7 +183,7 @@ const NosValeursPage = () => {
                 className="w-80 h-80 rounded-full overflow-hidden shadow-2xl"
               >
                 <Image
-                  src="/imagesculture/Picsart_25-09-29_19-40-21-097.jpg"
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-40-21-097.jpg"
                   alt="Équipe Progix en action"
                   width={400}
                   height={400}

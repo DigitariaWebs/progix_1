@@ -149,7 +149,7 @@ const LandingPage = () => {
                     >
                       <div className="w-full h-full">
                         <Image
-                          src="/images/premierbloc.jpg"
+                          src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/premierbloc.jpg"
                           alt="Équipe PROGIX au travail"
                           width={500}
                           height={400}

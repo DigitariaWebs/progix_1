@@ -9,12 +9,12 @@ const Partners: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const partners = [
-    { id: 1, name: 'Partner 1', image: '/images/BAnQ-gray.svg' },
-    { id: 2, name: 'Partner 2', image: '/images/crustys (1).png' },
-    { id: 3, name: 'Partner 3', image: '/images/cfaqlogo.png' },
-    { id: 4, name: 'Partner 4', image: '/images/download.png' }, 
-    { id: 5, name: 'Partner 5', image: "/images/photo_2019-03-21_11-48-55-2-6-233x91.jpg"},  
-    { id: 6, name: 'Partner 6', image: "/images/ibusinesslogo.png"},  
+    { id: 1, name: 'Partner 1', image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/BAnQ-gray.svg' },
+    { id: 2, name: 'Partner 2', image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/crustys%20(1).png' },
+    { id: 3, name: 'Partner 3', image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/cfaqlogo.png' },
+    { id: 4, name: 'Partner 4', image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/download.png' }, 
+    { id: 5, name: 'Partner 5', image: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/photo_2019-03-21_11-48-55-2-6-233x91.jpg"},  
+    { id: 6, name: 'Partner 6', image: "https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/ibusinesslogo.png"},  
   ];
 
   // Auto-scroll effect

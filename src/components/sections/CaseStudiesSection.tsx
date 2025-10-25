@@ -199,7 +199,7 @@ const CaseStudiesSection = () => {
                           }}
                         >
                           <source
-                            src="/imagesculture/WhatsApp Video 2025-09-28 at 11.59.54 (1).mp4"
+                            src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/WhatsApp%20Video%202025-09-28%20at%2011.59.54%20(1).mp4"
                             type="video/mp4"
                           />
                           Votre navigateur ne supporte pas la lecture vidéo.
@@ -301,7 +301,7 @@ const CaseStudiesSection = () => {
                             filter: 'brightness(0.9) contrast(1.1)',
                           }}
                         >
-                          <source src="/fruitexo.mp4" type="video/mp4" />
+                          <source src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/fruitexo.mp4" type="video/mp4" />
                           Votre navigateur ne supporte pas la lecture vidéo.
                         </video>
                       </>
@@ -420,7 +420,7 @@ const CaseStudiesSection = () => {
                           }}
                         >
                           <source
-                            src="/images/WhatsApp Video 2025-09-26 at 10.22.25.mp4"
+                            src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/WhatsApp%20Video%202025-09-26%20at%2010.22.25.mp4"
                             type="video/mp4"
                           />
                           Votre navigateur ne supporte pas la lecture vidéo.
