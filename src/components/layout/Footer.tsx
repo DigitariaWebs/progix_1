@@ -19,14 +19,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center mb-6">
-              <Image
-                src={assets.logo}
-                alt="PROGIX Logo"
-                width={442}
-                height={442}
-                className="h-8 w-auto"
-              />
-              <span className="ml-2 text-xl font-bold">PROGIX</span>
+              
+              <span className="text-xl font-bold">PROGIX</span>
             </div>
             <p className="text-gray-400 mb-6">
               Votre partenaire de confiance pour tous vos projets digitaux.

@@ -9,6 +9,8 @@ import { filterProjects } from '@/data/projectsData';
 // Navbar removed to use global StaggeredMenu header
 import ProjectsSection from '@/components/sections/ProjectsSection';
 import DriveHero from '@/components/sections/DriveHero';
+import CtaButtonSection from '@/components/sections/CtaButtonSection';
+import Footer from '@/components/layout/Footer';
 
 const colors = {
   primary: '#1B363C',
@@ -88,16 +90,19 @@ const PortfolioPage = () => {
             {/* Breadcrumb */}
             <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-600 -ml-4 sm:-ml-6 md:-ml-10 lg:-ml-16">
               <span>/</span>
-              <span className="uppercase tracking-wider font-bold">PROJETS</span>
+              <span className="uppercase tracking-wider font-bold">
+                PROJETS
+              </span>
             </div>
 
             {/* Main Heading with CircularText */}
             <div className="flex justify-between items-start">
               {/* Main Heading */}
               <div className="flex-1 -ml-4 sm:-ml-6 md:-ml-10 lg:-ml-16">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold leading-tight max-w-6xl">
-              Parle, parle, jase, jase, mais concrètement, ça ressemble à quoi notre travail?
-            </h1>
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold leading-tight max-w-6xl">
+                  Parle, parle, jase, jase, mais concrètement, ça ressemble à
+                  quoi notre travail?
+                </h1>
               </div>
 
               {/* Removed CircularText */}
@@ -119,31 +124,31 @@ const PortfolioPage = () => {
                   >
                     <circle cx="12" cy="12" r="10" />
                     {/* Aiguille des heures */}
-                    <line 
-                      x1="12" 
-                      y1="12" 
-                      x2="12" 
-                      y2="8" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
+                    <line
+                      x1="12"
+                      y1="12"
+                      x2="12"
+                      y2="8"
+                      stroke="currentColor"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       style={{
                         transformOrigin: '12px 12px',
-                        animation: 'rotate-clock 60s linear infinite'
+                        animation: 'rotate-clock 60s linear infinite',
                       }}
                     />
                     {/* Aiguille des minutes */}
-                    <line 
-                      x1="12" 
-                      y1="12" 
-                      x2="12" 
-                      y2="6" 
-                      stroke="currentColor" 
-                      strokeWidth="1.5" 
+                    <line
+                      x1="12"
+                      y1="12"
+                      x2="12"
+                      y2="6"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
                       strokeLinecap="round"
                       style={{
                         transformOrigin: '12px 12px',
-                        animation: 'rotate-clock 5s linear infinite'
+                        animation: 'rotate-clock 5s linear infinite',
                       }}
                     />
                     {/* Centre de la pendule */}
@@ -153,7 +158,9 @@ const PortfolioPage = () => {
 
                 {/* Description Text */}
                 <p className="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed">
-                  Fini le blabla, c’est le temps de vous prouver qu’on est bon dans ce qu'on fait. Découvrez nos études de cas et parcourez la liste de nos projets plus bas.
+                  Fini le blabla, c’est le temps de vous prouver qu’on est bon
+                  dans ce qu'on fait. Découvrez nos études de cas et parcourez
+                  la liste de nos projets plus bas.
                 </p>
               </div>
             </div>
@@ -166,6 +173,12 @@ const PortfolioPage = () => {
 
       {/* Drive-style hero block at the bottom */}
       <DriveHero />
+
+      {/* CTA Section */}
+      <CtaButtonSection />
+
+      {/* Footer */}
+      <Footer />
 
       {/* Removed legacy filters and grids */}
     </>
