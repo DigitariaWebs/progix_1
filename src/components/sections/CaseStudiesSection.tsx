@@ -71,10 +71,10 @@ const CaseStudiesSection = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-12 sm:mb-16 space-y-4 sm:space-y-0">
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-              Discover our
+              Découvrez nos
               <br />
-              latest{' '}
-              <span style={{ color: colors.secondary }}>achievements</span>
+              dernières{' '}
+              <span style={{ color: colors.secondary }}>réalisations</span>
             </h2>
           </div>
           <button
@@ -84,7 +84,7 @@ const CaseStudiesSection = () => {
               fontFamily: 'Hubot Sans, Inter, sans-serif',
             }}
           >
-            View all projects
+            Voir tous les projets
           </button>
         </div>
 

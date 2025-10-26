@@ -47,7 +47,7 @@ export default function BlogPage() {
 
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10">
           <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
             style={{
               fontFamily: 'Hubot Sans, Inter, sans-serif',
               letterSpacing: '0.02em',
@@ -55,7 +55,7 @@ export default function BlogPage() {
           >
             Qu'est-ce qu'il se passe chez Progix?
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl">
+          <p className="text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed">
             Actus produit, études de cas et conseils concrets en delivery,
             IA, web & growth — par l'équipe Progix.
           </p>

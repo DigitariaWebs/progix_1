@@ -98,7 +98,7 @@ const PortfolioPage = () => {
             {/* Main Heading with CircularText */}
             <div className="flex justify-between items-start">
               {/* Main Heading */}
-              <div className="flex-1 -ml-4 sm:-ml-6 md:-ml-10 lg:-ml-16">
+              <div className="flex-1 ml-1 sm:-ml-6 md:-ml-10 lg:-ml-16">
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold leading-tight max-w-6xl">
                   Parle, parle, jase, jase, mais concrètement, ça ressemble à
                   quoi notre travail?
@@ -157,9 +157,9 @@ const PortfolioPage = () => {
                 </div>
 
                 {/* Description Text */}
-                <p className="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed">
+                <p className="text-sm sm:text-lg lg:text-xl text-gray-700 leading-relaxed">
                   Fini le blabla, c’est le temps de vous prouver qu’on est bon
-                  dans ce qu'on fait. Découvrez nos études de cas et parcourez
+                  dans ce qu’on fait. Découvrez nos études de cas et parcourez
                   la liste de nos projets plus bas.
                 </p>
               </div>
