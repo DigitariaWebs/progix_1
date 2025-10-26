@@ -7,7 +7,7 @@ import { blogPosts } from '@/data/blogPosts';
 
 const BlogSection = () => {
   return (
-    <section className="bg-[#0a1628] py-12 sm:py-16 md:py-20 relative overflow-hidden">
+    <section className="bg-[#0a1628] py-8 sm:py-12 md:py-20 relative overflow-hidden">
       {/* Background decoration - stars */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-10 left-10 w-1 h-1 bg-white rounded-full"></div>
@@ -65,7 +65,7 @@ const BlogSection = () => {
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <div className="py-4 sm:py-5 md:py-6">
+                <div className="py-3 sm:py-4 md:py-6">
                   <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-3 font-medium">
                     {post.date}
                   </p>
