@@ -75,7 +75,7 @@ export const teamMembers: TeamMember[] = [
     role: 'Full-Stack Software Engineer',
     skills: 'React • Node.js • TypeScript • PostgreSQL',
     image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/1719935496854.jpg',
+      '/images/imranarshad/IMG_2125.JPG',
     linkedinUrl: 'https://www.linkedin.com/in/ilyes-ghorieb-95b470244/',
     description:
       'Salut ! Je suis Ilyes, un développeur full-stack passionné par la création de solutions logicielles innovantes. Chez PROGIX, je conçois et développe des systèmes CRM et ERP sur mesure, des plateformes SaaS et des applications mobiles performantes et évolutives.',
@@ -123,7 +123,7 @@ export const teamMembers: TeamMember[] = [
     role: 'Développeur Web Full-Stack',
     skills: 'Flutter • React Native • Swift • Kotlin',
     image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/1755055191293.jpg',
+      '/images/imranarshad/IMG_4282.JPG',
     linkedinUrl: 'https://www.linkedin.com/in/fadi-atmania-011756354/',
     description:
       'Salut ! Je suis Fadi, un développeur web full-stack passionné par les technologies modernes. Chez PROGIX, je me spécialise dans la création de solutions robustes, efficaces et scalables en utilisant Java, Python, React et Docker.',

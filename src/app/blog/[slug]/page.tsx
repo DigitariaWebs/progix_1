@@ -56,6 +56,53 @@ export default function BlogPostPage({
     notFound();
   }
 
+  // Simplified layout for specific post: only image, then title and body text
+  if (post.slug === 'vortex-solution-accueille-imacom') {
+    return (
+      <div className="min-h-screen bg-[#0a1628] relative">
+        {/* Featured Image Only */}
+        <section className="pt-32 pb-8 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-20">
+            {/* keep subtle animated stars for consistency */}
+            <motion.div className="absolute top-10 left-10 w-1 h-1 bg-white rounded-full" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 3, repeat: Infinity }} />
+            <motion.div className="absolute top-5 left-1/4 w-1 h-1 bg-white rounded-full" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }} />
+          </div>
+          <div className="max-w-4xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10">
+            <motion.div
+              className="relative h-[400px] md:h-[500px] w-full overflow-hidden rounded-xl mb-8 shadow-2xl"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Image src={post.image} alt={post.title} fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/50 to-transparent" />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Title and Body Only */}
+        <section className="pb-20">
+          <div className="max-w-3xl mx-auto px-2 sm:px-4 lg:px-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight" style={{ fontFamily: 'Hubot Sans, Inter, sans-serif', letterSpacing: '0.02em' }}>
+              {post.title}
+            </h1>
+            <div className="space-y-6">
+              {post.content
+                .split('\n')
+                .map((p) => p.trim())
+                .filter((p) => p.length > 0 && !p.startsWith('#'))
+                .map((p, i) => (
+                  <p key={i} className="text-gray-100 leading-relaxed text-lg">
+                    {p}
+                  </p>
+                ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   // Get related posts (excluding current post)
   const relatedPosts = blogPosts.filter((p) => p.slug !== slug).slice(0, 3);
 
@@ -372,33 +419,34 @@ export default function BlogPostPage({
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             {post.content.split('\n').map((paragraph, index) => {
-              if (paragraph.trim().startsWith('# ')) {
+              const line = paragraph.trim();
+              if (line.startsWith('# ')) {
                 return (
                   <div key={index} className="hidden">
-                    {paragraph.replace('# ', '')}
+                    {line.replace('# ', '')}
                   </div>
                 );
-              } else if (paragraph.trim().startsWith('## ')) {
+              } else if (line.startsWith('## ')) {
                 return (
                   <div
                     key={index}
                     className="bg-gradient-to-r from-[#00d4ff]/20 to-transparent p-6 rounded-xl border border-[#00d4ff]/30 mt-12 mb-6"
                   >
                     <h2 className="text-2xl font-bold text-white mb-0">
-                      {paragraph.replace('## ', '')}
+                      {line.replace('## ', '')}
                     </h2>
                   </div>
                 );
-              } else if (paragraph.trim().startsWith('### ')) {
+              } else if (line.startsWith('### ')) {
                 return (
                   <h3
                     key={index}
                     className="text-lg font-semibold text-[#00d4ff] uppercase tracking-wider mb-4 mt-8 border-b border-[#00d4ff]/50 pb-2"
                   >
-                    {paragraph.replace('### ', '')}
+                    {line.replace('### ', '')}
                   </h3>
                 );
-              } else if (paragraph.trim().startsWith('- ')) {
+              } else if (line.startsWith('- ') || line.startsWith('• ') || line.startsWith('* ')) {
                 return (
                   <div
                     key={index}
@@ -408,18 +456,18 @@ export default function BlogPostPage({
                       •
                     </span>
                     <span className="text-gray-200 leading-relaxed block pl-6">
-                      {paragraph.replace('- ', '')}
+                      {line.replace(/^(- |• |\* )/, '')}
                     </span>
                   </div>
                 );
-              } else if (paragraph.trim() !== '') {
+              } else if (line !== '') {
                 return (
                   <div
                     key={index}
                     className="bg-gray-900/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700/50 shadow-lg"
                   >
                     <p className="text-gray-100 leading-relaxed text-lg mb-0">
-                      {paragraph}
+                      {line}
                     </p>
                   </div>
                 );
