@@ -230,7 +230,7 @@ export default function ExpertiseSection() {
         <h2
           className={
             styles.exhHeadingText +
-            ' text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'
+            ' text-4xl md:text-5xl font-bold text-white'
           }
         >
           Ce que nous faisons

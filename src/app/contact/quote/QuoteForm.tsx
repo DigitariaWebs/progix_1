@@ -24,7 +24,7 @@ type SectionProps = {
   thumbVisible?: boolean;
 };
 
-const Section: React.FC<SectionProps> = ({ id, title, children, index, thumbVisible = false }) => {
+const Section: React.FC<SectionProps> = ({ id, title, children, thumbVisible = false }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' });
   return (
@@ -243,20 +243,19 @@ const QuoteForm: React.FC = () => {
       <div className="mt-24 border-t border-white/10">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 grid md:grid-cols-3 gap-10 py-10 text-sm text-[#b6bdc2]">
           <div>
-            <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">Vous souhaitez nous jaser?</h4>
-            <p>info@treize.pro<br/>438-940-2500</p>
+            <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">Vous souhaitez nous parler?</h4>
+            <p>contact@progix.pro<br/>+1 514 576 5993</p>
           </div>
           <div>
-            <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">Sinon, on est vieux jeu, on aime le présentiel.</h4>
-            <p>7295 rue Waverly, bureau 403-7<br/>Montréal, QC H2R 0B2</p>
+            <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">Passez nous voir</h4>
+            <p>3418 Rue Stanley<br/>Montréal, QC H3A 1R8</p>
           </div>
           <div>
-            <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">Et on aime encore plus prendre une bière!</h4>
+            <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">On vous répond rapidement</h4>
             <ul className="space-y-1">
-              <li>2 jours</li>
-              <li>18 heures</li>
-              <li>32 minutes</li>
-              <li>32 secondes</li>
+              <li>Temps de réponse moyen: &lt; 24 h</li>
+              <li>Modes: visio, présentiel, asynchrone</li>
+              <li>Langues: français, anglais</li>
             </ul>
           </div>
         </div>

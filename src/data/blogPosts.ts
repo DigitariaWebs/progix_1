@@ -13,115 +13,126 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'vortex-solution-accueille-imacom',
     title:
-      "Vortex Solution accueille les clients d'Imacom en hébergement de site web",
+      "Progix étend son hébergement managé: migrations rapides et sans rupture",
     date: '1 octobre 2025',
     excerpt:
-      "Vortex Solution accueille les clients d'Imacom en hébergement de site web...",
+      "Progix renforce son hébergement managé: migration rapide, sécurité renforcée et support 24/7.",
     image:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/premierbloc.jpg',
     author: 'Équipe Progix',
     category: 'Hébergement',
     content: `
-# Vortex Solution accueille les clients d'Imacom en hébergement de site web
+# Progix étend son hébergement managé
 
-Nous sommes ravis d'annoncer que Vortex Solution accueille désormais les clients d'Imacom pour leurs besoins en hébergement de sites web.
+Nous renforçons notre offre d'hébergement managé pour accompagner les équipes qui exigent performance, sécurité et sérénité opérationnelle.
 
-## Une transition en douceur
+## Ce que ça change pour vous
 
-Notre équipe s'est préparée pour assurer une migration sans interruption de service pour tous les clients d'Imacom. Nous avons mis en place des processus rigoureux pour garantir la continuité de vos services web.
+- Plateformes plus rapides et stables
+- SLA clairs et mesurables
+- Observabilité bout‑à‑bout (logs, métriques, alertes)
+- Runbooks et réponses incidents documentés
+- Support 24/7 par des ingénieurs Progix
 
-## Des services d'hébergement de qualité
+## Une migration sans rupture
 
-Chez Progix, nous offrons :
-- Hébergement web haute performance
-- Support technique 24/7
-- Sécurité renforcée
-- Sauvegardes automatiques quotidiennes
-- Certificats SSL gratuits
+Nous opérons des migrations planifiées, testées et réversibles:
+- Cartographie applicative et plan de bascule
+- Environnements miroirs et tests de charge
+- Fenêtre de migration courte et communication proactive
+- Rollback instantané si nécessaire
 
-## Contactez-nous
+## Sécurité et fiabilité by design
 
-Pour toute question concernant votre migration ou nos services d'hébergement, n'hésitez pas à nous contacter.
+- Backups chiffrés et tests de restauration réguliers
+- WAF, TLS moderne et durcissement des configurations
+- Mises à jour et correctifs automatisés
+- Surveillance 24/7 et réponse aux incidents
+
+Vous souhaitez migrer vers un hébergement managé Progix ou auditer votre stack actuelle?
+Parlons-en.
     `,
   },
   {
     slug: 'nouveau-site-mont-saint-hilaire',
-    title: 'Découvrez le nouveau site web de la Ville de Mont-Saint-Hilaire',
+    title: 'Un site municipal nouvelle génération, conçu par Progix',
     date: '30 septembre 2025',
-    excerpt: 'Découvrez le nouveau site web de la Ville de Mont-Saint-Hilaire',
+    excerpt: "Accessibilité, performance et édition simplifiée — le nouveau standard municipal.",
     image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/logoaquaa.png',
     author: 'Équipe Progix',
     category: 'Projets',
     content: `
-# Découvrez le nouveau site web de la Ville de Mont-Saint-Hilaire
+# Un site municipal nouvelle génération
 
-Progix est fière d'avoir collaboré avec la Ville de Mont-Saint-Hilaire pour créer leur nouveau site web municipal moderne et accessible.
+Informer rapidement, simplifier les démarches et garantir l’accessibilité: nos critères pour concevoir une expérience citoyenne utile et inclusive.
 
-## Un design moderne et intuitif
+## Design centré usagers
 
-Le nouveau site présente une interface utilisateur repensée qui facilite la navigation et l'accès aux informations municipales importantes pour les citoyens.
+- Parcours orientés tâches (trouver, faire, signaler)
+- Arborescence claire et recherche améliorée
+- Pages services standardisées et réutilisables
 
-## Fonctionnalités clés
+## Performance, SEO et accessibilité
 
-- Navigation simplifiée et intuitive
-- Recherche rapide d'informations
-- Accessibilité améliorée (WCAG 2.1)
-- Design responsive pour mobile et tablette
-- Système de gestion de contenu facile à utiliser
+- LCP < 1,5 s sur mobile, Core Web Vitals au vert
+- Balises, schémas et métas optimisés
+- Conformité WCAG 2.1 AA, contrastes vérifiés
 
-## Technologies utilisées
+## Édition simplifiée pour les équipes
 
-Nous avons utilisé les technologies les plus récentes pour garantir performance et sécurité :
-- Next.js pour un chargement ultra-rapide
-- Design system personnalisé
-- Optimisation SEO avancée
-- Hébergement sécurisé
+- Design system documenté et blocs prêts à l’emploi
+- Workflows d’approbation et prévisualisation
+- Rôles et permissions granulaires
 
-Visitez le nouveau site et découvrez toutes ses fonctionnalités !
+## Stack technique
+
+- Next.js, SSR/ISR selon le besoin
+- Media optimization et cache CDN
+- Intégration analytique privacy‑first
     `,
   },
   {
     slug: 'agence-wordpress-canadienne-seo',
     title:
-      'Pourquoi choisir une agence WordPress canadienne pour votre stratégie GEO',
+      'Pourquoi choisir Progix pour votre stratégie SEO WordPress',
     date: '29 septembre 2025',
     excerpt:
-      'Pourquoi choisir une agence WordPress canadienne pour votre stratégie GEO',
+      'Architecture, performance et contenu: la méthode Progix pour un SEO WordPress durable.',
     image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/data_management_illustration.svg',
     author: 'Équipe Progix',
     category: 'SEO & Marketing',
     content: `
-# Pourquoi choisir une agence WordPress canadienne pour votre stratégie SEO
+# Pourquoi choisir Progix pour votre stratégie SEO WordPress
 
-Le choix d'une agence WordPress locale peut faire toute la différence dans votre stratégie de référencement naturel (SEO).
+Un SEO durable se construit sur trois piliers: technique, contenu et maillage. Notre approche cadre ces piliers avec un backlog priorisé, mesuré et itératif.
 
-## Avantages d'une agence canadienne
+## 1) Fondations techniques
 
-### Connaissance du marché local
-Une agence canadienne comprend les spécificités du marché québécois et canadien, incluant les préférences linguistiques et culturelles.
+- Architecture d’information claire et scalable
+- Maillage interne guidé par l’intention de recherche
+- Vitesse et stabilité (Core Web Vitals au vert)
+- Données structurées (schema.org) et métas complètes
 
-### Support dans votre fuseau horaire
-Bénéficiez d'un support en temps réel durant vos heures de travail, sans décalage horaire.
+## 2) Contenu qui performe
 
-### Conformité réglementaire
-Nous sommes familiers avec les lois canadiennes sur la protection des données et la vie privée (PIPEDA, Loi 25).
+- Cartographie mots‑clés et personas
+- Briefs éditoriaux et guidelines de tonalité
+- Production assistée par IA (revue humaine systématique)
+- Templates de pages piliers et satellites
 
-## Notre expertise WordPress
+## 3) Mesure et itérations
 
-- Optimisation technique SEO
-- Architecture d'information optimisée
-- Performance et vitesse de chargement
-- Sécurité renforcée
-- Maintenance continue
+- KPI actionnables (trafic, conversions, visibilité par thème)
+- Tableaux de bord et revues mensuelles
+- Hypothèses, tests et décisions appuyées par la donnée
 
-## Résultats mesurables
+## Ce que vous obtenez avec Progix
 
-Nos clients constatent en moyenne :
-- +150% de trafic organique en 6 mois
-- +200% de leads qualifiés
-- Amélioration du taux de conversion
+- Gains rapides priorisés, roadmap trimestrielle
+- Stack d’optimisation prête pour WordPress
+- Équipe pluridisciplinaire (SEO, contenu, dev, data)
 
-Contactez-nous pour discuter de votre projet WordPress et SEO !
+Parlez-nous de votre contexte: on vous propose un plan d’action en 48h.
     `,
   },
 ];

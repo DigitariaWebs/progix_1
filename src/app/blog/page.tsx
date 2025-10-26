@@ -53,11 +53,11 @@ export default function BlogPage() {
               letterSpacing: '0.02em',
             }}
           >
-            Notre Blog
+            Qu'est-ce qu'il se passe chez Progix?
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl">
-            Découvrez nos derniers articles sur le développement web, la
-            technologie et nos projets.
+            Actus produit, études de cas et conseils concrets en delivery,
+            IA, web & growth — par l'équipe Progix.
           </p>
         </div>
       </section>

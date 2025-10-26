@@ -34,7 +34,7 @@ export const teamMembers: TeamMember[] = [
     skills: 'TypeScript • React • Node.js',
     image:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/277803464_10158335867770248_3489003544783992666_n.jpg',
-    linkedinUrl: '#',
+    linkedinUrl: 'https://www.linkedin.com/in/boissonneaultjean/',
     description: "Membre de l'équipe PROGIX.",
     experience: [
       {
@@ -55,7 +55,7 @@ export const teamMembers: TeamMember[] = [
     skills: 'TypeScript • React • Next.js',
     image:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/Screenshot%202025-10-16%20033128.png',
-    linkedinUrl: '#',
+    linkedinUrl: 'https://www.linkedin.com/in/yann-bonzom/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BKq283o4pQkuh%2Fmhml38A3A%3D%3D',
     description: "Membre de l'équipe PROGIX.",
     experience: [
       {
@@ -289,39 +289,36 @@ export const teamMembers: TeamMember[] = [
     },
   },
   {
-    id: 'data-engineer',
-    name: 'Data Engineer',
-    role: 'Data Engineer',
-    skills: 'Python • Machine Learning • ETL • Analytics',
-    image: '',
-    linkedinUrl: '#',
+    id: 'imran-arshad',
+    name: 'Imran Arshad',
+    role: 'Développeur mobile Kotlin/Swift',
+    skills: 'Kotlin • Swift • iOS • Android',
+    image: '/images/imranarshad/1705639144666.jpeg',
+    linkedinUrl: 'https://www.linkedin.com/in/imran-arshad-6ba57822a/',
     description:
-      "Notre équipe de data engineering se spécialise dans la création de pipelines de données robustes et l'implémentation de solutions d'intelligence artificielle pour nos clients.",
+      "Développeur mobile spécialisé en Kotlin (Android) et Swift (iOS). Chez PROGIX, j'aide les équipes à livrer des applications mobiles performantes, stables et orientées produit.",
     experience: [
       {
-        title: 'Data Engineer',
+        title: 'Développeur mobile',
         company: 'PROGIX',
-        period: '2024 - Présent',
+        period: '2025 - Présent',
         location: 'Montréal, QC',
         description:
-          "Conception et implémentation de pipelines ETL, développement de modèles de machine learning et création de solutions d'analytics avancées.",
+          "Développement d'applications mobiles natives iOS/Android, intégrations API, optimisation des performances et déploiements sur stores.",
       },
     ],
     mainSkills: [
-      'Python',
-      'Machine Learning',
-      'ETL',
-      'Analytics',
-      'Data Pipeline',
-      'SQL',
-      'Big Data',
-      'TensorFlow',
-      'PyTorch',
-      'Apache Spark',
+      'Kotlin',
+      'Swift',
+      'Android',
+      'iOS',
+      'REST APIs',
+      'Clean Architecture',
+      'CI/CD',
     ],
     education: {
-      degree: 'Data Science & Engineering',
-      institution: 'Université',
+      degree: 'Informatique',
+      institution: '—',
     },
   },
 ];

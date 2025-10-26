@@ -66,8 +66,8 @@ const projects: Project[] = [
       'Plateforme de gestion RH complète pour agence de recrutement spécialisée.',
     services: ['Développement Web', 'CRM personnalisé'],
     tech: ['Next.js', 'PostgreSQL', 'Node.js'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+    image: '/images/imranarshad/recplkus.png',
+    preview: '/images/imranarshad/recplkus.png',
     bgClass: 'bg-white',
   },
   {
@@ -78,8 +78,8 @@ const projects: Project[] = [
       "Plateforme d'apprentissage en ligne interactive avec suivi personnalisé.",
     services: ['E-learning', 'Design UX/UI'],
     tech: ['Next.js', 'MongoDB', 'Tailwind CSS'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+    image: '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
+    preview: '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
     bgClass: 'bg-white',
   },
   {
@@ -107,18 +107,18 @@ const projects: Project[] = [
   },
   {
     id: 7,
-    title: 'IBOX',
+    title: 'Secup',
     category: 'Livraison',
     description:
-      'Application mobile de livraison de colis similaire à Uber, permettant la prise de commandes et la livraison à domicile.',
+      'Application mobile de la DGPN Djibouti pour le scan des plaques d’immatriculation et l’identification des véhicules via la base de données nationale.',
     services: [
       'Application Mobile',
       'Système de livraison',
       'Paiement intégré',
     ],
     tech: ['React Native', 'Node.js', 'MongoDB', 'Stripe'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+    image: '/images/imranarshad/secup.png',
+    preview: '/images/imranarshad/secup.png',
     bgClass: 'bg-white',
   },
   {

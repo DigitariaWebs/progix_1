@@ -5,6 +5,57 @@ import Image from 'next/image';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
 import { type Project, projects } from '@/data/project';
 
+const FILTERS = ['TOUS', 'SITE WEB', 'APP WEB', 'APP MOBILE', 'CRM', 'ERP'] as const;
+type FilterType = typeof FILTERS[number];
+
+function stringIncludes(haystack: string | undefined, needle: string) {
+  if (!haystack) return false;
+  return haystack.toLowerCase().includes(needle.toLowerCase());
+}
+
+function matchesFilter(project: Project, filter: FilterType): boolean {
+  if (filter === 'TOUS') return true;
+
+  const hasService = (name: string) => project.services.some((s) => stringIncludes(s, name));
+  const hasTech = (name: string) => project.tech.some((t) => stringIncludes(t, name));
+  const inTitle = (name: string) => stringIncludes(project.title, name);
+  const inDesc = (name: string) => stringIncludes(project.description, name);
+
+  switch (filter) {
+    case 'SITE WEB':
+      return (
+        hasService('site vitrine') ||
+        hasService('site web') ||
+        stringIncludes(project.category, 'site vitrine') ||
+        inDesc('site web') ||
+        inDesc('vitrine')
+      );
+    case 'APP WEB':
+      return (
+        hasService('développement web') ||
+        hasService('plateforme') ||
+        hasService('e-learning') ||
+        hasService('système de gestion') ||
+        hasService('lms') ||
+        inDesc('application web') ||
+        hasTech('next.js') ||
+        hasTech('react')
+      );
+    case 'APP MOBILE':
+      return (
+        hasService('application mobile') ||
+        hasTech('react native') ||
+        hasTech('flutter') ||
+        hasTech('kotlin') ||
+        hasTech('swift')
+      );
+    case 'CRM':
+      return inTitle('crm') || hasService('crm');
+    case 'ERP':
+      return inTitle('erp') || hasService('erp') || inDesc('erp');
+  }
+}
+
 function ProjectItem({
   project,
   index,
@@ -163,6 +214,7 @@ export default function ProjectsSection() {
   const [previewSrc, setPreviewSrc] = React.useState<string | null>(null);
   const mouseX = useMotionValue<number>(0);
   const mouseY = useMotionValue<number>(0);
+  const [activeFilter, setActiveFilter] = React.useState<FilterType>('TOUS');
 
   const handlePreviewEnter = React.useCallback((src: string) => {
     setPreviewSrc(src);
@@ -183,28 +235,42 @@ export default function ProjectsSection() {
   return (
     <section className="bg-black text-white">
       {/* Pills header - full width but padded */}
-      <div className="flex gap-4 py-6 px-5 sm:px-8">
-        <span className="inline-flex items-center px-5 py-2 bg-white text-black rounded-md text-sm font-semibold">
-          WEB 3
-        </span>
-        <span className="inline-flex items-center px-5 py-2 border border-white/50 rounded-md text-sm font-semibold text-white/80">
-          WEB 2
-        </span>
+      <div className="flex gap-3 flex-wrap py-6 px-5 sm:px-8">
+        {FILTERS.map((label) => {
+          const isActive = activeFilter === label;
+          return (
+            <button
+              key={label}
+              type="button"
+              onClick={() => setActiveFilter(label)}
+              className={
+                isActive
+                  ? 'inline-flex items-center px-5 py-2 bg-white text-black rounded-md text-sm font-semibold'
+                  : 'inline-flex items-center px-5 py-2 border border-white/50 rounded-md text-sm font-semibold text-white/80 hover:text-white hover:border-white'
+              }
+              aria-pressed={isActive}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
 
       <ul className="pb-4">
-        {projects.map((p, i) => (
-          <ProjectItem
-            key={p.id}
-            project={p}
-            index={i}
-            openId={openId}
-            setOpenId={setOpenId}
-            onPreviewEnter={handlePreviewEnter}
-            onPreviewMove={handlePreviewMove}
-            onPreviewLeave={handlePreviewLeave}
-          />
-        ))}
+        {projects
+          .filter((p) => matchesFilter(p, activeFilter))
+          .map((p, i) => (
+            <ProjectItem
+              key={p.id}
+              project={p}
+              index={i}
+              openId={openId}
+              setOpenId={setOpenId}
+              onPreviewEnter={handlePreviewEnter}
+              onPreviewMove={handlePreviewMove}
+              onPreviewLeave={handlePreviewLeave}
+            />
+          ))}
         {/* trailing border line (edge-to-edge) */}
         <li className="border-t border-dotted border-white/30" />
       </ul>
