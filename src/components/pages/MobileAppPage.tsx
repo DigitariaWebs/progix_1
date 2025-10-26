@@ -265,7 +265,7 @@ const MobileAppPage = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>Notre Équipe</h3>
-                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>3418 Rue Stanley, Montréal, QC H3A 1R8</p>
+                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>11770 5e Avenue, Montréal, QC H1E 7C1</p>
               </div>
             </motion.div>
 
@@ -286,7 +286,7 @@ const MobileAppPage = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>Notre Bureau</h3>
-                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>3418 Rue Stanley, Montréal, QC H3A 1R8</p>
+                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>11770 5e Avenue, Montréal, QC H1E 7C1</p>
               </div>
             </motion.div>
 
@@ -307,7 +307,7 @@ const MobileAppPage = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>Nos Projets</h3>
-                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>3418 Rue Stanley, Montréal, QC H3A 1R8</p>
+                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>11770 5e Avenue, Montréal, QC H1E 7C1</p>
               </div>
             </motion.div>
 

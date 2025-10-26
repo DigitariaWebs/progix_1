@@ -113,9 +113,9 @@ const Footer = () => {
               <div className="flex items-center">
                 <FaMapMarkerAlt size={16} className="mr-3" />
                 <span>
-                  3418 Rue Stanley
+                  11770 5e Avenue
                   <br />
-                  Montréal, QC H3A 1R8
+                  Montréal, QC H1E 7C1
                 </span>
               </div>
             </div>

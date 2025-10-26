@@ -248,7 +248,7 @@ const QuoteForm: React.FC = () => {
           </div>
           <div>
             <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">Passez nous voir</h4>
-            <p>3418 Rue Stanley<br/>Montréal, QC H3A 1R8</p>
+            <p>11770 5e Avenue<br/>Montréal, QC H1E 7C1</p>
           </div>
           <div>
             <h4 className="uppercase text-white font-bold tracking-[0.06em] text-[12px] mb-4">On vous répond rapidement</h4>
