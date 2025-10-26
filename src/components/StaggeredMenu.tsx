@@ -445,11 +445,14 @@ export const StaggeredMenu = ({
             }}
           />
           <Image
-            src="/CertifiedLogo.webp"
+            src="/images/CertifiedLogo.webp"
             alt="GPTW Certification"
             width={100}
             height={40}
             className="h-10 sm:h-14 w-auto ml-4 mt-4 cursor-pointer"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = 'none';
+            }}
             draggable={false}
           />
         </div>

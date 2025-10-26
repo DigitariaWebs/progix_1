@@ -71,11 +71,14 @@ const Header = () => {
                   className="h-8 w-auto"
                 />
                 <Image
-                  src="/CertifiedLogo.webp"
+                  src="/images/CertifiedLogo.webp"
                   alt="GPTW Certification"
                   width={80}
                   height={32}
                   className="h-8 w-auto ml-4 mt-4 cursor-pointer"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = 'none';
+                  }}
                 />
               </div>
 
