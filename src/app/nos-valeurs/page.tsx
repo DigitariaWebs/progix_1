@@ -75,9 +75,9 @@ const NosValeursPage = () => {
       {/* Hero Section - Geometric Style */}
       <div className="relative">
         <HeroGeometric
-          badge="Progix Values"
-          title1="Our Core Values"
-          description="We are a team of strategists, developers, communicators, researchers. Together, we believe that progress only happens when you refuse to play things safe."
+          badge="Valeurs Progix"
+          title1="Nos Valeurs Fondamentales"
+          description="Nous sommes une équipe de stratèges, développeurs, communicateurs et chercheurs. Ensemble, nous croyons que le progrès ne se produit que lorsque vous refusez de jouer la sécurité."
         />
       </div>
 

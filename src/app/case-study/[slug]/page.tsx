@@ -320,13 +320,13 @@ export default function CaseStudyPage() {
       {/* Navbar removed */}
 
       {/* Hero Section */}
-      <div className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+      <div className="relative pt-32 pb-8 sm:pb-12 md:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         {/* Squares Background */}
         <div className="absolute inset-0 z-0">
           <Squares
             direction="diagonal"
             speed={0.2}
-            squareSize={50}
+            squareSize={30}
             borderColor="#e2e8f0"
             hoverFillColor={colors.secondary}
           />
@@ -334,15 +334,15 @@ export default function CaseStudyPage() {
 
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5 z-1">
-          <div className="absolute top-40 right-20 w-24 h-24 border border-gray-400 rounded-full"></div>
-          <div className="absolute bottom-20 left-1/4 w-16 h-16 border border-gray-400 rounded-full"></div>
+          <div className="absolute top-20 right-10 sm:top-40 sm:right-20 w-16 h-16 sm:w-24 sm:h-24 border border-gray-400 rounded-full"></div>
+          <div className="absolute bottom-16 left-1/4 sm:bottom-20 w-12 h-12 sm:w-16 sm:h-16 border border-gray-400 rounded-full"></div>
         </div>
 
-        <div className="max-w-6xl mx-auto relative z-10 pt-6 md:pt-8">
-          <div className="flex items-start justify-between mb-8">
-            <div>
+        <div className="max-w-6xl mx-auto relative z-10 pt-4 sm:pt-6 md:pt-8">
+          <div className="flex flex-col sm:flex-row items-start justify-between mb-6 sm:mb-8 gap-4">
+            <div className="flex-1">
               <h1
-                className="text-6xl md:text-7xl font-bold mb-2"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 leading-tight"
                 style={{
                   fontFamily: 'Hubot Sans, Inter, sans-serif',
                   color: colors.primary,
@@ -351,14 +351,14 @@ export default function CaseStudyPage() {
                 {caseStudy.title}
               </h1>
               <p
-                className="text-2xl font-light tracking-wider"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl font-light tracking-wider"
                 style={{ color: colors.secondary }}
               >
                 {caseStudy.subtitle}
               </p>
             </div>
-            {/* Replace small circle logo with CircularText badge */}
-            <div className="relative w-30 h-30 flex items-center justify-center">
+            {/* CircularText badge - hidden on mobile for better UX */}
+            <div className="hidden sm:flex sm:items-center sm:justify-center relative w-24 h-24 md:w-30 md:h-30">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-3 h-3 bg-white rounded-full"></div>
               </div>
@@ -372,7 +372,7 @@ export default function CaseStudyPage() {
           </div>
 
           {/* Hero Image/Video */}
-          <div className="relative h-[400px] md:h-[500px] mb-16 overflow-hidden rounded-lg shadow-2xl">
+          <div className="relative h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] mb-6 sm:mb-8 md:mb-12 lg:mb-16 overflow-hidden rounded-lg shadow-2xl">
             {caseStudy.heroVideo ? (
               <video
                 ref={videoRef}
@@ -393,7 +393,7 @@ export default function CaseStudyPage() {
           </div>
 
           {/* Project Info Grid */}
-          <div className="grid md:grid-cols-2 gap-16 mb-20 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 mb-8 sm:mb-12 md:mb-16 lg:mb-20 max-w-5xl mx-auto">
             {/* Left Column - Project Details */}
             <div className="space-y-8">
               <div>
@@ -499,7 +499,7 @@ export default function CaseStudyPage() {
           </div>
 
           {/* Curved Loop Text at bottom of hero section */}
-          <div className="relative mt-16 z-10">
+          <div className="relative mt-8 sm:mt-12 md:mt-16 z-10">
             <CurvedLoop
               marqueeText="FAHE CRM • PROGIX • UNE FIRME DE DÉVELOPPEMENT LOGICIEL FIÈREMENT MONTRÉALAISE • "
               speed={2}
@@ -514,7 +514,7 @@ export default function CaseStudyPage() {
 
       {/* Mission Section - Only for FAHE CRM */}
       {caseStudy.heroVideo && (
-        <div className="relative py-20 overflow-hidden bg-gray-50">
+        <div className="relative py-12 sm:py-16 md:py-20 overflow-hidden bg-gray-50">
           {/* Background Pattern */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-white/70"></div>
@@ -523,17 +523,17 @@ export default function CaseStudyPage() {
           {/* Content Layout */}
           <div className="relative z-10 flex items-center">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="grid lg:grid-cols-2 gap-16 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
                 {/* Left Side - Title */}
                 <div className="text-left">
-                  <div className="inline-block mb-6">
-                    <span className="text-sm font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-4 py-2 rounded-full">
+                  <div className="inline-block mb-4 sm:mb-6">
+                    <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-3 sm:px-4 py-2 rounded-full">
                       {caseStudy.mandat.title}
                     </span>
                   </div>
 
                   <h2
-                    className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight"
                     style={{
                       fontFamily: 'Hubot Sans, Inter, sans-serif',
                       color: '#0A2456',
@@ -546,7 +546,7 @@ export default function CaseStudyPage() {
 
                   {/* Decorative Line */}
                   <div
-                    className="w-20 h-1 mb-8"
+                    className="w-12 sm:w-16 md:w-20 h-1 mb-6 sm:mb-8"
                     style={{
                       backgroundColor: colors.secondary,
                     }}
@@ -557,13 +557,13 @@ export default function CaseStudyPage() {
                 <div className="relative">
                   {/* Text with underline accent */}
                   <div className="relative">
-                    <p className="text-xl md:text-2xl leading-relaxed text-gray-800 font-light mb-8">
+                    <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-gray-800 font-light mb-4 sm:mb-6 lg:mb-8">
                       {caseStudy.mandat.content}
                     </p>
 
                     {/* Decorative underline */}
                     <div
-                      className="absolute -bottom-4 left-0 w-24 h-0.5"
+                      className="absolute -bottom-2 sm:-bottom-4 left-0 w-16 sm:w-24 h-0.5"
                       style={{
                         backgroundColor: colors.secondary,
                       }}
@@ -571,39 +571,39 @@ export default function CaseStudyPage() {
                   </div>
 
                   {/* Key points as floating elements */}
-                  <div className="mt-12 space-y-6">
-                    <div className="flex items-start space-x-4 group">
+                  <div className="mt-6 sm:mt-8 lg:mt-12 space-y-3 sm:space-y-4 lg:space-y-6">
+                    <div className="flex items-start space-x-3 sm:space-x-4 group">
                       <div
-                        className="w-2 h-2 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"
+                        className="w-2 h-2 rounded-full mt-2 sm:mt-3 group-hover:scale-125 transition-transform duration-300"
                         style={{
                           backgroundColor: colors.secondary,
                         }}
                       ></div>
-                      <p className="text-gray-700 font-medium">
+                      <p className="text-sm sm:text-base text-gray-700 font-medium">
                         Solution CRM complète et moderne
                       </p>
                     </div>
 
-                    <div className="flex items-start space-x-4 group">
+                    <div className="flex items-start space-x-3 sm:space-x-4 group">
                       <div
-                        className="w-2 h-2 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"
+                        className="w-2 h-2 rounded-full mt-2 sm:mt-3 group-hover:scale-125 transition-transform duration-300"
                         style={{
                           backgroundColor: colors.secondary,
                         }}
                       ></div>
-                      <p className="text-gray-700 font-medium">
+                      <p className="text-sm sm:text-base text-gray-700 font-medium">
                         Expérience utilisateur repensée et intuitive
                       </p>
                     </div>
 
-                    <div className="flex items-start space-x-4 group">
+                    <div className="flex items-start space-x-3 sm:space-x-4 group">
                       <div
-                        className="w-2 h-2 rounded-full mt-3 group-hover:scale-125 transition-transform duration-300"
+                        className="w-2 h-2 rounded-full mt-2 sm:mt-3 group-hover:scale-125 transition-transform duration-300"
                         style={{
                           backgroundColor: colors.secondary,
                         }}
                       ></div>
-                      <p className="text-gray-700 font-medium">
+                      <p className="text-sm sm:text-base text-gray-700 font-medium">
                         Identité de marque FAHE Automotive mise en valeur
                       </p>
                     </div>
@@ -651,13 +651,13 @@ export default function CaseStudyPage() {
       )}
 
       {/* Impact & Résultats - clean white section */}
-      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+      <div className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
             {/* Left Side - Content */}
-            <div className="relative">
+            <div className="relative order-2 lg:order-1">
               <ul
-                className="space-y-6 text-lg leading-relaxed list-none"
+                className="space-y-4 sm:space-y-6 text-base sm:text-lg leading-relaxed list-none"
                 style={{ color: colors.tertiary }}
               >
                 <li className="flex items-start space-x-4 group">
@@ -723,15 +723,15 @@ export default function CaseStudyPage() {
             </div>
 
             {/* Right Side - Title */}
-            <div className="text-left ml-62">
-              <div className="inline-block mb-6">
-                <span className="text-sm font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-4 py-2 rounded-full">
+            <div className="text-left order-1 lg:order-2 lg:ml-16 xl:ml-20">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-3 sm:px-4 py-2 rounded-full">
                   RÉSULTATS
                 </span>
               </div>
 
               <h2
-                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight"
                 style={{
                   fontFamily: 'Hubot Sans, Inter, sans-serif',
                   color: colors.primary,
@@ -744,7 +744,7 @@ export default function CaseStudyPage() {
 
               {/* Decorative Line */}
               <div
-                className="w-20 h-1 mb-8"
+                className="w-12 sm:w-16 md:w-20 h-1 mb-6 sm:mb-8"
                 style={{
                   backgroundColor: colors.secondary,
                 }}
@@ -755,13 +755,13 @@ export default function CaseStudyPage() {
       </div>
 
       {/* Objectifs Section */}
-      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+      <div className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-36 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 xl:gap-24 items-center">
             {/* Left Side - Image */}
             <div className="order-2 lg:order-1">
               <div className="relative">
-                <div className="relative h-[640px] rounded-2xl overflow-hidden shadow-2xl">
+                <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[640px] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/1757001640677.jpg"
                     alt="Objectifs FAHE CRM"
@@ -802,7 +802,7 @@ export default function CaseStudyPage() {
                 </div>
 
                 <h2
-                  className="text-4xl md:text-5xl font-bold mb-6"
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6"
                   style={{
                     color: colors.primary,
                     fontFamily: 'Hubot Sans, Inter, sans-serif',
@@ -820,24 +820,24 @@ export default function CaseStudyPage() {
                 </h2>
 
                 <div
-                  className="w-20 h-1 mb-8"
+                  className="w-12 sm:w-16 md:w-20 h-1 mb-6 sm:mb-8"
                   style={{
                     backgroundColor: colors.secondary,
                   }}
                 ></div>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {caseStudy.objectifs.items.map((item: string, idx: number) => (
                   <div key={idx} className="flex items-start group">
                     <div
-                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-1 mr-4 group-hover:scale-110 transition-transform duration-300"
+                      className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mt-1 mr-3 sm:mr-4 group-hover:scale-110 transition-transform duration-300"
                       style={{
                         backgroundColor: colors.secondary,
                       }}
                     >
                       <svg
-                        className="w-4 h-4 text-white"
+                        className="w-3 h-3 sm:w-4 sm:h-4 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -852,7 +852,7 @@ export default function CaseStudyPage() {
                     </div>
                     <div className="flex-1">
                       <p
-                        className="text-lg font-medium group-hover:translate-x-2 transition-transform duration-300"
+                        className="text-base sm:text-lg font-medium group-hover:translate-x-2 transition-transform duration-300"
                         style={{ color: colors.tertiary }}
                       >
                         {item}
@@ -885,35 +885,35 @@ export default function CaseStudyPage() {
       </div>
 
       {/* Technologies & Stack Section */}
-      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+      <div className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         {/* Decorative background elements (consistent with ServicesSection) */}
         <div className="absolute inset-0 z-0" aria-hidden="true">
-          {/* Blurry circles */}
+          {/* Blurry circles - hidden on mobile for performance */}
           <div
-            className="absolute top-10 right-12 w-80 h-80 rounded-full blur-3xl"
+            className="hidden sm:block absolute top-10 right-12 w-80 h-80 rounded-full blur-3xl"
             style={{ backgroundColor: `${colors.primary}15` }}
           ></div>
           <div
-            className="absolute bottom-10 left-16 w-96 h-96 rounded-full blur-3xl"
+            className="hidden sm:block absolute bottom-10 left-16 w-96 h-96 rounded-full blur-3xl"
             style={{ backgroundColor: `${colors.secondary}15` }}
           ></div>
           <div
-            className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full blur-3xl"
+            className="hidden sm:block absolute top-1/3 left-1/4 w-64 h-64 rounded-full blur-3xl"
             style={{ backgroundColor: `${colors.primary}10` }}
           ></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Header */}
-          <div className="mb-20">
-            <div className="mb-6">
+          <div className="mb-12 sm:mb-16 md:mb-20">
+            <div className="mb-4 sm:mb-6">
               <span className="text-xs font-bold uppercase tracking-wide text-gray-500">
                 / TECHNOLOGIES
               </span>
             </div>
 
             <h2
-              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight"
               style={{
                 fontFamily: 'Hubot Sans, Inter, sans-serif',
                 color: colors.primary,
@@ -925,7 +925,7 @@ export default function CaseStudyPage() {
             </h2>
 
             <p
-              className="text-lg leading-relaxed max-w-3xl font-semibold"
+              className="text-base sm:text-lg leading-relaxed max-w-3xl font-semibold"
               style={{ color: colors.tertiary }}
             >
               Une architecture robuste et moderne, conçue pour la scalabilité,
@@ -935,9 +935,9 @@ export default function CaseStudyPage() {
           </div>
 
           {/* Tech Stack Grid - 4 columns */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16">
             {/* Frontend */}
-            <div className="bg-gradient-to-br from-white to-gray-50/50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100/50">
+            <div className="bg-gradient-to-br from-white to-gray-50/50 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100/50">
               <div
                 className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                 style={{ backgroundColor: `${colors.primary}15` }}
@@ -1143,7 +1143,7 @@ export default function CaseStudyPage() {
                 </span>
               </h3>
 
-              <div className="space-y-6 mb-12">
+              <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12">
                 {[
                   {
                     title: 'Performance & Scalabilité',
@@ -1158,19 +1158,22 @@ export default function CaseStudyPage() {
                     desc: 'WebSocket pour les notifications push, géolocalisation en temps réel, et synchronisation multi-appareils.',
                   },
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-start space-x-4">
+                  <div
+                    key={idx}
+                    className="flex items-start space-x-3 sm:space-x-4"
+                  >
                     <div
-                      className="flex-shrink-0 w-2 h-2 rounded-full mt-2"
+                      className="flex-shrink-0 w-2 h-2 rounded-full mt-1.5 sm:mt-2"
                       style={{ backgroundColor: colors.secondary }}
                     ></div>
                     <div>
                       <h4
-                        className="font-bold mb-2"
+                        className="font-bold mb-1 sm:mb-2 text-base sm:text-lg"
                         style={{ color: colors.primary }}
                       >
                         {item.title}
                       </h4>
-                      <p className="text-gray-600 leading-relaxed text-sm">
+                      <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
                         {item.desc}
                       </p>
                     </div>
@@ -1179,7 +1182,7 @@ export default function CaseStudyPage() {
               </div>
 
               {/* Stats - Below Content */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {[
                   { metric: '99.9%', label: 'Uptime' },
                   { metric: '< 200ms', label: 'Response Time' },
@@ -1188,16 +1191,16 @@ export default function CaseStudyPage() {
                 ].map((stat, idx) => (
                   <div
                     key={idx}
-                    className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-100 text-center hover:border-opacity-50 transition-colors duration-300"
+                    className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-4 sm:p-6 border border-gray-100 text-center hover:border-opacity-50 transition-colors duration-300"
                     style={{ borderColor: colors.secondary }}
                   >
                     <div
-                      className="text-3xl md:text-4xl font-bold mb-2"
+                      className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2"
                       style={{ color: colors.primary }}
                     >
                       {stat.metric}
                     </div>
-                    <div className="text-sm text-gray-600 uppercase font-semibold tracking-wide">
+                    <div className="text-xs sm:text-sm text-gray-600 uppercase font-semibold tracking-wide leading-tight">
                       {stat.label}
                     </div>
                   </div>
@@ -1209,21 +1212,21 @@ export default function CaseStudyPage() {
       </div>
 
       {/* CTA Section - Blog Style */}
-      <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+      <div className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto">
-          <div className="p-8 md:p-12 bg-gradient-to-r from-[#1a3a52]/30 to-[#2d5369]/30 rounded-2xl border border-[#2d5369]/20 relative overflow-hidden group">
+          <div className="p-6 sm:p-8 md:p-12 bg-gradient-to-r from-[#1a3a52]/30 to-[#2d5369]/30 rounded-2xl border border-[#2d5369]/20 relative overflow-hidden group">
             {/* Animated background effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#2d5369]/0 via-[#2d5369]/10 to-[#2d5369]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
 
             <div className="relative z-10">
               <h3
-                className="text-3xl md:text-4xl font-bold mb-4"
+                className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4"
                 style={{ color: colors.primary }}
               >
                 Prêt à transformer votre projet ?
               </h3>
               <p
-                className="text-lg mb-8 opacity-90"
+                className="text-base sm:text-lg mb-6 sm:mb-8 opacity-90"
                 style={{ color: colors.tertiary }}
               >
                 Découvrez comment notre expertise en architecture technique et
@@ -1232,10 +1235,10 @@ export default function CaseStudyPage() {
               <Link href="/contact">
                 <AnimatedButton
                   text="Démarrer un projet"
-                  textColor="white"
+                  textColor={colors.primary}
                   borderColor={colors.primary}
                   circleColor={colors.primary}
-                  arrowColor="white"
+                  arrowColor={colors.primary}
                   hoverTextColor="white"
                   hoverArrowColor="white"
                 />
