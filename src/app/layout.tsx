@@ -19,6 +19,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Progix - Coming Soon',
   description: "We're building something amazing. Stay tuned!",
+  icons: {
+    icon: '/images/logo.png',
+    shortcut: '/images/logo.png',
+    apple: '/images/logo.png',
+  },
 };
 
 export default function RootLayout({
