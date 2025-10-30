@@ -38,33 +38,33 @@ const DriveHero: React.FC = () => {
   return (
     <section ref={sectionRef} className="bg-black text-white w-full">
       <div
-        className="mx-auto w-full max-w-none px-4 sm:px-6 lg:px-8 py-24 sm:py-28 lg:py-32"
+        className="mx-auto w-full max-w-none px-4 sm:px-6 lg:px-8 py-16 sm:py-24 md:py-28 lg:py-32"
         style={{ fontFamily: "'Helvetica Now Display', Helvetica, Arial, Inter, sans-serif" }}
       >
         {/* Top rows: left block and DRIVE on the right */}
-        <div className="grid grid-cols-1 md:grid-cols-12 items-start gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 items-start gap-4 sm:gap-6 md:gap-8">
           {/* Left giant copy */}
           <div className="md:col-span-7 leading-none select-none">
-            <div className="text-[16vw] md:text-[12vw] font-extrabold uppercase tracking-[-0.04em]">WE</div>
-            <div className="text-[16vw] md:text-[12vw] font-extrabold tracking-[-0.04em]">
+            <div className="text-[18vw] sm:text-[16vw] md:text-[12vw] font-extrabold uppercase tracking-[-0.04em]">WE</div>
+            <div className="text-[18vw] sm:text-[16vw] md:text-[12vw] font-extrabold tracking-[-0.04em]">
               <span className="align-middle">→</span>
-              <span className="uppercase ml-6">YOUR</span>
+              <span className="uppercase ml-3 sm:ml-6">YOUR</span>
             </div>
-            <div className="text-[16vw] md:text-[12vw] font-extrabold uppercase tracking-[-0.04em]">SYSTEMS</div>
+            <div className="text-[18vw] sm:text-[16vw] md:text-[12vw] font-extrabold uppercase tracking-[-0.04em]">SYSTEMS</div>
           </div>
 
           {/* Right DRIVE and paragraph/button */}
           <div className="md:col-span-5 flex md:block flex-col items-end md:items-start md:pt-6">
-            <div className="text-[18vw] md:text-[14vw] font-bold uppercase leading-none tracking-[-0.04em] md:text-right self-end">DRIVE</div>
-            <div className="mt-6 md:mt-8 md:text-right max-w-xs md:max-w-sm self-end">
-              <p className="text-sm md:text-base text-white/80">
+            <div className="text-[20vw] sm:text-[18vw] md:text-[14vw] font-bold uppercase leading-none tracking-[-0.04em] md:text-right self-end">DRIVE</div>
+            <div className="mt-4 sm:mt-6 md:mt-8 md:text-right max-w-xs md:max-w-sm self-end">
+              <p className="text-xs sm:text-sm md:text-base text-white/80">
                 Digital architectures for an ever-shifting world.
               </p>
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center mt-4 px-6 py-3 border border-white text-white text-sm font-semibold rounded-none hover:bg-white hover:text-black transition-colors"
+                className="inline-flex items-center justify-center mt-3 sm:mt-4 px-4 sm:px-6 py-2 sm:py-3 border border-white text-white text-xs sm:text-sm font-semibold rounded-none hover:bg-white hover:text-black transition-colors"
               >
-                LET’S TALK
+                LET'S TALK
                 <span className="ml-2">→</span>
               </a>
             </div>
@@ -72,7 +72,7 @@ const DriveHero: React.FC = () => {
         </div>
 
         {/* FWRD scroller */}
-        <div ref={fwrdRef} className="mt-10 md:mt-16 w-full overflow-visible select-none">
+        <div ref={fwrdRef} className="mt-8 sm:mt-10 md:mt-16 w-full overflow-visible select-none">
           <div className="text-[28vw] md:text-[22vw] font-extrabold uppercase leading-none tracking-[-0.04em]">
             FWRD
           </div>

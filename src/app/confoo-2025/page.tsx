@@ -255,7 +255,6 @@ export default function ConFoo2025Page() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: colors.primary }}>
               Nos moments forts en images
             </h2>
-            <div className="text-4xl mb-4">📸</div>
             <p className="text-lg text-gray-600">
               {galleryItems.length} photos de notre expérience ConFoo 2025
             </p>
@@ -270,22 +269,6 @@ export default function ConFoo2025Page() {
               borderRadius={0.05} 
               scrollEase={0.02}
             />
-          </div>
-
-          {/* Instructions */}
-          <div className="flex justify-center items-center mt-8 space-x-6 text-sm text-gray-500">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              <span>{galleryItems.length} photos</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse delay-500"></div>
-              <span>Scroll pour naviguer</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse delay-1000"></div>
-              <span>Galerie circulaire 3D</span>
-            </div>
           </div>
         </div>
       </section>
