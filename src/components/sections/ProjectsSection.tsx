@@ -81,22 +81,22 @@ function ProjectItem({
       <button
         type="button"
         onClick={() => setOpenId(isOpen ? null : project.id)}
-        className="group w-full text-left grid grid-cols-[auto_1fr_auto] sm:grid-cols-[auto_1fr_auto_auto] items-center gap-x-3 sm:gap-x-8 md:gap-x-10 lg:gap-x-12 py-8 sm:py-12 md:py-14 border-t border-dotted border-white/30 hover:border-black/30 hover:bg-white transition-colors duration-150 px-3 sm:px-5 md:px-8"
+        className="group w-full text-left grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-8 sm:gap-x-10 md:gap-x-12 py-12 md:py-14 border-t border-dotted border-white/30 hover:border-black/30 hover:bg-white transition-colors duration-150 px-5 sm:px-8"
         onMouseEnter={() => onPreviewEnter(project.preview || project.image)}
         onMouseMove={onPreviewMove}
         onMouseLeave={onPreviewLeave}
         aria-expanded={isOpen}
       >
-        <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tabular-nums leading-none text-white group-hover:text-black transition-colors">
+        <span className="text-6xl md:text-7xl font-bold tabular-nums leading-none text-white group-hover:text-black transition-colors">
           {String(index + 1).padStart(2, '0')}
         </span>
-        <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight ml-2 sm:ml-8 md:ml-12 lg:ml-16 text-white group-hover:text-black transition-colors">
+        <span className="text-5xl md:text-6xl font-bold leading-tight ml-12 md:ml-16 text-white group-hover:text-black transition-colors">
           {project.title}
         </span>
         <span className="ml-auto hidden md:block mr-8 md:mr-12 text-gray-400 group-hover:text-gray-800 uppercase tracking-wider font-light text-sm md:text-base transition-colors">
           {project.category}
         </span>
-        <span className="text-3xl sm:text-4xl md:text-5xl font-light leading-none text-white/80 group-hover:text-black transition-colors">
+        <span className="text-4xl md:text-5xl font-light leading-none text-white/80 group-hover:text-black transition-colors">
           {isOpen ? '–' : '+'}
         </span>
       </button>
@@ -112,8 +112,8 @@ function ProjectItem({
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden border-t border-dotted border-white/20"
           >
-            <div className="py-6 sm:py-10 px-3 sm:px-5 md:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-start">
+            <div className="py-10 px-5 sm:px-8">
+              <div className="grid md:grid-cols-2 gap-12 items-start">
                 {/* Left: media (video preferred if present) */}
                 <div
                   className={`relative rounded-xl overflow-hidden ${project.bgClass ? '' : ''}`}
@@ -121,7 +121,7 @@ function ProjectItem({
                   <div
                     className={`absolute inset-0 ${project.bgClass ? project.bgClass : 'bg-[#3BA7FF]'}`}
                   />
-                  <div className="relative p-4 sm:p-6 md:p-8">
+                  <div className="relative p-6 md:p-8">
                     <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden ">
                       {project.video ? (
                         <video
@@ -146,8 +146,8 @@ function ProjectItem({
                 </div>
 
                 {/* Right: text block */}
-                <div className="max-w-3xl md:ml-auto">
-                  <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6">
+                <div className="max-w-3xl ml-auto">
+                  <h3 className="text-6xl font-bold leading-tight mb-6">
                     {project.longTitle || project.title}
                   </h3>
                   {project.longDescription ? (
@@ -155,19 +155,19 @@ function ProjectItem({
                       {project.longDescription.map((para, idx) => (
                         <p
                           key={idx}
-                          className="text-base sm:text-lg md:text-xl leading-relaxed"
+                          className="text-lg md:text-xl leading-relaxed"
                         >
                           {para}
                         </p>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-lg sm:text-xl md:text-2xl text-white/80 leading-relaxed mb-6 sm:mb-10">
+                    <p className="text-2xl text-white/80 leading-relaxed mb-10">
                       {project.description}
                     </p>
                   )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 pb-6 sm:pb-10 border-b border-dotted border-white/20 mt-6 sm:mt-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pb-10 border-b border-dotted border-white/20 mt-8">
                     <div>
                       <div className="text-sm text-white/60 tracking-widest mb-2">
                         SERVICES
@@ -190,10 +190,10 @@ function ProjectItem({
                     </div>
                   </div>
 
-                  <div className="pt-6 sm:pt-10">
+                  <div className="pt-10">
                     <a
                       href="#"
-                      className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border border-white rounded-md text-sm sm:text-base font-semibold hover:bg-white hover:text-black transition-colors"
+                      className="inline-flex items-center justify-center px-8 py-4 border border-white rounded-md text-base font-semibold hover:bg-white hover:text-black transition-colors"
                     >
                       VIEW PROJECT
                       <span className="ml-2">→</span>
@@ -235,7 +235,7 @@ export default function ProjectsSection() {
   return (
     <section className="bg-black text-white">
       {/* Pills header - full width but padded */}
-      <div className="flex gap-2 sm:gap-3 flex-wrap py-4 sm:py-6 px-3 sm:px-5 md:px-8">
+      <div className="flex gap-3 flex-wrap py-6 px-5 sm:px-8">
         {FILTERS.map((label) => {
           const isActive = activeFilter === label;
           return (
@@ -245,8 +245,8 @@ export default function ProjectsSection() {
               onClick={() => setActiveFilter(label)}
               className={
                 isActive
-                  ? 'inline-flex items-center px-3 sm:px-5 py-1.5 sm:py-2 bg-white text-black rounded-md text-xs sm:text-sm font-semibold'
-                  : 'inline-flex items-center px-3 sm:px-5 py-1.5 sm:py-2 border border-white/50 rounded-md text-xs sm:text-sm font-semibold text-white/80 hover:text-white hover:border-white'
+                  ? 'inline-flex items-center px-5 py-2 bg-white text-black rounded-md text-sm font-semibold'
+                  : 'inline-flex items-center px-5 py-2 border border-white/50 rounded-md text-sm font-semibold text-white/80 hover:text-white hover:border-white'
               }
               aria-pressed={isActive}
             >
@@ -284,14 +284,14 @@ export default function ProjectsSection() {
             animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.98, y: 3, filter: 'blur(2px)' }}
             transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed z-[60] pointer-events-none rounded-2xl overflow-hidden shadow-2xl hidden md:block"
+            className="fixed z-[60] pointer-events-none rounded-2xl overflow-hidden shadow-2xl"
             style={{ left: mouseX, top: mouseY }}
           >
             <motion.div
               initial={{ scale: 0.98 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.14 }}
-              className="w-[280px] sm:w-[420px] max-h-[250px] sm:max-h-[400px] rounded-2xl overflow-hidden ring-1 ring-white/10"
+              className="w-[420px] max-h-[400px] rounded-2xl overflow-hidden ring-1 ring-white/10"
             >
               <Image
                 src={previewSrc}

@@ -53,13 +53,9 @@ const BlogSection = () => {
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="bg-transparent overflow-hidden cursor-pointer group flex flex-col transform transition-transform hover:translate-y-[-4px]"
-                style={{ WebkitTapHighlightColor: 'transparent' }}
+                className="bg-transparent overflow-hidden cursor-pointer group flex flex-col h-full transform transition-transform hover:translate-y-[-4px]"
               >
-                <div
-                  className="relative w-full overflow-hidden rounded-lg"
-                  style={{ paddingBottom: '66.67%' }}
-                >
+                <div className="relative h-48 sm:h-52 md:h-56 overflow-hidden rounded-lg">
                   <Image
                     src={post.image}
                     alt={post.title}
@@ -67,32 +63,16 @@ const BlogSection = () => {
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                     loading={idx < 1 ? 'eager' : 'lazy'}
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                    }}
                   />
                 </div>
-                <div className="py-3 sm:py-4 md:py-6 flex-1 flex flex-col">
+                <div className="py-3 sm:py-4 md:py-6">
                   <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-3 font-medium">
                     {post.date}
                   </p>
-                  <h3
-                    className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 leading-snug flex-1"
-                    style={{
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      minHeight: '3rem',
-                    }}
-                  >
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 leading-snug min-h-[3rem] sm:min-h-0 line-clamp-2 sm:line-clamp-none">
                     {post.title}
                   </h3>
-                  <span className="inline-block text-sm font-semibold text-[#00d4ff] relative group-hover:underline">
+                  <span className="inline-block text-sm font-semibold text-[#00d4ff] relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-[#00d4ff] after:transition-all after:duration-300 group-hover:after:w-full touch:after:w-1/4">
                     Lire la suite
                   </span>
                 </div>

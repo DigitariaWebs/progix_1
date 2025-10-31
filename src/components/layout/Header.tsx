@@ -71,7 +71,7 @@ const Header = () => {
                   className="h-8 w-auto"
                 />
                 <Image
-                  src="/images/CertifiedLogo.png"
+                  src="/images/CertifiedLogo.webp"
                   alt="GPTW Certification"
                   width={80}
                   height={32}

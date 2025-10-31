@@ -83,12 +83,12 @@ const PortfolioPage = () => {
       {/* Navbar removed */}
 
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] sm:min-h-screen w-full bg-[#F5F5F5] pt-32 sm:pt-48 md:pt-56 pb-12 sm:pb-20">
+      <section className="relative min-h-screen w-full bg-[#F5F5F5] pt-48 md:pt-56 pb-20">
         {/* Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:pr-6 lg:pr-8 sm:pl-1 lg:pl-2 h-full flex items-center">
-          <div className="w-full space-y-8 sm:space-y-12">
+        <div className="max-w-7xl mx-auto pr-4 sm:pr-6 lg:pr-8 pl-0 sm:pl-1 lg:pl-2 h-full flex items-center">
+          <div className="w-full space-y-12">
             {/* Breadcrumb */}
-            <div className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600">
+            <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-600 -ml-4 sm:-ml-6 md:-ml-10 lg:-ml-16">
               <span>/</span>
               <span className="uppercase tracking-wider font-bold">
                 PROJETS
@@ -98,8 +98,8 @@ const PortfolioPage = () => {
             {/* Main Heading with CircularText */}
             <div className="flex justify-between items-start">
               {/* Main Heading */}
-              <div className="flex-1">
-                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold leading-tight max-w-6xl">
+              <div className="flex-1 ml-1 sm:-ml-6 md:-ml-10 lg:-ml-16">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold leading-tight max-w-6xl">
                   Parle, parle, jase, jase, mais concrètement, ça ressemble à
                   quoi notre travail?
                 </h1>
@@ -109,18 +109,18 @@ const PortfolioPage = () => {
             </div>
 
             {/* Description on the Right Side - With Icon */}
-            <div className="flex justify-start sm:justify-end">
-              <div className="flex gap-3 sm:gap-4 items-start max-w-xl">
+            <div className="flex justify-end">
+              <div className="flex gap-4 items-start max-w-xl -mr-4 sm:-mr-8 lg:-mr-12">
                 {/* Icon */}
                 <div className="flex-shrink-0 mt-1">
                   <svg
-                    width="20"
-                    height="20"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
-                    className="text-gray-800 sm:w-6 sm:h-6"
+                    className="text-gray-800"
                   >
                     <circle cx="12" cy="12" r="10" />
                     {/* Aiguille des heures */}
@@ -157,7 +157,7 @@ const PortfolioPage = () => {
                 </div>
 
                 {/* Description Text */}
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed">
+                <p className="text-sm sm:text-lg lg:text-xl text-gray-700 leading-relaxed">
                   Fini le blabla, c’est le temps de vous prouver qu’on est bon
                   dans ce qu’on fait. Découvrez nos études de cas et parcourez
                   la liste de nos projets plus bas.

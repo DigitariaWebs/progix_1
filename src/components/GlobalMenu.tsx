@@ -122,27 +122,29 @@ export default function GlobalMenu() {
 
   const menuItems = [
     { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },
-    { label: 'A', ariaLabel: 'Accéder à la section A', link: '#' },
-    { label: 'Projets', ariaLabel: 'Voir nos projets', link: '/portfolio' },
-    { label: 'Appel d’Offres', ariaLabel: "Accéder à Appel d’Offres", link: '#' },
-    { label: 'Devis fournisseur', ariaLabel: 'Accéder à Devis fournisseur', link: '#' },
-    { label: 'Acheter en ligne', ariaLabel: 'Accéder à Acheter en ligne', link: '#' },
-    { label: "Factures d'achat", ariaLabel: "Accéder aux Factures d'achat", link: '#' },
-    { label: 'Devis', ariaLabel: 'Accéder à Devis', link: '#' },
-    { label: 'Commandes', ariaLabel: 'Accéder à Commandes', link: '#' },
-    { label: 'Factures', ariaLabel: 'Accéder à Factures', link: '#' },
-    { label: 'Livraisons', ariaLabel: 'Accéder à Livraisons', link: '#' },
-    { label: 'Tickets', ariaLabel: 'Accéder à Tickets', link: '#' },
-    { label: 'Adresses', ariaLabel: 'Accéder à Adresses', link: '#' },
-    { label: 'Feuilles de temps', ariaLabel: 'Accéder à Feuilles de temps', link: '#' },
-    { label: 'Newsletter', ariaLabel: 'Accéder à Newsletter', link: '#' },
-    { label: 'Demande de matériel', ariaLabel: 'Accéder à Demande de matériel', link: '#' },
-    { label: 'Mon Compte', ariaLabel: 'Accéder à Mon Compte', link: '#' },
+    { label: 'Services', ariaLabel: 'Voir nos services', link: '/services' },
+    {
+      label: 'Portfolio',
+      ariaLabel: 'Voir notre portfolio',
+      link: '/portfolio',
+    },
+    { label: 'Équipe', ariaLabel: 'Découvrir notre équipe', link: '/team' },
+    {
+      label: 'Valeurs',
+      ariaLabel: 'Connaître nos valeurs',
+      link: '/nos-valeurs',
+    },
+    {
+      label: 'ConFoo',
+      ariaLabel: 'Découvrir ConFoo 2025',
+      link: '/confoo-2025',
+    },
   ];
 
   const socialItems = [
-    { label: 'LinkedIn', link: 'https://www.linkedin.com/company/progix-inc/?viewAsMember=true' },
-    { label: 'GitHub', link: 'https://github.com/ilyes200264?tab=repositories' },
+    { label: 'LinkedIn', link: 'https://linkedin.com/company/progix' },
+    { label: 'GitHub', link: 'https://github.com/progix' },
+    { label: 'Twitter', link: 'https://twitter.com/progix' },
   ];
 
   // duplicates removed

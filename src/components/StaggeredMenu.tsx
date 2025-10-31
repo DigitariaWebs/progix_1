@@ -428,10 +428,7 @@ export const StaggeredMenu = ({
         className={`staggered-menu-header${hideHeader && !open ? ' sm-header-hidden' : ''}`}
         aria-label="Main navigation header"
       >
-        <div
-          className="sm-logo transform -translate-x-2 sm:translate-x-0"
-          aria-label="Logo"
-        >
+        <div className="sm-logo transform -translate-x-2 sm:translate-x-0" aria-label="Logo">
           <Image
             src="/images/logo.png"
             alt="PROGIX Logo"
@@ -448,7 +445,7 @@ export const StaggeredMenu = ({
             }}
           />
           <Image
-            src="/images/CertifiedLogo.png"
+            src="/images/CertifiedLogo.webp"
             alt="GPTW Certification"
             width={100}
             height={40}
@@ -457,7 +454,6 @@ export const StaggeredMenu = ({
               (e.currentTarget as HTMLImageElement).style.display = 'none';
             }}
             draggable={false}
-            priority
           />
         </div>
         <div className="flex items-center gap-0 sm:gap-2 md:gap-[12px]">

@@ -55,7 +55,7 @@ const Navbar = () => {
               className="h-20 w-auto cursor-pointer"
             />
             <Image
-              src="/images/CertifiedLogo.png"
+              src="/images/CertifiedLogo.webp"
               alt="GPTW Certification"
               width={100}
               height={40}
