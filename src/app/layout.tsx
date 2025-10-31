@@ -17,8 +17,49 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Progix - Coming Soon',
-  description: "We're building something amazing. Stay tuned!",
+  metadataBase: new URL('https://www.progix.pro'),
+  title: {
+    default: 'PROGIX — Développement web, mobile et conseil IT à Montréal',
+    template: 'PROGIX | %s',
+  },
+  description:
+    "Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT. Hébergement managé, UX/UI, DevOps et support.",
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/images/logo.png',
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://www.progix.pro',
+    siteName: 'PROGIX',
+    title: 'PROGIX — Développement web, mobile et conseil IT à Montréal',
+    description:
+      "Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT.",
+    locale: 'fr_CA',
+    images: [
+      {
+        url: '/images/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'PROGIX',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PROGIX — Développement web, mobile et conseil IT à Montréal',
+    description:
+      "Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT.",
+    images: ['/images/logo.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default function RootLayout({
@@ -27,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="fr" className="overflow-x-hidden">
       <body
         className={`${montserrat.variable} ${inter.variable} font-sans antialiased overflow-x-hidden`}
       >
