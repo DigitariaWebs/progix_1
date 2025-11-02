@@ -445,7 +445,7 @@ export const StaggeredMenu = ({
             }}
           />
           <Image
-            src="/images/CertifiedLogo.webp"
+            src="/images/CertifiedLogo.png"
             alt="GPTW Certification"
             width={100}
             height={40}
