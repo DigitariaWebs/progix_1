@@ -6,19 +6,6 @@ import { useRef, useEffect } from 'react';
 import { blogPosts } from '@/data/blogPosts';
 // Navbar removed to use global StaggeredMenu header
 
-export const metadata = {
-  title: 'Blog — Actualités et études de cas PROGIX',
-  description:
-    "Découvrez nos articles: delivery, IA, web, growth et études de cas par l'équipe Progix.",
-  alternates: { canonical: '/blog' },
-  openGraph: {
-    title: 'Blog — Actualités et études de cas PROGIX',
-    description:
-      "Découvrez nos articles: delivery, IA, web, growth et études de cas par l'équipe Progix.",
-    url: 'https://www.progix.pro/blog',
-  },
-};
-
 export default function BlogPage() {
   const navRef = useRef<HTMLElement>(null);
 
