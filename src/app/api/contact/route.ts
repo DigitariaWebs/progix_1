@@ -22,16 +22,31 @@ export async function POST(request: NextRequest) {
     // For now, we'll skip database saving and just send the email
     // TODO: Implement database saving later if needed
 
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || "587"),
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    // Helper to send via Resend HTTP API (avoids SMTP restrictions on some hosts)
+    const sendViaResend = async (htmlContent: string) => {
+      const apiKey = process.env.RESEND_API_KEY;
+      const to = process.env.CONTACT_EMAIL;
+      if (!apiKey || !to) return false;
+      const from = process.env.SMTP_FROM || 'no-reply@progix.pro';
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: `PROGIX <${from}>`,
+          to: [to],
+          subject: 'Nouvelle demande de soumission - Progix',
+          html: htmlContent,
+        }),
+      });
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        throw new Error(`Resend error ${res.status}: ${txt}`);
+      }
+      return true;
+    };
 
     // Format project type
     const getProjectType = (proj: string) => {
@@ -101,13 +116,64 @@ export async function POST(request: NextRequest) {
       <p>${projectDescription.replace(/\n/g, '<br>')}</p>
     `;
 
-    // Send email
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM,
-      to: process.env.CONTACT_EMAIL,
-      subject: "Nouvelle demande de soumission - Progix",
-      html,
-    });
+    // Prefer Resend if configured, fallback to SMTP
+    let sent = false;
+    try {
+      if (process.env.RESEND_API_KEY) {
+        await sendViaResend(html);
+        sent = true;
+      }
+    } catch (e) {
+      // fall back to SMTP
+    }
+
+    if (!sent) {
+      // Validate minimal SMTP config
+      const host = process.env.SMTP_HOST;
+      const port = parseInt(process.env.SMTP_PORT || '587', 10);
+      const user = process.env.SMTP_USER;
+      const pass = process.env.SMTP_PASS;
+      const configuredFrom = process.env.SMTP_FROM;
+      const to = process.env.CONTACT_EMAIL;
+      if (!host || !user || !pass || !from || !to) {
+        return NextResponse.json(
+          { success: false, message: 'Email service not configured. Set RESEND_API_KEY or SMTP_* env vars.' },
+          { status: 500 },
+        );
+      }
+      const transporter = nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: { user, pass },
+        tls: { rejectUnauthorized: false },
+      });
+      // Optional preflight verify to surface clearer errors
+      try {
+        await transporter.verify();
+      } catch (e: any) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'SMTP verification failed',
+            code: e?.code || 'SMTP_VERIFY_ERROR',
+            detail: e?.message || 'Unknown error',
+          },
+          { status: 500 },
+        );
+      }
+      // Gmail requires From to match the authenticated user unless "Send mail as" is configured.
+      const useGmailSafeFrom = /gmail\.com$/i.test(user) || /smtp\.gmail\.com$/i.test(host);
+      const from = useGmailSafeFrom ? user : configuredFrom!;
+
+      await transporter.sendMail({
+        from,
+        to,
+        replyTo: email, // so you can reply directly to la personne
+        subject: 'Nouvelle demande de soumission - Progix',
+        html,
+      });
+    }
 
     return NextResponse.json({
       success: true,
