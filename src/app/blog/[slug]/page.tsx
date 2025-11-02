@@ -10,39 +10,6 @@ import { use } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 // Navbar removed to use global StaggeredMenu header
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }> | { slug: string };
-}) {
-  const p = 'then' in (params as any) ? await (params as Promise<{ slug: string }>) : (params as { slug: string });
-  const post = blogPosts.find((bp) => bp.slug === p.slug);
-  if (!post) {
-    return { title: 'Article — PROGIX' };
-  }
-  const title = post.title + ' — PROGIX';
-  const description = post.excerpt || post.content.slice(0, 160);
-  const url = `https://www.progix.pro/blog/${post.slug}`;
-  return {
-    title,
-    description,
-    alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: {
-      title,
-      description,
-      url,
-      images: [{ url: post.image }],
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [post.image],
-    },
-  };
-}
-
 export default function BlogPostPage({
   params,
 }: {
