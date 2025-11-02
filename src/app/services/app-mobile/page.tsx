@@ -3,8 +3,8 @@ import BlogSection from '@/components/sections/BlogSection';
 import CaseStudiesSection from '@/components/sections/CaseStudiesSection';
 import ClientLogosSection from '@/components/sections/ClientLogosSection';
 import ExpertiseSection from '@/components/sections/ExpertiseSection';
-import HeroSection from '@/components/sections/HeroSection';
-import ServicesSection from '@/components/sections/ServicesSection';
+import MobileHeroSection from '@/components/sections/MobileHeroSection';
+import MobileServicesSection from '@/components/sections/MobileServicesSection';
 import TeamSection from '@/components/sections/TeamSection';
 import SectionFadeBg from '@/components/SectionFadeBg';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
@@ -15,9 +15,9 @@ import ScrollVelocity from '@/components/ScrollVelocity';
 export default function AppMobilePage() {
   return (
     <div className="landing-page font-montserrat relative overflow-x-hidden">
-      <HeroSection />
+      <MobileHeroSection />
       <ClientLogosSection />
-      <ServicesSection />
+      <MobileServicesSection />
       <ExpertiseSection />
       <AboutUsSection />
       <TestimonialsSection />
