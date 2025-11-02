@@ -76,14 +76,14 @@ export default function RootLayout({
         <Script
           id="gtag-src"
           strategy="beforeInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17686381075"
+          src="https://www.googletagmanager.com/gtag/js?id=AW-1768631075"
         />
         <Script id="gtag-init" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);} 
             gtag('js', new Date());
-            gtag('config', 'AW-17686381075');
+            gtag('config', 'AW-1768631075');
           `}
         </Script>
         <GlobalMenu />

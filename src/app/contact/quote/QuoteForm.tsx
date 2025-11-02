@@ -6,6 +6,11 @@ import { Barlow } from 'next/font/google';
 import { ThumbsUp } from 'lucide-react';
 
 const barlow = Barlow({ subsets: ['latin'], weight: ['400','500','600','700','800'] });
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -84,6 +89,17 @@ const QuoteForm: React.FC = () => {
   const [budget, setBudget] = React.useState<string | null>(null);
   const [source, setSource] = React.useState<string | null>(null);
   const [thumbFor, setThumbFor] = React.useState<string | null>(null);
+
+  const handleSubmit = React.useCallback(() => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-1768631075/vuICKbzIJbgELJO6w_FB',
+        value: 1.0,
+        currency: 'CAD',
+      });
+    }
+    alert('Formulaire envoyé !');
+  }, []);
 
   const smoothScrollTo = (targetY: number, duration = 750) => {
     const startY = window.scrollY || window.pageYOffset;
@@ -233,6 +249,7 @@ const QuoteForm: React.FC = () => {
             whileTap={{ scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 280, damping: 20 }}
             className="px-10 h-[52px] rounded-full bg-white text-[#131618] font-bold tracking-[0.04em]"
+            onClick={handleSubmit}
           >
             ENVOYER
           </motion.button>
