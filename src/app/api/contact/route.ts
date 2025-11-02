@@ -1,3 +1,24 @@
+import { NextResponse } from 'next/server';
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    // Basic sanity check
+    const required = ['project','timeline','budget','source','fullName','email','phone','projectDescription'];
+    const missing = required.filter((k) => !(k in body) || body[k] === '' || body[k] === null);
+    if (missing.length) {
+      return NextResponse.json({ success: false, error: 'missing_fields', fields: missing }, { status: 400 });
+    }
+
+    // TODO: send email or persist (left intentionally minimal)
+    // For now, acknowledge receipt to unblock the UI
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json({ success: false, error: 'invalid_request' }, { status: 400 });
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
