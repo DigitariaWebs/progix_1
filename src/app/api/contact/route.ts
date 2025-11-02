@@ -4,8 +4,10 @@ import nodemailer from 'nodemailer';
 export const runtime = "nodejs"; // Force Node.js runtime for crypto operations
 
 export async function POST(request: NextRequest) {
+  console.log('Contact form submission received');
   try {
     const body = await request.json();
+    console.log('Request body:', JSON.stringify(body, null, 2));
 
     // Extract form data based on current contact form
     const {
@@ -18,6 +20,13 @@ export async function POST(request: NextRequest) {
       phone,
       projectDescription
     } = body;
+
+    console.log('SMTP_HOST:', process.env.SMTP_HOST);
+    console.log('SMTP_PORT:', process.env.SMTP_PORT);
+    console.log('SMTP_USER:', process.env.SMTP_USER ? 'Set' : 'Not set');
+    console.log('SMTP_PASS:', process.env.SMTP_PASS ? 'Set' : 'Not set');
+    console.log('SMTP_FROM:', process.env.SMTP_FROM);
+    console.log('CONTACT_EMAIL:', process.env.CONTACT_EMAIL);
 
     // For now, we'll skip database saving and just send the email
     // TODO: Implement database saving later if needed
@@ -32,6 +41,12 @@ export async function POST(request: NextRequest) {
         pass: process.env.SMTP_PASS,
       },
     });
+
+    console.log('Transporter created, verifying connection...');
+    await transporter.verify();
+    console.log('Transporter verified successfully');
+
+    // ...existing code...
 
     // Format project type
     const getProjectType = (proj: string) => {
@@ -108,6 +123,8 @@ export async function POST(request: NextRequest) {
       subject: "Nouvelle demande de soumission - Progix",
       html,
     });
+
+    console.log('Email sent successfully');
 
     return NextResponse.json({
       success: true,
