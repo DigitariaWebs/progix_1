@@ -10,6 +10,19 @@ const barlow = Barlow({
   weight: ['400', '500', '600', '700', '800'],
 });
 
+export const dynamic = 'force-dynamic';
+
+export function generateMetadata() {
+  return {
+    title: 'Contact - Progix',
+    description: 'Demandez une soumission pour votre projet.',
+  };
+}
+
+export async function generateStaticParams() {
+  return [];
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: (i = 0) => ({
