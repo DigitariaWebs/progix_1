@@ -11,19 +11,6 @@ import ProjectsSection from '@/components/sections/ProjectsSection';
 import DriveHero from '@/components/sections/DriveHero';
 import CtaButtonSection from '@/components/sections/CtaButtonSection';
 import Footer from '@/components/layout/Footer';
-
-export const metadata = {
-  title: 'Portfolio — Réalisations PROGIX',
-  description:
-    'Études de cas et projets livrés: web, mobile, CRM/ERP, intégrations et hébergement managé.',
-  alternates: { canonical: '/portfolio' },
-  openGraph: {
-    title: 'Portfolio — Réalisations PROGIX',
-    description:
-      'Études de cas et projets livrés: web, mobile, CRM/ERP, intégrations et hébergement managé.',
-    url: 'https://www.progix.pro/portfolio',
-  },
-};
 const colors = {
   primary: '#1B363C',
   secondary: '#1D4760',
