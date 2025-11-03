@@ -338,13 +338,12 @@ export default function ContactMobilePage() {
               <p className="text-black font-medium text-[15px] md:text-[16px]">
                 Cela nous aide à calibrer la scope (native vs hybride, intégrations, QA, analytics).
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 md:gap-4">
                 {[
-                  ['b1', 'Moins de 25 000$'],
-                  ['b2', '25 000$ à 50 000$'],
-                  ['b3', '50 000$ à 75 000$'],
-                  ['b4', '75 000$ à 120 000$'],
-                  ['b5', 'Plus de 120 000$'],
+                  ['b1', 'Moins de 10 000$'],
+                  ['b2', '10 000$ à 25 000$'],
+                  ['b3', '25 000$ à 50 000$'],
+                  ['b4', '50 000$ et plus'],
                 ].map(([value, label]) => (
                   <ChoiceButton
                     key={value}
