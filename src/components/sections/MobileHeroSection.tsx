@@ -75,7 +75,7 @@ const MobileHeroSection = () => {
           className="mb-8 sm:mb-16 md:mb-20"
         >
           <p className="text-white/80 text-xs sm:text-sm md:text-lg lg:text-xl tracking-[0.05em] sm:tracking-[0.1em] uppercase font-semibold max-w-4xl mx-auto px-2">
-            APPS MOBILES NATIVES OU HYBRIDES LIVRÉES PAR UNE ÉQUIPE PRODUIT SENIOR BASÉE À MONTRÉAL
+            UNE EXPERTISE MONTRÉALAISE POUR DES APPLICATIONS MOBILES SUR MESURE, FIABLES ET DURABLES
           </p>
         </motion.div>
 
