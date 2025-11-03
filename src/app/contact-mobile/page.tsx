@@ -277,14 +277,13 @@ export default function ContactMobilePage() {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {[
-                  ['ios', 'Application iOS native'],
-                  ['android', 'Application Android native'],
-                  ['hybride', 'Cross-platform (Flutter/React Native)'],
-                  ['mvp', 'MVP / Prototype mobile'],
-                  ['b2c', 'Expérience client (B2C)'],
-                  ['interne', 'App interne (B2E / équipe terrain)'],
-                  ['commerce', 'Mobile commerce / portail client'],
-                  ['autre', 'Autre'],
+                  ['ecommerce', 'Application e-commerce'],
+                  ['reservation', 'Application de réservation / services'],
+                  ['entreprise', "Application d’entreprise (CRM / ERP)"],
+                  ['communautaire', 'Application communautaire ou sociale'],
+                  ['education', 'Application éducative / e-learning'],
+                  ['evenementiel', 'Application événementielle / culturelle'],
+                  ['surmesure', 'Application sur mesure / projet innovant'],
                 ].map(([value, label]) => (
                   <ChoiceButton
                     key={value}
