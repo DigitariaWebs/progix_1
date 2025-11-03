@@ -9,8 +9,10 @@ export default function GlobalMenu() {
   const [isClient, setIsClient] = useState(false);
 
   // Set initial state based on pathname to avoid hydration mismatch
+  const isDarkHeroPage = pathname === '/' || pathname.startsWith('/services/app-mobile');
+
   const getInitialState = () => {
-    if (pathname === '/') {
+    if (isDarkHeroPage) {
       // On home page, start with white (hero section colors)
       return {
         menuButtonColor: '#ffffff',
@@ -61,7 +63,7 @@ export default function GlobalMenu() {
 
     const checkBackground = () => {
       // On home page, check if we're in the hero section (dark background)
-      if (pathname === '/') {
+      if (isDarkHeroPage) {
         const heroSection = document.querySelector('section');
         if (heroSection) {
           const rect = heroSection.getBoundingClientRect();
