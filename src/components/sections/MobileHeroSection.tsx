@@ -20,6 +20,19 @@ const MobileHeroSection = () => {
         />
       </div>
 
+      {/* Soft blue glows */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -left-32 top-1/4 w-72 h-72 bg-[#00d4ff]/25 blur-[150px]" />
+        <div className="absolute right-[-20%] bottom-0 w-[22rem] h-[22rem] bg-[#1d4760]/30 blur-[180px]" />
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-64 h-64 bg-[#00d4ff]/15 blur-[180px]" />
+      </div>
+
+      {/* Vertical light lines */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-[12%] top-0 h-full w-px bg-gradient-to-b from-white/5 via-[#00d4ff]/40 to-transparent opacity-50" />
+        <div className="absolute right-[18%] top-0 h-full w-px bg-gradient-to-b from-transparent via-white/25 to-transparent opacity-40" />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
