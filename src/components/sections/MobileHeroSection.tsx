@@ -101,9 +101,9 @@ const MobileHeroSection = () => {
             href="/contact"
             className="inline-block group relative overflow-hidden"
           >
-            <div className="relative px-6 sm:px-10 py-3 sm:py-4 border border-white/20 rounded-full bg-white/5 backdrop-blur-sm transition-all duration-500 hover:bg-white/10 hover:border-white/40">
-              <span className="text-white text-xs sm:text-sm tracking-wider uppercase font-medium whitespace-nowrap">
-                Parler de votre app mobile
+            <div className="relative px-6 sm:px-10 py-3 sm:py-4 border border-white rounded-full bg-white text-[#0a1628] font-semibold tracking-wide uppercase transition-all duration-500 hover:bg-transparent hover:text-white">
+              <span className="whitespace-nowrap" style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}>
+                Démarrer votre projet
               </span>
             </div>
           </Link>
