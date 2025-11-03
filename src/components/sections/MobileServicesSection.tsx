@@ -25,6 +25,13 @@ const CARDS = [
 const MobileServicesSection = () => {
   return (
     <section className="relative bg-white pt-12 pb-12 sm:pt-20 sm:pb-16 overflow-hidden">
+      {/* Decorative glows and lines */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -right-32 top-16 w-80 h-80 bg-[#1d4760]/12 blur-[160px]" />
+        <div className="absolute left-[-25%] bottom-0 w-[25rem] h-[25rem] bg-[#00d4ff]/10 blur-[220px]" />
+        <div className="absolute inset-y-0 left-[55%] w-px bg-gradient-to-b from-transparent via-[#00d4ff]/30 to-transparent opacity-50" />
+      </div>
+
       <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="max-w-4xl mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
