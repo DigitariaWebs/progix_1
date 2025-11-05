@@ -199,6 +199,7 @@ export default function ContactMobilePage() {
         setEmail('');
         setPhone('');
         setProjectDescription('');
+        window.location.assign('/confirmation');
       } else {
         setSubmitMessage({
           type: 'error',
