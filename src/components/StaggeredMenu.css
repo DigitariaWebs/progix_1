@@ -46,7 +46,9 @@
   background: transparent;
   pointer-events: none;
   z-index: 25;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .sm-header-hidden {
@@ -140,7 +142,9 @@
   background: #ffffff; /* white circle */
   border-radius: 9999px; /* perfect circle */
   will-change: transform, background-color;
-  transition: transform 0.25s ease, background-color 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease;
 }
 
 .sm-panel-itemWrap {
@@ -338,7 +342,9 @@
   line-height: 1;
   letter-spacing: -2px;
   text-transform: uppercase;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
   display: inline-block;
   text-decoration: none;
   padding-right: 1.4em;
@@ -353,7 +359,9 @@
   opacity: 0.35;
 }
 
-.staggered-menu-panel .sm-socials-list:focus-within .sm-socials-link:not(:focus-visible) {
+.staggered-menu-panel
+  .sm-socials-list:focus-within
+  .sm-socials-link:not(:focus-visible) {
   opacity: 0.35;
 }
 
@@ -366,11 +374,13 @@
   display: inline-block;
   will-change: transform;
   transform-origin: 50% 100%;
-  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sm-panel-item:hover {
-  color: #1D4760 !important;
+  color: #1d4760 !important;
   transform: translateX(8px);
 }
 

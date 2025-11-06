@@ -9,5 +9,3 @@ export default function GlobalHeader() {
   // Hide classic Navbar on homepage only
   return null;
 }
-
-

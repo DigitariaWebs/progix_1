@@ -68,8 +68,6 @@ const AboutUsSection = () => {
                 hoverArrowColor="#ffffff"
                 className="custom-animated-btn"
               />
-
-              
             </div>
           </div>
 

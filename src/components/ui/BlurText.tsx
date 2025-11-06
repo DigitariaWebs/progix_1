@@ -33,7 +33,10 @@ export type BlurTextProps = {
   onAnimationComplete?: () => void;
   stepDuration?: number; // seconds per step in the sequence
   segmentClassName?: (segment: string, index: number) => string | undefined;
-  segmentStyle?: (segment: string, index: number) => React.CSSProperties | undefined;
+  segmentStyle?: (
+    segment: string,
+    index: number,
+  ) => React.CSSProperties | undefined;
 };
 
 const BlurText: React.FC<BlurTextProps> = ({
@@ -66,7 +69,7 @@ const BlurText: React.FC<BlurTextProps> = ({
           observer.unobserve(node);
         }
       },
-      { threshold, rootMargin }
+      { threshold, rootMargin },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -77,7 +80,7 @@ const BlurText: React.FC<BlurTextProps> = ({
       direction === 'top'
         ? { filter: 'blur(10px)', opacity: 0, y: -50 }
         : { filter: 'blur(10px)', opacity: 0, y: 50 },
-    [direction]
+    [direction],
   );
 
   const defaultTo = useMemo(
@@ -89,7 +92,7 @@ const BlurText: React.FC<BlurTextProps> = ({
       },
       { filter: 'blur(0px)', opacity: 1, y: 0 },
     ],
-    [direction]
+    [direction],
   );
 
   const fromSnapshot = animationFrom ?? defaultFrom;
@@ -97,12 +100,16 @@ const BlurText: React.FC<BlurTextProps> = ({
 
   const stepCount = toSnapshots.length + 1;
   const times = Array.from({ length: stepCount }, (_, i) =>
-    stepCount === 1 ? 0 : i / (stepCount - 1)
+    stepCount === 1 ? 0 : i / (stepCount - 1),
   );
   const totalDuration = stepDuration * (stepCount - 1);
 
   return (
-    <p ref={ref} className={className} style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <p
+      ref={ref}
+      className={className}
+      style={{ display: 'flex', flexWrap: 'wrap' }}
+    >
       {elements.map((segment, index) => {
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
         const transition: any = {
@@ -112,8 +119,12 @@ const BlurText: React.FC<BlurTextProps> = ({
         };
         if (easing) transition.ease = easing;
 
-        const extraClass = segmentClassName ? segmentClassName(segment, index) : undefined;
-        const extraStyle = segmentStyle ? segmentStyle(segment, index) : undefined;
+        const extraClass = segmentClassName
+          ? segmentClassName(segment, index)
+          : undefined;
+        const extraStyle = segmentStyle
+          ? segmentStyle(segment, index)
+          : undefined;
         return (
           <motion.span
             className={`inline-block will-change-[transform,filter,opacity]${extraClass ? ` ${extraClass}` : ''}`}
@@ -136,5 +147,3 @@ const BlurText: React.FC<BlurTextProps> = ({
 };
 
 export default BlurText;
-
-

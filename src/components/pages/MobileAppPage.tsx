@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '../layout/Header';
 import LogoCarousel from '../LogoCarousel';
-import { 
-  FaMobile, 
+import {
+  FaMobile,
   FaCode,
   FaUsers,
   FaRocket,
@@ -16,7 +16,7 @@ import {
   FaArrowRight,
   FaHeart,
   FaClock,
-  FaShieldAlt
+  FaShieldAlt,
 } from 'react-icons/fa';
 
 const MobileAppPage = () => {
@@ -47,20 +47,24 @@ const MobileAppPage = () => {
         }
       }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Calculer la position initiale
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: 'var(--font-montserrat)' }}>
-      
+    <div
+      className="min-h-screen bg-white"
+      style={{ fontFamily: 'var(--font-montserrat)' }}
+    >
       {/* Blue Banner */}
       <div className="bg-blue-600 text-white text-center py-2 text-sm font-medium">
         <span>NOUVEAU ! Découvrez </span>
-        <a href="#" className="underline hover:no-underline">ici</a>
+        <a href="#" className="underline hover:no-underline">
+          ici
+        </a>
         <span> notre pôle Data & IA</span>
       </div>
 
@@ -70,14 +74,14 @@ const MobileAppPage = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50/30 to-white pt-8 pb-20">
         {/* Subtle Grid Background */}
-        <div 
+        <div
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: `
               linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
               linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px)
             `,
-            backgroundSize: '20px 20px'
+            backgroundSize: '20px 20px',
           }}
         ></div>
 
@@ -85,7 +89,9 @@ const MobileAppPage = () => {
           {/* Breadcrumb */}
           <div className="mb-8 pt-4">
             <nav className="text-sm text-gray-500">
-              <Link href="/" className="hover:text-blue-600 transition-colors">Accueil</Link>
+              <Link href="/" className="hover:text-blue-600 transition-colors">
+                Accueil
+              </Link>
               <span className="mx-2">&gt;</span>
               <span className="text-blue-600">Agence application mobile</span>
             </nav>
@@ -105,22 +111,34 @@ const MobileAppPage = () => {
                   AGENCE APPLICATION MOBILE
                 </span>
               </div>
-              
+
               {/* Title */}
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>
+              <h1
+                className="text-5xl lg:text-6xl font-bold leading-tight"
+                style={{
+                  fontFamily: 'var(--font-inter), Inter, sans-serif',
+                  color: '#000b6d',
+                }}
+              >
                 Lançons votre{' '}
-                <span className="text-blue-600">application mobile</span>{' '}
-                en un temps record.
+                <span className="text-blue-600">application mobile</span> en un
+                temps record.
               </h1>
-              
+
               {/* Description */}
-              <p className="text-lg leading-relaxed max-w-xl" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
+              <p
+                className="text-lg leading-relaxed max-w-xl"
+                style={{
+                  fontFamily: "'Spline Sans', sans-serif",
+                  color: '#425466',
+                }}
+              >
                 PROGIX Studio est l&apos;une des{' '}
                 <span className="relative">
                   1<sup className="text-xs">ères</sup>
                 </span>{' '}
-                équipes à avoir misé sur les technologies 
-                cross-platform comme React Native afin de réduire les coûts et les temps de 
+                équipes à avoir misé sur les technologies cross-platform comme
+                React Native afin de réduire les coûts et les temps de
                 développement, le tout avec un code de grande qualité.
               </p>
             </motion.div>
@@ -146,17 +164,23 @@ const MobileAppPage = () => {
                       // Fallback to placeholder if image not found
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
-                      const placeholder = target.nextElementSibling as HTMLElement;
+                      const placeholder =
+                        target.nextElementSibling as HTMLElement;
                       if (placeholder) placeholder.style.display = 'flex';
                     }}
                   />
                   {/* Fallback placeholder */}
-                  <div className="w-full max-w-md h-80 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl flex items-center justify-center relative overflow-hidden" style={{ display: 'none' }}>
+                  <div
+                    className="w-full max-w-md h-80 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl flex items-center justify-center relative overflow-hidden"
+                    style={{ display: 'none' }}
+                  >
                     <div className="absolute top-8 right-8 w-16 h-16 bg-blue-300 transform rotate-45 rounded-lg"></div>
                     <div className="absolute bottom-8 left-8 w-20 h-20 bg-blue-200 transform rotate-12 rounded-xl"></div>
                     <div className="text-white text-center">
                       <FaMobile className="text-6xl mb-4 mx-auto" />
-                      <p className="text-sm opacity-80">Ajoutez bloc1.png dans /images/mobileapp/</p>
+                      <p className="text-sm opacity-80">
+                        Ajoutez bloc1.png dans /images/mobileapp/
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -164,7 +188,7 @@ const MobileAppPage = () => {
             </motion.div>
           </div>
         </div>
-        
+
         {/* Logo Carousel */}
         <LogoCarousel />
       </section>
@@ -186,34 +210,63 @@ const MobileAppPage = () => {
                   Garantie
                 </span>
               </div>
-              
+
               {/* Title */}
-              <h2 className="text-4xl lg:text-5xl font-bold leading-tight" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>
+              <h2
+                className="text-4xl lg:text-5xl font-bold leading-tight"
+                style={{
+                  fontFamily: 'var(--font-inter), Inter, sans-serif',
+                  color: '#000b6d',
+                }}
+              >
                 Développement plus rapide et moins cher
               </h2>
-              
+
               {/* Description Paragraphs */}
-              <div className="space-y-6 text-lg leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
+              <div
+                className="space-y-6 text-lg leading-relaxed"
+                style={{
+                  fontFamily: "'Spline Sans', sans-serif",
+                  color: '#425466',
+                }}
+              >
                 <p>
-                  Yield Studio a été l&apos;une des premières agences à miser sur React Native 
-                  pour <a href="#" className="text-blue-600 underline hover:no-underline">réduire les coûts</a> et accélérer le lancement d&apos;applications mobiles. 
-                  Notre approche cross-platform permet de développer simultanément 
-                  sur iOS et Android, sans perte de performance.
+                  Yield Studio a été l&apos;une des premières agences à miser
+                  sur React Native pour{' '}
+                  <a
+                    href="#"
+                    className="text-blue-600 underline hover:no-underline"
+                  >
+                    réduire les coûts
+                  </a>{' '}
+                  et accélérer le lancement d&apos;applications mobiles. Notre
+                  approche cross-platform permet de développer simultanément sur
+                  iOS et Android, sans perte de performance.
                 </p>
-                
+
                 <p>
-                  Nos développeurs, passés par les plus belles équipes mobiles, 
-                  conçoivent des applications performantes, scalables et maintenables, 
-                  tout en réduisant les coûts et les délais.
+                  Nos développeurs, passés par les plus belles équipes mobiles,
+                  conçoivent des applications performantes, scalables et
+                  maintenables, tout en réduisant les coûts et les délais.
                 </p>
               </div>
-              
+
               {/* CTA Button */}
               <div className="pt-4">
                 <button className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-3">
                   Discutons de votre projet mobile dès maintenant
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  <svg
+                    className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
                   </svg>
                 </button>
               </div>
@@ -244,10 +297,8 @@ const MobileAppPage = () => {
       {/* Bloc intermédiaire - PROGIX Studio Montréal */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
           {/* Grid of 3 Cards - Yield Studio Style */}
           <div className="grid md:grid-cols-3 gap-8">
-            
             {/* Card 1 - Notre Équipe */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -264,8 +315,24 @@ const MobileAppPage = () => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>Notre Équipe</h3>
-                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>11770 5e Avenue, Montréal, QC H1E 7C1</p>
+                <h3
+                  className="text-xl font-bold mb-3"
+                  style={{
+                    fontFamily: 'var(--font-inter), Inter, sans-serif',
+                    color: '#000b6d',
+                  }}
+                >
+                  Notre Équipe
+                </h3>
+                <p
+                  className="text-sm mb-4"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  11770 5e Avenue, Montréal, QC H1E 7C1
+                </p>
               </div>
             </motion.div>
 
@@ -285,8 +352,24 @@ const MobileAppPage = () => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>Notre Bureau</h3>
-                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>11770 5e Avenue, Montréal, QC H1E 7C1</p>
+                <h3
+                  className="text-xl font-bold mb-3"
+                  style={{
+                    fontFamily: 'var(--font-inter), Inter, sans-serif',
+                    color: '#000b6d',
+                  }}
+                >
+                  Notre Bureau
+                </h3>
+                <p
+                  className="text-sm mb-4"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  11770 5e Avenue, Montréal, QC H1E 7C1
+                </p>
               </div>
             </motion.div>
 
@@ -306,11 +389,26 @@ const MobileAppPage = () => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>Nos Projets</h3>
-                <p className="text-sm mb-4" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>11770 5e Avenue, Montréal, QC H1E 7C1</p>
+                <h3
+                  className="text-xl font-bold mb-3"
+                  style={{
+                    fontFamily: 'var(--font-inter), Inter, sans-serif',
+                    color: '#000b6d',
+                  }}
+                >
+                  Nos Projets
+                </h3>
+                <p
+                  className="text-sm mb-4"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  11770 5e Avenue, Montréal, QC H1E 7C1
+                </p>
               </div>
             </motion.div>
-
           </div>
         </div>
       </section>
@@ -318,14 +416,14 @@ const MobileAppPage = () => {
       {/* Bloc 3 - Confiance / Statistiques */}
       <section className="relative py-20 bg-white overflow-hidden">
         {/* Subtle Grid Background */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `
               linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
               linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)
             `,
-            backgroundSize: '40px 40px'
+            backgroundSize: '40px 40px',
           }}
         ></div>
 
@@ -343,7 +441,6 @@ const MobileAppPage = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            
             {/* Badge Confiance */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -362,7 +459,10 @@ const MobileAppPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-2xl lg:text-3xl font-bold mb-4 leading-tight"
-              style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}
+              style={{
+                fontFamily: 'var(--font-inter), Inter, sans-serif',
+                color: '#000b6d',
+              }}
             >
               Bénéficiez de notre recul pour vous challenger
             </motion.h2>
@@ -373,20 +473,25 @@ const MobileAppPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-3 text-sm leading-relaxed mb-10"
-              style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}
+              style={{
+                fontFamily: "'Spline Sans', sans-serif",
+                color: '#425466',
+              }}
             >
               <p>
-                Construire une application mobile est un levier stratégique redoutable pour 
-                accroître votre business ! Son but ? Vous permettre d&apos;améliorer l&apos;efficience 
-                opérationnelle de votre business ou bien développer un nouveau relai de 
-                croissance. Avec 15% de hausse annuelle de téléchargement des applications 
-                mobiles, il est primordial d&apos;investir dessus.
+                Construire une application mobile est un levier stratégique
+                redoutable pour accroître votre business ! Son but ? Vous
+                permettre d&apos;améliorer l&apos;efficience opérationnelle de
+                votre business ou bien développer un nouveau relai de
+                croissance. Avec 15% de hausse annuelle de téléchargement des
+                applications mobiles, il est primordial d&apos;investir dessus.
               </p>
-              
+
               <p>
-                Avec plus de 6 ans d&apos;expérience et 70+ applications développées, nous avons 
-                acquis un regard stratégique pour vous aider à anticiper les défis 
-                technologiques et optimiser la performance de votre application.
+                Avec plus de 6 ans d&apos;expérience et 70+ applications
+                développées, nous avons acquis un regard stratégique pour vous
+                aider à anticiper les défis technologiques et optimiser la
+                performance de votre application.
               </p>
             </motion.div>
 
@@ -399,48 +504,84 @@ const MobileAppPage = () => {
             >
               {/* Stat 1 */}
               <div className="border-l-3 border-blue-500 pl-3">
-                <div className="text-lg font-bold text-blue-600 mb-1" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+                <div
+                  className="text-lg font-bold text-blue-600 mb-1"
+                  style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+                >
                   Plus de 70 apps
                 </div>
-                <p className="text-xs leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
-                  mobiles créées et refondues sur lesquelles nos équipes sont intervenues
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  mobiles créées et refondues sur lesquelles nos équipes sont
+                  intervenues
                 </p>
               </div>
 
               {/* Stat 2 */}
               <div className="border-l-3 border-blue-500 pl-3">
-                <div className="text-lg font-bold text-blue-600 mb-1" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+                <div
+                  className="text-lg font-bold text-blue-600 mb-1"
+                  style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+                >
                   Déjà 6 ans
                 </div>
-                <p className="text-xs leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
-                  que PROGIX Studio est un leader dans l&apos;univers des agences de 
-                  développement d&apos;application mobile
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  que PROGIX Studio est un leader dans l&apos;univers des
+                  agences de développement d&apos;application mobile
                 </p>
               </div>
 
               {/* Stat 3 */}
               <div className="border-l-3 border-blue-500 pl-3">
-                <div className="text-lg font-bold text-blue-600 mb-1" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+                <div
+                  className="text-lg font-bold text-blue-600 mb-1"
+                  style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+                >
                   Plus de 600k
                 </div>
-                <p className="text-xs leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
-                  utilisateurs cumulés sur toutes les applications que nous avons 
-                  développé pour nos clients
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  utilisateurs cumulés sur toutes les applications que nous
+                  avons développé pour nos clients
                 </p>
               </div>
 
               {/* Stat 4 */}
               <div className="border-l-3 border-blue-500 pl-3">
-                <div className="text-lg font-bold text-blue-600 mb-1" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+                <div
+                  className="text-lg font-bold text-blue-600 mb-1"
+                  style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+                >
                   Plus d&apos;1 million
                 </div>
-                <p className="text-xs leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
-                  de requêtes API sont faites chaque jour sur les applications 
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  de requêtes API sont faites chaque jour sur les applications
                   de nos clients que nous maintenons
                 </p>
               </div>
             </motion.div>
-
           </div>
         </div>
       </section>
@@ -452,14 +593,38 @@ const MobileAppPage = () => {
           {/* Lines and shapes */}
           <div className="absolute top-10 right-10 w-64 h-64 opacity-10">
             <svg viewBox="0 0 200 200" className="w-full h-full">
-              <path d="M20,20 L180,20 L180,180 L20,180 Z" fill="none" stroke="white" strokeWidth="1"/>
-              <path d="M40,40 L160,40 L160,160 L40,160 Z" fill="none" stroke="white" strokeWidth="0.5"/>
+              <path
+                d="M20,20 L180,20 L180,180 L20,180 Z"
+                fill="none"
+                stroke="white"
+                strokeWidth="1"
+              />
+              <path
+                d="M40,40 L160,40 L160,160 L40,160 Z"
+                fill="none"
+                stroke="white"
+                strokeWidth="0.5"
+              />
             </svg>
           </div>
           <div className="absolute bottom-10 left-10 w-48 h-48 opacity-10">
             <svg viewBox="0 0 200 200" className="w-full h-full">
-              <circle cx="100" cy="100" r="80" fill="none" stroke="white" strokeWidth="1"/>
-              <circle cx="100" cy="100" r="60" fill="none" stroke="white" strokeWidth="0.5"/>
+              <circle
+                cx="100"
+                cy="100"
+                r="80"
+                fill="none"
+                stroke="white"
+                strokeWidth="1"
+              />
+              <circle
+                cx="100"
+                cy="100"
+                r="60"
+                fill="none"
+                stroke="white"
+                strokeWidth="0.5"
+              />
             </svg>
           </div>
         </div>
@@ -472,14 +637,16 @@ const MobileAppPage = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+            <h2
+              className="text-4xl lg:text-5xl font-bold text-white mb-6"
+              style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+            >
               Pourquoi PROGIX Studio ?
             </h2>
           </motion.div>
 
           {/* 3 Columns */}
           <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
-            
             {/* Column 1 - Code de qualité */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -498,12 +665,18 @@ const MobileAppPage = () => {
                   />
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+              <h3
+                className="text-2xl font-bold text-white mb-4"
+                style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+              >
                 Code de qualité
               </h3>
-              <p className="text-blue-100 leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif" }}>
-                Nous écrivons un code de qualité dès le départ 
-                pour aller plus vite ensuite
+              <p
+                className="text-blue-100 leading-relaxed"
+                style={{ fontFamily: "'Spline Sans', sans-serif" }}
+              >
+                Nous écrivons un code de qualité dès le départ pour aller plus
+                vite ensuite
               </p>
             </motion.div>
 
@@ -525,12 +698,18 @@ const MobileAppPage = () => {
                   />
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+              <h3
+                className="text-2xl font-bold text-white mb-4"
+                style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+              >
                 Focus utilisateur
               </h3>
-              <p className="text-blue-100 leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif" }}>
-                Nous identifions les fonctionnalités 
-                différenciantes pour les utilisateurs finaux
+              <p
+                className="text-blue-100 leading-relaxed"
+                style={{ fontFamily: "'Spline Sans', sans-serif" }}
+              >
+                Nous identifions les fonctionnalités différenciantes pour les
+                utilisateurs finaux
               </p>
             </motion.div>
 
@@ -552,27 +731,33 @@ const MobileAppPage = () => {
                   />
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}>
+              <h3
+                className="text-2xl font-bold text-white mb-4"
+                style={{ fontFamily: 'var(--font-inter), Inter, sans-serif' }}
+              >
                 Time To Market
               </h3>
-              <p className="text-blue-100 leading-relaxed" style={{ fontFamily: "'Spline Sans', sans-serif" }}>
-                Nous mettons très rapidement en production 
-                les fonctionnalités grâce à notre LeanLab® ©
+              <p
+                className="text-blue-100 leading-relaxed"
+                style={{ fontFamily: "'Spline Sans', sans-serif" }}
+              >
+                Nous mettons très rapidement en production les fonctionnalités
+                grâce à notre LeanLab® ©
               </p>
             </motion.div>
-
           </div>
         </div>
       </section>
 
       {/* Bloc 5 - Compétences avec effet parallax */}
-      <section id="competences-section" className="relative min-h-screen bg-white overflow-hidden">
+      <section
+        id="competences-section"
+        className="relative min-h-screen bg-white overflow-hidden"
+      >
         <div className="grid lg:grid-cols-2 min-h-screen">
-          
           {/* Left Content - Scrollable */}
           <div className="relative z-20 bg-white py-20 px-8 lg:px-16">
             <div className="max-w-xl">
-              
               {/* Compétence 1 */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -585,25 +770,60 @@ const MobileAppPage = () => {
                     Compétence 1
                   </span>
                 </div>
-                <h3 className="text-3xl lg:text-4xl font-bold mb-6" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>
+                <h3
+                  className="text-3xl lg:text-4xl font-bold mb-6"
+                  style={{
+                    fontFamily: 'var(--font-inter), Inter, sans-serif',
+                    color: '#000b6d',
+                  }}
+                >
                   Développement sur mesure
                 </h3>
-                <p className="text-lg leading-relaxed mb-8" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
-                  Nous créons des applications mobiles entièrement personnalisées selon vos besoins spécifiques. 
-                  Notre approche sur mesure garantit une solution parfaitement adaptée à votre business et vos utilisateurs.
+                <p
+                  className="text-lg leading-relaxed mb-8"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  Nous créons des applications mobiles entièrement
+                  personnalisées selon vos besoins spécifiques. Notre approche
+                  sur mesure garantit une solution parfaitement adaptée à votre
+                  business et vos utilisateurs.
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Architecture scalable et maintenable</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Architecture scalable et maintenable
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Intégration avec vos systèmes existants</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Intégration avec vos systèmes existants
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Performance optimisée</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Performance optimisée
+                    </span>
                   </li>
                 </ul>
               </motion.div>
@@ -620,25 +840,59 @@ const MobileAppPage = () => {
                     Compétence 2
                   </span>
                 </div>
-                <h3 className="text-3xl lg:text-4xl font-bold mb-6" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>
+                <h3
+                  className="text-3xl lg:text-4xl font-bold mb-6"
+                  style={{
+                    fontFamily: 'var(--font-inter), Inter, sans-serif',
+                    color: '#000b6d',
+                  }}
+                >
                   UX/UI Design Excellence
                 </h3>
-                <p className="text-lg leading-relaxed mb-8" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
-                  Notre équipe de designers expérimentés crée des interfaces intuitives et engageantes. 
-                  Chaque écran est pensé pour offrir la meilleure expérience utilisateur possible.
+                <p
+                  className="text-lg leading-relaxed mb-8"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  Notre équipe de designers expérimentés crée des interfaces
+                  intuitives et engageantes. Chaque écran est pensé pour offrir
+                  la meilleure expérience utilisateur possible.
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-green-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Prototypage et tests utilisateurs</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Prototypage et tests utilisateurs
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-green-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Design system cohérent</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Design system cohérent
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-green-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Accessibilité et inclusivité</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Accessibilité et inclusivité
+                    </span>
                   </li>
                 </ul>
               </motion.div>
@@ -655,40 +909,73 @@ const MobileAppPage = () => {
                     Compétence 3
                   </span>
                 </div>
-                <h3 className="text-3xl lg:text-4xl font-bold mb-6" style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', color: '#000b6d' }}>
+                <h3
+                  className="text-3xl lg:text-4xl font-bold mb-6"
+                  style={{
+                    fontFamily: 'var(--font-inter), Inter, sans-serif',
+                    color: '#000b6d',
+                  }}
+                >
                   Support & Maintenance
                 </h3>
-                <p className="text-lg leading-relaxed mb-8" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
-                  Nous accompagnons nos clients bien au-delà du lancement. Notre service de maintenance 
-                  assure la pérennité et l&apos;évolution continue de votre application mobile.
+                <p
+                  className="text-lg leading-relaxed mb-8"
+                  style={{
+                    fontFamily: "'Spline Sans', sans-serif",
+                    color: '#425466',
+                  }}
+                >
+                  Nous accompagnons nos clients bien au-delà du lancement. Notre
+                  service de maintenance assure la pérennité et l&apos;évolution
+                  continue de votre application mobile.
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-purple-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Monitoring 24/7</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Monitoring 24/7
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-purple-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Mises à jour régulières</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Mises à jour régulières
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-purple-600 rounded-full mt-3 flex-shrink-0"></div>
-                    <span style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>Support technique réactif</span>
+                    <span
+                      style={{
+                        fontFamily: "'Spline Sans', sans-serif",
+                        color: '#425466',
+                      }}
+                    >
+                      Support technique réactif
+                    </span>
                   </li>
                 </ul>
               </motion.div>
-
             </div>
           </div>
 
           {/* Right Image - Sticky with parallax effect */}
           <div className="relative lg:sticky lg:top-0 lg:h-screen">
             <div className="relative w-full h-full min-h-screen">
-              <div 
+              <div
                 className="relative w-full h-full"
                 style={{
                   transform: `translateY(${competencesProgress * 50}px)`,
-                  transition: 'transform 0.1s ease-out'
+                  transition: 'transform 0.1s ease-out',
                 }}
               >
                 <Image
@@ -699,24 +986,32 @@ const MobileAppPage = () => {
                   priority
                 />
               </div>
-              
+
               {/* Progressive White Filter - disparaît au fur et à mesure */}
-              <div 
+              <div
                 className="absolute inset-0 bg-white transition-opacity duration-300 ease-out"
-                style={{ 
-                  opacity: Math.max(0, Math.min(0.85, 0.85 - (competencesProgress * 0.85)))
+                style={{
+                  opacity: Math.max(
+                    0,
+                    Math.min(0.85, 0.85 - competencesProgress * 0.85),
+                  ),
                 }}
               ></div>
             </div>
           </div>
-
         </div>
       </section>
 
       {/* Trusted By Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center mb-12 text-lg" style={{ fontFamily: "'Spline Sans', sans-serif", color: '#425466' }}>
+          <p
+            className="text-center mb-12 text-lg"
+            style={{
+              fontFamily: "'Spline Sans', sans-serif",
+              color: '#425466',
+            }}
+          >
             Ils nous font confiance pour leurs applications mobiles
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
@@ -748,7 +1043,8 @@ const MobileAppPage = () => {
               Nos réalisations
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Découvrez quelques-unes de nos applications mobiles développées pour nos clients
+              Découvrez quelques-unes de nos applications mobiles développées
+              pour nos clients
             </p>
           </div>
 
@@ -766,7 +1062,9 @@ const MobileAppPage = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2">
-                      <p className="text-sm font-medium text-gray-900">Voir le projet</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        Voir le projet
+                      </p>
                     </div>
                   </div>
                   {/* Placeholder for app screenshot */}
@@ -774,8 +1072,13 @@ const MobileAppPage = () => {
                     <FaMobile className="text-6xl" />
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Application {item}</h3>
-                <p className="text-gray-600 text-sm">Description de l&apos;application et de ses fonctionnalités principales.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Application {item}
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  Description de l&apos;application et de ses fonctionnalités
+                  principales.
+                </p>
               </motion.div>
             ))}
           </div>
@@ -843,7 +1146,8 @@ const MobileAppPage = () => {
               Pourquoi choisir PROGIX Studio ?
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Notre approche unique garantit le succès de votre application mobile
+              Notre approche unique garantit le succès de votre application
+              mobile
             </p>
           </div>
 
@@ -851,34 +1155,35 @@ const MobileAppPage = () => {
             {[
               {
                 icon: <FaRocket className="text-3xl" />,
-                title: "Performance optimale",
-                description: "Applications rapides et fluides sur tous les appareils"
+                title: 'Performance optimale',
+                description:
+                  'Applications rapides et fluides sur tous les appareils',
               },
               {
                 icon: <FaUsers className="text-3xl" />,
-                title: "UX/UI exceptionnelle",
-                description: "Interfaces intuitives et design moderne"
+                title: 'UX/UI exceptionnelle',
+                description: 'Interfaces intuitives et design moderne',
               },
               {
                 icon: <FaShieldAlt className="text-3xl" />,
-                title: "Sécurité renforcée",
-                description: "Protection des données et conformité RGPD"
+                title: 'Sécurité renforcée',
+                description: 'Protection des données et conformité RGPD',
               },
               {
                 icon: <FaClock className="text-3xl" />,
-                title: "Livraison rapide",
-                description: "Développement agile et respect des délais"
+                title: 'Livraison rapide',
+                description: 'Développement agile et respect des délais',
               },
               {
                 icon: <FaHeart className="text-3xl" />,
-                title: "Support continu",
-                description: "Accompagnement et maintenance post-lancement"
+                title: 'Support continu',
+                description: 'Accompagnement et maintenance post-lancement',
               },
               {
                 icon: <FaCode className="text-3xl" />,
-                title: "Technologies modernes",
-                description: "Stack technique à la pointe de l'innovation"
-              }
+                title: 'Technologies modernes',
+                description: "Stack technique à la pointe de l'innovation",
+              },
             ].map((feature, index) => (
               <motion.div
                 key={index}
@@ -917,25 +1222,29 @@ const MobileAppPage = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                step: "01",
-                title: "Analyse & Conception",
-                description: "Étude approfondie de vos besoins et conception UX/UI"
+                step: '01',
+                title: 'Analyse & Conception',
+                description:
+                  'Étude approfondie de vos besoins et conception UX/UI',
               },
               {
-                step: "02", 
-                title: "Développement",
-                description: "Développement agile avec des livraisons régulières"
+                step: '02',
+                title: 'Développement',
+                description:
+                  'Développement agile avec des livraisons régulières',
               },
               {
-                step: "03",
-                title: "Tests & Optimisation", 
-                description: "Tests rigoureux sur tous les appareils et optimisation"
+                step: '03',
+                title: 'Tests & Optimisation',
+                description:
+                  'Tests rigoureux sur tous les appareils et optimisation',
               },
               {
-                step: "04",
-                title: "Lancement & Support",
-                description: "Mise en ligne sur les stores et accompagnement continu"
-              }
+                step: '04',
+                title: 'Lancement & Support',
+                description:
+                  'Mise en ligne sur les stores et accompagnement continu',
+              },
             ].map((process, index) => (
               <motion.div
                 key={index}
@@ -979,26 +1288,26 @@ const MobileAppPage = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                name: "Sophie Martin",
-                company: "CEO, TechStart",
+                name: 'Sophie Martin',
+                company: 'CEO, TechStart',
                 rating: 5,
-                text: "PROGIX Studio a développé notre application mobile avec un professionnalisme exemplaire. Le résultat dépasse nos attentes !",
-                avatar: "👩‍💼"
+                text: 'PROGIX Studio a développé notre application mobile avec un professionnalisme exemplaire. Le résultat dépasse nos attentes !',
+                avatar: '👩‍💼',
               },
               {
-                name: "Marc Dubois", 
-                company: "Fondateur, E-Shop Plus",
+                name: 'Marc Dubois',
+                company: 'Fondateur, E-Shop Plus',
                 rating: 5,
-                text: "Une équipe réactive et compétente. Notre app e-commerce cartonne grâce à leur expertise technique.",
-                avatar: "👨‍💻"
+                text: 'Une équipe réactive et compétente. Notre app e-commerce cartonne grâce à leur expertise technique.',
+                avatar: '👨‍💻',
               },
               {
-                name: "Julie Leroy",
-                company: "Directrice, HealthApp",
+                name: 'Julie Leroy',
+                company: 'Directrice, HealthApp',
                 rating: 5,
-                text: "Développement rapide, interface magnifique et support client au top. Je recommande vivement !",
-                avatar: "👩‍⚕️"
-              }
+                text: 'Développement rapide, interface magnifique et support client au top. Je recommande vivement !',
+                avatar: '👩‍⚕️',
+              },
             ].map((testimonial, index) => (
               <motion.div
                 key={index}
@@ -1020,7 +1329,9 @@ const MobileAppPage = () => {
                       <h4 className="font-semibold text-gray-900">
                         {testimonial.name}
                       </h4>
-                      <p className="text-sm text-gray-500">{testimonial.company}</p>
+                      <p className="text-sm text-gray-500">
+                        {testimonial.company}
+                      </p>
                     </div>
                   </div>
                   <div className="flex space-x-1">
@@ -1047,8 +1358,9 @@ const MobileAppPage = () => {
               Prêt à lancer votre application mobile ?
             </h2>
             <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-              Contactez-nous dès aujourd&apos;hui pour une consultation gratuite et découvrez 
-              comment nous pouvons donner vie à votre projet mobile.
+              Contactez-nous dès aujourd&apos;hui pour une consultation gratuite
+              et découvrez comment nous pouvons donner vie à votre projet
+              mobile.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-full transition-all hover:scale-105 shadow-lg hover:shadow-xl">

@@ -8,7 +8,7 @@ import {
   useTransform,
   useMotionValue,
   useVelocity,
-  useAnimationFrame
+  useAnimationFrame,
 } from 'framer-motion';
 import './ScrollVelocity.css';
 
@@ -58,7 +58,7 @@ export default function ScrollVelocity({
   parallaxClassName = 'parallax',
   scrollerClassName = 'scroller',
   parallaxStyle,
-  scrollerStyle
+  scrollerStyle,
 }: ScrollVelocityProps) {
   function VelocityText({
     children,
@@ -202,5 +202,3 @@ export default function ScrollVelocity({
     </section>
   );
 }
-
-

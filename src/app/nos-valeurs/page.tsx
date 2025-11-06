@@ -12,20 +12,33 @@ import BlobCursor from '@/components/BlobCursor';
 
 const NosValeursPage = () => {
   const menuItems = [
-    { label: 'Accueil', ariaLabel: 'Aller à la page d\'accueil', link: '/' },
+    { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },
     { label: 'Services', ariaLabel: 'Voir nos services', link: '/services' },
-    { label: 'Portfolio', ariaLabel: 'Voir notre portfolio', link: '/portfolio' },
+    {
+      label: 'Portfolio',
+      ariaLabel: 'Voir notre portfolio',
+      link: '/portfolio',
+    },
     { label: 'Équipe', ariaLabel: 'Découvrir notre équipe', link: '/team' },
-    { label: 'Valeurs', ariaLabel: 'Connaître nos valeurs', link: '/nos-valeurs' },
-    { label: 'ConFoo', ariaLabel: 'Découvrir ConFoo 2025', link: '/confoo-2025' }
+    {
+      label: 'Valeurs',
+      ariaLabel: 'Connaître nos valeurs',
+      link: '/nos-valeurs',
+    },
+    {
+      label: 'ConFoo',
+      ariaLabel: 'Découvrir ConFoo 2025',
+      link: '/confoo-2025',
+    },
   ];
 
   const socialItems = [
     { label: 'LinkedIn', link: 'https://linkedin.com/company/progix' },
     { label: 'GitHub', link: 'https://github.com/progix' },
-    { label: 'Twitter', link: 'https://twitter.com/progix' }
+    { label: 'Twitter', link: 'https://twitter.com/progix' },
   ];
-  const [isProgressSectionVisible, setIsProgressSectionVisible] = useState(false);
+  const [isProgressSectionVisible, setIsProgressSectionVisible] =
+    useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,9 +46,10 @@ const NosValeursPage = () => {
       if (progressSection) {
         const rect = progressSection.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        
+
         // Check if the section is in view (when it's 50% visible)
-        const isVisible = rect.top < windowHeight * 0.5 && rect.bottom > windowHeight * 0.5;
+        const isVisible =
+          rect.top < windowHeight * 0.5 && rect.bottom > windowHeight * 0.5;
         setIsProgressSectionVisible(isVisible);
       }
     };
@@ -45,8 +59,6 @@ const NosValeursPage = () => {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-
 
   return (
     <div className="min-h-screen bg-white font-montserrat relative">

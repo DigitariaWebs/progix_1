@@ -1,4 +1,4 @@
-import { AnimatedText } from "@/components/ui/animated-underline-text-one";
+import { AnimatedText } from '@/components/ui/animated-underline-text-one';
 
 function DefaultDemo() {
   return <AnimatedText text="Namaste World!" />;

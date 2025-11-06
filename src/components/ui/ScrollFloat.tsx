@@ -45,15 +45,21 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
         // Preserve spaces as NBSP of equal length
         const nbsp = token.replace(/ /g, '\u00A0');
         return (
-          <span className="space" key={`space-${tokenIdx}`}>{nbsp}</span>
+          <span className="space" key={`space-${tokenIdx}`}>
+            {nbsp}
+          </span>
         );
       }
       // Word token: wrap characters inside a non-wrapping container
       const chars = token.split('').map((char) => (
-        <span className="char" key={`char-${globalIndex++}`}>{char}</span>
+        <span className="char" key={`char-${globalIndex++}`}>
+          {char}
+        </span>
       ));
       return (
-        <span className="word" key={`word-${tokenIdx}`}>{chars}</span>
+        <span className="word" key={`word-${tokenIdx}`}>
+          {chars}
+        </span>
       );
     });
   }, [children]);
@@ -96,7 +102,14 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
     }, el);
 
     return () => ctx.revert();
-  }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
+  }, [
+    scrollContainerRef,
+    animationDuration,
+    ease,
+    scrollStart,
+    scrollEnd,
+    stagger,
+  ]);
 
   return (
     <h2 ref={containerRef} className={`scroll-float ${containerClassName}`}>
@@ -106,5 +119,3 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
 };
 
 export default ScrollFloat;
-
-

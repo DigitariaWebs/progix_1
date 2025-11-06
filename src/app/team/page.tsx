@@ -6,7 +6,6 @@ import TeamSection from '@/components/sections/TeamSection';
 import EquipeHero from '@/components/sections/EquipeHero';
 
 const TeamPage = () => {
-
   return (
     <div className="bg-white">
       {/* Hero Section */}

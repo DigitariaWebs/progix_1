@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { gsap } from "gsap";
+import { useCallback, useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { gsap } from 'gsap';
 import Image from 'next/image';
 
 type PageTransitionProps = {
@@ -187,5 +187,3 @@ export default function PageTransition({ children }: PageTransitionProps) {
     </>
   );
 }
-
-

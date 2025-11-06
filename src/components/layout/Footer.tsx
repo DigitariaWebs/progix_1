@@ -19,7 +19,6 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center mb-6">
-              
               <span className="text-xl font-bold">PROGIX</span>
             </div>
             <p className="text-gray-400 mb-6">

@@ -41,11 +41,11 @@ export const servicesData: ServiceDetail[] = [
   {
     slug: 'business-technical-analysis',
     title: 'Analyse métier et technique',
-    category: 'Logiciels de gestion & d\'automatisation',
+    category: "Logiciels de gestion & d'automatisation",
     hero: {
       subtitle: 'Nous construisons vos fondations',
       description:
-        'La phase d\'analyse métier et technique assure une base stable pour tout le développement ultérieur. Pour nous, c\'est une étape essentielle pour valider la vision du système et capturer l\'essence du projet. Pour vous, c\'est une étape cruciale pour comprendre les enjeux techniques et valider les implications de chaque module. À la fin de cette étape, vous repartez avec une cartographie de vos processus, ainsi qu\'un document technique expliquant toutes les règles métier, les diagrammes de base de données et les détails fonctionnels.',
+        "La phase d'analyse métier et technique assure une base stable pour tout le développement ultérieur. Pour nous, c'est une étape essentielle pour valider la vision du système et capturer l'essence du projet. Pour vous, c'est une étape cruciale pour comprendre les enjeux techniques et valider les implications de chaque module. À la fin de cette étape, vous repartez avec une cartographie de vos processus, ainsi qu'un document technique expliquant toutes les règles métier, les diagrammes de base de données et les détails fonctionnels.",
     },
     whySection: {
       title: 'Pourquoi commencer par une analyse métier et technique?',
@@ -59,7 +59,7 @@ export const servicesData: ServiceDetail[] = [
         {
           title: 'Identifier les opportunités',
           description:
-            'De nombreuses opportunités d\'optimisation attendent d\'être découvertes pour gagner en efficacité et en qualité.',
+            "De nombreuses opportunités d'optimisation attendent d'être découvertes pour gagner en efficacité et en qualité.",
           icon: '💡',
         },
         {
@@ -71,7 +71,7 @@ export const servicesData: ServiceDetail[] = [
       ],
     },
     process: {
-      title: 'Notre processus d\'analyse métier et technique',
+      title: "Notre processus d'analyse métier et technique",
       description:
         'Notre méthodologie est adaptée aux besoins de votre entreprise et aux objectifs futurs souhaités. Les audits et plans de transformation sont toujours réalisés dans le but de préparer la phase suivante et de vous donner les moyens de mettre en œuvre une solution concrète dans un avenir proche.',
       steps: [
@@ -81,17 +81,17 @@ export const servicesData: ServiceDetail[] = [
           description:
             'Cette phase comprend une étude approfondie rigoureuse de toutes les exigences fonctionnelles et règles métier de chaque département.',
           points: [
-            'Réunions avec l\'équipe de direction',
+            "Réunions avec l'équipe de direction",
             'Visite sur le terrain et observation (si applicable)',
             'Entretiens avec différents départements',
-            'Recueillir les retours sur l\'état actuel',
+            "Recueillir les retours sur l'état actuel",
           ],
         },
         {
           number: '02',
           title: 'Formalisation des procédures & données',
           description:
-            'Cette étape nécessite un inventaire des documents d\'information et outils technologiques existants de l\'entreprise.',
+            "Cette étape nécessite un inventaire des documents d'information et outils technologiques existants de l'entreprise.",
           points: [
             'Liste des sources de données et types de fichiers',
             'Analyse des outils et de leur utilisation',
@@ -103,7 +103,7 @@ export const servicesData: ServiceDetail[] = [
           number: '03',
           title: 'Architecture de la solution',
           description:
-            'Le livrable final contient l\'architecture proposée, fournissant une définition claire du projet et de son plan de mise en œuvre.',
+            "Le livrable final contient l'architecture proposée, fournissant une définition claire du projet et de son plan de mise en œuvre.",
           points: [
             'Spécifications (architecture fonctionnelle)',
             'Architecture technique',
@@ -114,30 +114,34 @@ export const servicesData: ServiceDetail[] = [
     },
     testimonial: {
       quote:
-        'Progix a compris nos besoins dès le premier jour, en nous éduquant, en nous guidant et en nous accompagnant dans l\'évolution de notre système depuis plus de 7 ans maintenant. Ils sont la pierre angulaire de notre développement technologique.',
+        "Progix a compris nos besoins dès le premier jour, en nous éduquant, en nous guidant et en nous accompagnant dans l'évolution de notre système depuis plus de 7 ans maintenant. Ils sont la pierre angulaire de notre développement technologique.",
       author: 'Yves Hennekens',
       position: 'Président',
       company: 'YHC Environnement',
-      image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesreview/1517492082228.jpg',
+      image:
+        'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesreview/1517492082228.jpg',
     },
     faqs: [
       {
-        question: 'Quelle est la durée et le coût moyen d\'une analyse métier et/ou technique?',
+        question:
+          "Quelle est la durée et le coût moyen d'une analyse métier et/ou technique?",
         answer:
-          'La durée et le coût de l\'analyse varient selon les objectifs recherchés et la situation actuelle de l\'entreprise. Les analyses les plus simples prennent généralement 2 semaines et coûtent quelques milliers de dollars, tandis que les analyses plus intensives peuvent nécessiter quelques mois et plusieurs dizaines de milliers de dollars.',
+          "La durée et le coût de l'analyse varient selon les objectifs recherchés et la situation actuelle de l'entreprise. Les analyses les plus simples prennent généralement 2 semaines et coûtent quelques milliers de dollars, tandis que les analyses plus intensives peuvent nécessiter quelques mois et plusieurs dizaines de milliers de dollars.",
       },
       {
         question: 'Dans quelle mesure mon équipe doit-elle être impliquée?',
         answer:
-          'Selon le type de mandat, il sera probablement important pour l\'un de nos experts de rencontrer les superviseurs de vos différents départements et équipes. Vous pouvez donc vous attendre à avoir un point de contact principal qui devra agir en tant que coordinateur interne.',
+          "Selon le type de mandat, il sera probablement important pour l'un de nos experts de rencontrer les superviseurs de vos différents départements et équipes. Vous pouvez donc vous attendre à avoir un point de contact principal qui devra agir en tant que coordinateur interne.",
       },
       {
-        question: 'Une analyse métier et/ou technique peut-elle être réalisée à distance?',
+        question:
+          'Une analyse métier et/ou technique peut-elle être réalisée à distance?',
         answer:
-          'Pour de nombreux mandats, il suffit de réaliser les ateliers d\'exploration à distance et de tenir les réunions par vidéoconférence. Cependant, pour certains mandats impliquant la cartographie d\'opérations physiques, des sessions d\'observation et des visites sont souvent nécessaires.',
+          "Pour de nombreux mandats, il suffit de réaliser les ateliers d'exploration à distance et de tenir les réunions par vidéoconférence. Cependant, pour certains mandats impliquant la cartographie d'opérations physiques, des sessions d'observation et des visites sont souvent nécessaires.",
       },
       {
-        question: 'Quelle est la prochaine étape après une analyse métier et technique?',
+        question:
+          'Quelle est la prochaine étape après une analyse métier et technique?',
         answer:
           'Suite à une telle analyse, vous disposerez de toutes les informations nécessaires pour faire des choix stratégiques pour vos prochaines actions. Notre équipe met notre équipe de développement technique à votre disposition pour la programmation de votre logiciel sur mesure.',
       },
@@ -146,11 +150,11 @@ export const servicesData: ServiceDetail[] = [
   {
     slug: 'custom-software',
     title: 'Développement logiciel sur mesure',
-    category: 'Logiciels de gestion & d\'automatisation',
+    category: "Logiciels de gestion & d'automatisation",
     hero: {
       subtitle: 'Votre solution unique, développée pour vous',
       description:
-        'Le développement de logiciels sur mesure vous permet de créer une solution parfaitement adaptée à vos besoins spécifiques. Contrairement aux solutions standardisées, un logiciel personnalisé s\'intègre parfaitement à vos processus existants, évolue avec votre entreprise et vous donne un avantage concurrentiel significatif.',
+        "Le développement de logiciels sur mesure vous permet de créer une solution parfaitement adaptée à vos besoins spécifiques. Contrairement aux solutions standardisées, un logiciel personnalisé s'intègre parfaitement à vos processus existants, évolue avec votre entreprise et vous donne un avantage concurrentiel significatif.",
     },
     whySection: {
       title: 'Pourquoi opter pour un logiciel sur mesure?',
@@ -164,13 +168,13 @@ export const servicesData: ServiceDetail[] = [
         {
           title: 'Évolutivité garantie',
           description:
-            'Votre solution grandit et s\'adapte avec votre entreprise au fil du temps.',
+            "Votre solution grandit et s'adapte avec votre entreprise au fil du temps.",
           icon: '📈',
         },
         {
           title: 'Avantage compétitif',
           description:
-            'Démarquez-vous avec des fonctionnalités uniques que vos concurrents n\'ont pas.',
+            "Démarquez-vous avec des fonctionnalités uniques que vos concurrents n'ont pas.",
           icon: '🚀',
         },
       ],
@@ -187,7 +191,7 @@ export const servicesData: ServiceDetail[] = [
             'Nous commençons par une compréhension approfondie de vos besoins et objectifs.',
           points: [
             'Recueil des exigences détaillées',
-            'Conception de l\'architecture technique',
+            "Conception de l'architecture technique",
             'Création de prototypes et maquettes',
             'Validation avec les parties prenantes',
           ],
@@ -220,17 +224,19 @@ export const servicesData: ServiceDetail[] = [
     },
     faqs: [
       {
-        question: 'Combien de temps prend le développement d\'un logiciel sur mesure?',
+        question:
+          "Combien de temps prend le développement d'un logiciel sur mesure?",
         answer:
-          'La durée varie selon la complexité du projet. Un logiciel simple peut prendre 3-6 mois, tandis qu\'une solution complexe peut nécessiter 12-18 mois ou plus. Nous fournissons un calendrier détaillé après l\'analyse initiale.',
+          "La durée varie selon la complexité du projet. Un logiciel simple peut prendre 3-6 mois, tandis qu'une solution complexe peut nécessiter 12-18 mois ou plus. Nous fournissons un calendrier détaillé après l'analyse initiale.",
       },
       {
-        question: 'Quel est le coût d\'un logiciel sur mesure?',
+        question: "Quel est le coût d'un logiciel sur mesure?",
         answer:
-          'Le coût dépend de nombreux facteurs : complexité, fonctionnalités, intégrations nécessaires, etc. Nous proposons toujours un devis détaillé après l\'analyse de vos besoins spécifiques.',
+          "Le coût dépend de nombreux facteurs : complexité, fonctionnalités, intégrations nécessaires, etc. Nous proposons toujours un devis détaillé après l'analyse de vos besoins spécifiques.",
       },
       {
-        question: 'Puis-je demander des modifications pendant le développement?',
+        question:
+          'Puis-je demander des modifications pendant le développement?',
         answer:
           'Absolument! Notre approche agile permet des ajustements tout au long du projet. Nous organisons des révisions régulières pour nous assurer que le produit final correspond exactement à vos attentes.',
       },
@@ -244,11 +250,11 @@ export const servicesData: ServiceDetail[] = [
   {
     slug: 'custom-erp',
     title: 'Développement ERP personnalisé',
-    category: 'Logiciels de gestion & d\'automatisation',
+    category: "Logiciels de gestion & d'automatisation",
     hero: {
-      subtitle: 'Un ERP qui s\'adapte à vous, pas l\'inverse',
+      subtitle: "Un ERP qui s'adapte à vous, pas l'inverse",
       description:
-        'Un ERP (Enterprise Resource Planning) personnalisé centralise et automatise tous vos processus d\'affaires dans une seule plateforme intégrée. Contrairement aux ERP commerciaux rigides, notre solution est conçue pour s\'adapter parfaitement à vos méthodes de travail, offrant une flexibilité totale et une scalabilité sans limite.',
+        "Un ERP (Enterprise Resource Planning) personnalisé centralise et automatise tous vos processus d'affaires dans une seule plateforme intégrée. Contrairement aux ERP commerciaux rigides, notre solution est conçue pour s'adapter parfaitement à vos méthodes de travail, offrant une flexibilité totale et une scalabilité sans limite.",
     },
     whySection: {
       title: 'Pourquoi choisir un ERP personnalisé?',
@@ -294,7 +300,7 @@ export const servicesData: ServiceDetail[] = [
           number: '02',
           title: 'Développement modulaire',
           description:
-            'Construction progressive de l\'ERP par modules fonctionnels.',
+            "Construction progressive de l'ERP par modules fonctionnels.",
           points: [
             'Développement par ordre de priorité',
             'Tests rigoureux de chaque module',
@@ -310,7 +316,7 @@ export const servicesData: ServiceDetail[] = [
           points: [
             'Migration sécurisée des données',
             'Formation approfondie des utilisateurs',
-            'Période d\'accompagnement post-lancement',
+            "Période d'accompagnement post-lancement",
             'Optimisations continues',
           ],
         },
@@ -318,35 +324,36 @@ export const servicesData: ServiceDetail[] = [
     },
     faqs: [
       {
-        question: 'Quelle est la différence entre un ERP commercial et un ERP personnalisé?',
+        question:
+          'Quelle est la différence entre un ERP commercial et un ERP personnalisé?',
         answer:
-          'Un ERP commercial vous oblige à adapter vos processus au logiciel, tandis qu\'un ERP personnalisé est conçu autour de vos processus existants. Vous obtenez exactement ce dont vous avez besoin, sans fonctionnalités inutiles.',
+          "Un ERP commercial vous oblige à adapter vos processus au logiciel, tandis qu'un ERP personnalisé est conçu autour de vos processus existants. Vous obtenez exactement ce dont vous avez besoin, sans fonctionnalités inutiles.",
       },
       {
-        question: 'Combien coûte le développement d\'un ERP personnalisé?',
+        question: "Combien coûte le développement d'un ERP personnalisé?",
         answer:
-          'L\'investissement initial est généralement plus élevé qu\'un ERP commercial, mais sans licences récurrentes et avec une adaptation parfaite, le ROI à long terme est supérieur. Le coût dépend de la complexité et du nombre de modules.',
+          "L'investissement initial est généralement plus élevé qu'un ERP commercial, mais sans licences récurrentes et avec une adaptation parfaite, le ROI à long terme est supérieur. Le coût dépend de la complexité et du nombre de modules.",
       },
       {
-        question: 'Peut-on développer l\'ERP par phases?',
+        question: "Peut-on développer l'ERP par phases?",
         answer:
-          'Absolument! Nous recommandons une approche modulaire qui permet de déployer les fonctionnalités critiques en premier, puis d\'ajouter progressivement d\'autres modules selon vos priorités et votre budget.',
+          "Absolument! Nous recommandons une approche modulaire qui permet de déployer les fonctionnalités critiques en premier, puis d'ajouter progressivement d'autres modules selon vos priorités et votre budget.",
       },
       {
-        question: 'L\'ERP peut-il s\'intégrer avec nos systèmes existants?',
+        question: "L'ERP peut-il s'intégrer avec nos systèmes existants?",
         answer:
-          'Oui, nous concevons l\'ERP pour s\'intégrer harmonieusement avec vos outils et systèmes actuels (comptabilité, CRM, e-commerce, etc.) via des API et connecteurs personnalisés.',
+          "Oui, nous concevons l'ERP pour s'intégrer harmonieusement avec vos outils et systèmes actuels (comptabilité, CRM, e-commerce, etc.) via des API et connecteurs personnalisés.",
       },
     ],
   },
   {
     slug: 'software-support',
     title: 'Support et maintenance logicielle',
-    category: 'Logiciels de gestion & d\'automatisation',
+    category: "Logiciels de gestion & d'automatisation",
     hero: {
-      subtitle: 'Votre tranquillité d\'esprit technologique',
+      subtitle: "Votre tranquillité d'esprit technologique",
       description:
-        'Un logiciel performant nécessite un support continu et une maintenance régulière. Notre équipe assure la stabilité, la sécurité et l\'évolution de vos solutions logicielles, vous permettant de vous concentrer sur votre cœur de métier en toute sérénité.',
+        "Un logiciel performant nécessite un support continu et une maintenance régulière. Notre équipe assure la stabilité, la sécurité et l'évolution de vos solutions logicielles, vous permettant de vous concentrer sur votre cœur de métier en toute sérénité.",
     },
     whySection: {
       title: 'Pourquoi un support et une maintenance professionnels?',
@@ -380,10 +387,10 @@ export const servicesData: ServiceDetail[] = [
           number: '01',
           title: 'Surveillance proactive',
           description:
-            'Monitoring continu pour identifier et résoudre les problèmes avant qu\'ils n\'impactent vos opérations.',
+            "Monitoring continu pour identifier et résoudre les problèmes avant qu'ils n'impactent vos opérations.",
           points: [
             'Surveillance des performances 24/7',
-            'Alertes automatiques en cas d\'anomalies',
+            "Alertes automatiques en cas d'anomalies",
             'Analyse des logs et métriques',
             'Rapports de santé réguliers',
           ],
@@ -423,7 +430,7 @@ export const servicesData: ServiceDetail[] = [
       {
         question: 'La maintenance inclut-elle les nouvelles fonctionnalités?',
         answer:
-          'La maintenance couvre les corrections de bugs, mises à jour de sécurité et optimisations. Les nouvelles fonctionnalités font l\'objet de projets séparés, mais nous pouvons inclure des améliorations mineures dans les forfaits premium.',
+          "La maintenance couvre les corrections de bugs, mises à jour de sécurité et optimisations. Les nouvelles fonctionnalités font l'objet de projets séparés, mais nous pouvons inclure des améliorations mineures dans les forfaits premium.",
       },
       {
         question: 'Proposez-vous des contrats de support flexibles?',
@@ -431,9 +438,10 @@ export const servicesData: ServiceDetail[] = [
           'Oui, nous offrons plusieurs formules adaptables : support basique, standard et premium. Chaque niveau offre différents temps de réponse, canaux de support et services inclus.',
       },
       {
-        question: 'Que se passe-t-il si mon logiciel tombe en panne hors des heures ouvrables?',
+        question:
+          'Que se passe-t-il si mon logiciel tombe en panne hors des heures ouvrables?',
         answer:
-          'Avec nos forfaits standard et premium, nous offrons un support d\'urgence 24/7 pour les incidents critiques. Vous disposez d\'un numéro d\'urgence dédié pour joindre notre équipe à tout moment.',
+          "Avec nos forfaits standard et premium, nous offrons un support d'urgence 24/7 pour les incidents critiques. Vous disposez d'un numéro d'urgence dédié pour joindre notre équipe à tout moment.",
       },
     ],
   },
@@ -452,7 +460,7 @@ export const servicesData: ServiceDetail[] = [
         {
           title: 'Accessibilité universelle',
           description:
-            'Accessible depuis n\'importe quel appareil avec un navigateur, sans installation.',
+            "Accessible depuis n'importe quel appareil avec un navigateur, sans installation.",
           icon: '🌐',
         },
         {
@@ -478,19 +486,19 @@ export const servicesData: ServiceDetail[] = [
           number: '01',
           title: 'UX/UI Design',
           description:
-            'Conception d\'une interface intuitive et attrayante centrée sur l\'utilisateur.',
+            "Conception d'une interface intuitive et attrayante centrée sur l'utilisateur.",
           points: [
             'Recherche utilisateur et personas',
             'Wireframes et prototypes interactifs',
             'Design system et charte graphique',
-            'Tests d\'utilisabilité',
+            "Tests d'utilisabilité",
           ],
         },
         {
           number: '02',
           title: 'Développement Full-Stack',
           description:
-            'Construction de l\'application avec les technologies les plus adaptées.',
+            "Construction de l'application avec les technologies les plus adaptées.",
           points: [
             'Frontend moderne et responsive',
             'Backend robuste et sécurisé',
@@ -514,24 +522,27 @@ export const servicesData: ServiceDetail[] = [
     },
     faqs: [
       {
-        question: 'Quelle est la différence entre une application web et un site web?',
+        question:
+          'Quelle est la différence entre une application web et un site web?',
         answer:
-          'Une application web offre des fonctionnalités interactives complexes et permet aux utilisateurs d\'accomplir des tâches spécifiques, tandis qu\'un site web présente principalement de l\'information. Une application web est plus dynamique et interactive.',
+          "Une application web offre des fonctionnalités interactives complexes et permet aux utilisateurs d'accomplir des tâches spécifiques, tandis qu'un site web présente principalement de l'information. Une application web est plus dynamique et interactive.",
       },
       {
-        question: 'Quelles technologies utilisez-vous pour le développement web?',
+        question:
+          'Quelles technologies utilisez-vous pour le développement web?',
         answer:
           'Nous utilisons des technologies modernes comme React, Next.js, Node.js, Python, et PostgreSQL. Le choix exact dépend des besoins spécifiques de votre projet et de vos préférences.',
       },
       {
-        question: 'L\'application sera-t-elle responsive et mobile-friendly?',
+        question: "L'application sera-t-elle responsive et mobile-friendly?",
         answer:
           'Absolument! Toutes nos applications web sont conçues avec une approche "mobile-first" et s\'adaptent parfaitement à tous les types d\'écrans, des smartphones aux grands écrans desktop.',
       },
       {
-        question: 'Peut-on transformer l\'application web en application mobile plus tard?',
+        question:
+          "Peut-on transformer l'application web en application mobile plus tard?",
         answer:
-          'Oui, nous pouvons concevoir l\'architecture pour faciliter cette transition future. Nous pouvons également créer une Progressive Web App (PWA) qui fonctionne comme une application mobile sans développement natif.',
+          "Oui, nous pouvons concevoir l'architecture pour faciliter cette transition future. Nous pouvons également créer une Progressive Web App (PWA) qui fonctionne comme une application mobile sans développement natif.",
       },
     ],
   },
@@ -542,7 +553,7 @@ export const servicesData: ServiceDetail[] = [
     hero: {
       subtitle: 'Applications mobiles natives et performantes',
       description:
-        'Nous développons des applications mobiles innovantes pour iOS et Android qui offrent une expérience utilisateur fluide et engageante. Que ce soit une application grand public ou une solution d\'entreprise, nous créons des applications qui se démarquent.',
+        "Nous développons des applications mobiles innovantes pour iOS et Android qui offrent une expérience utilisateur fluide et engageante. Que ce soit une application grand public ou une solution d'entreprise, nous créons des applications qui se démarquent.",
     },
     whySection: {
       title: 'Pourquoi investir dans une application mobile?',
@@ -561,8 +572,7 @@ export const servicesData: ServiceDetail[] = [
         },
         {
           title: 'Performance optimale',
-          description:
-            'Expérience ultra-rapide et fluide, même hors ligne.',
+          description: 'Expérience ultra-rapide et fluide, même hors ligne.',
           icon: '⚡',
         },
       ],
@@ -570,13 +580,13 @@ export const servicesData: ServiceDetail[] = [
     process: {
       title: 'Notre processus de développement mobile',
       description:
-        'De l\'idée au lancement sur les stores, nous vous accompagnons à chaque étape pour créer une application mobile exceptionnelle.',
+        "De l'idée au lancement sur les stores, nous vous accompagnons à chaque étape pour créer une application mobile exceptionnelle.",
       steps: [
         {
           number: '01',
           title: 'Stratégie et design',
           description:
-            'Définition de la stratégie mobile et création d\'une expérience utilisateur optimale.',
+            "Définition de la stratégie mobile et création d'une expérience utilisateur optimale.",
           points: [
             'Définition des objectifs et KPIs',
             'Recherche concurrentielle et positionnement',
@@ -588,7 +598,7 @@ export const servicesData: ServiceDetail[] = [
           number: '02',
           title: 'Développement natif ou cross-platform',
           description:
-            'Construction de l\'application avec les technologies les plus adaptées à vos besoins.',
+            "Construction de l'application avec les technologies les plus adaptées à vos besoins.",
           points: [
             'Développement Swift/Kotlin ou React Native',
             'Intégration API et services backend',
@@ -600,7 +610,7 @@ export const servicesData: ServiceDetail[] = [
           number: '03',
           title: 'Publication et croissance',
           description:
-            'Lancement sur les stores et stratégies d\'acquisition d\'utilisateurs.',
+            "Lancement sur les stores et stratégies d'acquisition d'utilisateurs.",
           points: [
             'Préparation et soumission aux stores',
             'Optimisation ASO (App Store Optimization)',
@@ -617,33 +627,34 @@ export const servicesData: ServiceDetail[] = [
           'Pas nécessairement. Nous pouvons utiliser React Native pour développer une seule application qui fonctionne sur les deux plateformes, ou opter pour du développement natif si les performances maximales sont critiques.',
       },
       {
-        question: 'Combien coûte le développement d\'une application mobile?',
+        question: "Combien coûte le développement d'une application mobile?",
         answer:
-          'Le coût varie considérablement selon la complexité : une application simple peut coûter 30 000$ - 50 000$, tandis qu\'une application complexe peut dépasser 150 000$. Nous fournissons toujours un devis détaillé après analyse.',
+          "Le coût varie considérablement selon la complexité : une application simple peut coûter 30 000$ - 50 000$, tandis qu'une application complexe peut dépasser 150 000$. Nous fournissons toujours un devis détaillé après analyse.",
       },
       {
-        question: 'Combien de temps prend le développement d\'une application mobile?',
+        question:
+          "Combien de temps prend le développement d'une application mobile?",
         answer:
           'En moyenne, une application simple prend 3-4 mois, une application de complexité moyenne 4-6 mois, et une application complexe 6-12 mois ou plus. Cela inclut le design, le développement, les tests et la publication.',
       },
       {
         question: 'Aidez-vous avec la publication sur les stores?',
         answer:
-          'Oui, nous nous occupons de toute la préparation technique, la création des comptes développeurs, la soumission et le processus de validation sur l\'App Store et Google Play Store.',
+          "Oui, nous nous occupons de toute la préparation technique, la création des comptes développeurs, la soumission et le processus de validation sur l'App Store et Google Play Store.",
       },
     ],
   },
   {
     slug: 'ai-integration',
-    title: 'Intégration de l\'Intelligence Artificielle (IA)',
+    title: "Intégration de l'Intelligence Artificielle (IA)",
     category: 'Laboratoire PROGIX',
     hero: {
-      subtitle: 'Propulsez votre entreprise avec l\'IA',
+      subtitle: "Propulsez votre entreprise avec l'IA",
       description:
-        'L\'intelligence artificielle n\'est plus réservée aux géants technologiques. Nous intégrons des solutions d\'IA pratiques et accessibles dans vos systèmes existants pour automatiser les tâches, améliorer la prise de décision et créer de nouvelles opportunités de croissance.',
+        "L'intelligence artificielle n'est plus réservée aux géants technologiques. Nous intégrons des solutions d'IA pratiques et accessibles dans vos systèmes existants pour automatiser les tâches, améliorer la prise de décision et créer de nouvelles opportunités de croissance.",
     },
     whySection: {
-      title: 'Pourquoi intégrer l\'IA dans vos opérations?',
+      title: "Pourquoi intégrer l'IA dans vos opérations?",
       reasons: [
         {
           title: 'Automatisation intelligente',
@@ -666,27 +677,27 @@ export const servicesData: ServiceDetail[] = [
       ],
     },
     process: {
-      title: 'Notre approche d\'intégration IA',
+      title: "Notre approche d'intégration IA",
       description:
-        'Nous adoptons une approche pragmatique de l\'IA, en commençant par identifier les cas d\'usage à fort impact et en développant des solutions sur mesure qui génèrent un ROI mesurable.',
+        "Nous adoptons une approche pragmatique de l'IA, en commençant par identifier les cas d'usage à fort impact et en développant des solutions sur mesure qui génèrent un ROI mesurable.",
       steps: [
         {
           number: '01',
           title: 'Évaluation et stratégie',
           description:
-            'Identification des opportunités d\'IA les plus prometteuses pour votre entreprise.',
+            "Identification des opportunités d'IA les plus prometteuses pour votre entreprise.",
           points: [
             'Audit des processus et données',
-            'Identification des cas d\'usage à fort ROI',
+            "Identification des cas d'usage à fort ROI",
             'Évaluation de la maturité IA',
-            'Roadmap d\'implémentation',
+            "Roadmap d'implémentation",
           ],
         },
         {
           number: '02',
           title: 'Développement et entraînement',
           description:
-            'Création et entraînement de modèles d\'IA adaptés à vos besoins spécifiques.',
+            "Création et entraînement de modèles d'IA adaptés à vos besoins spécifiques.",
           points: [
             'Préparation et nettoyage des données',
             'Développement de modèles personnalisés',
@@ -715,19 +726,20 @@ export const servicesData: ServiceDetail[] = [
           'Nous offrons diverses solutions : chatbots intelligents, systèmes de recommandation, analyse prédictive, traitement du langage naturel, vision par ordinateur, automatisation de processus, et plus encore.',
       },
       {
-        question: 'Avons-nous besoin de beaucoup de données pour utiliser l\'IA?',
+        question:
+          "Avons-nous besoin de beaucoup de données pour utiliser l'IA?",
         answer:
-          'Cela dépend du type de solution. Certaines applications d\'IA nécessitent des volumes importants de données, tandis que d\'autres peuvent fonctionner avec des ensembles de données plus modestes ou en utilisant des modèles pré-entraînés.',
+          "Cela dépend du type de solution. Certaines applications d'IA nécessitent des volumes importants de données, tandis que d'autres peuvent fonctionner avec des ensembles de données plus modestes ou en utilisant des modèles pré-entraînés.",
       },
       {
-        question: 'L\'IA peut-elle s\'intégrer à nos systèmes existants?',
+        question: "L'IA peut-elle s'intégrer à nos systèmes existants?",
         answer:
-          'Oui, nous concevons nos solutions d\'IA pour s\'intégrer harmonieusement avec vos systèmes et outils existants via des API, sans nécessiter une refonte complète de votre infrastructure.',
+          "Oui, nous concevons nos solutions d'IA pour s'intégrer harmonieusement avec vos systèmes et outils existants via des API, sans nécessiter une refonte complète de votre infrastructure.",
       },
       {
-        question: 'Quel est le retour sur investissement de l\'IA?',
+        question: "Quel est le retour sur investissement de l'IA?",
         answer:
-          'Le ROI varie selon le cas d\'usage, mais nos clients observent généralement des gains de productivité de 20-40%, des réductions de coûts opérationnels et une amélioration de l\'expérience client dans les 6-12 mois suivant l\'implémentation.',
+          "Le ROI varie selon le cas d'usage, mais nos clients observent généralement des gains de productivité de 20-40%, des réductions de coûts opérationnels et une amélioration de l'expérience client dans les 6-12 mois suivant l'implémentation.",
       },
     ],
   },
@@ -738,7 +750,7 @@ export const servicesData: ServiceDetail[] = [
     hero: {
       subtitle: 'Transformez vos données en actif stratégique',
       description:
-        'Une stratégie de données solide est la fondation de toute transformation numérique réussie. Nous vous aidons à définir une vision claire pour la gouvernance, la qualité et l\'utilisation de vos données, alignée sur vos objectifs d\'affaires.',
+        "Une stratégie de données solide est la fondation de toute transformation numérique réussie. Nous vous aidons à définir une vision claire pour la gouvernance, la qualité et l'utilisation de vos données, alignée sur vos objectifs d'affaires.",
     },
     whySection: {
       title: 'Pourquoi une stratégie de données est essentielle?',
@@ -746,7 +758,7 @@ export const servicesData: ServiceDetail[] = [
         {
           title: 'Décisions éclairées',
           description:
-            'Basez vos décisions sur des données fiables et accessibles, pas sur l\'intuition.',
+            "Basez vos décisions sur des données fiables et accessibles, pas sur l'intuition.",
           icon: '🎯',
         },
         {
@@ -784,19 +796,19 @@ export const servicesData: ServiceDetail[] = [
           number: '02',
           title: 'Définition de la vision',
           description:
-            'Élaboration d\'une vision stratégique alignée sur vos objectifs d\'affaires.',
+            "Élaboration d'une vision stratégique alignée sur vos objectifs d'affaires.",
           points: [
             'Ateliers avec les parties prenantes',
-            'Définition des cas d\'usage prioritaires',
+            "Définition des cas d'usage prioritaires",
             'Architecture cible de données',
             'Framework de gouvernance',
           ],
         },
         {
           number: '03',
-          title: 'Roadmap d\'implémentation',
+          title: "Roadmap d'implémentation",
           description:
-            'Plan d\'action détaillé pour réaliser votre vision de données.',
+            "Plan d'action détaillé pour réaliser votre vision de données.",
           points: [
             'Priorisation des initiatives',
             'Estimation des ressources et budgets',
@@ -808,24 +820,25 @@ export const servicesData: ServiceDetail[] = [
     },
     faqs: [
       {
-        question: 'Qu\'est-ce qu\'une stratégie de données exactement?',
+        question: "Qu'est-ce qu'une stratégie de données exactement?",
         answer:
-          'Une stratégie de données est un plan directeur qui définit comment votre organisation collecte, stocke, gère, partage et utilise ses données pour atteindre ses objectifs d\'affaires et créer de la valeur.',
+          "Une stratégie de données est un plan directeur qui définit comment votre organisation collecte, stocke, gère, partage et utilise ses données pour atteindre ses objectifs d'affaires et créer de la valeur.",
       },
       {
-        question: 'Combien de temps prend l\'élaboration d\'une stratégie de données?',
+        question:
+          "Combien de temps prend l'élaboration d'une stratégie de données?",
         answer:
-          'Typiquement, l\'élaboration d\'une stratégie de données complète prend 6-12 semaines, selon la taille de l\'organisation et la complexité de l\'écosystème de données existant.',
+          "Typiquement, l'élaboration d'une stratégie de données complète prend 6-12 semaines, selon la taille de l'organisation et la complexité de l'écosystème de données existant.",
       },
       {
         question: 'Qui devrait être impliqué dans ce processus?',
         answer:
-          'Idéalement, les dirigeants (CEO, CTO), les responsables métier, l\'équipe IT, et les utilisateurs clés de données. L\'engagement de la direction est crucial pour le succès.',
+          "Idéalement, les dirigeants (CEO, CTO), les responsables métier, l'équipe IT, et les utilisateurs clés de données. L'engagement de la direction est crucial pour le succès.",
       },
       {
         question: 'Quelle est la différence avec une stratégie BI?',
         answer:
-          'Une stratégie de données est plus large et englobe la stratégie BI. Elle couvre la gouvernance, la qualité, l\'architecture et la sécurité des données, tandis que la BI se concentre sur l\'analyse et le reporting.',
+          "Une stratégie de données est plus large et englobe la stratégie BI. Elle couvre la gouvernance, la qualité, l'architecture et la sécurité des données, tandis que la BI se concentre sur l'analyse et le reporting.",
       },
     ],
   },
@@ -836,10 +849,10 @@ export const servicesData: ServiceDetail[] = [
     hero: {
       subtitle: 'Transformez vos données en insights actionnables',
       description:
-        'L\'analyse de données révèle les patterns cachés, les tendances et les opportunités dans vos données. Nous combinons expertise statistique et connaissance métier pour extraire des insights qui génèrent des actions concrètes et mesurables.',
+        "L'analyse de données révèle les patterns cachés, les tendances et les opportunités dans vos données. Nous combinons expertise statistique et connaissance métier pour extraire des insights qui génèrent des actions concrètes et mesurables.",
     },
     whySection: {
-      title: 'Pourquoi investir dans l\'analyse de données?',
+      title: "Pourquoi investir dans l'analyse de données?",
       reasons: [
         {
           title: 'Compréhension approfondie',
@@ -856,13 +869,13 @@ export const servicesData: ServiceDetail[] = [
         {
           title: 'Optimisation continue',
           description:
-            'Identifiez les opportunités d\'amélioration et mesurez l\'impact de vos actions.',
+            "Identifiez les opportunités d'amélioration et mesurez l'impact de vos actions.",
           icon: '📊',
         },
       ],
     },
     process: {
-      title: 'Notre méthodologie d\'analyse de données',
+      title: "Notre méthodologie d'analyse de données",
       description:
         'Nous suivons une approche structurée qui garantit des analyses rigoureuses et des recommandations actionnables basées sur vos données.',
       steps: [
@@ -870,7 +883,7 @@ export const servicesData: ServiceDetail[] = [
           number: '01',
           title: 'Cadrage et préparation',
           description:
-            'Définition des questions d\'affaires et préparation des données.',
+            "Définition des questions d'affaires et préparation des données.",
           points: [
             'Identification des objectifs analytiques',
             'Collecte et consolidation des données',
@@ -887,18 +900,18 @@ export const servicesData: ServiceDetail[] = [
             'Analyse statistique et descriptive',
             'Modélisation prédictive si applicable',
             'Identification de patterns et corrélations',
-            'Tests d\'hypothèses',
+            "Tests d'hypothèses",
           ],
         },
         {
           number: '03',
           title: 'Insights et recommandations',
           description:
-            'Communication des findings et plan d\'action pour capitaliser sur les insights.',
+            "Communication des findings et plan d'action pour capitaliser sur les insights.",
           points: [
             'Synthèse des découvertes clés',
             'Recommandations actionnables',
-            'Estimation de l\'impact potentiel',
+            "Estimation de l'impact potentiel",
             'Plan de mise en œuvre',
           ],
         },
@@ -906,24 +919,26 @@ export const servicesData: ServiceDetail[] = [
     },
     faqs: [
       {
-        question: 'Quelle est la différence entre analyse de données et science des données?',
+        question:
+          'Quelle est la différence entre analyse de données et science des données?',
         answer:
-          'L\'analyse de données se concentre sur l\'examen des données historiques pour comprendre le passé et le présent. La science des données va plus loin avec des modèles prédictifs et du machine learning pour anticiper le futur.',
+          "L'analyse de données se concentre sur l'examen des données historiques pour comprendre le passé et le présent. La science des données va plus loin avec des modèles prédictifs et du machine learning pour anticiper le futur.",
       },
       {
-        question: 'Avons-nous besoin d\'outils spéciaux pour l\'analyse de données?',
+        question:
+          "Avons-nous besoin d'outils spéciaux pour l'analyse de données?",
         answer:
-          'Nous utilisons des outils professionnels d\'analyse (Python, R, SQL, etc.), mais nous pouvons aussi travailler avec vos outils existants comme Excel pour des analyses plus simples. Le choix dépend de la complexité de l\'analyse.',
+          "Nous utilisons des outils professionnels d'analyse (Python, R, SQL, etc.), mais nous pouvons aussi travailler avec vos outils existants comme Excel pour des analyses plus simples. Le choix dépend de la complexité de l'analyse.",
       },
       {
         question: 'Combien de temps prend une analyse de données typique?',
         answer:
-          'Une analyse exploratoire simple peut prendre 1-2 semaines, tandis qu\'une analyse approfondie avec modélisation peut nécessiter 4-8 semaines. La durée dépend de la qualité des données et de la complexité des questions posées.',
+          "Une analyse exploratoire simple peut prendre 1-2 semaines, tandis qu'une analyse approfondie avec modélisation peut nécessiter 4-8 semaines. La durée dépend de la qualité des données et de la complexité des questions posées.",
       },
       {
         question: 'Que faire si nos données sont de mauvaise qualité?',
         answer:
-          'Nous commençons toujours par évaluer la qualité des données. Si nécessaire, nous incluons une phase de nettoyage et d\'amélioration de la qualité avant l\'analyse proprement dite.',
+          "Nous commençons toujours par évaluer la qualité des données. Si nécessaire, nous incluons une phase de nettoyage et d'amélioration de la qualité avant l'analyse proprement dite.",
       },
     ],
   },
@@ -942,7 +957,7 @@ export const servicesData: ServiceDetail[] = [
         {
           title: 'Compréhension instantanée',
           description:
-            'Saisissez les tendances et anomalies en un coup d\'œil, sans analyses complexes.',
+            "Saisissez les tendances et anomalies en un coup d'œil, sans analyses complexes.",
           icon: '👁️',
         },
         {
@@ -983,7 +998,7 @@ export const servicesData: ServiceDetail[] = [
             'Conception de visualisations intuitives et impactantes.',
           points: [
             'Choix des types de graphiques appropriés',
-            'Design de l\'interface utilisateur',
+            "Design de l'interface utilisateur",
             'Prototypes interactifs',
             'Validation avec les utilisateurs',
           ],
@@ -1006,10 +1021,11 @@ export const servicesData: ServiceDetail[] = [
       {
         question: 'Quels outils de visualisation utilisez-vous?',
         answer:
-          'Nous utilisons divers outils selon les besoins : Power BI, Tableau pour les solutions d\'entreprise, ou des solutions sur mesure avec D3.js, Plotly, et autres bibliothèques de visualisation modernes.',
+          "Nous utilisons divers outils selon les besoins : Power BI, Tableau pour les solutions d'entreprise, ou des solutions sur mesure avec D3.js, Plotly, et autres bibliothèques de visualisation modernes.",
       },
       {
-        question: 'Peut-on connecter nos tableaux de bord à nos systèmes existants?',
+        question:
+          'Peut-on connecter nos tableaux de bord à nos systèmes existants?',
         answer:
           'Absolument! Nous créons des connexions en temps réel ou programmées avec vos bases de données, ERP, CRM et autres systèmes pour que vos dashboards affichent toujours les données les plus récentes.',
       },
@@ -1019,9 +1035,9 @@ export const servicesData: ServiceDetail[] = [
           'Oui, nous concevons toutes nos visualisations avec une approche responsive qui garantit une expérience optimale sur desktop, tablette et smartphone.',
       },
       {
-        question: 'Combien coûte le développement d\'un tableau de bord?',
+        question: "Combien coûte le développement d'un tableau de bord?",
         answer:
-          'Le coût varie selon la complexité : un dashboard simple avec quelques métriques peut coûter 5 000$ - 10 000$, tandis qu\'une solution complète avec multiples dashboards et intégrations complexes peut atteindre 50 000$ ou plus.',
+          "Le coût varie selon la complexité : un dashboard simple avec quelques métriques peut coûter 5 000$ - 10 000$, tandis qu'une solution complète avec multiples dashboards et intégrations complexes peut atteindre 50 000$ ou plus.",
       },
     ],
   },

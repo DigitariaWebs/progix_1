@@ -1,6 +1,6 @@
-import * as React from "react";
-import { motion, Variants } from "framer-motion";
-import { cn } from "@/lib/utils";
+import * as React from 'react';
+import { motion, Variants } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface AnimatedTextProps extends React.HTMLAttributes<HTMLDivElement> {
   text: string;
@@ -17,12 +17,12 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
       text,
       textClassName,
       underlineClassName,
-      underlinePath = "M 0,10 Q 75,0 150,10 Q 225,20 300,10",
-      underlineHoverPath = "M 0,10 Q 75,20 150,10 Q 225,0 300,10",
+      underlinePath = 'M 0,10 Q 75,0 150,10 Q 225,20 300,10',
+      underlineHoverPath = 'M 0,10 Q 75,20 150,10 Q 225,0 300,10',
       underlineDuration = 1.5,
       ...props
     },
-    ref
+    ref,
   ) => {
     const pathVariants: Variants = {
       hidden: {
@@ -34,7 +34,7 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
         opacity: 1,
         transition: {
           duration: underlineDuration,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         },
       },
     };
@@ -42,11 +42,14 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col items-center justify-center gap-2", props.className)}
+        className={cn(
+          'flex flex-col items-center justify-center gap-2',
+          props.className,
+        )}
       >
         <div className="relative">
           <motion.h1
-            className={cn("text-4xl font-bold text-center", textClassName)}
+            className={cn('text-4xl font-bold text-center', textClassName)}
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
@@ -59,7 +62,7 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
             width="100%"
             height="20"
             viewBox="0 0 300 20"
-            className={cn("absolute -bottom-4 left-0", underlineClassName)}
+            className={cn('absolute -bottom-4 left-0', underlineClassName)}
           >
             <motion.path
               d={underlinePath}
@@ -78,9 +81,9 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
-AnimatedText.displayName = "AnimatedText";
+AnimatedText.displayName = 'AnimatedText';
 
 export { AnimatedText };

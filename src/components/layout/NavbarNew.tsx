@@ -5,19 +5,35 @@ import StaggeredMenu from '@/components/StaggeredMenu';
 
 const Navbar = () => {
   const menuItems = [
-    { label: 'Accueil', ariaLabel: 'Aller à la page d\'accueil', link: '/' },
+    { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },
     { label: 'Services', ariaLabel: 'Voir nos services', link: '/services' },
-    { label: 'Portfolio', ariaLabel: 'Voir notre portfolio', link: '/portfolio' },
-    { label: 'Notre équipe', ariaLabel: 'Découvrir notre équipe', link: '/team' },
-    { label: 'Nos valeurs', ariaLabel: 'Connaître nos valeurs', link: '/nos-valeurs' },
-    { label: 'ConFoo 2025', ariaLabel: 'Découvrir ConFoo 2025', link: '/confoo-2025' },
-    { label: 'Contact', ariaLabel: 'Nous contacter', link: '/contact' }
+    {
+      label: 'Portfolio',
+      ariaLabel: 'Voir notre portfolio',
+      link: '/portfolio',
+    },
+    {
+      label: 'Notre équipe',
+      ariaLabel: 'Découvrir notre équipe',
+      link: '/team',
+    },
+    {
+      label: 'Nos valeurs',
+      ariaLabel: 'Connaître nos valeurs',
+      link: '/nos-valeurs',
+    },
+    {
+      label: 'ConFoo 2025',
+      ariaLabel: 'Découvrir ConFoo 2025',
+      link: '/confoo-2025',
+    },
+    { label: 'Contact', ariaLabel: 'Nous contacter', link: '/contact' },
   ];
 
   const socialItems = [
     { label: 'LinkedIn', link: 'https://linkedin.com/company/progix' },
     { label: 'GitHub', link: 'https://github.com/progix' },
-    { label: 'Twitter', link: 'https://twitter.com/progix' }
+    { label: 'Twitter', link: 'https://twitter.com/progix' },
   ];
 
   return (

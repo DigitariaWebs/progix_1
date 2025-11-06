@@ -428,7 +428,10 @@ export const StaggeredMenu = ({
         className={`staggered-menu-header${hideHeader && !open ? ' sm-header-hidden' : ''}`}
         aria-label="Main navigation header"
       >
-        <div className="sm-logo transform -translate-x-2 sm:translate-x-0" aria-label="Logo">
+        <div
+          className="sm-logo transform -translate-x-2 sm:translate-x-0"
+          aria-label="Logo"
+        >
           <Image
             src="/images/logo.png"
             alt="PROGIX Logo"

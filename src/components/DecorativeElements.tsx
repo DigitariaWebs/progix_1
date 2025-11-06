@@ -5,9 +5,9 @@ interface DecorativeElementsProps {
   className?: string;
 }
 
-const DecorativeElements: React.FC<DecorativeElementsProps> = ({ 
-  type, 
-  className = '' 
+const DecorativeElements: React.FC<DecorativeElementsProps> = ({
+  type,
+  className = '',
 }) => {
   if (type === 'wave-top') {
     return (

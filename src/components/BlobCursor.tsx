@@ -24,7 +24,7 @@ export default function BlobCursor({
   slowDuration = 0.5,
   fastEase = 'power3.out',
   slowEase = 'power1.out',
-  zIndex = 100
+  zIndex = 100,
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const blobsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -41,18 +41,18 @@ export default function BlobCursor({
           x: x,
           y: y,
           duration: isLead ? fastDuration : slowDuration,
-          ease: isLead ? fastEase : slowEase
+          ease: isLead ? fastEase : slowEase,
         });
       });
     },
-    [fastDuration, slowDuration, fastEase, slowEase]
+    [fastDuration, slowDuration, fastEase, slowEase],
   );
 
   useEffect(() => {
     // Ajouter les événements directement sur la fenêtre
     window.addEventListener('mousemove', handleMove);
     window.addEventListener('touchmove', handleMove);
-    
+
     return () => {
       window.removeEventListener('mousemove', handleMove);
       window.removeEventListener('touchmove', handleMove);
@@ -60,25 +60,30 @@ export default function BlobCursor({
   }, [handleMove]);
 
   return (
-    <div
-      ref={containerRef}
-      className="blob-container"
-      style={{ zIndex }}
-    >
+    <div ref={containerRef} className="blob-container" style={{ zIndex }}>
       {useFilter && (
         <svg style={{ position: 'absolute', width: 0, height: 0 }}>
           <filter id={filterId}>
-            <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation={filterStdDeviation} />
+            <feGaussianBlur
+              in="SourceGraphic"
+              result="blur"
+              stdDeviation={filterStdDeviation}
+            />
             <feColorMatrix in="blur" values={filterColorMatrixValues} />
           </filter>
         </svg>
       )}
 
-      <div className="blob-main" style={{ filter: useFilter ? `url(#${filterId})` : undefined }}>
+      <div
+        className="blob-main"
+        style={{ filter: useFilter ? `url(#${filterId})` : undefined }}
+      >
         {Array.from({ length: trailCount }).map((_, i) => (
           <div
             key={i}
-            ref={el => { blobsRef.current[i] = el; }}
+            ref={(el) => {
+              blobsRef.current[i] = el;
+            }}
             className="blob"
             style={{
               width: sizes[i],
@@ -86,7 +91,7 @@ export default function BlobCursor({
               borderRadius: blobType === 'circle' ? '50%' : '0%',
               backgroundColor: fillColor,
               opacity: opacities[i],
-              boxShadow: `${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px 0 ${shadowColor}`
+              boxShadow: `${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlur}px 0 ${shadowColor}`,
             }}
           >
             <div
@@ -97,7 +102,7 @@ export default function BlobCursor({
                 top: (sizes[i] - innerSizes[i]) / 2,
                 left: (sizes[i] - innerSizes[i]) / 2,
                 backgroundColor: innerColor,
-                borderRadius: blobType === 'circle' ? '50%' : '0%'
+                borderRadius: blobType === 'circle' ? '50%' : '0%',
               }}
             />
           </div>

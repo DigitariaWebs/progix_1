@@ -6,11 +6,14 @@ import { motion } from 'framer-motion';
 const ConfirmationPage = () => {
   return (
     <div className="min-h-screen bg-[#0a1628] text-white flex flex-col items-center justify-center relative overflow-hidden">
-      <div className="absolute inset-0 opacity-30" style={{
-        backgroundImage: `radial-gradient(circle at 20% 20%, rgba(0,212,255,0.2) 0, transparent 50%),
+      <div
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: `radial-gradient(circle at 20% 20%, rgba(0,212,255,0.2) 0, transparent 50%),
                           radial-gradient(circle at 80% 30%, rgba(29,71,96,0.35) 0, transparent 55%),
-                          radial-gradient(circle at 30% 75%, rgba(0,212,255,0.15) 0, transparent 50%)`
-      }} />
+                          radial-gradient(circle at 30% 75%, rgba(0,212,255,0.15) 0, transparent 50%)`,
+        }}
+      />
 
       <div className="relative z-10 w-full max-w-4xl px-6 text-center">
         <motion.h1
@@ -40,7 +43,8 @@ const ConfirmationPage = () => {
           className="mt-6 text-lg text-white/80 max-w-2xl mx-auto"
           style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
         >
-          Nous avons bien reçu votre demande. Un membre de l’équipe Progix vous contacte rapidement pour la suite.
+          Nous avons bien reçu votre demande. Un membre de l’équipe Progix vous
+          contacte rapidement pour la suite.
         </motion.p>
 
         <motion.div
@@ -77,5 +81,3 @@ const ConfirmationPage = () => {
 };
 
 export default ConfirmationPage;
-
-

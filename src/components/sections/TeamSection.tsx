@@ -8,14 +8,12 @@ type SimpleMember = {
   linkedinUrl: string;
 };
 
-const mappedMembers: SimpleMember[] = fullTeam
-  .slice(0, 8)
-  .map((m) => ({
-    name: m.name,
-    role: m.role,
-    photo: m.image,
-    linkedinUrl: m.linkedinUrl,
-  }));
+const mappedMembers: SimpleMember[] = fullTeam.slice(0, 8).map((m) => ({
+  name: m.name,
+  role: m.role,
+  photo: m.image,
+  linkedinUrl: m.linkedinUrl,
+}));
 
 const TeamSection = () => {
   return (

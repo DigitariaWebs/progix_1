@@ -8,12 +8,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'inter': ['var(--font-inter)', 'Inter', 'sans-serif'],
+        inter: ['var(--font-inter)', 'Inter', 'sans-serif'],
         'spline-sans': ['Spline Sans', 'sans-serif'],
-        'montserrat': ['var(--font-montserrat)', 'Montserrat', 'sans-serif'],
+        montserrat: ['var(--font-montserrat)', 'Montserrat', 'sans-serif'],
       },
     },
   },
   plugins: [],
-}
-
+};

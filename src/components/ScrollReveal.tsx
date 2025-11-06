@@ -16,7 +16,7 @@ const ScrollReveal = ({
   containerClassName = '',
   textClassName = '',
   rotationEnd = 'bottom bottom',
-  wordAnimationEnd = 'bottom bottom'
+  wordAnimationEnd = 'bottom bottom',
 }) => {
   const containerRef = useRef(null);
 
@@ -36,7 +36,10 @@ const ScrollReveal = ({
     const el = containerRef.current;
     if (!el) return;
 
-    const scroller = scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
+    const scroller =
+      scrollContainerRef && scrollContainerRef.current
+        ? scrollContainerRef.current
+        : window;
 
     gsap.fromTo(
       el,
@@ -49,9 +52,9 @@ const ScrollReveal = ({
           scroller,
           start: 'top bottom',
           end: rotationEnd,
-          scrub: true
-        }
-      }
+          scrub: true,
+        },
+      },
     );
 
     const wordElements = el.querySelectorAll('.word');
@@ -68,9 +71,9 @@ const ScrollReveal = ({
           scroller,
           start: 'top bottom-=20%',
           end: wordAnimationEnd,
-          scrub: true
-        }
-      }
+          scrub: true,
+        },
+      },
     );
 
     if (enableBlur) {
@@ -86,16 +89,24 @@ const ScrollReveal = ({
             scroller,
             start: 'top bottom-=20%',
             end: wordAnimationEnd,
-            scrub: true
-          }
-        }
+            scrub: true,
+          },
+        },
       );
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
+  }, [
+    scrollContainerRef,
+    enableBlur,
+    baseRotation,
+    baseOpacity,
+    rotationEnd,
+    wordAnimationEnd,
+    blurStrength,
+  ]);
 
   return (
     <h2 ref={containerRef} className={`scroll-reveal ${containerClassName}`}>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-export const runtime = "nodejs"; // Force Node.js runtime for crypto operations
+export const runtime = 'nodejs'; // Force Node.js runtime for crypto operations
 
 export async function POST(request: NextRequest) {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
+          Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -216,7 +216,11 @@ export async function POST(request: NextRequest) {
       const to = process.env.CONTACT_EMAIL;
       if (!host || !user || !pass || !configuredFrom || !to) {
         return NextResponse.json(
-          { success: false, message: 'Email service not configured. Set RESEND_API_KEY or SMTP_* env vars.' },
+          {
+            success: false,
+            message:
+              'Email service not configured. Set RESEND_API_KEY or SMTP_* env vars.',
+          },
           { status: 500 },
         );
       }
@@ -242,7 +246,8 @@ export async function POST(request: NextRequest) {
         );
       }
       // Gmail requires From to match the authenticated user unless "Send mail as" is configured.
-      const useGmailSafeFrom = /gmail\.com$/i.test(user) || /smtp\.gmail\.com$/i.test(host);
+      const useGmailSafeFrom =
+        /gmail\.com$/i.test(user) || /smtp\.gmail\.com$/i.test(host);
       const from = useGmailSafeFrom ? user : configuredFrom!;
 
       await transporter.sendMail({

@@ -64,8 +64,16 @@ export default function BlogPostPage({
         <section className="pt-32 pb-8 relative overflow-hidden">
           <div className="absolute inset-0 opacity-20">
             {/* keep subtle animated stars for consistency */}
-            <motion.div className="absolute top-10 left-10 w-1 h-1 bg-white rounded-full" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 3, repeat: Infinity }} />
-            <motion.div className="absolute top-5 left-1/4 w-1 h-1 bg-white rounded-full" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }} />
+            <motion.div
+              className="absolute top-10 left-10 w-1 h-1 bg-white rounded-full"
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute top-5 left-1/4 w-1 h-1 bg-white rounded-full"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
+            />
           </div>
           <div className="max-w-4xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10">
             <motion.div
@@ -74,7 +82,12 @@ export default function BlogPostPage({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <Image src={post.image} alt={post.title} fill className="object-cover" />
+              <Image
+                src={post.image}
+                alt={post.title}
+                fill
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/50 to-transparent" />
             </motion.div>
           </div>
@@ -83,7 +96,13 @@ export default function BlogPostPage({
         {/* Title and Body Only */}
         <section className="pb-20">
           <div className="max-w-3xl mx-auto px-2 sm:px-4 lg:px-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight" style={{ fontFamily: 'Hubot Sans, Inter, sans-serif', letterSpacing: '0.02em' }}>
+            <h1
+              className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight"
+              style={{
+                fontFamily: 'Hubot Sans, Inter, sans-serif',
+                letterSpacing: '0.02em',
+              }}
+            >
               {post.title}
             </h1>
             <div className="space-y-6">
@@ -446,7 +465,11 @@ export default function BlogPostPage({
                     {line.replace('### ', '')}
                   </h3>
                 );
-              } else if (line.startsWith('- ') || line.startsWith('• ') || line.startsWith('* ')) {
+              } else if (
+                line.startsWith('- ') ||
+                line.startsWith('• ') ||
+                line.startsWith('* ')
+              ) {
                 return (
                   <div
                     key={index}

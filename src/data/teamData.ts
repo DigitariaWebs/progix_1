@@ -55,7 +55,8 @@ export const teamMembers: TeamMember[] = [
     skills: 'TypeScript • React • Next.js',
     image:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images%20of%20the%20team/Screenshot%202025-10-16%20033128.png',
-    linkedinUrl: 'https://www.linkedin.com/in/yann-bonzom/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BKq283o4pQkuh%2Fmhml38A3A%3D%3D',
+    linkedinUrl:
+      'https://www.linkedin.com/in/yann-bonzom/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BKq283o4pQkuh%2Fmhml38A3A%3D%3D',
     description: "Membre de l'équipe PROGIX.",
     experience: [
       {
@@ -74,8 +75,7 @@ export const teamMembers: TeamMember[] = [
     name: 'Ilyes Ghorieb',
     role: 'Full-Stack Software Engineer',
     skills: 'React • Node.js • TypeScript • PostgreSQL',
-    image:
-      '/images/imranarshad/IMG_2125.JPG',
+    image: '/images/imranarshad/IMG_2125.JPG',
     linkedinUrl: 'https://www.linkedin.com/in/ilyes-ghorieb-95b470244/',
     description:
       'Salut ! Je suis Ilyes, un développeur full-stack passionné par la création de solutions logicielles innovantes. Chez PROGIX, je conçois et développe des systèmes CRM et ERP sur mesure, des plateformes SaaS et des applications mobiles performantes et évolutives.',
@@ -122,8 +122,7 @@ export const teamMembers: TeamMember[] = [
     name: 'Fadi Atmania',
     role: 'Développeur Web Full-Stack',
     skills: 'Flutter • React Native • Swift • Kotlin',
-    image:
-      '/images/imranarshad/IMG_4282.JPG',
+    image: '/images/imranarshad/IMG_4282.JPG',
     linkedinUrl: 'https://www.linkedin.com/in/fadi-atmania-011756354/',
     description:
       'Salut ! Je suis Fadi, un développeur web full-stack passionné par les technologies modernes. Chez PROGIX, je me spécialise dans la création de solutions robustes, efficaces et scalables en utilisant Java, Python, React et Docker.',

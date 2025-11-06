@@ -8,9 +8,10 @@ export default function ExpertisePage() {
   const [filter, setFilter] = useState('all');
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
-  const filteredExpertise = filter === 'all' 
-    ? expertiseData 
-    : expertiseData.filter(item => item.type.toLowerCase() === filter);
+  const filteredExpertise =
+    filter === 'all'
+      ? expertiseData
+      : expertiseData.filter((item) => item.type.toLowerCase() === filter);
 
   const toggleExpand = (itemName: string) => {
     setExpandedItem(expandedItem === itemName ? null : itemName);

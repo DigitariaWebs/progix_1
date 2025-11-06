@@ -1,4 +1,12 @@
-import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
+import {
+  Camera,
+  Mesh,
+  Plane,
+  Program,
+  Renderer,
+  Texture,
+  Transform,
+} from 'ogl';
 import type { OGLRenderingContext } from 'ogl';
 import { useEffect, useRef } from 'react';
 
@@ -18,14 +26,19 @@ function lerp(p1: number, p2: number, t: number): number {
 
 function autoBind(instance: Record<string, unknown>): void {
   const proto = Object.getPrototypeOf(instance);
-  Object.getOwnPropertyNames(proto).forEach(key => {
+  Object.getOwnPropertyNames(proto).forEach((key) => {
     if (key !== 'constructor' && typeof instance[key] === 'function') {
       instance[key] = instance[key].bind(instance);
     }
   });
 }
 
-function createTextTexture(gl: OGLRenderingContext, text: string, font = 'bold 30px monospace', color = 'black'): { texture: Texture; width: number; height: number } {
+function createTextTexture(
+  gl: OGLRenderingContext,
+  text: string,
+  font = 'bold 30px monospace',
+  color = 'black',
+): { texture: Texture; width: number; height: number } {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   if (!context) {
@@ -56,7 +69,14 @@ class Title {
   textColor: string;
   font: string;
   mesh: Mesh;
-  constructor({ gl, plane, renderer, text, textColor = '#545050', font = '30px sans-serif' }: {
+  constructor({
+    gl,
+    plane,
+    renderer,
+    text,
+    textColor = '#545050',
+    font = '30px sans-serif',
+  }: {
     gl: OGLRenderingContext;
     plane: Mesh;
     renderer: Renderer;
@@ -74,7 +94,12 @@ class Title {
     this.createMesh();
   }
   createMesh() {
-    const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
+    const { texture, width, height } = createTextTexture(
+      this.gl,
+      this.text,
+      this.font,
+      this.textColor,
+    );
     const geometry = new Plane(this.gl);
     const program = new Program(this.gl, {
       vertex: `
@@ -99,7 +124,7 @@ class Title {
         }
       `,
       uniforms: { tMap: { value: texture } },
-      transparent: true
+      transparent: true,
     });
     this.mesh = new Mesh(this.gl, { geometry, program });
     const aspect = width / height;
@@ -151,7 +176,7 @@ class Media {
     bend,
     textColor,
     borderRadius = 0,
-    font
+    font,
   }: {
     geometry: Plane;
     gl: OGLRenderingContext;
@@ -190,7 +215,7 @@ class Media {
   }
   createShader() {
     const texture = new Texture(this.gl, {
-      generateMipmaps: true
+      generateMipmaps: true,
     });
     this.program = new Program(this.gl, {
       depthTest: false,
@@ -250,22 +275,25 @@ class Media {
         uImageSizes: { value: [0, 0] },
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
-        uBorderRadius: { value: this.borderRadius }
+        uBorderRadius: { value: this.borderRadius },
       },
-      transparent: true
+      transparent: true,
     });
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.src = this.image;
     img.onload = () => {
       texture.image = img;
-      this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+      this.program.uniforms.uImageSizes.value = [
+        img.naturalWidth,
+        img.naturalHeight,
+      ];
     };
   }
   createMesh() {
     this.plane = new Mesh(this.gl, {
       geometry: this.geometry,
-      program: this.program
+      program: this.program,
     });
     this.plane.setParent(this.scene);
   }
@@ -276,7 +304,7 @@ class Media {
       renderer: this.renderer,
       text: this.text,
       textColor: this.textColor,
-      fontFamily: this.font
+      fontFamily: this.font,
     });
   }
   update(scroll, direction) {
@@ -325,13 +353,21 @@ class Media {
     if (viewport) {
       this.viewport = viewport;
       if (this.plane.program.uniforms.uViewportSizes) {
-        this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
+        this.plane.program.uniforms.uViewportSizes.value = [
+          this.viewport.width,
+          this.viewport.height,
+        ];
       }
     }
     this.scale = this.screen.height / 1500;
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
-    this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
+    this.plane.scale.y =
+      (this.viewport.height * (900 * this.scale)) / this.screen.height;
+    this.plane.scale.x =
+      (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    this.plane.program.uniforms.uPlaneSizes.value = [
+      this.plane.scale.x,
+      this.plane.scale.y,
+    ];
     this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
@@ -350,7 +386,13 @@ class App {
   medias: Media[];
   screen: { width: number; height: number };
   viewport: { width: number; height: number };
-  scroll: { ease: number; current: number; target: number; last: number; position?: number };
+  scroll: {
+    ease: number;
+    current: number;
+    target: number;
+    last: number;
+    position?: number;
+  };
   onCheckDebounce: (...args: unknown[]) => void;
   raf: number;
   boundOnResize: () => void;
@@ -369,7 +411,7 @@ class App {
       borderRadius = 0,
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
-      scrollEase = 0.05
+      scrollEase = 0.05,
     }: {
       items: Array<{ image: string; text: string }>;
       bend: number;
@@ -378,7 +420,7 @@ class App {
       font?: string;
       scrollSpeed?: number;
       scrollEase?: number;
-    }
+    },
   ) {
     document.documentElement.classList.remove('no-js');
     this.container = container;
@@ -398,7 +440,7 @@ class App {
     this.renderer = new Renderer({
       alpha: true,
       antialias: true,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: Math.min(window.devicePixelRatio || 1, 2),
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0, 0, 0, 0);
@@ -415,23 +457,65 @@ class App {
   createGeometry(): void {
     this.planeGeometry = new Plane(this.gl, {
       heightSegments: 50,
-      widthSegments: 100
+      widthSegments: 100,
     });
   }
-  createMedias(items: Array<{ image: string; text: string }>, bend = 1, textColor: string, borderRadius: number, font: string): void {
+  createMedias(
+    items: Array<{ image: string; text: string }>,
+    bend = 1,
+    textColor: string,
+    borderRadius: number,
+    font: string,
+  ): void {
     const defaultItems = [
-      { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
-      { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
-      { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall' },
-      { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries' },
-      { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving' },
-      { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track' },
-      { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini' },
-      { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights' },
-      { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York' },
-      { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy' },
-      { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline' },
-      { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees' }
+      {
+        image: `https://picsum.photos/seed/1/800/600?grayscale`,
+        text: 'Bridge',
+      },
+      {
+        image: `https://picsum.photos/seed/2/800/600?grayscale`,
+        text: 'Desk Setup',
+      },
+      {
+        image: `https://picsum.photos/seed/3/800/600?grayscale`,
+        text: 'Waterfall',
+      },
+      {
+        image: `https://picsum.photos/seed/4/800/600?grayscale`,
+        text: 'Strawberries',
+      },
+      {
+        image: `https://picsum.photos/seed/5/800/600?grayscale`,
+        text: 'Deep Diving',
+      },
+      {
+        image: `https://picsum.photos/seed/16/800/600?grayscale`,
+        text: 'Train Track',
+      },
+      {
+        image: `https://picsum.photos/seed/17/800/600?grayscale`,
+        text: 'Santorini',
+      },
+      {
+        image: `https://picsum.photos/seed/8/800/600?grayscale`,
+        text: 'Blurry Lights',
+      },
+      {
+        image: `https://picsum.photos/seed/9/800/600?grayscale`,
+        text: 'New York',
+      },
+      {
+        image: `https://picsum.photos/seed/10/800/600?grayscale`,
+        text: 'Good Boy',
+      },
+      {
+        image: `https://picsum.photos/seed/21/800/600?grayscale`,
+        text: 'Coastline',
+      },
+      {
+        image: `https://picsum.photos/seed/12/800/600?grayscale`,
+        text: 'Palm Trees',
+      },
     ];
     const galleryItems = items && items.length ? items : defaultItems;
     this.mediasImages = galleryItems.concat(galleryItems);
@@ -450,7 +534,7 @@ class App {
         bend,
         textColor,
         borderRadius,
-        font
+        font,
       });
     });
   }
@@ -471,7 +555,8 @@ class App {
   }
   onWheel(e: WheelEvent): void {
     const delta = e.deltaY || e.wheelDelta || e.detail;
-    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
+    this.scroll.target +=
+      (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
     this.onCheckDebounce();
   }
   onCheck(): void {
@@ -484,25 +569,31 @@ class App {
   onResize(): void {
     this.screen = {
       width: this.container.clientWidth,
-      height: this.container.clientHeight
+      height: this.container.clientHeight,
     };
     this.renderer.setSize(this.screen.width, this.screen.height);
     this.camera.perspective({
-      aspect: this.screen.width / this.screen.height
+      aspect: this.screen.width / this.screen.height,
     });
     const fov = (this.camera.fov * Math.PI) / 180;
     const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
     const width = height * this.camera.aspect;
     this.viewport = { width, height };
     if (this.medias) {
-      this.medias.forEach(media => media.onResize({ screen: this.screen, viewport: this.viewport }));
+      this.medias.forEach((media) =>
+        media.onResize({ screen: this.screen, viewport: this.viewport }),
+      );
     }
   }
   update(): void {
-    this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
+    this.scroll.current = lerp(
+      this.scroll.current,
+      this.scroll.target,
+      this.scroll.ease,
+    );
     const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
     if (this.medias) {
-      this.medias.forEach(media => media.update(this.scroll, direction));
+      this.medias.forEach((media) => media.update(this.scroll, direction));
     }
     this.renderer.render({ scene: this.scene, camera: this.camera });
     this.scroll.last = this.scroll.current;
@@ -535,7 +626,11 @@ class App {
     window.removeEventListener('touchstart', this.boundOnTouchDown);
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
-    if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
+    if (
+      this.renderer &&
+      this.renderer.gl &&
+      this.renderer.gl.canvas.parentNode
+    ) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
     }
   }
@@ -548,11 +643,19 @@ export default function CircularGallery({
   borderRadius = 0.05,
   font = 'bold 30px Figtree',
   scrollSpeed = 2,
-  scrollEase = 0.05
+  scrollEase = 0.05,
 }) {
   const containerRef = useRef(null);
   useEffect(() => {
-    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
+    const app = new App(containerRef.current, {
+      items,
+      bend,
+      textColor,
+      borderRadius,
+      font,
+      scrollSpeed,
+      scrollEase,
+    });
     return () => {
       app.destroy();
     };

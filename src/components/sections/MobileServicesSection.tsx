@@ -44,7 +44,10 @@ const MobileServicesSection = () => {
               color: colors.primary,
             }}
           >
-            Produit, design, développement et QA travaillent ensemble pour livrer des applications mobiles natives ou hybrides performantes, instrumentées et prêtes à scaler. Nous prenons en charge les stores, l’observabilité, la sécurité et le support long terme.
+            Produit, design, développement et QA travaillent ensemble pour
+            livrer des applications mobiles natives ou hybrides performantes,
+            instrumentées et prêtes à scaler. Nous prenons en charge les stores,
+            l’observabilité, la sécurité et le support long terme.
           </p>
         </div>
 
@@ -79,7 +82,9 @@ const MobileServicesSection = () => {
                   ●
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{card.title}</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                {card.title}
+              </h3>
               <p className="text-gray-600 leading-relaxed font-semibold text-justify">
                 {card.description}
               </p>
@@ -92,5 +97,3 @@ const MobileServicesSection = () => {
 };
 
 export default MobileServicesSection;
-
-

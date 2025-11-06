@@ -15,7 +15,6 @@ import ScrollVelocity from '@/components/ScrollVelocity';
 import ServicesSection2 from '@/components/sections/ServicesSection2';
 
 export default function Home() {
-
   return (
     <div className="landing-page font-montserrat relative overflow-x-hidden">
       {/* Navbar removed per user request; StaggeredMenu is global */}

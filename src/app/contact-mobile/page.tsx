@@ -116,7 +116,10 @@ export default function ContactMobilePage() {
   const [projectDescription, setProjectDescription] = React.useState('');
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submitMessage, setSubmitMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [submitMessage, setSubmitMessage] = React.useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   const smoothScrollTo = (targetY: number, duration = 750) => {
     const startY = window.scrollY || window.pageYOffset;
@@ -157,7 +160,16 @@ export default function ContactMobilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!project || !timeline || !budget || !source || !fullName || !email || !phone || !projectDescription) {
+    if (
+      !project ||
+      !timeline ||
+      !budget ||
+      !source ||
+      !fullName ||
+      !email ||
+      !phone ||
+      !projectDescription
+    ) {
       setSubmitMessage({
         type: 'error',
         text: 'Veuillez remplir tous les champs obligatoires pour votre projet mobile.',
@@ -262,7 +274,9 @@ export default function ContactMobilePage() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="mt-8 md:mt-10 max-w-[520px] text-black font-medium text-[15px] md:text-[16px]"
               >
-                Donnez-nous les informations clés sur votre application mobile (use cases, utilisateurs, intégrations). Nous reviendrons avec une proposition technique et un plan de livraison.
+                Donnez-nous les informations clés sur votre application mobile
+                (use cases, utilisateurs, intégrations). Nous reviendrons avec
+                une proposition technique et un plan de livraison.
               </motion.p>
             </div>
           </header>
@@ -280,7 +294,7 @@ export default function ContactMobilePage() {
                 {[
                   ['ecommerce', 'Application e-commerce'],
                   ['reservation', 'Application de réservation / services'],
-                  ['entreprise', "Application d’entreprise (CRM / ERP)"],
+                  ['entreprise', 'Application d’entreprise (CRM / ERP)'],
                   ['communautaire', 'Application communautaire ou sociale'],
                   ['education', 'Application éducative / e-learning'],
                   ['evenementiel', 'Application événementielle / culturelle'],
@@ -307,7 +321,8 @@ export default function ContactMobilePage() {
           >
             <div className="mt-2 space-y-6">
               <p className="text-black font-medium text-[15px] md:text-[16px]">
-                Indiquez votre fenêtre de lancement idéal (App Store / Play Store).
+                Indiquez votre fenêtre de lancement idéal (App Store / Play
+                Store).
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                 {[
@@ -337,7 +352,8 @@ export default function ContactMobilePage() {
           >
             <div className="mt-2 space-y-6">
               <p className="text-black font-medium text-[15px] md:text-[16px]">
-                Cela nous aide à calibrer la scope (native vs hybride, intégrations, QA, analytics).
+                Cela nous aide à calibrer la scope (native vs hybride,
+                intégrations, QA, analytics).
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 md:gap-4">
                 {[
@@ -390,10 +406,15 @@ export default function ContactMobilePage() {
             </div>
           </Section>
 
-          <Section id="sec-qui" title="Qui êtes-vous? *" thumbVisible={thumbFor === 'sec-qui'}>
+          <Section
+            id="sec-qui"
+            title="Qui êtes-vous? *"
+            thumbVisible={thumbFor === 'sec-qui'}
+          >
             <div className="mt-2">
               <p className="text-black font-medium text-[15px] md:text-[16px] mb-8">
-                Donnez-nous les coordonnées pour vous recontacter et en apprendre plus sur le projet.
+                Donnez-nous les coordonnées pour vous recontacter et en
+                apprendre plus sur le projet.
               </p>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -455,7 +476,8 @@ export default function ContactMobilePage() {
                     htmlFor="projectDescription"
                     className="inline-block text-[14px] font-semibold text-black mb-2"
                   >
-                    Racontez-nous votre app mobile <span className="text-red-500">*</span>
+                    Racontez-nous votre app mobile{' '}
+                    <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     id="projectDescription"
@@ -487,7 +509,9 @@ export default function ContactMobilePage() {
                 disabled={isSubmitting}
                 className="inline-flex items-center justify-center px-8 md:px-10 py-4 md:py-5 rounded-full bg-[#1D4760] text-white border-2 border-[#1D4760] text-[15px] md:text-[16px] font-bold tracking-[0.04em] min-w-[200px] hover:bg-[#152f41] hover:border-[#152f41] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Envoi en cours...' : 'Envoyer la demande mobile'}
+                {isSubmitting
+                  ? 'Envoi en cours...'
+                  : 'Envoyer la demande mobile'}
               </motion.button>
             </div>
           </div>
@@ -531,6 +555,3 @@ export default function ContactMobilePage() {
     </main>
   );
 }
-
-
-

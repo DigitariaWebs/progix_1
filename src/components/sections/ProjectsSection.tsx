@@ -5,8 +5,15 @@ import Image from 'next/image';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
 import { type Project, projects } from '@/data/project';
 
-const FILTERS = ['TOUS', 'SITE WEB', 'APP WEB', 'APP MOBILE', 'CRM', 'ERP'] as const;
-type FilterType = typeof FILTERS[number];
+const FILTERS = [
+  'TOUS',
+  'SITE WEB',
+  'APP WEB',
+  'APP MOBILE',
+  'CRM',
+  'ERP',
+] as const;
+type FilterType = (typeof FILTERS)[number];
 
 function stringIncludes(haystack: string | undefined, needle: string) {
   if (!haystack) return false;
@@ -16,8 +23,10 @@ function stringIncludes(haystack: string | undefined, needle: string) {
 function matchesFilter(project: Project, filter: FilterType): boolean {
   if (filter === 'TOUS') return true;
 
-  const hasService = (name: string) => project.services.some((s) => stringIncludes(s, name));
-  const hasTech = (name: string) => project.tech.some((t) => stringIncludes(t, name));
+  const hasService = (name: string) =>
+    project.services.some((s) => stringIncludes(s, name));
+  const hasTech = (name: string) =>
+    project.tech.some((t) => stringIncludes(t, name));
   const inTitle = (name: string) => stringIncludes(project.title, name);
   const inDesc = (name: string) => stringIncludes(project.description, name);
 
@@ -308,5 +317,3 @@ export default function ProjectsSection() {
     </section>
   );
 }
-
-

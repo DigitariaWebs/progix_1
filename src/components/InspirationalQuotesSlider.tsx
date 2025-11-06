@@ -15,36 +15,36 @@ interface Quote {
 const quotes: Quote[] = [
   {
     id: 1,
-    text: "Innovation distinguishes between a leader and a follower. The way to get started is to quit talking and begin doing.",
-    author: "Steve Jobs",
-    title: "Co-founder of Apple",
-    image: "/images/steve-jobs.jpg",
-    color: "bg-cyan-600"
+    text: 'Innovation distinguishes between a leader and a follower. The way to get started is to quit talking and begin doing.',
+    author: 'Steve Jobs',
+    title: 'Co-founder of Apple',
+    image: '/images/steve-jobs.jpg',
+    color: 'bg-cyan-600',
   },
   {
     id: 2,
-    text: "The future belongs to those who believe in the beauty of their dreams. Success is not final, failure is not fatal: it is the courage to continue that counts.",
-    author: "Eleanor Roosevelt",
-    title: "Former First Lady & Diplomat",
-    image: "/images/eleanor-roosevelt.jpg",
-    color: "bg-cyan-600"
+    text: 'The future belongs to those who believe in the beauty of their dreams. Success is not final, failure is not fatal: it is the courage to continue that counts.',
+    author: 'Eleanor Roosevelt',
+    title: 'Former First Lady & Diplomat',
+    image: '/images/eleanor-roosevelt.jpg',
+    color: 'bg-cyan-600',
   },
   {
     id: 3,
     text: "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.",
-    author: "Steve Jobs",
-    title: "Co-founder of Apple",
-    image: "/images/steve-jobs.jpg",
-    color: "bg-cyan-600"
+    author: 'Steve Jobs',
+    title: 'Co-founder of Apple',
+    image: '/images/steve-jobs.jpg',
+    color: 'bg-cyan-600',
   },
   {
     id: 4,
     text: "Your time is limited, don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking.",
-    author: "Steve Jobs",
-    title: "Co-founder of Apple",
-    image: "/images/steve-jobs.jpg",
-    color: "bg-cyan-600"
-  }
+    author: 'Steve Jobs',
+    title: 'Co-founder of Apple',
+    image: '/images/steve-jobs.jpg',
+    color: 'bg-cyan-600',
+  },
 ];
 
 const InspirationalQuotesSlider = () => {
@@ -70,7 +70,9 @@ const InspirationalQuotesSlider = () => {
   };
 
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + quotes.length) % quotes.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + quotes.length) % quotes.length,
+    );
     setIsAutoPlaying(false);
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };

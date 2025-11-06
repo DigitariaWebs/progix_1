@@ -1,9 +1,9 @@
-import { HeroGeometric } from "@/components/ui/shape-landing-hero"
-
+import { HeroGeometric } from '@/components/ui/shape-landing-hero';
 
 function DemoHeroGeometric() {
-    return <HeroGeometric badge="Kokonut UI"
-            title1 = "Elevate Your Digital Vision" />
+  return (
+    <HeroGeometric badge="Kokonut UI" title1="Elevate Your Digital Vision" />
+  );
 }
 
-export { DemoHeroGeometric }
+export { DemoHeroGeometric };

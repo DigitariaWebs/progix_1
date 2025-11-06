@@ -14,7 +14,7 @@
   top: 50%;
   left: 50%;
   border-radius: 12px;
-  border: 2px solid #1D4760; /* Progix blue updated */
+  border: 2px solid #1d4760; /* Progix blue updated */
   background: #fff;
 
   transform-style: preserve-3d;
@@ -34,5 +34,3 @@
     transform: scale(0.55) translate(25%, 25%);
   }
 }
-
-

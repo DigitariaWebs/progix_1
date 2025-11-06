@@ -7,7 +7,17 @@ import { useRef } from 'react';
 interface ScrollAnimationProps {
   children: React.ReactNode;
   className?: string;
-  animation?: 'fadeInUp' | 'fadeInLeft' | 'fadeInRight' | 'scaleIn' | 'slideUp' | 'slideDown' | 'zoomIn' | 'flipIn' | 'bounceIn' | 'slideInFromBottom';
+  animation?:
+    | 'fadeInUp'
+    | 'fadeInLeft'
+    | 'fadeInRight'
+    | 'scaleIn'
+    | 'slideUp'
+    | 'slideDown'
+    | 'zoomIn'
+    | 'flipIn'
+    | 'bounceIn'
+    | 'slideInFromBottom';
   delay?: number;
   duration?: number;
   amount?: number;
@@ -25,168 +35,168 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
   amount = 0.1,
   once = true,
   stagger = false,
-  staggerDelay = 0.1
+  staggerDelay = 0.1,
 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    amount, 
+  const isInView = useInView(ref, {
+    amount,
     once,
-    margin: '0px 0px -100px 0px'
+    margin: '0px 0px -100px 0px',
   });
 
   const getAnimationVariants = () => {
     const baseVariants = {
       hidden: { opacity: 0 },
-      visible: { 
+      visible: {
         opacity: 1,
         transition: {
           duration,
-          delay
-        }
-      }
+          delay,
+        },
+      },
     };
 
     switch (animation) {
       case 'fadeInUp':
         return {
           hidden: { opacity: 0, y: 60, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            y: 0, 
+          visible: {
+            opacity: 1,
+            y: 0,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'fadeInLeft':
         return {
           hidden: { opacity: 0, x: -80, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            x: 0, 
+          visible: {
+            opacity: 1,
+            x: 0,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'fadeInRight':
         return {
           hidden: { opacity: 0, x: 80, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            x: 0, 
+          visible: {
+            opacity: 1,
+            x: 0,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'scaleIn':
         return {
           hidden: { opacity: 0, scale: 0.8, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            scale: 1, 
+          visible: {
+            opacity: 1,
+            scale: 1,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'slideUp':
         return {
           hidden: { opacity: 0, y: 100, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            y: 0, 
+          visible: {
+            opacity: 1,
+            y: 0,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'slideDown':
         return {
           hidden: { opacity: 0, y: -100, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            y: 0, 
+          visible: {
+            opacity: 1,
+            y: 0,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'zoomIn':
         return {
           hidden: { opacity: 0, scale: 0.5, filter: 'blur(15px)' },
-          visible: { 
-            opacity: 1, 
-            scale: 1, 
+          visible: {
+            opacity: 1,
+            scale: 1,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'flipIn':
         return {
           hidden: { opacity: 0, rotateY: -90, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            rotateY: 0, 
+          visible: {
+            opacity: 1,
+            rotateY: 0,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'bounceIn':
         return {
           hidden: { opacity: 0, scale: 0.3, filter: 'blur(10px)' },
-          visible: { 
-            opacity: 1, 
-            scale: 1, 
+          visible: {
+            opacity: 1,
+            scale: 1,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       case 'slideInFromBottom':
         return {
           hidden: { opacity: 0, y: 120, filter: 'blur(15px)' },
-          visible: { 
-            opacity: 1, 
-            y: 0, 
+          visible: {
+            opacity: 1,
+            y: 0,
             filter: 'blur(0px)',
             transition: {
               duration,
-              delay
-            }
-          }
+              delay,
+            },
+          },
         };
-      
+
       default:
         return baseVariants;
     }
@@ -198,9 +208,9 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
       opacity: 1,
       transition: {
         staggerChildren: stagger ? staggerDelay : 0,
-        delayChildren: delay
-      }
-    }
+        delayChildren: delay,
+      },
+    },
   };
 
   if (stagger) {
@@ -210,7 +220,7 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
         className={className}
         variants={containerVariants}
         initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
+        animate={isInView ? 'visible' : 'hidden'}
       >
         {children}
       </motion.div>
@@ -223,7 +233,7 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
       className={className}
       variants={getAnimationVariants()}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      animate={isInView ? 'visible' : 'hidden'}
     >
       {children}
     </motion.div>

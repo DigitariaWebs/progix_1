@@ -5,12 +5,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { assets } from '@/config/assets';
 import { colors } from '@/config/colors';
-import { 
-  FaMobile, 
-  FaDatabase, 
-  FaRocket, 
-  FaUsers
-} from 'react-icons/fa';
+import { FaMobile, FaDatabase, FaRocket, FaUsers } from 'react-icons/fa';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,14 +15,14 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Header appears when scrolling up or at the top
       if (currentScrollY < lastScrollY || currentScrollY < 100) {
         setShowHeader(true);
       } else {
         setShowHeader(false);
       }
-      
+
       // Add background when scrolled
       setIsScrolled(currentScrollY > 50);
       setLastScrollY(currentScrollY);
@@ -77,7 +72,8 @@ const Header = () => {
                   height={32}
                   className="h-8 w-auto ml-4 mt-4 cursor-pointer"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = 'none';
+                    (e.currentTarget as HTMLImageElement).style.display =
+                      'none';
                   }}
                 />
               </div>

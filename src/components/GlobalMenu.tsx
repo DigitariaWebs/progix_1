@@ -9,7 +9,8 @@ export default function GlobalMenu() {
   const [isClient, setIsClient] = useState(false);
 
   // Set initial state based on pathname to avoid hydration mismatch
-  const isDarkHeroPage = pathname === '/' || pathname.startsWith('/services/app-mobile');
+  const isDarkHeroPage =
+    pathname === '/' || pathname.startsWith('/services/app-mobile');
 
   const getInitialState = () => {
     if (isDarkHeroPage) {
@@ -124,7 +125,11 @@ export default function GlobalMenu() {
 
   const menuItems = [
     { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },
-    { label: 'Expertise', ariaLabel: 'Voir notre expertise', link: '/expertise' },
+    {
+      label: 'Expertise',
+      ariaLabel: 'Voir notre expertise',
+      link: '/expertise',
+    },
     {
       label: 'Portfolio',
       ariaLabel: 'Voir notre portfolio',
@@ -176,5 +181,3 @@ export default function GlobalMenu() {
     />
   );
 }
-
-

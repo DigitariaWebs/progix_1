@@ -88,7 +88,8 @@ const MobileHeroSection = () => {
           className="mb-8 sm:mb-16 md:mb-20"
         >
           <p className="text-white/80 text-xs sm:text-sm md:text-lg lg:text-xl tracking-[0.05em] sm:tracking-[0.1em] uppercase font-semibold max-w-4xl mx-auto px-2">
-            UNE EXPERTISE MONTRÉALAISE POUR DES APPLICATIONS MOBILES SUR MESURE, FIABLES ET DURABLES
+            UNE EXPERTISE MONTRÉALAISE POUR DES APPLICATIONS MOBILES SUR MESURE,
+            FIABLES ET DURABLES
           </p>
         </motion.div>
 
@@ -102,7 +103,10 @@ const MobileHeroSection = () => {
             className="inline-block group relative overflow-hidden"
           >
             <div className="relative px-6 sm:px-10 py-3 sm:py-4 border border-white rounded-full bg-white text-[#0a1628] font-semibold tracking-wide uppercase transition-all duration-500 hover:bg-transparent hover:text-white">
-              <span className="whitespace-nowrap" style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}>
+              <span
+                className="whitespace-nowrap"
+                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
+              >
                 Démarrer votre projet
               </span>
             </div>
@@ -182,5 +186,3 @@ const MobileHeroSection = () => {
 };
 
 export default MobileHeroSection;
-
-

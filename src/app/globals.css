@@ -81,17 +81,25 @@ button:hover {
   }
 }
 
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-montserrat), 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    var(--font-montserrat),
+    'Montserrat',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
   overflow-x: hidden;
-    max-width: 100vw;
+  max-width: 100vw;
 }
 
 .font-heading {
@@ -111,13 +119,23 @@ body {
 .bg-grid-lines {
   --grid-lines: 6;
   --grid-color: rgba(17, 24, 39, 0.04);
-  background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px);
+  background-image: linear-gradient(
+    to right,
+    var(--grid-color) 1px,
+    transparent 1px
+  );
   background-size: calc(100% / var(--grid-lines)) 100%;
   background-repeat: repeat;
 }
-.grid-lines-5 { --grid-lines: 5; }
-.grid-lines-6 { --grid-lines: 6; }
-.grid-lines-on-dark { --grid-color: rgba(255, 255, 255, 0.05); }
+.grid-lines-5 {
+  --grid-lines: 5;
+}
+.grid-lines-6 {
+  --grid-lines: 6;
+}
+.grid-lines-on-dark {
+  --grid-color: rgba(255, 255, 255, 0.05);
+}
 
 .bg-blur-yield {
   background-image: url('https://cdn.prod.website-files.com/658a96c07622e25e5d4fed85/67daffc416ecbb596d6e0a47_trsu-blur.svg');

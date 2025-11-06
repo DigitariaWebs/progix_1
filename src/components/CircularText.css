@@ -26,7 +26,7 @@
 
 /* Portfolio specific styles */
 .portfolio-circular-text {
-  color: #1B363C;
+  color: #1b363c;
   font-family: 'Hubot Sans', 'Inter', sans-serif;
 }
 
@@ -39,7 +39,7 @@
 /* Hero scroll specific styles */
 .hero-scroll-circular {
   width: 100% !important;
-    height: 100% !important;
+  height: 100% !important;
   border-radius: 50%;
   color: rgba(255, 255, 255, 0.4);
   font-family: 'Hubot Sans', 'Inter', sans-serif;
@@ -48,7 +48,7 @@
   top: 0;
   left: 0;
   right: 0;
-    bottom: 0;
+  bottom: 0;
   cursor: default;
 }
 

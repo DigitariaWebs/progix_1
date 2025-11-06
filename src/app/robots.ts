@@ -9,5 +9,3 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: 'https://www.progix.pro/sitemap.xml',
   };
 }
-
-

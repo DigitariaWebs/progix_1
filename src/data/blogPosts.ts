@@ -13,10 +13,10 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'vortex-solution-accueille-imacom',
     title:
-      "Progix étend son hébergement managé: migrations rapides et sans rupture",
+      'Progix étend son hébergement managé: migrations rapides et sans rupture',
     date: '1 octobre 2025',
     excerpt:
-      "Progix renforce son hébergement managé: migration rapide, sécurité renforcée et support 24/7.",
+      'Progix renforce son hébergement managé: migration rapide, sécurité renforcée et support 24/7.',
     image:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/premierbloc.jpg',
     author: 'Équipe Progix',
@@ -39,7 +39,8 @@ Vous envisagez une migration vers un hébergement managé Progix ou vous souhait
     slug: 'nouveau-site-mont-saint-hilaire',
     title: 'Un site municipal nouvelle génération, conçu par Progix',
     date: '30 septembre 2025',
-    excerpt: "Accessibilité, performance et édition simplifiée — le nouveau standard municipal.",
+    excerpt:
+      'Accessibilité, performance et édition simplifiée — le nouveau standard municipal.',
     image: '/images/imranarshad/Création sans titre (1).png',
     author: 'Équipe Progix',
     category: 'Projets',
@@ -77,12 +78,12 @@ Au final, Mont‑Saint‑Hilaire dispose d’une plateforme plus rapide, inclusi
   },
   {
     slug: 'agence-wordpress-canadienne-seo',
-    title:
-      'Pourquoi choisir Progix pour votre ERP interne',
+    title: 'Pourquoi choisir Progix pour votre ERP interne',
     date: '29 septembre 2025',
     excerpt:
       'De la sélection à l’adoption: un ERP taillé pour vos processus et votre croissance.',
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/data_management_illustration.svg',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/images/data_management_illustration.svg',
     author: 'Équipe Progix',
     category: 'ERP & Systèmes d’information',
     content: `

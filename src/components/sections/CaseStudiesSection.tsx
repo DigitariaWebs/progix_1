@@ -301,7 +301,10 @@ const CaseStudiesSection = () => {
                             filter: 'brightness(0.9) contrast(1.1)',
                           }}
                         >
-                          <source src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/fruitexo.mp4" type="video/mp4" />
+                          <source
+                            src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/fruitexo.mp4"
+                            type="video/mp4"
+                          />
                           Votre navigateur ne supporte pas la lecture vidéo.
                         </video>
                       </>

@@ -24,7 +24,8 @@ const projects: Project[] = [
     tech: ['Next.js', 'Tailwind CSS'],
     image:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/theatrerideauvertfondblanc.png',
+    preview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/theatrerideauvertfondblanc.png',
     longTitle:
       "Théâtre du Rideau Vert - L'excellence théâtrale au cœur de Montréal",
     longDescription: [
@@ -41,8 +42,10 @@ const projects: Project[] = [
       "Vitrine internationale multilingue pour un acteur majeur de l'import de fruits exotiques.",
     services: ['Site vitrine', 'Internationalisation (7 langues)'],
     tech: ['Next.js', 'Tailwind CSS'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/logofruitexotic.avif',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+    preview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/logofruitexotic.avif',
     video: '/fruitexo.mp4',
     bgClass: 'bg-white',
   },
@@ -54,8 +57,10 @@ const projects: Project[] = [
       'Vitrine web pour promoteur immobilier montréalais, axée sur la clarté des offres et la conversion.',
     services: ['Site vitrine', 'Performance & SEO'],
     tech: ['Next.js', 'Tailwind CSS'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/mondev-logo-black (1).svg',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
+    preview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/mondev-logo-black (1).svg',
     bgClass: 'bg-white',
   },
   {
@@ -78,8 +83,10 @@ const projects: Project[] = [
       "Plateforme d'apprentissage en ligne interactive avec suivi personnalisé.",
     services: ['E-learning', 'Design UX/UI'],
     tech: ['Next.js', 'MongoDB', 'Tailwind CSS'],
-    image: '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
-    preview: '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
+    image:
+      '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
+    preview:
+      '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
     bgClass: 'bg-white',
   },
   {
@@ -95,9 +102,12 @@ const projects: Project[] = [
       'Backend',
     ],
     tech: ['React Native', 'Next.js', 'Node.js', 'MongoDB', 'Socket.io'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CoRide.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CoRide.png',
-    video: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/CoRideVideo.mp4',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CoRide.png',
+    preview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CoRide.png',
+    video:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/CoRideVideo.mp4',
     longTitle: 'CoRide - Transport urbain intelligent',
     longDescription: [
       'CoRide révolutionne le transport urbain avec une application mobile et un site web complets offrant des services de transport privé, livraison et bien plus.',
@@ -136,9 +146,12 @@ const projects: Project[] = [
       'Projets sur mesure',
     ],
     tech: ['Next.js', 'React', 'Tailwind CSS'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
-    video: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.mp4',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
+    preview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
+    video:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.mp4',
     longTitle: "CCAP Productions - Créateurs d'expériences",
     longDescription: [
       "CCAP Productions est un studio de production audiovisuelle établi à Québec, spécialisé dans la création d'expériences visuelles percutantes depuis plus de 15 ans.",
@@ -159,9 +172,12 @@ const projects: Project[] = [
       'Thérapie digitale',
     ],
     tech: ['React', 'Express', 'MongoDB', 'Auth0', 'Stripe', 'OpenAI API'],
-    image: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
-    preview: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
-    video: 'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.mp4',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+    preview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+    video:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.mp4',
     longTitle: 'QueenDeQ - Thérapie digitale pour femmes',
     longDescription: [
       "QueenDeQ est une solution thérapeutique digitale complète composée d'un site web informatif et d'une plateforme interactive utilisant l'IA.",

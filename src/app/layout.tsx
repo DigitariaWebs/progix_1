@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: 'PROGIX | %s',
   },
   description:
-    "Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT. Hébergement managé, UX/UI, DevOps et support.",
+    'Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT. Hébergement managé, UX/UI, DevOps et support.',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: 'PROGIX',
     title: 'PROGIX — Développement web, mobile et conseil IT à Montréal',
     description:
-      "Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT.",
+      'Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT.',
     locale: 'fr_CA',
     images: [
       {
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'PROGIX — Développement web, mobile et conseil IT à Montréal',
     description:
-      "Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT.",
+      'Agence basée à Montréal spécialisée en développement web full‑stack, applications mobiles performantes et services-conseils IT.',
     images: ['/images/logo.png'],
   },
   robots: {

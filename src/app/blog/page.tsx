@@ -56,8 +56,8 @@ export default function BlogPage() {
             Qu'est-ce qu'il se passe chez Progix?
           </h1>
           <p className="text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed">
-            Actus produit, études de cas et conseils concrets en delivery,
-            IA, web & growth — par l'équipe Progix.
+            Actus produit, études de cas et conseils concrets en delivery, IA,
+            web & growth — par l'équipe Progix.
           </p>
         </div>
       </section>
