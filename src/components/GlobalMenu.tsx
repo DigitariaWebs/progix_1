@@ -124,7 +124,7 @@ export default function GlobalMenu() {
 
   const menuItems = [
     { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },
-    { label: 'Services', ariaLabel: 'Voir nos services', link: '/services' },
+    { label: 'Expertise', ariaLabel: 'Voir notre expertise', link: '/expertise' },
     {
       label: 'Portfolio',
       ariaLabel: 'Voir notre portfolio',

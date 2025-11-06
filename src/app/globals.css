@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wdth,wght@0,85.9,200..900;1,85.9,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@200..800&display=swap');
 @import 'tailwindcss';
 
 :root {
@@ -15,6 +16,13 @@
   --blue-300: #93c5fd;
   --violet-200: #ddd6fe;
   --blue-400: #60a5fa;
+
+  /* Service Section 2 Variables */
+  --base-100: #fff;
+  --base-200: #333;
+  --base-300: #262626;
+  --base-400: #141414;
+  --base-500: #0f0f0f;
 }
 
 :root {
