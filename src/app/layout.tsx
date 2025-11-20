@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Montserrat, Inter } from 'next/font/google';
 import './globals.css';
 import PageTransition from '@/components/PageTransition';
-import Script from 'next/script';
 import GlobalMenu from '@/components/GlobalMenu';
 
 const montserrat = Montserrat({
@@ -70,22 +69,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className="overflow-x-hidden">
+      <head>
+        {/* Google tag (gtag.js) */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17686381075"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-17686381075');
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${montserrat.variable} ${inter.variable} font-sans antialiased overflow-x-hidden`}
       >
-        <Script
-          id="gtag-src"
-          strategy="beforeInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=AW-1768631075"
-        />
-        <Script id="gtag-init" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);} 
-            gtag('js', new Date());
-            gtag('config', 'AW-1768631075');
-          `}
-        </Script>
         <GlobalMenu />
         <PageTransition>{children}</PageTransition>
       </body>
