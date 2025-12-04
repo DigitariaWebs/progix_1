@@ -10,7 +10,7 @@ export default function GlobalMenu() {
 
   // Set initial state based on pathname to avoid hydration mismatch
   const isDarkHeroPage =
-    pathname === '/' || pathname.startsWith('/services/app-mobile');
+    pathname === '/' || pathname.startsWith('/services/app-mobile') || pathname === '/labo';
 
   const getInitialState = () => {
     if (isDarkHeroPage) {
@@ -111,8 +111,8 @@ export default function GlobalMenu() {
     // Small delay to ensure DOM is ready
     const timer = setTimeout(checkBackground, 50);
 
-    // Add scroll listener for home page to switch colors dynamically
-    if (pathname === '/') {
+    // Add scroll listener for dark hero pages to switch colors dynamically
+    if (isDarkHeroPage) {
       window.addEventListener('scroll', checkBackground);
       return () => {
         clearTimeout(timer);
@@ -121,7 +121,7 @@ export default function GlobalMenu() {
     }
 
     return () => clearTimeout(timer);
-  }, [pathname, isClient]);
+  }, [pathname, isClient, isDarkHeroPage]);
 
   const menuItems = [
     { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },

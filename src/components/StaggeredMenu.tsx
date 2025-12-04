@@ -437,9 +437,9 @@ export const StaggeredMenu = ({
             alt="PROGIX Logo"
             priority
             onClick={() => (window.location.href = '/')}
-            width={130}
-            height={130}
-            className="h-20 w-auto cursor-pointer transform scale-[1.3] sm:scale-100 origin-left"
+            width={100}
+            height={40}
+            className="h-6 w-auto cursor-pointer"
             draggable={false}
             style={{
               filter: logoFilter,
