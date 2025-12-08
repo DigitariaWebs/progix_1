@@ -52,8 +52,12 @@ const creations = [
       'Interface utilisateur intuitive',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/PosterImage.png',
+    image: '/labo/ibox/IMG_1835.PNG',
+    gallery: [
+      '/labo/ibox/IMG_1835.PNG',
+      '/labo/ibox/IMG_1838.PNG',
+      '/labo/ibox/IMG_1840.PNG',
+    ],
   },
   {
     id: 'coride',
@@ -71,8 +75,12 @@ const creations = [
       'Support client 24/7',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/PosterImage.png',
+    image: '/labo/coride/CoRideCover.png',
+    gallery: [
+      '/labo/coride/Splash screen.png',
+      '/labo/coride/Splash screen (1).png',
+      '/labo/coride/Splash screen (2).png',
+    ],
   },
   {
     id: 'davinci',
@@ -108,8 +116,12 @@ const creations = [
       'Support client intégré',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/PosterImage.png',
+    image: '/labo/gosholo/image copy.png',
+    gallery: [
+      '/labo/gosholo/image.png',
+      '/labo/gosholo/image copy.png',
+      '/labo/gosholo/image copy 2.png',
+    ],
   },
 ];
 
@@ -289,13 +301,203 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   );
 }
 
+// Project Modal Component
+function ProjectModal({
+  project,
+  isOpen,
+  onClose,
+}: {
+  project: (typeof creations)[0] | null;
+  isOpen: boolean;
+  onClose: (e?: React.MouseEvent) => void;
+}) {
+  // Prevent body scroll when modal is open
+  React.useEffect(() => {
+    if (isOpen) {
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, [isOpen]);
+
+  if (!project) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={(e) => onClose(e)}
+            className="fixed inset-0 bg-black/80 z-50 backdrop-blur-sm overflow-hidden"
+          />
+
+          {/* Modal */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-2 md:inset-5 lg:inset-10 z-50 overflow-y-auto overflow-x-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className="relative rounded-3xl p-6 md:p-10 max-w-6xl mx-auto"
+              style={{ backgroundColor: colors.bg.dark }}
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={(e) => onClose(e)}
+                className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10"
+                style={{ backgroundColor: colors.accent }}
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke={colors.white}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+
+              {/* Content */}
+              <div className="space-y-8">
+                {/* Header */}
+                <div className="text-center space-y-4">
+                  <h2
+                    className="text-4xl md:text-5xl font-bold"
+                    style={{ color: colors.text.primary }}
+                  >
+                    {project.title}
+                  </h2>
+                  <p
+                    className="text-xl font-semibold"
+                    style={{ color: colors.text.accent }}
+                  >
+                    {project.subtitle}
+                  </p>
+                </div>
+
+                {/* Gallery */}
+                {project.gallery && project.gallery.length > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {project.gallery.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="relative aspect-[7/16] rounded-2xl overflow-hidden shadow-lg"
+                      >
+                        <Image
+                          src={img}
+                          alt={`${project.title} screenshot ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Description & Features */}
+                <div className="space-y-6">
+                  <p
+                    className="text-lg leading-relaxed"
+                    style={{ color: colors.text.secondary }}
+                  >
+                    {project.description}
+                  </p>
+
+                  <div>
+                    <h3
+                      className="text-2xl font-bold mb-4"
+                      style={{ color: colors.text.primary }}
+                    >
+                      Principales fonctionnalités :
+                    </h3>
+                    <ul className="grid md:grid-cols-2 gap-3">
+                      {project.features.map((feature, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center gap-3"
+                          style={{ color: colors.text.secondary }}
+                        >
+                          <span
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: colors.accent }}
+                          />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="flex justify-center pt-4">
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-lg"
+                    style={{
+                      backgroundColor: colors.accent,
+                      color: colors.white,
+                    }}
+                  >
+                    Discutons de votre projet
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // Creation Card Component
 function CreationCard({
   creation,
   index,
+  onLearnMore,
 }: {
   creation: (typeof creations)[0];
   index: number;
+  onLearnMore: () => void;
 }) {
   const isEven = index % 2 === 0;
 
@@ -311,21 +513,33 @@ function CreationCard({
       {/* Image */}
       <div className="w-full lg:w-1/2 flex">
         <div
-          className="relative rounded-3xl overflow-hidden shadow-2xl group w-full"
+          className="relative rounded-3xl overflow-hidden shadow-2xl group w-full cursor-pointer"
           style={{ backgroundColor: colors.bg.dark }}
         >
           <Image
             src={creation.image}
             alt={creation.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-contain transition-transform duration-300"
           />
           <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center"
             style={{
-              background: `linear-gradient(to top, ${colors.accent}40, transparent)`,
+              background: `linear-gradient(to top, ${colors.accent}60, ${colors.accent}40)`,
             }}
-          />
+          >
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onLearnMore();
+              }}
+              className="px-6 py-3 rounded-full font-bold text-white transition-all duration-300 hover:scale-105 shadow-lg"
+              style={{ backgroundColor: colors.white, color: colors.accent }}
+            >
+              Learn More
+            </button>
+          </div>
         </div>
       </div>
 
@@ -544,6 +758,25 @@ function PricingCard({
 }
 
 export default function LaboPage() {
+  const [selectedProject, setSelectedProject] = useState<
+    (typeof creations)[0] | null
+  >(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLearnMore = (project: (typeof creations)[0]) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedProject(null), 300);
+  };
+
   return (
     <div
       className="min-h-screen w-full font-montserrat relative selection:bg-teal-900/50"
@@ -632,15 +865,16 @@ export default function LaboPage() {
               le premier jour
             </p>
 
-            {/* Hero Image */}
+            {/* Hero Video */}
             <div className="mb-10 flex justify-center">
-              <Image
-                src="/images/imranarshad/Création sans titre (1).png"
-                alt="Application mockup"
-                width={600}
-                height={400}
-                className="w-full max-w-2xl h-auto rounded-2xl shadow-2xl"
-              />
+              <video
+                src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/labo/2MIN%20FINAL.mp4"
+                controls
+                className="w-full max-w-sm h-auto rounded-2xl shadow-2xl"
+                preload="metadata"
+              >
+                Your browser does not support the video tag.
+              </video>
             </div>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -898,9 +1132,17 @@ export default function LaboPage() {
                   key={creation.id}
                   creation={creation}
                   index={index}
+                  onLearnMore={() => handleLearnMore(creation)}
                 />
               ))}
             </div>
+
+            {/* Project Modal */}
+            <ProjectModal
+              project={selectedProject}
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+            />
           </div>
         </section>
 
