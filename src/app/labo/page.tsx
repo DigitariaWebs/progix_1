@@ -98,8 +98,12 @@ const creations = [
       'Historique des versions',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/PosterImage.png',
+    image: '/labo/davinci/Splash Screen (3).png',
+    gallery: [
+      '/labo/davinci/Cas B - Plusieurs profils enfants.png',
+      '/labo/davinci/Dashboard Enfant – Mon Espace - Scroll.png',
+      '/labo/davinci/Mathématiques.png',
+    ],
   },
   {
     id: 'gosholo',
@@ -345,7 +349,7 @@ function ProjectModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={(e) => onClose(e)}
-            className="fixed inset-0 bg-black/80 z-50 backdrop-blur-sm overflow-hidden"
+            className="fixed inset-0 bg-black/80 z-[100] backdrop-blur-sm overflow-hidden"
           />
 
           {/* Modal */}
@@ -354,7 +358,7 @@ function ProjectModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-2 md:inset-5 lg:inset-10 z-50 overflow-y-auto overflow-x-hidden"
+            className="fixed inset-2 md:inset-5 lg:inset-10 z-[100] overflow-y-auto overflow-x-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div
@@ -364,12 +368,16 @@ function ProjectModal({
               {/* Close Button */}
               <button
                 type="button"
-                onClick={(e) => onClose(e)}
-                className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onClose(e);
+                }}
+                className="absolute top-4 left-4 md:top-6 md:left-6 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-[100]"
                 style={{ backgroundColor: colors.accent }}
               >
                 <svg
-                  className="w-6 h-6"
+                  className="w-6 h-6 pointer-events-none"
                   fill="none"
                   stroke={colors.white}
                   viewBox="0 0 24 24"
