@@ -256,9 +256,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="mb-4">
+    <div className="mb-3 sm:mb-4">
       <div
-        className="rounded-2xl overflow-hidden cursor-pointer"
+        className="rounded-xl sm:rounded-2xl overflow-hidden cursor-pointer"
         style={{
           backgroundColor: 'rgba(14, 34, 69, 0.4)',
           border: `1px solid ${colors.bg.border}`,
@@ -266,10 +266,12 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         onClick={() => setIsOpen(!isOpen)}
       >
         <div
-          className="w-full py-5 px-6 flex items-center justify-between text-left"
+          className="w-full py-4 sm:py-5 px-4 sm:px-6 flex items-center justify-between text-left"
           style={{ color: colors.text.primary }}
         >
-          <span className="text-base font-medium pr-8">{question}</span>
+          <span className="text-sm sm:text-base font-medium pr-4 sm:pr-8">
+            {question}
+          </span>
           <span
             className="flex-shrink-0 transition-transform duration-300"
             style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
@@ -294,7 +296,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
           }}
         >
           <p
-            className="px-6 pb-5 leading-relaxed text-sm"
+            className="px-4 sm:px-6 pb-4 sm:pb-5 leading-relaxed text-xs sm:text-sm"
             style={{ color: colors.text.secondary }}
           >
             {answer}
@@ -358,11 +360,11 @@ function ProjectModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-2 md:inset-5 lg:inset-10 z-[100] overflow-y-auto overflow-x-hidden"
+            className="fixed inset-1 sm:inset-2 md:inset-5 lg:inset-10 z-[100] overflow-y-auto overflow-x-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="relative rounded-3xl p-6 md:p-10 max-w-6xl mx-auto"
+              className="relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 max-w-6xl mx-auto"
               style={{ backgroundColor: colors.bg.dark }}
             >
               {/* Close Button */}
@@ -373,11 +375,11 @@ function ProjectModal({
                   e.stopPropagation();
                   onClose(e);
                 }}
-                className="absolute top-4 left-4 md:top-6 md:left-6 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-[100]"
+                className="absolute top-3 left-3 sm:top-4 sm:left-4 md:top-6 md:left-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-[100]"
                 style={{ backgroundColor: colors.accent }}
               >
                 <svg
-                  className="w-6 h-6 pointer-events-none"
+                  className="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none"
                   fill="none"
                   stroke={colors.white}
                   viewBox="0 0 24 24"
@@ -392,17 +394,17 @@ function ProjectModal({
               </button>
 
               {/* Content */}
-              <div className="space-y-8">
+              <div className="space-y-4 sm:space-y-6 md:space-y-8 mt-10 sm:mt-0">
                 {/* Header */}
-                <div className="text-center space-y-4">
+                <div className="text-center space-y-2 sm:space-y-4">
                   <h2
-                    className="text-4xl md:text-5xl font-bold"
+                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold"
                     style={{ color: colors.text.primary }}
                   >
                     {project.title}
                   </h2>
                   <p
-                    className="text-xl font-semibold"
+                    className="text-sm sm:text-base md:text-xl font-semibold"
                     style={{ color: colors.text.accent }}
                   >
                     {project.subtitle}
@@ -411,11 +413,11 @@ function ProjectModal({
 
                 {/* Gallery */}
                 {project.gallery && project.gallery.length > 0 && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
                     {project.gallery.map((img, idx) => (
                       <div
                         key={idx}
-                        className="relative aspect-[7/16] rounded-2xl overflow-hidden shadow-lg"
+                        className="relative aspect-[9/16] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg"
                       >
                         <Image
                           src={img}
@@ -429,9 +431,9 @@ function ProjectModal({
                 )}
 
                 {/* Description & Features */}
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   <p
-                    className="text-lg leading-relaxed"
+                    className="text-sm sm:text-base md:text-lg leading-relaxed"
                     style={{ color: colors.text.secondary }}
                   >
                     {project.description}
@@ -439,16 +441,16 @@ function ProjectModal({
 
                   <div>
                     <h3
-                      className="text-2xl font-bold mb-4"
+                      className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4"
                       style={{ color: colors.text.primary }}
                     >
                       Principales fonctionnalités :
                     </h3>
-                    <ul className="grid md:grid-cols-2 gap-3">
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                       {project.features.map((feature, i) => (
                         <li
                           key={i}
-                          className="flex items-center gap-3"
+                          className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base"
                           style={{ color: colors.text.secondary }}
                         >
                           <span
@@ -463,10 +465,10 @@ function ProjectModal({
                 </div>
 
                 {/* CTA */}
-                <div className="flex justify-center pt-4">
+                <div className="flex justify-center pt-2 sm:pt-4">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-lg"
+                    className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-bold transition-all duration-300 hover:scale-105 shadow-lg"
                     style={{
                       backgroundColor: colors.accent,
                       color: colors.white,
@@ -513,15 +515,15 @@ function CreationCard({
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
+      viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 lg:gap-16 items-stretch py-16`}
+      className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-6 sm:gap-8 lg:gap-16 items-stretch py-8 sm:py-12 md:py-16`}
       style={{ borderBottom: `1px solid ${colors.bg.border}` }}
     >
       {/* Image */}
       <div className="w-full lg:w-1/2 flex">
         <div
-          className="relative rounded-3xl overflow-hidden shadow-2xl group w-full cursor-pointer"
+          className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl group w-full cursor-pointer aspect-[3/4] sm:aspect-auto"
           style={{ backgroundColor: colors.bg.dark }}
         >
           <Image
@@ -552,20 +554,23 @@ function CreationCard({
       </div>
 
       {/* Content */}
-      <div className="w-full lg:w-1/2 space-y-6 flex flex-col justify-center">
+      <div className="w-full lg:w-1/2 space-y-4 sm:space-y-6 flex flex-col justify-center">
         <h3
-          className="text-4xl lg:text-5xl font-bold"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold"
           style={{ color: colors.text.primary }}
         >
           {creation.title}
         </h3>
         <p
-          className="text-xl font-semibold"
+          className="text-base sm:text-lg md:text-xl font-semibold"
           style={{ color: colors.text.accent }}
         >
           {creation.subtitle}
         </p>
-        <p className="text-lg" style={{ color: colors.text.secondary }}>
+        <p
+          className="text-sm sm:text-base md:text-lg"
+          style={{ color: colors.text.secondary }}
+        >
           {creation.description}
           <br />
           <span className="font-medium" style={{ color: colors.text.primary }}>
@@ -619,7 +624,7 @@ function ProcessStep({
       {/* Timeline line */}
       {!isLast && (
         <div
-          className="absolute left-1/2 top-4 w-0.5 h-full -translate-x-1/2"
+          className="absolute left-4 sm:left-1/2 top-4 w-0.5 h-full sm:-translate-x-1/2"
           style={{ backgroundColor: colors.bg.border }}
         />
       )}
@@ -629,10 +634,12 @@ function ProcessStep({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: index * 0.15 }}
-        className={`flex items-start gap-8 pb-24 ${isEven ? 'flex-row' : 'flex-row-reverse'}`}
+        className={`flex items-start gap-4 sm:gap-8 pb-12 sm:pb-24 flex-row sm:${isEven ? 'flex-row' : 'flex-row-reverse'}`}
       >
-        {/* Étape label - on the opposite side */}
-        <div className={`flex-1 ${isEven ? 'text-right' : 'text-left'}`}>
+        {/* Étape label - hidden on mobile, shown on opposite side on desktop */}
+        <div
+          className={`hidden sm:block flex-1 ${isEven ? 'text-right' : 'text-left'}`}
+        >
           <span className="text-lg font-medium" style={{ color: dotColor }}>
             Étape {step.step}
           </span>
@@ -641,25 +648,34 @@ function ProcessStep({
         {/* Center dot */}
         <div className="relative z-10 flex-shrink-0">
           <div
-            className="w-4 h-4 rounded-full shadow-lg"
+            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full shadow-lg"
             style={{ backgroundColor: dotColor }}
           />
         </div>
 
         {/* Content card */}
         <div className="flex-1">
+          <span
+            className="sm:hidden text-sm font-medium mb-2 block"
+            style={{ color: dotColor }}
+          >
+            Étape {step.step}
+          </span>
           <div
-            className="p-6 rounded-2xl"
+            className="p-4 sm:p-6 rounded-xl sm:rounded-2xl"
             style={{
               backgroundColor: 'rgba(14, 34, 69, 0.3)',
               border: `1px solid ${colors.bg.border}`,
             }}
           >
-            <h4 className="text-xl font-bold mb-3" style={{ color: dotColor }}>
+            <h4
+              className="text-base sm:text-xl font-bold mb-2 sm:mb-3"
+              style={{ color: dotColor }}
+            >
               {step.title}
             </h4>
             <p
-              className="leading-relaxed text-sm"
+              className="leading-relaxed text-xs sm:text-sm"
               style={{ color: colors.text.secondary }}
             >
               {step.description}
@@ -685,7 +701,7 @@ function PricingCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.15 }}
-      className={`relative rounded-3xl p-8 ${plan.popular ? 'shadow-2xl shadow-teal-500/20 scale-105 z-10' : 'shadow-lg'}`}
+      className={`relative rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 ${plan.popular ? 'shadow-2xl shadow-teal-500/20 md:scale-105 z-10' : 'shadow-lg'}`}
       style={{
         backgroundColor: plan.popular ? colors.accent : colors.bg.dark,
         border: plan.popular ? 'none' : `1px solid ${colors.bg.border}`,
@@ -693,7 +709,7 @@ function PricingCard({
     >
       {plan.popular && (
         <div
-          className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full text-sm font-bold"
+          className="absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold"
           style={{
             backgroundColor: colors.bg.darkest,
             color: colors.text.primary,
@@ -703,15 +719,15 @@ function PricingCard({
         </div>
       )}
 
-      <div className="text-center mb-8">
+      <div className="text-center mb-5 sm:mb-6 md:mb-8">
         <h3
-          className="text-2xl font-bold mb-2"
+          className="text-xl sm:text-2xl font-bold mb-1.5 sm:mb-2"
           style={{ color: plan.popular ? colors.white : colors.text.primary }}
         >
           {plan.name}
         </h3>
         <div
-          className="text-4xl font-bold mb-1"
+          className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1"
           style={{ color: plan.popular ? colors.white : colors.text.accent }}
         >
           {plan.price}
@@ -726,17 +742,17 @@ function PricingCard({
         </p>
       </div>
 
-      <ul className="space-y-4 mb-8">
+      <ul className="space-y-3 sm:space-y-4 mb-5 sm:mb-6 md:mb-8">
         {plan.features.map((feature, i) => (
           <li
             key={i}
-            className="flex items-start gap-3"
+            className="flex items-start gap-2 sm:gap-3"
             style={{
               color: plan.popular ? colors.white : colors.text.secondary,
             }}
           >
             <svg
-              className="w-5 h-5 flex-shrink-0 mt-0.5"
+              className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5"
               fill={plan.popular ? colors.white : colors.accent}
               viewBox="0 0 20 20"
             >
@@ -746,14 +762,14 @@ function PricingCard({
                 clipRule="evenodd"
               />
             </svg>
-            <span className="text-sm">{feature}</span>
+            <span className="text-xs sm:text-sm">{feature}</span>
           </li>
         ))}
       </ul>
 
       <Link
         href="/contact"
-        className="block w-full py-4 rounded-xl font-bold text-center transition-all duration-300 hover:scale-105"
+        className="block w-full py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-center text-sm sm:text-base transition-all duration-300 hover:scale-105"
         style={{
           backgroundColor: plan.popular ? colors.white : colors.accent,
           color: plan.popular ? colors.accent : colors.white,
@@ -843,17 +859,17 @@ export default function LaboPage() {
             transition={{ duration: 0.8 }}
           >
             {/* Logo */}
-            <div className="mb-8 mt-40">
+            <div className="mb-6 md:mb-8 mt-35 md:mt-40">
               <Image
                 src="/images/logo.png"
                 alt="PROGIX"
                 width={180}
                 height={60}
-                className="mx-auto brightness-0 invert"
+                className="mx-auto brightness-0 invert w-[120px] md:w-[180px]"
               />
             </div>
 
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight px-2">
               Ton APPLICATION
               <br />
               <span style={{ color: colors.accent }}>prête en 30 jours</span>
@@ -866,7 +882,7 @@ export default function LaboPage() {
             </h1>
 
             <p
-              className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto"
+              className="text-base sm:text-lg md:text-2xl mb-6 md:mb-8 max-w-3xl mx-auto px-4"
               style={{ color: colors.text.secondary }}
             >
               Une app performante et un marketing 100% organique pour vendre dès
@@ -874,11 +890,11 @@ export default function LaboPage() {
             </p>
 
             {/* Hero Video */}
-            <div className="mb-10 flex justify-center">
+            <div className="mb-8 md:mb-10 flex justify-center px-4">
               <video
                 src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/labo/2MIN%20FINAL.mp4"
                 controls
-                className="w-full max-w-sm h-auto rounded-2xl shadow-2xl"
+                className="w-full max-w-[280px] sm:max-w-sm h-auto rounded-2xl shadow-2xl"
                 preload="metadata"
               >
                 Your browser does not support the video tag.
@@ -888,7 +904,7 @@ export default function LaboPage() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-3 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 shadow-2xl hover:shadow-teal-500/25"
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 rounded-full text-base sm:text-lg font-bold transition-all duration-300 shadow-2xl hover:shadow-teal-500/25"
                 style={{ backgroundColor: colors.accent, color: colors.white }}
               >
                 Prendre un Rendez-Vous !
@@ -913,7 +929,7 @@ export default function LaboPage() {
 
       {/* Trusted By Section */}
       <section
-        className="py-36 mt-16 relative z-10 overflow-hidden"
+        className="py-16 sm:py-24 md:py-36 mt-8 md:mt-16 relative z-10 overflow-hidden"
         style={{ backgroundColor: '#081830' }}
       >
         {/* Faded circles background */}
@@ -945,13 +961,13 @@ export default function LaboPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center text-3xl md:text-4xl font-light italic mb-28"
+            className="text-center text-2xl sm:text-3xl md:text-4xl font-light italic mb-12 sm:mb-20 md:mb-28"
             style={{ color: colors.text.secondary }}
           >
             Ils nous font confiance
           </motion.h2>
 
-          <div className="flex flex-wrap justify-center items-center gap-16 md:gap-24 lg:gap-32">
+          <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 md:gap-24 lg:gap-32">
             {clientLogos.map((logo, index) => (
               <motion.div
                 key={index}
@@ -959,7 +975,7 @@ export default function LaboPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="h-10 md:h-14 relative"
+                className="h-8 sm:h-10 md:h-14 relative"
               >
                 <Image
                   src={logo}
@@ -1016,19 +1032,19 @@ export default function LaboPage() {
         </div>
 
         {/* Promise Section */}
-        <section className="py-24 relative z-10">
+        <section className="py-12 sm:py-16 md:py-24 relative z-10">
           <div className="container mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center text-4xl md:text-5xl font-bold mb-16"
+              className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-12 md:mb-16"
               style={{ color: colors.text.primary }}
             >
               Notre promesse
             </motion.h2>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
               {/* Transparent Price Card */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -1057,7 +1073,7 @@ export default function LaboPage() {
                   </svg>
                 </div>
                 <h3
-                  className="text-2xl font-bold mb-3"
+                  className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3"
                   style={{ color: colors.text.primary }}
                 >
                   Prix transparent
@@ -1074,15 +1090,15 @@ export default function LaboPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.15 }}
-                className="p-10 rounded-3xl text-center transition-all duration-300 backdrop-blur-sm"
+                className="p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl text-center transition-all duration-300 backdrop-blur-sm"
                 style={{
                   backgroundColor: 'rgba(14, 34, 69, 0.5)',
                   border: `1px solid ${colors.bg.border}`,
                 }}
               >
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-3 sm:mb-4">
                   <svg
-                    className="w-14 h-14"
+                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke={colors.accent}
@@ -1096,7 +1112,7 @@ export default function LaboPage() {
                   </svg>
                 </div>
                 <h3
-                  className="text-2xl font-bold mb-3"
+                  className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3"
                   style={{ color: colors.text.primary }}
                 >
                   Respect absolu des délais
@@ -1111,13 +1127,13 @@ export default function LaboPage() {
         </section>
 
         {/* Creations Section */}
-        <section className="py-24 relative z-10">
+        <section className="py-12 sm:py-16 md:py-24 relative z-10">
           <div className="container mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center text-4xl md:text-5xl font-bold mb-4"
+              className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4"
               style={{ color: colors.text.primary }}
             >
               Nos créations
@@ -1127,7 +1143,7 @@ export default function LaboPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-center text-xl mb-16 max-w-2xl mx-auto"
+              className="text-center text-base sm:text-lg md:text-xl mb-8 sm:mb-12 md:mb-16 max-w-2xl mx-auto px-2"
               style={{ color: colors.text.secondary }}
             >
               Découvrez quelques-uns de nos projets réalisés avec passion et
@@ -1155,9 +1171,9 @@ export default function LaboPage() {
         </section>
 
         {/* About Us Section */}
-        <section className="py-24 relative z-10">
+        <section className="py-12 sm:py-16 md:py-24 relative z-10">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col lg:flex-row gap-16 items-center max-w-6xl mx-auto">
+            <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 md:gap-16 items-center max-w-6xl mx-auto">
               {/* Image */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -1165,8 +1181,8 @@ export default function LaboPage() {
                 viewport={{ once: true }}
                 className="w-full lg:w-2/5"
               >
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-teal-500/10">
-                  <div className="aspect-[2/3] relative">
+                <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-teal-500/10">
+                  <div className="aspect-[3/4] sm:aspect-[2/3] relative">
                     <Image
                       src="/images/imranarshad/IMG_2125.JPG"
                       alt="Notre équipe"
@@ -1188,17 +1204,17 @@ export default function LaboPage() {
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="w-full lg:w-3/5 space-y-6"
+                className="w-full lg:w-3/5 space-y-4 sm:space-y-6"
               >
                 <h2
-                  className="text-4xl md:text-5xl font-bold"
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold"
                   style={{ color: colors.text.primary }}
                 >
                   Qui sommes-nous ?
                 </h2>
 
                 <p
-                  className="text-lg leading-relaxed"
+                  className="text-base sm:text-lg leading-relaxed"
                   style={{ color: colors.text.secondary }}
                 >
                   Nous sommes{' '}
@@ -1305,13 +1321,13 @@ export default function LaboPage() {
         </section>
 
         {/* Process Section */}
-        <section className="py-24 relative z-10">
+        <section className="py-12 sm:py-16 md:py-24 relative z-10">
           <div className="container mx-auto px-4 relative">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center text-4xl md:text-5xl font-bold mb-16"
+              className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-12 md:mb-16"
               style={{ color: colors.text.primary }}
             >
               Notre processus
@@ -1331,19 +1347,19 @@ export default function LaboPage() {
         </section>
 
         {/* Pricing Section */}
-        <section className="py-24 relative z-10">
+        <section className="py-12 sm:py-16 md:py-24 relative z-10">
           <div className="container mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center text-4xl md:text-5xl font-bold mb-16"
+              className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-12 md:mb-16"
               style={{ color: colors.text.primary }}
             >
               Nos offres
             </motion.h2>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto items-start">
               {pricingPlans.map((plan, index) => (
                 <PricingCard key={plan.name} plan={plan} index={index} />
               ))}
@@ -1352,13 +1368,13 @@ export default function LaboPage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-24 relative z-10">
+        <section className="py-12 sm:py-16 md:py-24 relative z-10">
           <div className="container mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center text-4xl md:text-5xl font-bold mb-16"
+              className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-12 md:mb-16"
               style={{ color: colors.text.primary }}
             >
               Questions fréquentes
@@ -1377,18 +1393,18 @@ export default function LaboPage() {
         </section>
 
         {/* Final CTA Section */}
-        <section className="py-24 relative z-10">
+        <section className="py-12 sm:py-16 md:py-24 relative z-10">
           <div className="container mx-auto px-4 text-center relative">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              <h2 className="text-2xl sm:text-4xl md:text-6xl font-bold text-white mb-4 sm:mb-6">
                 ALORS ON SE LANCE ?
               </h2>
               <p
-                className="text-xl mb-10"
+                className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10"
                 style={{ color: colors.text.secondary }}
               >
                 Il est temps de lancer ton application !
@@ -1399,7 +1415,7 @@ export default function LaboPage() {
               >
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-3 px-12 py-5 rounded-full text-lg font-bold transition-all duration-300 shadow-2xl shadow-teal-500/25"
+                  className="inline-flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-full text-base sm:text-lg font-bold transition-all duration-300 shadow-2xl shadow-teal-500/25"
                   style={{
                     backgroundColor: colors.accent,
                     color: colors.white,
@@ -1415,26 +1431,29 @@ export default function LaboPage() {
 
       {/* Footer */}
       <footer
-        className="py-12 relative z-10"
+        className="py-8 sm:py-12 relative z-10"
         style={{
           backgroundColor: '#081830',
           borderTop: `1px solid ${colors.bg.border}`,
         }}
       >
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
             <div className="flex items-center gap-4">
               <Image
                 src="/images/logo.png"
                 alt="PROGIX"
                 width={120}
                 height={40}
-                className="brightness-0 invert"
+                className="brightness-0 invert w-[100px] sm:w-[120px]"
               />
             </div>
 
-            <div className="flex items-center gap-6">
-              <span style={{ color: colors.text.muted }}>
+            <div className="flex items-center gap-4 sm:gap-6 text-center sm:text-left">
+              <span
+                className="text-xs sm:text-sm"
+                style={{ color: colors.text.muted }}
+              >
                 Suivez-nous sur LinkedIn :
               </span>
               <Link
@@ -1450,11 +1469,11 @@ export default function LaboPage() {
           </div>
 
           <div
-            className="mt-8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4"
+            className="mt-6 sm:mt-8 pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4"
             style={{ borderTop: `1px solid ${colors.bg.border}` }}
           >
             <div
-              className="flex gap-6 text-sm"
+              className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-6 text-xs sm:text-sm"
               style={{ color: colors.text.muted }}
             >
               <Link
@@ -1476,7 +1495,10 @@ export default function LaboPage() {
                 Cookies
               </Link>
             </div>
-            <p className="text-sm" style={{ color: colors.text.muted }}>
+            <p
+              className="text-xs sm:text-sm text-center sm:text-right"
+              style={{ color: colors.text.muted }}
+            >
               © {new Date().getFullYear()} PROGIX - Tous droits réservés
             </p>
           </div>
