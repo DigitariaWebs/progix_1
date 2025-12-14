@@ -161,7 +161,7 @@ const processSteps = [
 const pricingPlans = [
   {
     name: 'Starter Pack',
-    price: '9,990$',
+    price: '6,400$',
     delivery: 'Livré en 30j',
     features: [
       '1 fonctionnalité principale (1 à 5 écrans)',
@@ -877,7 +877,7 @@ export default function LaboPage() {
               à partir de
               <br />
               <span className="relative">
-                <span style={{ color: colors.accent }}>9 990€</span> !
+                <span style={{ color: colors.accent }}>6,400$</span> !
               </span>
             </h1>
 
