@@ -1184,7 +1184,7 @@ export default function LaboPage() {
                 <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-teal-500/10">
                   <div className="aspect-[3/4] sm:aspect-[2/3] relative">
                     <Image
-                      src="/images/imranarshad/IMG_2125.JPG"
+                      src="/1756818096511.jpg"
                       alt="Notre équipe"
                       fill
                       className="object-cover"
