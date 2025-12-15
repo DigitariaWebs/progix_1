@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaInstagram, FaFacebook, FaLinkedin } from 'react-icons/fa';
 
 // Brand colors from Progix - dark navy theme
 const colors = {
@@ -624,7 +625,7 @@ function ProcessStep({
       {/* Timeline line */}
       {!isLast && (
         <div
-          className="absolute left-4 sm:left-1/2 top-4 w-0.5 h-full sm:-translate-x-1/2"
+          className="absolute left-1/2 top-4 w-0.5 h-full -translate-x-1/2"
           style={{ backgroundColor: colors.bg.border }}
         />
       )}
@@ -634,33 +635,10 @@ function ProcessStep({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: index * 0.15 }}
-        className={`flex items-start gap-4 sm:gap-8 pb-12 sm:pb-24 flex-row sm:${isEven ? 'flex-row' : 'flex-row-reverse'}`}
+        className={`flex items-center gap-8 pb-12 sm:pb-24 ${isEven ? 'flex-row' : 'flex-row-reverse'}`}
       >
-        {/* Étape label - hidden on mobile, shown on opposite side on desktop */}
-        <div
-          className={`hidden sm:block flex-1 ${isEven ? 'text-right' : 'text-left'}`}
-        >
-          <span className="text-lg font-medium" style={{ color: dotColor }}>
-            Étape {step.step}
-          </span>
-        </div>
-
-        {/* Center dot */}
-        <div className="relative z-10 flex-shrink-0">
-          <div
-            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full shadow-lg"
-            style={{ backgroundColor: dotColor }}
-          />
-        </div>
-
         {/* Content card */}
-        <div className="flex-1">
-          <span
-            className="sm:hidden text-sm font-medium mb-2 block"
-            style={{ color: dotColor }}
-          >
-            Étape {step.step}
-          </span>
+        <div className="w-full sm:w-5/12">
           <div
             className="p-4 sm:p-6 rounded-xl sm:rounded-2xl"
             style={{
@@ -668,6 +646,11 @@ function ProcessStep({
               border: `1px solid ${colors.bg.border}`,
             }}
           >
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-sm font-medium" style={{ color: dotColor }}>
+                Étape {step.step}
+              </span>
+            </div>
             <h4
               className="text-base sm:text-xl font-bold mb-2 sm:mb-3"
               style={{ color: dotColor }}
@@ -682,6 +665,17 @@ function ProcessStep({
             </p>
           </div>
         </div>
+
+        {/* Center dot */}
+        <div className="relative z-10 flex-shrink-0">
+          <div
+            className="w-4 h-4 sm:w-6 sm:h-6 rounded-full shadow-lg border-4 border-gray-900"
+            style={{ backgroundColor: dotColor }}
+          />
+        </div>
+
+        {/* Spacer for alternating */}
+        <div className="w-full sm:w-5/12"></div>
       </motion.div>
     </div>
   );
@@ -786,6 +780,7 @@ export default function LaboPage() {
     (typeof creations)[0] | null
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   const handleLearnMore = (project: (typeof creations)[0]) => {
     setSelectedProject(project);
@@ -877,7 +872,7 @@ export default function LaboPage() {
               à partir de
               <br />
               <span className="relative">
-                <span style={{ color: colors.accent }}>6,400$</span> !
+                <span style={{ color: colors.accent }}>8,990$</span> !
               </span>
             </h1>
 
@@ -891,14 +886,57 @@ export default function LaboPage() {
 
             {/* Hero Video */}
             <div className="mb-8 md:mb-10 flex justify-center px-4">
-              <video
-                src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/labo/2MIN%20FINAL.mp4"
-                controls
-                className="w-full max-w-[280px] sm:max-w-sm h-auto rounded-2xl shadow-2xl"
-                preload="metadata"
-              >
-                Your browser does not support the video tag.
-              </video>
+              <div className="relative">
+                <video
+                  src="https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/labo/2MIN%20FINAL.mp4"
+                  className="w-full max-w-[280px] sm:max-w-sm h-auto rounded-2xl shadow-2xl"
+                  preload="metadata"
+                  id="hero-video"
+                  onPlay={() => setIsVideoPlaying(true)}
+                  onPause={() => setIsVideoPlaying(false)}
+                  onEnded={() => setIsVideoPlaying(false)}
+                >
+                  Your browser does not support the video tag.
+                </video>
+                <button
+                  onClick={() => {
+                    const video = document.getElementById(
+                      'hero-video',
+                    ) as HTMLVideoElement;
+                    if (video) {
+                      if (video.paused) {
+                        video.play();
+                      } else {
+                        video.pause();
+                      }
+                    }
+                  }}
+                  className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-2xl transition-all duration-300 hover:bg-black/10"
+                >
+                  <div
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110"
+                    style={{ backgroundColor: colors.accent }}
+                  >
+                    {isVideoPlaying ? (
+                      <svg
+                        className="w-8 h-8 sm:w-10 sm:h-10"
+                        fill="white"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-8 h-8 sm:w-10 sm:h-10 ml-1"
+                        fill="white"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    )}
+                  </div>
+                </button>
+              </div>
             </div>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -923,6 +961,52 @@ export default function LaboPage() {
                 </svg>
               </Link>
             </motion.div>
+
+            {/* Social Media Links */}
+            <div className="mt-8 md:mt-10 flex justify-center gap-6 sm:gap-8">
+              <motion.a
+                href="https://www.instagram.com/teamprogix/"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-3 rounded-full transition-all duration-300 hover:shadow-lg"
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  color: colors.white,
+                }}
+              >
+                <FaInstagram size={24} />
+              </motion.a>
+              <motion.a
+                href="https://www.facebook.com/progixinc"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-3 rounded-full transition-all duration-300 hover:shadow-lg"
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  color: colors.white,
+                }}
+              >
+                <FaFacebook size={24} />
+              </motion.a>
+              <motion.a
+                href="https://linkedin.com/company/progix"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-3 rounded-full transition-all duration-300 hover:shadow-lg"
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  color: colors.white,
+                }}
+              >
+                <FaLinkedin size={24} />
+              </motion.a>
+            </div>
           </motion.div>
         </div>
       </section>
