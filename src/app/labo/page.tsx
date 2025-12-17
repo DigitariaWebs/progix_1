@@ -872,7 +872,7 @@ export default function LaboPage() {
               à partir de
               <br />
               <span className="relative">
-                <span style={{ color: colors.accent }}>8,990$</span> !
+                <span style={{ color: colors.accent }}>12,000$</span> !
               </span>
             </h1>
 
