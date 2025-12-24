@@ -419,63 +419,6 @@ export default function ContactPage() {
             </div>
           </Section>
 
-          {/* Combien */}
-          <div className="mt-4 md:mt-6" />
-          <Section
-            id="sec-combien"
-            index={2}
-            title="Combien? *"
-            thumbVisible={thumbFor === 'sec-combien'}
-          >
-            <div className="mt-2 space-y-6">
-              <p className="text-black font-medium text-[15px] md:text-[16px]">
-                À quoi ressemble le budget pour votre projet?
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-                <ChoiceButton
-                  label="MOINS DE 20 000$"
-                  active={budget === 'b1'}
-                  onClick={() => {
-                    setBudget('b1');
-                    showThumbThenScroll('sec-combien', 'sec-ou');
-                  }}
-                />
-                <ChoiceButton
-                  label="DE 20 000$ À 40 000$"
-                  active={budget === 'b2'}
-                  onClick={() => {
-                    setBudget('b2');
-                    showThumbThenScroll('sec-combien', 'sec-ou');
-                  }}
-                />
-                <ChoiceButton
-                  label="DE 40 000$ À 60 000$"
-                  active={budget === 'b3'}
-                  onClick={() => {
-                    setBudget('b3');
-                    showThumbThenScroll('sec-combien', 'sec-ou');
-                  }}
-                />
-                <ChoiceButton
-                  label="DE 60 000$ À 100 000$"
-                  active={budget === 'b4'}
-                  onClick={() => {
-                    setBudget('b4');
-                    showThumbThenScroll('sec-combien', 'sec-ou');
-                  }}
-                />
-                <ChoiceButton
-                  label="PLUS DE 100 000$"
-                  active={budget === 'b5'}
-                  onClick={() => {
-                    setBudget('b5');
-                    showThumbThenScroll('sec-combien', 'sec-ou');
-                  }}
-                />
-              </div>
-            </div>
-          </Section>
-
           {/* Où */}
           <div className="mt-4 md:mt-6" />
           <Section
