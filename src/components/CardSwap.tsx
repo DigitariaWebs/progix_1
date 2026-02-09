@@ -15,7 +15,7 @@ import React, {
 import gsap from 'gsap';
 import './CardSwap.css';
 
-export interface CardSwapProps {
+interface CardSwapProps {
   width?: number | string;
   height?: number | string;
   cardDistance?: number;
@@ -28,7 +28,7 @@ export interface CardSwapProps {
   children: ReactNode;
 }
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   customClass?: string;
 }
 
@@ -43,7 +43,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = 'Card';
 
-type CardRef = RefObject<HTMLDivElement>;
+type CardRef = RefObject<HTMLDivElement | null>;
 interface Slot {
   x: number;
   y: number;
@@ -121,7 +121,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
   );
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const intervalRef = useRef<number>();
+  const intervalRef = useRef<number | undefined>(undefined);
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

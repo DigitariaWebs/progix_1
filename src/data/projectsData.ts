@@ -1,4 +1,4 @@
-export interface Project {
+interface Project {
   id: string;
   title: string;
   slug: string;
@@ -24,7 +24,7 @@ export interface Project {
   }[];
 }
 
-export const projects: Project[] = [
+const projects: Project[] = [
   {
     id: '1',
     title: 'CoRide',
@@ -529,21 +529,21 @@ export const projects: Project[] = [
 ];
 
 // Helper functions
-export const getFeaturedProjects = (): Project[] => {
+const getFeaturedProjects = (): Project[] => {
   return projects.filter((project) => project.featured);
 };
 
-export const getProjectsByCategory = (category: string): Project[] => {
+const getProjectsByCategory = (category: string): Project[] => {
   if (category === 'ALL' || category === 'FEATURED') return projects;
   return projects.filter((project) => project.category === category);
 };
 
-export const getProjectsByIndustry = (industry: string): Project[] => {
+const getProjectsByIndustry = (industry: string): Project[] => {
   if (industry === 'ALL') return projects;
   return projects.filter((project) => project.industry === industry);
 };
 
-export const getProjectBySlug = (slug: string): Project | undefined => {
+const getProjectBySlug = (slug: string): Project | undefined => {
   return projects.find((project) => project.slug === slug);
 };
 

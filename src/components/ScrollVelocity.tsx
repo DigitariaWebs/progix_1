@@ -31,7 +31,7 @@ function useElementWidth(ref: React.RefObject<HTMLElement | null>): number {
 
 type VelocityMapping = { input: number[]; output: number[] };
 
-export interface ScrollVelocityProps {
+interface ScrollVelocityProps {
   scrollContainerRef?: HTMLElement | null;
   texts?: string[];
   velocity?: number;

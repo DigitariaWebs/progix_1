@@ -581,5 +581,3 @@ export const StaggeredMenu = ({
     </div>
   );
 };
-
-export default StaggeredMenu;

@@ -37,7 +37,7 @@ export interface ServiceDetail {
   }[];
 }
 
-export const servicesData: ServiceDetail[] = [
+const servicesData: ServiceDetail[] = [
   {
     slug: 'business-technical-analysis',
     title: 'Analyse métier et technique',
@@ -1047,6 +1047,6 @@ export function getServiceBySlug(slug: string): ServiceDetail | undefined {
   return servicesData.find((service) => service.slug === slug);
 }
 
-export function getAllServiceSlugs(): string[] {
+function getAllServiceSlugs(): string[] {
   return servicesData.map((service) => service.slug);
 }
