@@ -73,6 +73,7 @@ function ProjectItem({
   onPreviewEnter,
   onPreviewMove,
   onPreviewLeave,
+  onProjectClick,
 }: {
   project: Project;
   index: number;
@@ -81,6 +82,7 @@ function ProjectItem({
   onPreviewEnter: (src: string) => void;
   onPreviewMove: (e: React.MouseEvent) => void;
   onPreviewLeave: () => void;
+  onProjectClick: (project: Project) => void;
 }) {
   const isOpen = openId === project.id;
 
@@ -200,13 +202,13 @@ function ProjectItem({
                   </div>
 
                   <div className="pt-10">
-                    <a
-                      href="#"
+                    <button
+                      onClick={() => onProjectClick(project)}
                       className="inline-flex items-center justify-center px-8 py-4 border border-white rounded-md text-base font-semibold hover:bg-white hover:text-black transition-colors"
                     >
                       VIEW PROJECT
                       <span className="ml-2">→</span>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -218,7 +220,11 @@ function ProjectItem({
   );
 }
 
-export default function ProjectsSection() {
+export default function ProjectsSection({
+  onProjectClick,
+}: {
+  onProjectClick: (project: Project) => void;
+}) {
   const [openId, setOpenId] = React.useState<number | null>(null);
   const [previewSrc, setPreviewSrc] = React.useState<string | null>(null);
   const mouseX = useMotionValue<number>(0);
@@ -278,6 +284,7 @@ export default function ProjectsSection() {
               onPreviewEnter={handlePreviewEnter}
               onPreviewMove={handlePreviewMove}
               onPreviewLeave={handlePreviewLeave}
+              onProjectClick={onProjectClick}
             />
           ))}
         {/* trailing border line (edge-to-edge) */}

@@ -11,6 +11,9 @@ type Project = {
   longDescription?: string[];
   video?: string;
   bgClass?: string;
+  website?: string;
+  gallery?: string[];
+  mobile: boolean;
 };
 
 const projects: Project[] = [
@@ -26,13 +29,20 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
     preview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/theatrerideauvertfondblanc.png',
-    longTitle:
-      "Théâtre du Rideau Vert - L'excellence théâtrale au cœur de Montréal",
+    longTitle: 'Théâtre Rideau Vert',
     longDescription: [
-      "Fondé en 1948, le Théâtre du Rideau Vert est le plus ancien théâtre professionnel francophone encore actif au Canada et un pilier de la culture montréalaise sur l'avenue Saint‑Denis.",
-      "Programmation éclectique, création d'ici et expérience accessible: notre mandat a été de concevoir une vitrine moderne, claire et fidèle à son identité.",
+      'Fondé en 1948, le Théâtre du Rideau Vert est le plus ancien théâtre professionnel francophone actif au Canada, pilier de la culture montréalaise.',
+      'Notre mandat : concevoir une vitrine moderne et fidèle à son identité, avec une programmation éclectique et accessible.',
     ],
     bgClass: 'bg-white',
+    website: 'https://rideauvert.qc.ca',
+    gallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+    ],
+    mobile: false,
   },
   {
     id: 2,
@@ -48,6 +58,14 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/logofruitexotic.avif',
     video: '/fruitexo.mp4',
     bgClass: 'bg-white',
+    website: 'https://fruitexotic.com',
+    gallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+    ],
+    mobile: false,
   },
   {
     id: 3,
@@ -62,6 +80,13 @@ const projects: Project[] = [
     preview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/mondev-logo-black (1).svg',
     bgClass: 'bg-white',
+    gallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
+    ],
+    mobile: false,
   },
   {
     id: 4,
@@ -74,6 +99,13 @@ const projects: Project[] = [
     image: '/images/imranarshad/recplkus.png',
     preview: '/images/imranarshad/recplkus.png',
     bgClass: 'bg-white',
+    gallery: [
+      '/images/imranarshad/recplkus.png',
+      '/images/imranarshad/recplkus.png',
+      '/images/imranarshad/recplkus.png',
+      '/images/imranarshad/recplkus.png',
+    ],
+    mobile: false,
   },
   {
     id: 5,
@@ -88,6 +120,12 @@ const projects: Project[] = [
     preview:
       '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
     bgClass: 'bg-white',
+    gallery: [
+      '/labo/davinci/Cas B - Plusieurs profils enfants.png',
+      '/labo/davinci/Dashboard Enfant – Mon Espace - Scroll.png',
+      '/labo/davinci/Mathématiques.png',
+    ],
+    mobile: true,
   },
   {
     id: 6,
@@ -108,12 +146,18 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CoRide.png',
     video:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/CoRideVideo.mp4',
-    longTitle: 'CoRide - Transport urbain intelligent',
+    longTitle: 'CoRide',
     longDescription: [
       'CoRide révolutionne le transport urbain avec une application mobile et un site web complets offrant des services de transport privé, livraison et bien plus.',
       "L'application utilise React Native pour une expérience mobile fluide, avec un backend robuste basé sur Node.js et une architecture moderne assurant fluidité et évolutivité.",
     ],
     bgClass: 'bg-white',
+    gallery: [
+      '/labo/coride/Splash screen.png',
+      '/labo/coride/Splash screen (1).png',
+      '/labo/coride/Splash screen (2).png',
+    ],
+    mobile: true,
   },
   {
     id: 7,
@@ -130,6 +174,13 @@ const projects: Project[] = [
     image: '/images/imranarshad/secup.png',
     preview: '/images/imranarshad/secup.png',
     bgClass: 'bg-white',
+    gallery: [
+      '/images/imranarshad/secup.png',
+      '/images/imranarshad/secup.png',
+      '/images/imranarshad/secup.png',
+      '/images/imranarshad/secup.png',
+    ],
+    mobile: false,
   },
   {
     id: 8,
@@ -152,12 +203,19 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
     video:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.mp4',
-    longTitle: "CCAP Productions - Créateurs d'expériences",
+    longTitle: 'CCAP Productions',
     longDescription: [
       "CCAP Productions est un studio de production audiovisuelle établi à Québec, spécialisé dans la création d'expériences visuelles percutantes depuis plus de 15 ans.",
       "Ils offrent une gamme complète de services incluant l'idéation, la préproduction, la production, la postproduction et la diffusion pour divers secteurs : publicité, corporatif, événements, vidéoclips et projets éducatifs.",
     ],
     bgClass: 'bg-white',
+    gallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
+    ],
+    mobile: false,
   },
   {
     id: 9,
@@ -178,12 +236,79 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
     video:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.mp4',
-    longTitle: 'QueenDeQ - Thérapie digitale pour femmes',
+    longTitle: 'QueenDeQ',
     longDescription: [
       "QueenDeQ est une solution thérapeutique digitale complète composée d'un site web informatif et d'une plateforme interactive utilisant l'IA.",
       "La plateforme propose trois chatbots spécialisés : un pour analyser le type de partenaire, un pour comprendre le profil de l'utilisateur, et un espace sécurisant pour les conversations libres.",
     ],
     bgClass: 'bg-white',
+    gallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+    ],
+    mobile: false,
+  },
+  {
+    id: 10,
+    title: 'iBox',
+    category: 'Gestion d\'entreprise',
+    description:
+      "iBox est une plateforme innovante de gestion et d'automatisation pour les entreprises modernes.",
+    services: [
+      'Tableau de bord centralisé',
+      'Automatisation des processus',
+      'Gestion des ressources optimisée',
+      'Rapports en temps réel',
+      'Intégrations multiples',
+      'Interface utilisateur intuitive',
+    ],
+    tech: ['React', 'Node.js', 'MongoDB', 'Express'],
+    image: '/labo/ibox/IMG_1835.PNG',
+    preview: '/labo/ibox/IMG_1835.PNG',
+    longTitle: 'iBox - Solution de gestion intelligente',
+    longDescription: [
+      "iBox est une plateforme innovante de gestion et d'automatisation pour les entreprises modernes.",
+      "Nous avons réalisé le design et développé l'application avec un focus sur l'expérience utilisateur et les fonctionnalités avancées de gestion d'entreprise.",
+    ],
+    bgClass: 'bg-white',
+    gallery: [
+      '/labo/ibox/IMG_1835.PNG',
+      '/labo/ibox/IMG_1838.PNG',
+      '/labo/ibox/IMG_1840.PNG',
+    ],
+    mobile: true,
+  },
+  {
+    id: 11,
+    title: 'GoSholo',
+    category: 'E-commerce',
+    description:
+      'GoSholo transforme le shopping en ligne avec une expérience immersive en réalité augmentée.',
+    services: [
+      'Essayage virtuel en AR',
+      'Catalogue produits 3D',
+      'Recommandations personnalisées',
+      'Paiements sécurisés',
+      'Suivi de commandes en temps réel',
+      'Support client intégré',
+    ],
+    tech: ['React Native', 'ARCore/ARKit', 'Node.js', 'MongoDB'],
+    image: '/labo/gosholo/image copy.png',
+    preview: '/labo/gosholo/image copy.png',
+    longTitle: 'GoSholo - Shopping révolutionnaire',
+    longDescription: [
+      'GoSholo transforme le shopping en ligne avec une expérience immersive en réalité augmentée.',
+      "L'application mobile utilise les dernières technologies AR pour offrir un essayage virtuel et une expérience d'achat unique.",
+    ],
+    bgClass: 'bg-white',
+    gallery: [
+      '/labo/gosholo/image.png',
+      '/labo/gosholo/image copy.png',
+      '/labo/gosholo/image copy 2.png',
+    ],
+    mobile: true,
   },
 ];
 

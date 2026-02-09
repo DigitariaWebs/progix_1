@@ -377,7 +377,7 @@ function ProjectModal({
                   onClose(e);
                 }}
                 className="absolute top-3 left-3 sm:top-4 sm:left-4 md:top-6 md:left-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-[100]"
-                style={{ backgroundColor: colors.accent }}
+                style={{ backgroundColor: colors.accent, transform: 'translate(9px, 9px)' }}
               >
                 <svg
                   className="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none"
