@@ -29,6 +29,7 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
     preview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/theatrerideauvertfondblanc.png',
+    video: '/rideauVERT.mp4',
     longTitle: 'Théâtre Rideau Vert',
     longDescription: [
       'Fondé en 1948, le Théâtre du Rideau Vert est le plus ancien théâtre professionnel francophone actif au Canada, pilier de la culture montréalaise.',
@@ -37,10 +38,10 @@ const projects: Project[] = [
     bgClass: 'bg-white',
     website: 'https://rideauvert.qc.ca',
     gallery: [
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      '/images/rideau1.png',
+      '/images/rideau2.png',
+      '/images/rideau3.png',
+      '/images/rideau4.png',
     ],
     mobile: false,
   },
@@ -52,20 +53,19 @@ const projects: Project[] = [
       "Vitrine internationale multilingue pour un acteur majeur de l'import de fruits exotiques.",
     services: ['Site vitrine', 'Internationalisation (7 langues)'],
     tech: ['Next.js', 'Tailwind CSS'],
-    image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-    preview:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/logofruitexotic.avif',
-    video: '/fruitexo.mp4',
-    bgClass: 'bg-white',
-    website: 'https://fruitexotic.com',
-    gallery: [
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
-    ],
-    mobile: false,
+      image:
+        'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
+      preview: '/labo/fruits/1.png',
+      video: '/labo/fruits/fruit.mp4',
+      bgClass: 'bg-white',
+      website: 'https://fruitexotic.com',
+      gallery: [
+        '/labo/fruits/1.png',
+        '/labo/fruits/2.png',
+        '/labo/fruits/3.png',
+        '/labo/fruits/4.png',
+      ],
+      mobile: false,
   },
   {
     id: 3,
@@ -79,14 +79,15 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
     preview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/mondev-logo-black (1).svg',
-    bgClass: 'bg-white',
-    gallery: [
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/Header_rentals_1900x500.jpg',
-    ],
-    mobile: false,
+      video: '/labo/mondev/recording-2026-02-10-18-58-56.mp4',
+      bgClass: 'bg-white',
+      gallery: [
+        '/labo/mondev/1.png',
+        '/labo/mondev/2.png',
+        '/labo/mondev/3.png',
+        '/labo/mondev/4.png',
+      ],
+      mobile: false,
   },
   {
     id: 4,
@@ -98,13 +99,14 @@ const projects: Project[] = [
     tech: ['Next.js', 'PostgreSQL', 'Node.js'],
     image: '/images/imranarshad/recplkus.png',
     preview: '/images/imranarshad/recplkus.png',
+      video: '/labo/recrute/recording-2026-02-10-19-11-31.mp4',
     bgClass: 'bg-white',
-    gallery: [
-      '/images/imranarshad/recplkus.png',
-      '/images/imranarshad/recplkus.png',
-      '/images/imranarshad/recplkus.png',
-      '/images/imranarshad/recplkus.png',
-    ],
+      gallery: [
+        '/images/imranarshad/recplkus.png',
+        '/labo/recrute/1.png',
+        '/labo/recrute/2.png',
+        '/labo/recrute/3.png',
+      ],
     mobile: false,
   },
   {
@@ -174,13 +176,12 @@ const projects: Project[] = [
     image: '/images/imranarshad/secup.png',
     preview: '/images/imranarshad/secup.png',
     bgClass: 'bg-white',
-    gallery: [
-      '/images/imranarshad/secup.png',
-      '/images/imranarshad/secup.png',
-      '/images/imranarshad/secup.png',
-      '/images/imranarshad/secup.png',
-    ],
-    mobile: false,
+      gallery: [
+        '/images/imranarshad/secup.png',
+        '/labo/socupe/1.png',
+        '/labo/socupe/2.png',
+      ],
+    mobile: true,
   },
   {
     id: 8,
@@ -209,12 +210,12 @@ const projects: Project[] = [
       "Ils offrent une gamme complète de services incluant l'idéation, la préproduction, la production, la postproduction et la diffusion pour divers secteurs : publicité, corporatif, événements, vidéoclips et projets éducatifs.",
     ],
     bgClass: 'bg-white',
-    gallery: [
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
-    ],
+      gallery: [
+        '/labo/cca_productions/1.png',
+        '/labo/cca_productions/2.png',
+        '/labo/cca_productions/3.png',
+        'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
+      ],
     mobile: false,
   },
   {
@@ -230,8 +231,7 @@ const projects: Project[] = [
       'Thérapie digitale',
     ],
     tech: ['React', 'Express', 'MongoDB', 'Auth0', 'Stripe', 'OpenAI API'],
-    image:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+      image: '/images/logo-gold.png',
     preview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
     video:
@@ -243,10 +243,10 @@ const projects: Project[] = [
     ],
     bgClass: 'bg-white',
     gallery: [
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
+      '/images/queen1.png',
+      '/images/queen2.png',
+      '/images/queen3.png',
+      '/images/queen4.png',
     ],
     mobile: false,
   },
@@ -309,6 +309,30 @@ const projects: Project[] = [
       '/labo/gosholo/image copy 2.png',
     ],
     mobile: true,
+  },
+  {
+    id: 12,
+    title: 'MS CORE',
+    category: 'Technologie',
+    description: "Des solutions technologiques pour votre croissance. Nous accompagnons les organisations dans la sécurisation, la modernisation et l'optimisation de leurs environnements numériques grâce au cloud, à la cybersécurité et à l'intelligence artificielle.",
+    services: ['Site vitrine', 'Design UI/UX', 'Vidéo'],
+    tech: ['Next.js', 'React', 'Tailwind CSS'],
+    image: '/labo/MS CORE/1.png',
+    preview: '/labo/MS CORE/1.png',
+    video: '/labo/MS CORE/recording-2026-02-10-18-11-14.mp4',
+    longTitle: 'MS CORE',
+    longDescription: [
+      'Des solutions technologiques pour votre croissance. Nous accompagnons les organisations dans la sécurisation, la modernisation et l\'optimisation de leurs environnements numériques grâce au cloud, à la cybersécurité et à l\'intelligence artificielle',
+    ],
+    bgClass: 'bg-white',
+    website: 'https://www.techmscore.com/',
+    gallery: [
+      '/labo/MS CORE/1.png',
+      '/labo/MS CORE/2.png',
+      '/labo/MS CORE/3.png',
+      '/labo/MS CORE/4.png',
+    ],
+    mobile: false,
   },
 ];
 
