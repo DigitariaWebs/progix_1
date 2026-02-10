@@ -1,11 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Filter } from 'lucide-react';
-import Partners from '@/components/ui/Partners';
-import { filterProjects } from '@/data/projectsData';
 // Navbar removed to use global StaggeredMenu header
 import ProjectsSection from '@/components/sections/ProjectsSection';
 import DriveHero from '@/components/sections/DriveHero';
@@ -299,48 +296,10 @@ function ProjectModal({
   );
 }
 
-const categories = [
-  'ALL',
-  'E-COMMERCE',
-  'HEALTHCARE',
-  'FINTECH',
-  'IOT',
-  'EDUCATION',
-  'HOSPITALITY',
-];
-
-const industries = [
-  'ALL',
-  'RETAIL',
-  'MEDICAL',
-  'FINANCE',
-  'GOVERNMENT',
-  'EDUCATION',
-  'FOOD',
-];
-
 const PortfolioPage = () => {
-  const [activeFilter, setActiveFilter] = useState('ALL');
-  const [activeCategory, setActiveCategory] = useState('ALL');
-  const [showAllProjects, setShowAllProjects] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Filter projects based on selected filters
-  const filteredProjects = useMemo(() => {
-    const filtered = filterProjects(activeFilter, activeCategory);
-    // Sort alphabetically by title
-    return filtered.sort((a, b) => a.title.localeCompare(b.title));
-  }, [activeFilter, activeCategory]);
-
-  // Projects to display (either 4 or all)
-  const displayedProjects = useMemo(() => {
-    if (showAllProjects) {
-      return filteredProjects;
-    }
-    return filteredProjects.slice(0, 4);
-  }, [filteredProjects, showAllProjects]);
 
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);

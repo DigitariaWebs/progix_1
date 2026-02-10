@@ -209,8 +209,7 @@ export default function ContactPage() {
           text: "Une erreur est survenue lors de l'envoi. Veuillez réessayer.",
         });
       }
-    } catch (error) {
-      console.error('Error submitting form:', error);
+    } catch {
       setSubmitMessage({
         type: 'error',
         text: "Une erreur est survenue lors de l'envoi. Veuillez réessayer.",

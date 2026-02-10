@@ -4,8 +4,6 @@ import CaseStudiesSection from '@/components/sections/CaseStudiesSection';
 import ClientLogosSection from '@/components/sections/ClientLogosSection';
 import ExpertiseSection from '@/components/sections/ExpertiseSection';
 import HeroSection from '@/components/sections/HeroSection';
-import Image from 'next/image';
-import Link from 'next/link';
 import TeamSection from '@/components/sections/TeamSection';
 import SectionFadeBg from '@/components/SectionFadeBg';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';

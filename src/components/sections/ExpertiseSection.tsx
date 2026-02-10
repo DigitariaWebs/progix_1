@@ -205,13 +205,14 @@ export default function ExpertiseSection() {
     });
 
     // Safety: pause videos when leaving the section
-    tl.scrollTrigger?.vars &&
+    if (tl.scrollTrigger?.vars) {
       Object.assign(tl.scrollTrigger.vars, {
         onLeave: () => pauseAll(),
         onLeaveBack: () => pauseAll(),
         onEnter: () => setActive(0),
         onEnterBack: () => setActive(Math.min(videos.length - 1, 1)),
       });
+    }
 
     return () => {
       tl.scrollTrigger?.kill();
@@ -224,7 +225,7 @@ export default function ExpertiseSection() {
     <section
       className={`${styles.exhSection} ${isDark ? styles.exhDark : ''} ${isMobile ? styles.exhMobile : ''}`}
       ref={sectionRef}
-      style={{ ['--contact-bg' as any]: '#1D4760' }}
+      style={{ '--contact-bg': '#1D4760' } as React.CSSProperties}
     >
       <div className={styles.exhHeading}>
         <h2
@@ -249,7 +250,7 @@ export default function ExpertiseSection() {
                 </div>
                 <div
                   className={styles.exhVideoWrap}
-                  style={{ ['--brand-blue' as any]: '#0A2456' }}
+                  style={{ '--brand-blue': '#0A2456' } as React.CSSProperties}
                 >
                   <video
                     key={`video-${item.number}`}

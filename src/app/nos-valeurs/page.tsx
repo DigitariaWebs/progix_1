@@ -11,32 +11,6 @@ import InspirationalQuotesSlider from '@/components/InspirationalQuotesSlider';
 import BlobCursor from '@/components/BlobCursor';
 
 const NosValeursPage = () => {
-  const menuItems = [
-    { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },
-    { label: 'Services', ariaLabel: 'Voir nos services', link: '/services' },
-    {
-      label: 'Portfolio',
-      ariaLabel: 'Voir notre portfolio',
-      link: '/portfolio',
-    },
-    { label: 'Équipe', ariaLabel: 'Découvrir notre équipe', link: '/team' },
-    {
-      label: 'Valeurs',
-      ariaLabel: 'Connaître nos valeurs',
-      link: '/nos-valeurs',
-    },
-    {
-      label: 'ConFoo',
-      ariaLabel: 'Découvrir ConFoo 2025',
-      link: '/confoo-2025',
-    },
-  ];
-
-  const socialItems = [
-    { label: 'LinkedIn', link: 'https://linkedin.com/company/progix' },
-    { label: 'GitHub', link: 'https://github.com/progix' },
-    { label: 'Twitter', link: 'https://twitter.com/progix' },
-  ];
   const [isProgressSectionVisible, setIsProgressSectionVisible] =
     useState(false);
 

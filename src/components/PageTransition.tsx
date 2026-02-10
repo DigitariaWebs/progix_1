@@ -17,7 +17,6 @@ export default function PageTransition({ children }: PageTransitionProps) {
   const logoRef = useRef<HTMLDivElement | null>(null);
   const blocksRef = useRef<HTMLDivElement[]>([]);
   const isTransitioning = useRef(false);
-  const pathLengthRef = useRef(0);
   const revealTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const revealPage = useCallback(() => {

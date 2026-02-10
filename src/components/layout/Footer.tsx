@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import { assets } from '@/config/assets';
 import {
   FaLinkedin,
   FaTwitter,

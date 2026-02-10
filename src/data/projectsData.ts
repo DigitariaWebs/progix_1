@@ -529,23 +529,6 @@ const projects: Project[] = [
 ];
 
 // Helper functions
-const getFeaturedProjects = (): Project[] => {
-  return projects.filter((project) => project.featured);
-};
-
-const getProjectsByCategory = (category: string): Project[] => {
-  if (category === 'ALL' || category === 'FEATURED') return projects;
-  return projects.filter((project) => project.category === category);
-};
-
-const getProjectsByIndustry = (industry: string): Project[] => {
-  if (industry === 'ALL') return projects;
-  return projects.filter((project) => project.industry === industry);
-};
-
-const getProjectBySlug = (slug: string): Project | undefined => {
-  return projects.find((project) => project.slug === slug);
-};
 
 export const filterProjects = (
   category: string,

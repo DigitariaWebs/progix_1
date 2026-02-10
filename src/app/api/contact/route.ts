@@ -4,22 +4,8 @@ import nodemailer from 'nodemailer';
 export const runtime = 'nodejs'; // Force Node.js runtime for crypto operations
 
 export async function POST(request: NextRequest) {
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('🔵 [CONTACT API] REQUEST STARTED');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('📍 Timestamp:', new Date().toISOString());
-  console.log('📍 Method:', request.method);
-  console.log('📍 URL:', request.url);
-  console.log(
-    '📍 Headers:',
-    JSON.stringify(Object.fromEntries(request.headers), null, 2),
-  );
-
   try {
-    console.log('\n🔄 [STEP 1] Parsing request body...');
     const body = await request.json();
-    console.log('✅ [STEP 1] Body parsed successfully');
-    console.log('📦 Raw body:', JSON.stringify(body, null, 2));
 
     // Extract form data based on current contact form
     const {
@@ -33,40 +19,6 @@ export async function POST(request: NextRequest) {
       projectDescription,
     } = body;
 
-    console.log('\n📋 [STEP 2] Extracted form fields:');
-    console.log('  • project:', project || '❌ MISSING');
-    console.log('  • timeline:', timeline || '❌ MISSING');
-    console.log('  • budget:', budget || '❌ MISSING');
-    console.log('  • source:', source || '❌ MISSING');
-    console.log('  • fullName:', fullName || '❌ MISSING');
-    console.log('  • email:', email || '❌ MISSING');
-    console.log('  • phone:', phone || '❌ MISSING');
-    console.log(
-      '  • projectDescription:',
-      projectDescription
-        ? `${projectDescription.substring(0, 50)}...`
-        : '❌ MISSING',
-    );
-
-    console.log('\n🔧 [STEP 3] Checking SMTP environment variables...');
-    console.log('  • SMTP_HOST:', process.env.SMTP_HOST || '❌ NOT SET');
-    console.log('  • SMTP_PORT:', process.env.SMTP_PORT || '❌ NOT SET');
-    console.log(
-      '  • SMTP_USER:',
-      process.env.SMTP_USER
-        ? '✅ Set (' + process.env.SMTP_USER + ')'
-        : '❌ NOT SET',
-    );
-    console.log(
-      '  • SMTP_PASS:',
-      process.env.SMTP_PASS ? '✅ Set (***hidden***)' : '❌ NOT SET',
-    );
-    console.log('  • SMTP_FROM:', process.env.SMTP_FROM || '❌ NOT SET');
-    console.log(
-      '  • CONTACT_EMAIL:',
-      process.env.CONTACT_EMAIL || '❌ NOT SET',
-    );
-
     // Validate required env vars
     const missingEnvVars: string[] = [];
     if (!process.env.SMTP_HOST) missingEnvVars.push('SMTP_HOST');
@@ -77,10 +29,6 @@ export async function POST(request: NextRequest) {
     if (!process.env.CONTACT_EMAIL) missingEnvVars.push('CONTACT_EMAIL');
 
     if (missingEnvVars.length > 0) {
-      console.error(
-        '❌ [STEP 3] CRITICAL ERROR: Missing environment variables:',
-        missingEnvVars,
-      );
       return NextResponse.json(
         {
           success: false,
@@ -91,7 +39,6 @@ export async function POST(request: NextRequest) {
         { status: 500 },
       );
     }
-    console.log('✅ [STEP 3] All environment variables present');
 
     // For now, we'll skip database saving and just send the email
     // TODO: Implement database saving later if needed
@@ -171,7 +118,6 @@ export async function POST(request: NextRequest) {
       return sources[src] || src;
     };
 
-    console.log('\n📝 [STEP 6] Building email content...');
     const html = `
       <h2>Nouvelle demande de soumission de projet</h2>
 
@@ -189,11 +135,6 @@ export async function POST(request: NextRequest) {
       <h3>Description du projet</h3>
       <p>${projectDescription.replace(/\n/g, '<br>')}</p>
     `;
-    console.log(
-      '✅ [STEP 6] Email HTML generated (length:',
-      html.length,
-      'chars)',
-    );
 
     // Prefer Resend if configured, fallback to SMTP
     let sent = false;
@@ -202,7 +143,7 @@ export async function POST(request: NextRequest) {
         await sendViaResend(html);
         sent = true;
       }
-    } catch (e) {
+    } catch {
       // fall back to SMTP
     }
 
@@ -234,13 +175,13 @@ export async function POST(request: NextRequest) {
       // Optional preflight verify to surface clearer errors
       try {
         await transporter.verify();
-      } catch (e: any) {
+      } catch {
         return NextResponse.json(
           {
             success: false,
             message: 'SMTP verification failed',
-            code: e?.code || 'SMTP_VERIFY_ERROR',
-            detail: e?.message || 'Unknown error',
+            code: 'SMTP_VERIFY_ERROR',
+            detail: 'Unknown error',
           },
           { status: 500 },
         );
@@ -264,34 +205,12 @@ export async function POST(request: NextRequest) {
       message: 'Email sent successfully',
     });
   } catch (error) {
-    console.error('\n❌ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.error('❌ [CONTACT API] ERROR OCCURRED');
-    console.error('❌ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.error(
-      '🔴 Error type:',
-      error instanceof Error ? error.constructor.name : typeof error,
-    );
-    console.error(
-      '🔴 Error message:',
-      error instanceof Error ? error.message : String(error),
-    );
-    console.error(
-      '🔴 Error stack:',
-      error instanceof Error ? error.stack : 'No stack trace',
-    );
-
-    if (error && typeof error === 'object') {
-      console.error('🔴 Error details:', JSON.stringify(error, null, 2));
-    }
-
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error occurred';
     const errorCode =
       error && typeof error === 'object' && 'code' in error
-        ? (error as any).code
+        ? (error as { code?: string }).code
         : 'UNKNOWN';
-
-    console.error('❌ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
     return NextResponse.json(
       {

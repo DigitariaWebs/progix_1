@@ -37,8 +37,8 @@ export default function ServiceDetailPage({
         if (serviceData) {
           setService(serviceData);
         }
-      } catch (error) {
-        console.error('Error loading service:', error);
+      } catch {
+        // Error loading service
       } finally {
         setLoading(false);
       }

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { colors } from '@/config/colors';
 import AnimatedButton from '../AnimatedButton';
 

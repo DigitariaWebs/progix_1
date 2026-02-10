@@ -3,15 +3,7 @@ import { motion, useAnimation, useMotionValue } from 'motion/react';
 
 import './CircularText.css';
 
-const getRotationTransition = (duration, from, loop = true) => ({
-  from,
-  to: from + 360,
-  ease: 'linear',
-  duration,
-  repeat: loop ? Infinity : 0,
-});
-
-const getTransition = (duration, from) => ({
+const getTransition = (duration) => ({
   duration,
   repeat: Infinity,
 });

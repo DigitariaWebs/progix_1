@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedButton from '@/components/AnimatedButton';
-// @ts-ignore
+// @ts-expect-error: Importing CSS module
 import './StaggeredMenu.css';
 
 interface MenuItem {
@@ -21,13 +21,11 @@ interface SocialItem {
 
 interface StaggeredMenuProps {
   position?: 'left' | 'right';
-  colors?: string[];
   items?: MenuItem[];
   socialItems?: SocialItem[];
   displaySocials?: boolean;
   displayItemNumbering?: boolean;
   className?: string;
-  logoUrl?: string;
   logoFilter?: string;
   menuButtonColor?: string;
   openMenuButtonColor?: string;
@@ -46,13 +44,11 @@ interface StaggeredMenuProps {
 
 export const StaggeredMenu = ({
   position = 'right',
-  colors = ['#B19EEF', '#5227FF'],
   items = [],
   socialItems = [],
   displaySocials = true,
   displayItemNumbering = true,
   className,
-  logoUrl = '/src/assets/logos/reactbits-gh-white.svg',
   logoFilter = 'brightness(0) invert(1)',
   menuButtonColor = '#fff',
   openMenuButtonColor = '#fff',
@@ -80,14 +76,14 @@ export const StaggeredMenu = ({
   const [hideHeader, setHideHeader] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const openTlRef = useRef<any>(null);
-  const closeTweenRef = useRef<any>(null);
-  const spinTweenRef = useRef<any>(null);
-  const textCycleAnimRef = useRef<any>(null);
-  const colorTweenRef = useRef<any>(null);
+  const openTlRef = useRef<gsap.core.Timeline | null>(null);
+  const closeTweenRef = useRef<gsap.core.Timeline | null>(null);
+  const spinTweenRef = useRef<gsap.core.Timeline | null>(null);
+  const textCycleAnimRef = useRef<gsap.core.Timeline | null>(null);
+  const colorTweenRef = useRef<gsap.core.Timeline | null>(null);
   const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
   const busyRef = useRef(false);
-  const itemEntranceTweenRef = useRef<any>(null);
+  const itemEntranceTweenRef = useRef<gsap.core.Timeline | null>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {

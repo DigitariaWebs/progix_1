@@ -2,10 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import CardSwap, { Card } from '@/components/CardSwap';
-import ScrollVelocity from '@/components/ScrollVelocity';
 import CircularText from '@/components/CircularText';
-import SectionFadeBg from '@/components/SectionFadeBg';
 import CurvedLoop from '@/components/CurvedLoop';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';

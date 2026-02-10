@@ -106,7 +106,9 @@ const CaseStudiesSection = () => {
                 if (faheVideoRef.current && !isReducedMotion) {
                   faheVideoRef.current
                     .play()
-                    .catch((err) => console.log('Video play prevented:', err));
+                    .catch(() => {
+                      // Video play prevented
+                    });
                 }
               }
             }}
@@ -124,7 +126,9 @@ const CaseStudiesSection = () => {
                 if (faheVideoRef.current.paused) {
                   faheVideoRef.current
                     .play()
-                    .catch((err) => console.log('Video play prevented:', err));
+                    .catch(() => {
+                      // Video play prevented
+                    });
                 } else {
                   faheVideoRef.current.pause();
                 }
@@ -331,7 +335,9 @@ const CaseStudiesSection = () => {
                 if (coRideVideoRef.current && !isReducedMotion) {
                   coRideVideoRef.current
                     .play()
-                    .catch((err) => console.log('Video play prevented:', err));
+                    .catch(() => {
+                      // Video play prevented
+                    });
                 }
               }
             }}
@@ -349,7 +355,9 @@ const CaseStudiesSection = () => {
                 if (coRideVideoRef.current.paused) {
                   coRideVideoRef.current
                     .play()
-                    .catch((err) => console.log('Video play prevented:', err));
+                    .catch(() => {
+                      // Video play prevented
+                    });
                 } else {
                   coRideVideoRef.current.pause();
                 }

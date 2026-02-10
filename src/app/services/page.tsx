@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Squares } from '@/components/ui/squares-background';
-import Navbar from '@/components/layout/Navbar';
 
 const colors = {
   primary: '#1B363C',

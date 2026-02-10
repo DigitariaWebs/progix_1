@@ -1046,7 +1046,3 @@ const servicesData: ServiceDetail[] = [
 export function getServiceBySlug(slug: string): ServiceDetail | undefined {
   return servicesData.find((service) => service.slug === slug);
 }
-
-function getAllServiceSlugs(): string[] {
-  return servicesData.map((service) => service.slug);
-}

@@ -88,10 +88,10 @@ export default function ScrollVelocity({
     scrollerStyle?: React.CSSProperties;
   }) {
     const baseX = useMotionValue(0);
-    const scrollOptions = scrollContainerRef
+    const scrollOptions: { container?: Element } = scrollContainerRef
       ? { container: scrollContainerRef }
       : {};
-    const { scrollY } = useScroll(scrollOptions as any);
+    const { scrollY } = useScroll(scrollOptions);
     const scrollVelocity = useVelocity(scrollY);
     const smoothVelocity = useSpring(scrollVelocity, {
       damping: damping ?? 50,
@@ -155,7 +155,7 @@ export default function ScrollVelocity({
         <span
           className={`sv-word ${className}`}
           key={i}
-          ref={i === 0 ? (copyRef as any) : null}
+          ref={i === 0 ? copyRef : null}
         >
           {renderParts(children)}
         </span>,
