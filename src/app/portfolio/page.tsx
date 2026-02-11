@@ -51,11 +51,18 @@ function ProjectModal({
   // Prevent body scroll when modal is open
   React.useEffect(() => {
     if (isOpen) {
-      const scrollbarWidth =
-        window.innerWidth - document.documentElement.clientWidth;
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      // Only add padding on desktop where scrollbar appears
+      if (typeof window !== 'undefined' && window.innerWidth > 768) {
+        const scrollbarWidth =
+          window.innerWidth - document.documentElement.clientWidth;
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      } else {
+        // On mobile, just hide overflow
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      }
     } else {
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
@@ -76,180 +83,222 @@ function ProjectModal({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - tap to close on mobile */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={(e) => onClose(e)}
-            className="fixed inset-0 bg-black/80 z-[100] backdrop-blur-sm overflow-hidden"
+            className="fixed inset-0 bg-black/60 md:bg-black/80 z-[100] md:backdrop-blur-sm overflow-hidden"
           />
 
-          {/* Modal */}
+          {/* Modal - Full-screen on mobile, centered on desktop with visible margins */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-1 sm:inset-2 md:inset-5 lg:inset-10 z-[100] overflow-y-auto overflow-x-hidden"
+            initial={{ opacity: 0, y: 'var(--initial-y)' }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 'var(--initial-y)' }}
+            transition={{
+              duration: 0.25,
+              type: 'spring',
+              stiffness: 300,
+              damping: 30,
+            }}
+            className="fixed inset-2 sm:inset-3 md:inset-8 lg:inset-12 z-[100] overflow-y-auto overflow-x-hidden"
+            style={
+              {
+                '--initial-y':
+                  typeof window !== 'undefined' && window.innerWidth < 768
+                    ? '100%'
+                    : '20px',
+              } as React.CSSProperties
+            }
             onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 max-w-6xl mx-auto"
-              style={{ backgroundColor: colors.bg.dark }}
-            >
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onClose(e);
-                }}
-                className="absolute top-3 left-3 sm:top-4 sm:left-4 md:top-6 md:left-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-[100]"
-                style={{ backgroundColor: colors.accent }}
+            <div className="min-h-full md:min-h-auto flex items-center justify-center">
+              <div
+                className="relative rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-10 max-w-5xl w-full"
+                style={{ backgroundColor: colors.bg.dark }}
               >
-                <svg
-                  className="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none"
-                  fill="none"
-                  stroke={colors.white}
-                  viewBox="0 0 24 24"
+                {/* Close Button - Larger for mobile touch */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onClose(e);
+                  }}
+                  className="absolute top-4 right-4 sm:top-4 sm:right-4 md:top-6 md:right-6 w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 z-[110] flex-shrink-0"
+                  style={{ backgroundColor: colors.accent }}
+                  aria-label="Fermer"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-
-              {/* Content */}
-              <div className="space-y-4 sm:space-y-6 md:space-y-8 mt-10 sm:mt-0">
-                {/* Header */}
-                <div className="text-center space-y-2 sm:space-y-4">
-                  <h2
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold"
-                    style={{ color: colors.text.primary }}
+                  <svg
+                    className="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none"
+                    fill="none"
+                    stroke={colors.white}
+                    viewBox="0 0 24 24"
                   >
-                    {project.longTitle || project.title}
-                  </h2>
-                  <p
-                    className="text-sm sm:text-base md:text-xl font-semibold"
-                    style={{ color: colors.text.accent }}
-                  >
-                    {project.category}
-                  </p>
-                </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
 
-                {/* Gallery */}
-                {project.gallery && project.gallery.length > 0 && (
-                  <div
-                    className={`grid gap-2 sm:gap-3 md:gap-4 ${project.mobile ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-2'}`}
-                  >
-                    {project.gallery.map((img, idx) => (
-                      <div
-                        key={idx}
-                        className={`relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg ${project.mobile ? 'aspect-[9/16]' : 'aspect-[16/9]'}`}
-                      >
-                        <Image
-                          src={img}
-                          alt={`${project.title} screenshot ${idx + 1}`}
-                          fill
-                          className={
-                            project.mobile ? 'object-cover' : 'object-fill'
-                          }
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Description */}
-                <div className="space-y-4 sm:space-y-6">
-                  {project.longDescription ? (
-                    <div
-                      className="space-y-4 text-sm sm:text-base md:text-lg leading-relaxed"
-                      style={{ color: colors.text.secondary }}
+                {/* Content */}
+                <div className="space-y-4 sm:space-y-6 md:space-y-8 mt-6 sm:mt-0">
+                  {/* Header */}
+                  <div className="text-center space-y-2 sm:space-y-3 md:space-y-4">
+                    <h2
+                      className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold leading-tight"
+                      style={{ color: colors.text.primary }}
                     >
-                      {project.longDescription.map((para, idx) => (
-                        <p key={idx}>{para}</p>
+                      {project.longTitle || project.title}
+                    </h2>
+                    <p
+                      className="text-xs sm:text-sm md:text-lg font-semibold"
+                      style={{ color: colors.text.accent }}
+                    >
+                      {project.category}
+                    </p>
+                  </div>
+
+                  {/* Gallery - Lazy load images and optimize for mobile */}
+                  {project.gallery && project.gallery.length > 0 && (
+                    <div
+                      className={`grid gap-2 sm:gap-3 md:gap-4 ${project.mobile ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'}`}
+                    >
+                      {project.gallery.map((img, idx) => (
+                        <div
+                          key={idx}
+                          className={`relative rounded-lg sm:rounded-2xl overflow-hidden shadow-lg ${project.mobile ? 'aspect-[9/16]' : 'aspect-[16/9]'}`}
+                        >
+                          <Image
+                            src={img}
+                            alt={`${project.title} screenshot ${idx + 1}`}
+                            fill
+                            loading="lazy"
+                            className={
+                              project.mobile ? 'object-cover' : 'object-fill'
+                            }
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          />
+                        </div>
                       ))}
                     </div>
-                  ) : (
-                    <p
-                      className="text-sm sm:text-base md:text-lg leading-relaxed"
-                      style={{ color: colors.text.secondary }}
-                    >
-                      {project.description}
-                    </p>
                   )}
 
-                  <div>
-                    <h3
-                      className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4"
-                      style={{ color: colors.text.primary }}
-                    >
-                      Services :
-                    </h3>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
-                      {project.services.map((service, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base"
-                          style={{ color: colors.text.secondary }}
-                        >
-                          <span
-                            className="w-2 h-2 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: colors.accent }}
-                          />
-                          {service}
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Description */}
+                  <div className="space-y-4 sm:space-y-5 md:space-y-6 pb-6 md:pb-0">
+                    {project.longDescription ? (
+                      <div
+                        className="space-y-3 sm:space-y-4 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed"
+                        style={{ color: colors.text.secondary }}
+                      >
+                        {project.longDescription.map((para, idx) => (
+                          <p key={idx}>{para}</p>
+                        ))}
+                      </div>
+                    ) : (
+                      <p
+                        className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed"
+                        style={{ color: colors.text.secondary }}
+                      >
+                        {project.description}
+                      </p>
+                    )}
+
+                    <div>
+                      <h3
+                        className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 md:mb-4"
+                        style={{ color: colors.text.primary }}
+                      >
+                        Services :
+                      </h3>
+                      <ul className="grid grid-cols-1 gap-1 sm:gap-2 md:gap-3">
+                        {project.services.map((service, i) => (
+                          <li
+                            key={i}
+                            className="flex items-center gap-2 text-xs sm:text-sm md:text-base"
+                            style={{ color: colors.text.secondary }}
+                          >
+                            <span
+                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: colors.accent }}
+                            />
+                            {service}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3
+                        className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 md:mb-4"
+                        style={{ color: colors.text.primary }}
+                      >
+                        Technologies :
+                      </h3>
+                      <ul className="grid grid-cols-1 gap-1 sm:gap-2 md:gap-3">
+                        {project.tech.map((tech, i) => (
+                          <li
+                            key={i}
+                            className="flex items-center gap-2 text-xs sm:text-sm md:text-base"
+                            style={{ color: colors.text.secondary }}
+                          >
+                            <span
+                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: colors.accent }}
+                            />
+                            {tech}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
-                  <div>
-                    <h3
-                      className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4"
-                      style={{ color: colors.text.primary }}
-                    >
-                      Technologies :
-                    </h3>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
-                      {project.tech.map((tech, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base"
-                          style={{ color: colors.text.secondary }}
+                  {/* CTA - Full width on mobile */}
+                  <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-4 sm:pt-6 md:pt-8 border-t border-gray-700">
+                    {project.website && (
+                      <Link
+                        href={project.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-xl md:rounded-full text-xs sm:text-sm md:text-base font-bold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg w-full sm:w-auto"
+                        style={{
+                          backgroundColor: colors.accent,
+                          color: colors.white,
+                        }}
+                      >
+                        Visiter le site
+                        <svg
+                          className="w-4 h-4 sm:w-5 sm:h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
-                          <span
-                            className="w-2 h-2 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: colors.accent }}
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                           />
-                          {tech}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* CTA */}
-                <div className="flex justify-center gap-4 pt-2 sm:pt-4">
-                  {project.website && (
+                        </svg>
+                      </Link>
+                    )}
                     <Link
-                      href={project.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-bold transition-all duration-300 hover:scale-105 shadow-lg"
+                      href="/contact"
+                      className="inline-flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-xl md:rounded-full text-xs sm:text-sm md:text-base font-bold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg border-2 w-full sm:w-auto"
                       style={{
-                        backgroundColor: colors.accent,
-                        color: colors.white,
+                        borderColor: colors.accent,
+                        color: colors.accent,
                       }}
                     >
-                      Visiter le site
+                      Discutons de votre projet
                       <svg
-                        className="w-5 h-5"
+                        className="w-4 h-4 sm:w-5 sm:h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -258,34 +307,11 @@ function ProjectModal({
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
                         />
                       </svg>
                     </Link>
-                  )}
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-bold transition-all duration-300 hover:scale-105 shadow-lg border-2"
-                    style={{
-                      borderColor: colors.accent,
-                      color: colors.accent,
-                    }}
-                  >
-                    Discutons de votre projet
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>

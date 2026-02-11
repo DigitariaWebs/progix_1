@@ -92,22 +92,26 @@ function ProjectItem({
       <button
         type="button"
         onClick={() => setOpenId(isOpen ? null : project.id)}
-        className="group w-full text-left grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-8 sm:gap-x-10 md:gap-x-12 py-12 md:py-14 border-t border-dotted border-white/30 hover:border-black/30 hover:bg-white transition-colors duration-150 px-5 sm:px-8"
-        onMouseEnter={() => onPreviewEnter(project.preview || project.image)}
+        className="group w-full text-left grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-3 sm:gap-x-6 md:gap-x-12 py-6 sm:py-10 md:py-14 border-t border-dotted border-white/30 hover:border-black/30 hover:bg-white transition-colors duration-150 px-3 sm:px-5 md:px-8 min-h-[60px] sm:min-h-[80px]"
+        onMouseEnter={() => {
+          if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+            onPreviewEnter(project.preview || project.image);
+          }
+        }}
         onMouseMove={onPreviewMove}
         onMouseLeave={onPreviewLeave}
         aria-expanded={isOpen}
       >
-        <span className="text-6xl md:text-7xl font-bold tabular-nums leading-none text-white group-hover:text-black transition-colors">
+        <span className="text-3xl sm:text-4xl md:text-7xl font-bold tabular-nums leading-none text-white group-hover:text-black transition-colors">
           {String(index + 1).padStart(2, '0')}
         </span>
-        <span className="text-5xl md:text-6xl font-bold leading-tight ml-12 md:ml-16 text-white group-hover:text-black transition-colors">
+        <span className="text-2xl sm:text-3xl md:text-6xl font-bold leading-tight ml-4 sm:ml-8 md:ml-16 text-white group-hover:text-black transition-colors">
           {project.title}
         </span>
         <span className="ml-auto hidden md:block mr-8 md:mr-12 text-gray-400 group-hover:text-gray-800 uppercase tracking-wider font-light text-sm md:text-base transition-colors">
           {project.category}
         </span>
-        <span className="text-4xl md:text-5xl font-light leading-none text-white/80 group-hover:text-black transition-colors">
+        <span className="text-2xl sm:text-3xl md:text-5xl font-light leading-none text-white/80 group-hover:text-black transition-colors">
           {isOpen ? '–' : '+'}
         </span>
       </button>
@@ -123,8 +127,8 @@ function ProjectItem({
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden border-t border-dotted border-white/20"
           >
-            <div className="py-10 px-5 sm:px-8">
-              <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div className="py-6 sm:py-10 px-3 sm:px-5 md:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
                 {/* Left: media (video preferred if present) */}
                 <div
                   className={`relative rounded-xl overflow-hidden ${project.bgClass ? '' : ''}`}
@@ -132,7 +136,7 @@ function ProjectItem({
                   <div
                     className={`absolute inset-0 ${project.bgClass ? project.bgClass : 'bg-[#3BA7FF]'}`}
                   />
-                  <div className="relative p-6 md:p-8">
+                  <div className="relative p-3 sm:p-6 md:p-8">
                     <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden ">
                       {project.video ? (
                         <video
@@ -158,7 +162,7 @@ function ProjectItem({
 
                 {/* Right: text block */}
                 <div className="max-w-3xl ml-auto">
-                  <h3 className="text-6xl font-bold leading-tight mb-6">
+                  <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">
                     {project.longTitle || project.title}
                   </h3>
                   {project.longDescription ? (
@@ -166,34 +170,34 @@ function ProjectItem({
                       {project.longDescription.map((para, idx) => (
                         <p
                           key={idx}
-                          className="text-lg md:text-xl leading-relaxed"
+                          className="text-sm sm:text-base md:text-xl leading-relaxed"
                         >
                           {para}
                         </p>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-2xl text-white/80 leading-relaxed mb-10">
+                    <p className="text-base sm:text-lg md:text-2xl text-white/80 leading-relaxed mb-6 sm:mb-10">
                       {project.description}
                     </p>
                   )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pb-10 border-b border-dotted border-white/20 mt-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 pb-6 sm:pb-10 border-b border-dotted border-white/20 mt-6 sm:mt-8">
                     <div>
                       <div className="text-sm text-white/60 tracking-widest mb-2">
                         SERVICES
                       </div>
-                      <div className="font-mono text-sm uppercase space-y-1">
+                      <div className="font-mono text-xs sm:text-sm uppercase space-y-1">
                         {project.services.map((s) => (
                           <div key={s}>{s}</div>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-white/60 tracking-widest mb-2">
+                      <div className="text-xs sm:text-sm text-white/60 tracking-widest mb-2">
                         TECH
                       </div>
-                      <div className="font-mono text-sm uppercase space-y-1">
+                      <div className="font-mono text-xs sm:text-sm uppercase space-y-1">
                         {project.tech.map((t) => (
                           <div key={t}>{t}</div>
                         ))}
@@ -201,12 +205,12 @@ function ProjectItem({
                     </div>
                   </div>
 
-                  <div className="pt-10">
+                  <div className="pt-6 sm:pt-10">
                     <button
                       onClick={() => onProjectClick(project)}
-                      className="inline-flex items-center justify-center px-8 py-4 border border-white rounded-md text-base font-semibold hover:bg-white hover:text-black transition-colors"
+                      className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border border-white rounded-md text-sm sm:text-base font-semibold hover:bg-white hover:text-black transition-colors min-h-[44px]"
                     >
-                      VIEW PROJECT
+                      VOIR LE PROJET
                       <span className="ml-2">→</span>
                     </button>
                   </div>
@@ -249,8 +253,8 @@ export default function ProjectsSection({
 
   return (
     <section className="bg-black text-white">
-      {/* Pills header - full width but padded */}
-      <div className="flex gap-3 flex-wrap py-6 px-5 sm:px-8">
+      {/* Filter buttons - responsive grid with equal widths */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3 py-4 sm:py-6 px-3 sm:px-5 md:px-8">
         {FILTERS.map((label) => {
           const isActive = activeFilter === label;
           return (
@@ -260,8 +264,8 @@ export default function ProjectsSection({
               onClick={() => setActiveFilter(label)}
               className={
                 isActive
-                  ? 'inline-flex items-center px-5 py-2 bg-white text-black rounded-md text-sm font-semibold'
-                  : 'inline-flex items-center px-5 py-2 border border-white/50 rounded-md text-sm font-semibold text-white/80 hover:text-white hover:border-white'
+                  ? 'w-full inline-flex items-center justify-center px-2 sm:px-3 py-2.5 sm:py-3 bg-white text-black rounded-md text-xs sm:text-sm font-semibold min-h-[44px] sm:min-h-[40px] transition-all duration-200'
+                  : 'w-full inline-flex items-center justify-center px-2 sm:px-3 py-2.5 sm:py-3 border border-white/50 rounded-md text-xs sm:text-sm font-semibold text-white/80 hover:text-white hover:border-white hover:bg-white/5 min-h-[44px] sm:min-h-[40px] transition-all duration-200'
               }
               aria-pressed={isActive}
             >
@@ -291,7 +295,7 @@ export default function ProjectsSection({
         <li className="border-t border-dotted border-white/30" />
       </ul>
 
-      {/* Cursor-follow preview */}
+      {/* Cursor-follow preview - desktop only */}
       <AnimatePresence>
         {previewSrc ? (
           <motion.div
@@ -300,7 +304,7 @@ export default function ProjectsSection({
             animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.98, y: 3, filter: 'blur(2px)' }}
             transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed z-[60] pointer-events-none rounded-2xl overflow-hidden shadow-2xl"
+            className="fixed z-[60] pointer-events-none rounded-2xl overflow-hidden shadow-2xl hidden md:block"
             style={{ left: mouseX, top: mouseY }}
           >
             <motion.div
@@ -316,6 +320,7 @@ export default function ProjectsSection({
                 height={560}
                 className="w-full h-full object-contain"
                 priority={false}
+                sizes="(max-width: 768px) 90vw, (max-width: 1200px) 80vw, 420px"
               />
             </motion.div>
           </motion.div>
