@@ -8,11 +8,11 @@ import AnimatedButton from '../AnimatedButton';
 const AboutUsSection = () => {
   // Simple right-side image rotation (lightweight crossfade)
   const rightImages = [
-    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-39-01-194.jpg',
+    '/ChatGPT Image Feb 15, 2026, 08_49_14 PM.png',
     'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-34-34-749.jpg',
-    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-39-46-733.jpg',
+    '/ChatGPT Image Feb 15, 2026, 08_50_35 PM.png',
     'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-38-30-170.jpg',
-    'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagesculture/Picsart_25-09-29_19-37-55-797.jpg',
+    '/ChatGPT Image Feb 15, 2026, 08_45_59 PM.png',
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

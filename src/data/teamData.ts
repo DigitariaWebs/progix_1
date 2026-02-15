@@ -75,7 +75,7 @@ export const teamMembers: TeamMember[] = [
     name: 'Ilyes Ghorieb',
     role: 'Full-Stack Software Engineer',
     skills: 'React • Node.js • TypeScript • PostgreSQL',
-    image: '/images/imranarshad/IMG_2125.JPG',
+    image: '/ChatGPT Image Feb 15, 2026, 09_07_59 PM.png',
     linkedinUrl: 'https://www.linkedin.com/in/ilyes-ghorieb-95b470244/',
     description:
       'Salut ! Je suis Ilyes, un développeur full-stack passionné par la création de solutions logicielles innovantes. Chez PROGIX, je conçois et développe des systèmes CRM et ERP sur mesure, des plateformes SaaS et des applications mobiles performantes et évolutives.',
