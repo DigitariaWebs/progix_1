@@ -458,8 +458,8 @@ export const StaggeredMenu = ({
         <div className="flex items-center gap-0 sm:gap-2 md:gap-[12px]">
           {!open && (
             <div className="origin-right w-full sm:w-auto flex items-center">
-              {/* Mobile: PARLONS NOUS (sm:hidden) */}
-              <div className="block sm:hidden transform scale-[0.62] ml-0 mr-[-12px]">
+              {/* Mobile: PARLONS NOUS — hidden; previously only shown due to a CSS collision with a global `.block` rule */}
+              <div className="hidden transform scale-[0.62] ml-0 mr-[-12px]">
                 <Link href="/contact" className="sm-cta-link">
                   <AnimatedButton
                     text="PARLONS NOUS"

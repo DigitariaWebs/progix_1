@@ -20,6 +20,45 @@ function stringIncludes(haystack: string | undefined, needle: string) {
   return haystack.toLowerCase().includes(needle.toLowerCase());
 }
 
+type Media = { kind: 'video' | 'image'; src: string };
+
+function getWebMedia(p: Project): Media | null {
+  if (p.webVideo) return { kind: 'video', src: p.webVideo };
+  const img = p.webPreview || p.webGallery?.[0];
+  return img ? { kind: 'image', src: img } : null;
+}
+
+function getMobileMedia(p: Project): Media | null {
+  if (p.mobileVideo) return { kind: 'video', src: p.mobileVideo };
+  const img = p.mobilePreview || p.mobileGallery?.[0];
+  return img ? { kind: 'image', src: img } : null;
+}
+
+function MediaSurface({
+  media,
+  fit,
+  alt,
+}: {
+  media: Media;
+  fit: 'cover' | 'contain';
+  alt: string;
+}) {
+  if (media.kind === 'video') {
+    return (
+      <video
+        src={media.src}
+        className={`absolute inset-0 h-full w-full object-${fit}`}
+        muted
+        loop
+        autoPlay
+        playsInline
+        controls={false}
+      />
+    );
+  }
+  return <Image src={media.src} alt={alt} fill className={`object-${fit}`} />;
+}
+
 function matchesFilter(project: Project, filter: FilterType): boolean {
   if (filter === 'TOUS') return true;
 
@@ -95,7 +134,9 @@ function ProjectItem({
         className="group w-full text-left grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-3 sm:gap-x-6 md:gap-x-12 py-6 sm:py-10 md:py-14 border-t border-dotted border-white/30 hover:border-black/30 hover:bg-white transition-colors duration-150 px-3 sm:px-5 md:px-8 min-h-[60px] sm:min-h-[80px]"
         onMouseEnter={() => {
           if (typeof window !== 'undefined' && window.innerWidth >= 768) {
-            onPreviewEnter(project.preview || project.image);
+            onPreviewEnter(
+              project.webPreview || project.mobilePreview || project.image,
+            );
           }
         }}
         onMouseMove={onPreviewMove}
@@ -128,37 +169,59 @@ function ProjectItem({
             className="overflow-hidden border-t border-dotted border-white/20"
           >
             <div className="py-6 sm:py-10 px-3 sm:px-5 md:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
-                {/* Left: media (video preferred if present) */}
-                <div
-                  className={`relative rounded-xl overflow-hidden ${project.bgClass ? '' : ''}`}
-                >
-                  <div
-                    className={`absolute inset-0 ${project.bgClass ? project.bgClass : 'bg-[#3BA7FF]'}`}
-                  />
-                  <div className="relative p-3 sm:p-6 md:p-8">
-                    <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden ">
-                      {project.video ? (
-                        <video
-                          src={project.video}
-                          className="w-full h-full object-cover"
-                          muted
-                          loop
-                          autoPlay
-                          playsInline
-                          controls={false}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-stretch">
+                {(() => {
+                  const web = getWebMedia(project);
+                  const mobile = getMobileMedia(project);
+                  const isHybrid = !!web && !!mobile;
+                  const mobileOnly = !web && !!mobile;
+
+                  if (mobileOnly) {
+                    return (
+                      <div className="relative rounded-xl overflow-hidden min-h-48 bg-black/40">
+                        <MediaSurface
+                          media={mobile!}
+                          fit="contain"
+                          alt={project.title}
                         />
-                      ) : (
+                      </div>
+                    );
+                  }
+
+                  if (!web) {
+                    return (
+                      <div className="relative rounded-xl overflow-hidden min-h-48 bg-black/40">
                         <Image
                           src={project.image}
                           alt={project.title}
                           fill
-                          className="object-contain"
+                          className="object-cover"
                         />
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="relative min-h-48">
+                      <div className="relative w-full h-full min-h-48 overflow-hidden rounded-xl bg-black/40">
+                        <MediaSurface
+                          media={web}
+                          fit="cover"
+                          alt={project.title}
+                        />
+                      </div>
+                      {isHybrid && (
+                        <div className="absolute -bottom-4 -right-3 z-10 w-[26%] min-w-[96px] max-w-[170px] aspect-[9/16] overflow-hidden rounded-xl bg-black shadow-[0_18px_40px_-8px_rgba(0,0,0,0.75)] ring-1 ring-white/20 sm:-bottom-6 sm:-right-5 md:-bottom-8 md:-right-8">
+                          <MediaSurface
+                            media={mobile!}
+                            fit="cover"
+                            alt={`${project.title} — mobile`}
+                          />
+                        </div>
                       )}
                     </div>
-                  </div>
-                </div>
+                  );
+                })()}
 
                 {/* Right: text block */}
                 <div className="max-w-3xl ml-auto">

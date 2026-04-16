@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useLayoutEffect, useState } from 'react';
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import {
   motion,
   useScroll,
@@ -109,6 +109,22 @@ export default function ScrollVelocity({
       copyRef as unknown as React.RefObject<HTMLElement>,
     );
 
+    const parallaxRef = useRef<HTMLDivElement | null>(null);
+    const isInViewRef = useRef(false);
+
+    useEffect(() => {
+      const el = parallaxRef.current;
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          isInViewRef.current = entry.isIntersecting;
+        },
+        { rootMargin: '100px 0px' },
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
+
     function wrap(min: number, max: number, v: number): number {
       const range = max - min;
       const mod = (((v - min) % range) + range) % range;
@@ -122,6 +138,8 @@ export default function ScrollVelocity({
 
     const directionFactor = useRef(1);
     useAnimationFrame((_, delta) => {
+      if (!isInViewRef.current) return;
+
       let moveBy =
         directionFactor.current * (baseVelocity ?? 100) * (delta / 1000);
 
@@ -164,6 +182,7 @@ export default function ScrollVelocity({
 
     return (
       <div
+        ref={parallaxRef}
         className={`${parallaxClassName} overflow-hidden`}
         style={parallaxStyle}
       >

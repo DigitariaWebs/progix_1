@@ -1,44 +1,163 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-// Navbar removed to use global StaggeredMenu header
 import ProjectsSection from '@/components/sections/ProjectsSection';
-import DriveHero from '@/components/sections/DriveHero';
 import CtaButtonSection from '@/components/sections/CtaButtonSection';
 import Footer from '@/components/layout/Footer';
-import { motion, AnimatePresence } from 'framer-motion';
-import { type Project } from '@/data/project';
-const colors = {
-  primary: '#1B363C',
-  secondary: '#1D4760',
-  tertiary: '#222831',
-  quaternary: '#B2BEC3',
-  white: '#FFFFFF',
-  black: '#000000',
-  // Accent colors (bright for visibility on dark blue)
-  accent: '#4ECDC4', // Bright cyan/teal
-  accentLight: '#7EDCD5',
-  // Dark navy background colors (matching hero)
-  bg: {
-    darkest: '#06132B', // Very dark navy (main bg)
-    darker: '#0A1A38', // Slightly lighter navy
-    dark: '#0E2245', // Navy for cards
-    medium: '#132A52', // Medium navy for highlights
-    border: '#1A3660', // Navy border
-    borderLight: '#234575', // Lighter navy border
-  },
-  // Text colors (white/light for dark navy bg)
-  text: {
-    primary: '#FFFFFF', // Pure white for headings
-    secondary: '#E0E7F1', // Very light blue-white for body
-    muted: '#A8B8D0', // Soft blue-gray for subtle text
-    accent: '#4ECDC4', // Bright cyan for accents
-  },
-};
+import { hasMobile, hasWeb, type Project } from '@/data/project';
+import { colors } from '@/config/colors';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  type CarouselApi,
+} from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+import {
+  ExternalLink,
+  ArrowRight,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+} from 'lucide-react';
 
-// Project Modal Component
+function DotIndicator({
+  count,
+  current,
+  onSelect,
+}: {
+  count: number;
+  current: number;
+  onSelect: (i: number) => void;
+}) {
+  if (count <= 1) return null;
+  return (
+    <div className="flex items-center justify-center gap-1.5">
+      {Array.from({ length: count }).map((_, i) => (
+        <button
+          key={i}
+          onClick={() => onSelect(i)}
+          className="rounded-full transition-all duration-200"
+          style={{
+            width: i === current ? '20px' : '6px',
+            height: '6px',
+            backgroundColor: i === current ? '#fff' : 'rgba(255,255,255,0.3)',
+          }}
+          aria-label={`Photo ${i + 1}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+function Lightbox({
+  images,
+  index,
+  isMobile,
+  onClose,
+}: {
+  images: string[];
+  index: number;
+  isMobile: boolean;
+  onClose: () => void;
+}) {
+  const [current, setCurrent] = useState(index);
+  const total = images.length;
+
+  const prev = useCallback(
+    () => setCurrent((c) => (c - 1 + total) % total),
+    [total],
+  );
+  const next = useCallback(() => setCurrent((c) => (c + 1) % total), [total]);
+
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prev();
+      else if (e.key === 'ArrowRight') next();
+      else if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handle);
+    return () => window.removeEventListener('keydown', handle);
+  }, [prev, next, onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex flex-col bg-black/95 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <div
+        className="flex items-center justify-between px-4 py-3 flex-shrink-0"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <span className="text-sm text-white/50 font-mono tabular-nums">
+          {current + 1} / {total}
+        </span>
+        <button
+          onClick={onClose}
+          className="w-9 h-9 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors text-white"
+          aria-label="Fermer"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+
+      <div
+        className="flex-1 flex items-center justify-center px-14 py-4 min-h-0"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          className={`relative ${isMobile ? 'h-full max-w-xs w-full' : 'w-full h-full'}`}
+        >
+          <Image
+            key={current}
+            src={images[current]}
+            alt={`Image ${current + 1}`}
+            fill
+            className="object-contain"
+            sizes="100vw"
+            priority
+          />
+        </div>
+      </div>
+
+      <div
+        className="flex items-center justify-center gap-4 pb-5 flex-shrink-0"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={prev}
+          className="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors text-white"
+          aria-label="Image précédente"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+
+        <DotIndicator count={total} current={current} onSelect={setCurrent} />
+
+        <button
+          onClick={next}
+          className="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors text-white"
+          aria-label="Image suivante"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function ProjectModal({
   project,
   isOpen,
@@ -46,286 +165,236 @@ function ProjectModal({
 }: {
   project: Project | null;
   isOpen: boolean;
-  onClose: (e?: React.MouseEvent) => void;
+  onClose: () => void;
 }) {
-  // Prevent body scroll when modal is open
-  React.useEffect(() => {
-    if (isOpen) {
-      // Only add padding on desktop where scrollbar appears
-      if (typeof window !== 'undefined' && window.innerWidth > 768) {
-        const scrollbarWidth =
-          window.innerWidth - document.documentElement.clientWidth;
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = `${scrollbarWidth}px`;
-      } else {
-        // On mobile, just hide overflow
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-      }
-    } else {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
-    }
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 3500, stopOnInteraction: true }),
+  );
 
-    // Cleanup on unmount
+  useEffect(() => {
+    if (!carouselApi) return;
+    const onSelect = () => setCurrent(carouselApi.selectedScrollSnap());
+    setCount(carouselApi.scrollSnapList().length);
+    setCurrent(carouselApi.selectedScrollSnap());
+    carouselApi.on('select', onSelect);
     return () => {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      carouselApi.off('select', onSelect);
     };
+  }, [carouselApi]);
+
+  // Reset lightbox when modal closes
+  useEffect(() => {
+    if (!isOpen) setLightboxIndex(null);
   }, [isOpen]);
 
   if (!project) return null;
 
+  const isMobileOnly = hasMobile(project) && !hasWeb(project);
+  const gallery = isMobileOnly
+    ? project.mobileGallery
+    : (project.webGallery ?? project.mobileGallery);
+  const hasGallery = !!(gallery && gallery.length > 0);
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop - tap to close on mobile */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={(e) => onClose(e)}
-            className="fixed inset-0 bg-black/60 md:bg-black/80 z-[100] md:backdrop-blur-sm overflow-hidden"
-          />
-
-          {/* Modal - Full-screen on mobile, centered on desktop with visible margins */}
-          <motion.div
-            initial={{ opacity: 0, y: 'var(--initial-y)' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 'var(--initial-y)' }}
-            transition={{
-              duration: 0.25,
-              type: 'spring',
-              stiffness: 300,
-              damping: 30,
-            }}
-            className="fixed inset-2 sm:inset-3 md:inset-8 lg:inset-12 z-[100] overflow-y-auto overflow-x-hidden"
-            style={
-              {
-                '--initial-y':
-                  typeof window !== 'undefined' && window.innerWidth < 768
-                    ? '100%'
-                    : '20px',
-              } as React.CSSProperties
-            }
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="min-h-full md:min-h-auto flex items-center justify-center">
-              <div
-                className="relative rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-10 max-w-5xl w-full"
-                style={{ backgroundColor: colors.bg.dark }}
+    <>
+      <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+        <DialogContent className="max-w-4xl w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto bg-[#0f0f0f] border-white/10 text-white p-0 gap-0 rounded-2xl">
+          <div className="sticky top-0 z-10 bg-[#0f0f0f]/95 backdrop-blur-sm border-b border-white/[0.08] px-6 py-5">
+            <DialogHeader className="gap-1.5 pr-8">
+              <span
+                className="inline-flex items-center self-start px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest text-white"
+                style={{ backgroundColor: colors.secondary }}
               >
-                {/* Close Button - Larger for mobile touch */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onClose(e);
-                  }}
-                  className="absolute top-4 right-4 sm:top-4 sm:right-4 md:top-6 md:right-6 w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 z-[110] flex-shrink-0"
-                  style={{ backgroundColor: colors.accent }}
-                  aria-label="Fermer"
+                {project.category}
+              </span>
+              <DialogTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight text-left font-hubot">
+                {project.longTitle || project.title}
+              </DialogTitle>
+              <DialogDescription className="sr-only">
+                {project.description}
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+
+          <div className="px-6 pb-8 pt-6 space-y-8">
+            {/* Carousel */}
+            {hasGallery && (
+              <div className="space-y-3">
+                <Carousel
+                  opts={{ loop: true, align: 'start' }}
+                  plugins={[autoplayPlugin.current]}
+                  setApi={setCarouselApi}
+                  className="w-full"
                 >
-                  <svg
-                    className="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none"
-                    fill="none"
-                    stroke={colors.white}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-
-                {/* Content */}
-                <div className="space-y-4 sm:space-y-6 md:space-y-8 mt-6 sm:mt-0">
-                  {/* Header */}
-                  <div className="text-center space-y-2 sm:space-y-3 md:space-y-4">
-                    <h2
-                      className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold leading-tight"
-                      style={{ color: colors.text.primary }}
-                    >
-                      {project.longTitle || project.title}
-                    </h2>
-                    <p
-                      className="text-xs sm:text-sm md:text-lg font-semibold"
-                      style={{ color: colors.text.accent }}
-                    >
-                      {project.category}
-                    </p>
-                  </div>
-
-                  {/* Gallery - Lazy load images and optimize for mobile */}
-                  {project.gallery && project.gallery.length > 0 && (
-                    <div
-                      className={`grid gap-2 sm:gap-3 md:gap-4 ${project.mobile ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'}`}
-                    >
-                      {project.gallery.map((img, idx) => (
-                        <div
-                          key={idx}
-                          className={`relative rounded-lg sm:rounded-2xl overflow-hidden shadow-lg ${project.mobile ? 'aspect-[9/16]' : 'aspect-[16/9]'}`}
+                  <CarouselContent className={isMobileOnly ? '-ml-3' : '-ml-4'}>
+                    {gallery!.map((img, idx) => (
+                      <CarouselItem
+                        key={idx}
+                        className={
+                          isMobileOnly ? 'basis-1/2 sm:basis-1/3 pl-3' : 'pl-4'
+                        }
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setLightboxIndex(idx)}
+                          className={`group relative w-full overflow-hidden cursor-zoom-in bg-[#141414] ${
+                            isMobileOnly
+                              ? 'aspect-[9/16] rounded-2xl'
+                              : 'aspect-[16/9] rounded-xl'
+                          }`}
+                          aria-label={`Agrandir l'image ${idx + 1}`}
                         >
                           <Image
                             src={img}
-                            alt={`${project.title} screenshot ${idx + 1}`}
+                            alt={`${project.title} — screenshot ${idx + 1}`}
                             fill
-                            loading="lazy"
-                            className={
-                              project.mobile ? 'object-cover' : 'object-fill'
-                            }
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            loading={idx === 0 ? 'eager' : 'lazy'}
+                            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 400px"
                           />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                          {/* Zoom hint */}
+                          <span className="absolute inset-0 flex items-end justify-center pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            <span className="flex items-center gap-1.5 bg-black/70 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm tracking-wide">
+                              <ZoomIn className="w-3.5 h-3.5" />
+                              Agrandir
+                            </span>
+                          </span>
+                        </button>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
 
-                  {/* Description */}
-                  <div className="space-y-4 sm:space-y-5 md:space-y-6 pb-6 md:pb-0">
-                    {project.longDescription ? (
-                      <div
-                        className="space-y-3 sm:space-y-4 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed"
-                        style={{ color: colors.text.secondary }}
-                      >
-                        {project.longDescription.map((para, idx) => (
-                          <p key={idx}>{para}</p>
-                        ))}
-                      </div>
-                    ) : (
-                      <p
-                        className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed"
-                        style={{ color: colors.text.secondary }}
-                      >
-                        {project.description}
-                      </p>
-                    )}
+                  <CarouselPrevious className="left-3 border-white/15 bg-black/50 hover:bg-white/10 text-white hover:text-white" />
+                  <CarouselNext className="right-3 border-white/15 bg-black/50 hover:bg-white/10 text-white hover:text-white" />
+                </Carousel>
 
-                    <div>
-                      <h3
-                        className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 md:mb-4"
-                        style={{ color: colors.text.primary }}
-                      >
-                        Services :
-                      </h3>
-                      <ul className="grid grid-cols-1 gap-1 sm:gap-2 md:gap-3">
-                        {project.services.map((service, i) => (
-                          <li
-                            key={i}
-                            className="flex items-center gap-2 text-xs sm:text-sm md:text-base"
-                            style={{ color: colors.text.secondary }}
-                          >
-                            <span
-                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: colors.accent }}
-                            />
-                            {service}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                <DotIndicator
+                  count={count}
+                  current={current}
+                  onSelect={(i) => carouselApi?.scrollTo(i)}
+                />
+              </div>
+            )}
 
-                    <div>
-                      <h3
-                        className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 md:mb-4"
-                        style={{ color: colors.text.primary }}
-                      >
-                        Technologies :
-                      </h3>
-                      <ul className="grid grid-cols-1 gap-1 sm:gap-2 md:gap-3">
-                        {project.tech.map((tech, i) => (
-                          <li
-                            key={i}
-                            className="flex items-center gap-2 text-xs sm:text-sm md:text-base"
-                            style={{ color: colors.text.secondary }}
-                          >
-                            <span
-                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: colors.accent }}
-                            />
-                            {tech}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+            {/* Description */}
+            <div className="space-y-3 text-sm md:text-base leading-relaxed text-white/70">
+              {project.longDescription ? (
+                project.longDescription.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))
+              ) : (
+                <p>{project.description}</p>
+              )}
+            </div>
 
-                  {/* CTA - Full width on mobile */}
-                  <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-4 sm:pt-6 md:pt-8 border-t border-gray-700">
-                    {project.website && (
-                      <Link
-                        href={project.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-xl md:rounded-full text-xs sm:text-sm md:text-base font-bold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg w-full sm:w-auto"
-                        style={{
-                          backgroundColor: colors.accent,
-                          color: colors.white,
-                        }}
-                      >
-                        Visiter le site
-                        <svg
-                          className="w-4 h-4 sm:w-5 sm:h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                      </Link>
-                    )}
-                    <Link
-                      href="/contact"
-                      className="inline-flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-xl md:rounded-full text-xs sm:text-sm md:text-base font-bold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg border-2 w-full sm:w-auto"
-                      style={{
-                        borderColor: colors.accent,
-                        color: colors.accent,
-                      }}
+            {/* Services + Tech grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/40">
+                  Services
+                </p>
+                <ul className="space-y-2">
+                  {project.services.map((service, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center gap-2.5 text-sm text-white/75"
                     >
-                      Discutons de votre projet
-                      <svg
-                        className="w-4 h-4 sm:w-5 sm:h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
+                      <span className="w-1 h-1 rounded-full flex-shrink-0 bg-white/40" />
+                      {service}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/40">
+                  Technologies
+                </p>
+                <ul className="space-y-2">
+                  {project.tech.map((tech, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center gap-2.5 text-sm text-white/75"
+                    >
+                      <span className="w-1 h-1 rounded-full flex-shrink-0 bg-white/40" />
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </motion.div>
-        </>
+
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-4 border-t border-white/[0.08]">
+              {project.webUrl && (
+                <Link
+                  href={project.webUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-hubot inline-flex items-center justify-center gap-2 px-6 py-3 bg-white rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg w-full sm:w-auto"
+                  style={{ color: colors.primary }}
+                >
+                  Visiter le site
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
+              )}
+              {project.mobileAppStoreUrl && (
+                <Link
+                  href={project.mobileAppStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-hubot inline-flex items-center justify-center gap-2 px-6 py-3 bg-white rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg w-full sm:w-auto"
+                  style={{ color: colors.primary }}
+                >
+                  App Store
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
+              )}
+              {project.mobilePlayStoreUrl && (
+                <Link
+                  href={project.mobilePlayStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-hubot inline-flex items-center justify-center gap-2 px-6 py-3 bg-white rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg w-full sm:w-auto"
+                  style={{ color: colors.primary }}
+                >
+                  Google Play
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
+              )}
+              <Link
+                href="/contact"
+                className="font-hubot inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-white text-white rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto"
+              >
+                Discutons de votre projet
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Lightbox — rendered outside Dialog so it's truly fullscreen */}
+      {lightboxIndex !== null && gallery && (
+        <Lightbox
+          images={gallery}
+          index={lightboxIndex}
+          isMobile={isMobileOnly}
+          onClose={() => setLightboxIndex(null)}
+        />
       )}
-    </AnimatePresence>
+    </>
   );
 }
 
 const PortfolioPage = () => {
-  const navRef = useRef<HTMLElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
 
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
@@ -334,134 +403,88 @@ const PortfolioPage = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setTimeout(() => setSelectedProject(null), 300);
+    clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setSelectedProject(null), 300);
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (navRef.current) {
-        if (window.scrollY > 50) {
-          navRef.current.classList.add('scrolled');
-        } else {
-          navRef.current.classList.remove('scrolled');
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <>
       {/* Navbar removed */}
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen w-full bg-[#F5F5F5] pt-48 md:pt-56 pb-20">
-        {/* Content */}
-        <div className="max-w-7xl mx-auto pr-4 sm:pr-6 lg:pr-8 pl-0 sm:pl-1 lg:pl-2 h-full flex items-center">
-          <div className="w-full space-y-12">
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-600 -ml-4 sm:-ml-6 md:-ml-10 lg:-ml-16">
-              <span>/</span>
-              <span className="uppercase tracking-wider font-bold">
-                PROJETS
-              </span>
-            </div>
+      {/* Hero Section — compact editorial band */}
+      <section className="relative w-full bg-[#F5F5F5] pt-32 pb-10 md:pt-40 md:pb-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-3 text-xs sm:text-sm text-gray-600 mb-6 sm:mb-8">
+            <span>/</span>
+            <span className="uppercase tracking-[0.2em] font-bold">
+              Projets
+            </span>
+          </div>
 
-            {/* Main Heading with CircularText */}
-            <div className="flex justify-between items-start">
-              {/* Main Heading */}
-              <div className="flex-1 ml-1 sm:-ml-6 md:-ml-10 lg:-ml-16">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold leading-tight max-w-6xl">
-                  Parle, parle, jase, jase, mais concrètement, ça ressemble à
-                  quoi notre travail?
-                </h1>
+          {/* Heading + supporting copy */}
+          <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-end md:gap-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight max-w-4xl">
+              Parle, parle, jase, jase, mais concrètement, ça ressemble à quoi
+              notre travail?
+            </h1>
+
+            <div className="flex gap-3 items-start max-w-md md:max-w-sm md:justify-self-end">
+              <div className="flex-shrink-0 mt-1">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="text-gray-800 sm:w-6 sm:h-6"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line
+                    x1="12"
+                    y1="12"
+                    x2="12"
+                    y2="8"
+                    strokeLinecap="round"
+                    style={{
+                      transformOrigin: '12px 12px',
+                      animation: 'rotate-clock 60s linear infinite',
+                    }}
+                  />
+                  <line
+                    x1="12"
+                    y1="12"
+                    x2="12"
+                    y2="6"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    style={{
+                      transformOrigin: '12px 12px',
+                      animation: 'rotate-clock 5s linear infinite',
+                    }}
+                  />
+                  <circle cx="12" cy="12" r="2" fill="currentColor" />
+                </svg>
               </div>
-
-              {/* Removed CircularText */}
-            </div>
-
-            {/* Description on the Right Side - With Icon */}
-            <div className="flex justify-end">
-              <div className="flex gap-4 items-start max-w-xl -mr-4 sm:-mr-8 lg:-mr-12">
-                {/* Icon */}
-                <div className="flex-shrink-0 mt-1">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="text-gray-800"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    {/* Aiguille des heures */}
-                    <line
-                      x1="12"
-                      y1="12"
-                      x2="12"
-                      y2="8"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      style={{
-                        transformOrigin: '12px 12px',
-                        animation: 'rotate-clock 60s linear infinite',
-                      }}
-                    />
-                    {/* Aiguille des minutes */}
-                    <line
-                      x1="12"
-                      y1="12"
-                      x2="12"
-                      y2="6"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      style={{
-                        transformOrigin: '12px 12px',
-                        animation: 'rotate-clock 5s linear infinite',
-                      }}
-                    />
-                    {/* Centre de la pendule */}
-                    <circle cx="12" cy="12" r="2" fill="currentColor" />
-                  </svg>
-                </div>
-
-                {/* Description Text */}
-                <p className="text-sm sm:text-lg lg:text-xl text-gray-700 leading-relaxed">
-                  Fini le blabla, c’est le temps de vous prouver qu’on est bon
-                  dans ce qu’on fait. Découvrez nos études de cas et parcourez
-                  la liste de nos projets plus bas.
-                </p>
-              </div>
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                Fini le blabla, c&apos;est le temps de vous prouver qu&apos;on
+                est bon dans ce qu&apos;on fait. Découvrez nos études de cas et
+                parcourez la liste de nos projets plus bas.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Projects accordion-like section (Webisoft style) */}
       <ProjectsSection onProjectClick={handleProjectClick} />
-
-      {/* Drive-style hero block at the bottom */}
-      <DriveHero />
-
-      {/* CTA Section */}
       <CtaButtonSection />
-
-      {/* Footer */}
       <Footer />
-
-      {/* Project Modal */}
       <ProjectModal
         project={selectedProject}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
-
-      {/* Removed legacy filters and grids */}
     </>
   );
 };
