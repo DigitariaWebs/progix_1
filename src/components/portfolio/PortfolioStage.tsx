@@ -155,12 +155,19 @@ export default function PortfolioStage() {
                 {hasCaseStudy && p.slug && (
                   <Link
                     href={`/case-study/${p.slug}`}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[11px] font-bold uppercase tracking-wider text-black transition-transform hover:scale-[1.02]"
+                    className="inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-2.5 text-[11px] font-bold uppercase tracking-wider text-white ring-1 ring-white/15 transition-colors hover:bg-white/15"
                   >
                     Voir l&apos;étude de cas
                     <ArrowRight className="h-3 w-3" />
                   </Link>
                 )}
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[11px] font-bold uppercase tracking-wider text-black transition-transform hover:scale-[1.02]"
+                >
+                  Démarrer un projet
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
               </div>
             </motion.div>
           </AnimatePresence>
