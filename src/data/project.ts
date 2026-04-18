@@ -1,6 +1,7 @@
 type Project = {
   // identity / copy
   id: number;
+  slug?: string;
   title: string;
   category: string;
   description: string;
@@ -66,12 +67,13 @@ const projects: Project[] = [
     webUrl: 'https://rideauvert.qc.ca',
     webPreview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/theatrerideauvertfondblanc.png',
-    webVideo: '/rideauVERT.mp4',
+    webVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RideauVert/rideauVERT.mp4',
     webGallery: [
-      '/images/rideau1.png',
-      '/images/rideau2.png',
-      '/images/rideau3.png',
-      '/images/rideau4.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RideauVert/rideau1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RideauVert/rideau2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RideauVert/rideau3.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RideauVert/rideau4.png',
     ],
   },
   {
@@ -86,13 +88,15 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/hovertheatre.png',
     bgClass: 'bg-white',
     webUrl: 'https://fruitexotic.com',
-    webPreview: '/labo/fruits/1.png',
-    webVideo: '/labo/fruits/fruit.mp4',
+    webPreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/FruitExotic/1.png',
+    webVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/FruitExotic/fruit.mp4',
     webGallery: [
-      '/labo/fruits/1.png',
-      '/labo/fruits/2.png',
-      '/labo/fruits/3.png',
-      '/labo/fruits/4.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/FruitExotic/1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/FruitExotic/2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/FruitExotic/3.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/FruitExotic/4.png',
     ],
   },
   {
@@ -108,12 +112,13 @@ const projects: Project[] = [
     bgClass: 'bg-white',
     webPreview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/imagescursorfollowup/mondev-logo-black (1).svg',
-    webVideo: '/labo/mondev/recording-2026-02-10-18-58-56.mp4',
+    webVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MONDEV/recording-2026-02-10-18-58-56.mp4',
     webGallery: [
-      '/labo/mondev/1.png',
-      '/labo/mondev/2.png',
-      '/labo/mondev/3.png',
-      '/labo/mondev/4.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MONDEV/1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MONDEV/2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MONDEV/3.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MONDEV/4.png',
     ],
   },
   {
@@ -124,15 +129,18 @@ const projects: Project[] = [
       'Plateforme de gestion RH complète pour agence de recrutement spécialisée.',
     services: ['Développement Web', 'CRM personnalisé'],
     tech: ['Next.js', 'PostgreSQL', 'Node.js'],
-    image: '/images/imranarshad/recplkus.png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RecrutementPlus/recplkus.png',
     bgClass: 'bg-white',
-    webPreview: '/images/imranarshad/recplkus.png',
-    webVideo: '/labo/recrute/recording-2026-02-10-19-11-31.mp4',
+    webPreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RecrutementPlus/recplkus.png',
+    webVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RecrutementPlus/recording-2026-02-10-19-11-31.mp4',
     webGallery: [
-      '/images/imranarshad/recplkus.png',
-      '/labo/recrute/1.png',
-      '/labo/recrute/2.png',
-      '/labo/recrute/3.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RecrutementPlus/recplkus.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RecrutementPlus/1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RecrutementPlus/2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/RecrutementPlus/3.png',
     ],
   },
   {
@@ -144,14 +152,14 @@ const projects: Project[] = [
     services: ['E-learning', 'Design UX/UI'],
     tech: ['Next.js', 'MongoDB', 'Tailwind CSS'],
     image:
-      '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/CasC-AucunProfilExistant.svg',
     bgClass: 'bg-white',
     mobilePreview:
-      '/images/imranarshad/Cas C – Aucun profil existant (1re utilisation) - À propos de votre enfant.svg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/CasC-AucunProfilExistant.svg',
     mobileGallery: [
-      '/labo/davinci/Cas B - Plusieurs profils enfants.png',
-      '/labo/davinci/Dashboard Enfant – Mon Espace - Scroll.png',
-      '/labo/davinci/Mathématiques.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/CasB-PlusieursProfilsEnfants.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/DashboardEnfant-MonEspaceScroll.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/Mathematiques.png',
     ],
   },
   {
@@ -176,13 +184,13 @@ const projects: Project[] = [
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CoRide.png',
     bgClass: 'bg-white',
     mobilePreview:
-      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CoRide.png',
-    mobileVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/Splash%20screen.png',
+    webPreview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/CoRideVideo.mp4',
     mobileGallery: [
-      '/labo/coride/Splash screen.png',
-      '/labo/coride/Splash screen (1).png',
-      '/labo/coride/Splash screen (2).png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/Splash%20screen.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/Splash%20screen%20(1).png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/Splash%20screen%20(2).png',
     ],
   },
   {
@@ -197,13 +205,15 @@ const projects: Project[] = [
       'Paiement intégré',
     ],
     tech: ['React Native', 'Node.js', 'MongoDB', 'Stripe'],
-    image: '/images/imranarshad/secup.png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Secup/secup.png',
     bgClass: 'bg-white',
-    mobilePreview: '/images/imranarshad/secup.png',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Secup/secup.png',
     mobileGallery: [
-      '/images/imranarshad/secup.png',
-      '/labo/socupe/1.png',
-      '/labo/socupe/2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Secup/secup.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Secup/1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Secup/2.png',
     ],
   },
   {
@@ -234,9 +244,9 @@ const projects: Project[] = [
     webVideo:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.mp4',
     webGallery: [
-      '/labo/cca_productions/1.png',
-      '/labo/cca_productions/2.png',
-      '/labo/cca_productions/3.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CCAPProductions/1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CCAPProductions/2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CCAPProductions/3.png',
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/CCAPProductions.png',
     ],
   },
@@ -258,17 +268,18 @@ const projects: Project[] = [
       'Thérapie digitale',
     ],
     tech: ['React', 'Express', 'MongoDB', 'Auth0', 'Stripe', 'OpenAI API'],
-    image: '/images/logo-gold.png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/QueenDeQ/logo-gold.png',
     bgClass: 'bg-white',
     webPreview:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.png',
     webVideo:
       'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/portfoliominiature/QueenDeQ.mp4',
     webGallery: [
-      '/images/queen1.png',
-      '/images/queen2.png',
-      '/images/queen3.png',
-      '/images/queen4.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/QueenDeQ/queen1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/QueenDeQ/queen2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/QueenDeQ/queen3.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/QueenDeQ/queen4.png',
     ],
   },
   {
@@ -291,13 +302,15 @@ const projects: Project[] = [
       'Interface utilisateur intuitive',
     ],
     tech: ['React', 'Node.js', 'MongoDB', 'Express'],
-    image: '/labo/ibox/IMG_1835.PNG',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1835.PNG',
     bgClass: 'bg-white',
-    mobilePreview: '/labo/ibox/IMG_1835.PNG',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1835.PNG',
     mobileGallery: [
-      '/labo/ibox/IMG_1835.PNG',
-      '/labo/ibox/IMG_1838.PNG',
-      '/labo/ibox/IMG_1840.PNG',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1835.PNG',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1838.PNG',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1840.PNG',
     ],
   },
   {
@@ -320,13 +333,15 @@ const projects: Project[] = [
       'Support client intégré',
     ],
     tech: ['React Native', 'ARCore/ARKit', 'Node.js', 'MongoDB'],
-    image: '/labo/gosholo/image copy.png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image%20copy.png',
     bgClass: 'bg-white',
-    mobilePreview: '/labo/gosholo/image copy.png',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image%20copy.png',
     mobileGallery: [
-      '/labo/gosholo/image.png',
-      '/labo/gosholo/image copy.png',
-      '/labo/gosholo/image copy 2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image%20copy.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image%20copy%202.png',
     ],
   },
   {
@@ -342,15 +357,17 @@ const projects: Project[] = [
     ],
     services: ['Application Mobile', 'Design UI/UX', 'Backend'],
     tech: ['React Native', 'Node.js', 'MongoDB'],
-    image: '/labo/Al-aqd/Al-aqd-mainview.jpeg',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Al-aqd/Al-aqd-mainview.jpeg',
     bgClass: 'bg-white',
-    mobilePreview: '/labo/Al-aqd/Al-aqd-preview.jpeg',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Al-aqd/Al-aqd-preview.jpeg',
     mobileGallery: [
-      '/labo/Al-aqd/Al-aqd-mainview.jpeg',
-      '/labo/Al-aqd/Al-aqd-profile.jpeg',
-      '/labo/Al-aqd/Al-aqd-matchlist.jpeg',
-      '/labo/Al-aqd/Al-aqd-matches.jpeg',
-      '/labo/Al-aqd/Al-aqd-preview.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Al-aqd/Al-aqd-mainview.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Al-aqd/Al-aqd-profile.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Al-aqd/Al-aqd-matchlist.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Al-aqd/Al-aqd-matches.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Al-aqd/Al-aqd-preview.jpeg',
     ],
   },
   {
@@ -365,16 +382,168 @@ const projects: Project[] = [
     ],
     services: ['Site vitrine', 'Design UI/UX', 'Vidéo'],
     tech: ['Next.js', 'React', 'Tailwind CSS'],
-    image: '/labo/MS CORE/1.png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MSCORE/1.png',
     bgClass: 'bg-white',
     webUrl: 'https://www.techmscore.com/',
-    webPreview: '/labo/MS CORE/1.png',
-    webVideo: '/labo/MS CORE/recording-2026-02-10-18-11-14.mp4',
+    webPreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MSCORE/1.png',
+    webVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MSCORE/recording-2026-02-10-18-11-14.mp4',
     webGallery: [
-      '/labo/MS CORE/1.png',
-      '/labo/MS CORE/2.png',
-      '/labo/MS CORE/3.png',
-      '/labo/MS CORE/4.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MSCORE/1.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MSCORE/2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MSCORE/3.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MSCORE/4.png',
+    ],
+  },
+  {
+    id: 14,
+    title: 'Breaking Family',
+    category: 'Restauration',
+    description:
+      'Application mobile de restaurant : consultation du menu, commande de plats et livraison à domicile.',
+    longTitle: 'Breaking Family',
+    longDescription: [
+      'Application mobile de restaurant qui permet aux clients de consulter le menu, commander des plats et se faire livrer à domicile.',
+      "Deux types d'utilisateurs : Client (parcourt les catégories, consulte les détails de chaque plat, ajoute au panier, valide la commande) et Livreur (reçoit les commandes et assure la livraison).",
+      'Objectif : faciliter la commande de nourriture et améliorer le service de livraison entre le restaurant et les clients.',
+    ],
+    services: [
+      'Application Mobile',
+      'Commande en ligne',
+      'Livraison',
+      'Design UI/UX',
+    ],
+    tech: ['Expo 54', 'React Native', 'Node.js'],
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-home.jpeg',
+    bgClass: 'bg-white',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-home.jpeg',
+    mobileVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-demo.mp4',
+    mobileGallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-onboarding.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-signup.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-home.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-menu.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-cart.jpeg',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/BreakingFamily/breaking-family-map.jpeg',
+    ],
+  },
+  {
+    id: 15,
+    title: 'My Fleet',
+    category: 'Location de voitures',
+    description:
+      'Plateforme de mise en relation entre agences de location de voitures et clients : recherche, réservation et suivi.',
+    longTitle: 'My Fleet — Réservation & gestion de flotte',
+    longDescription: [
+      "Plateforme de mise en relation entre des agences de location de voitures et des clients. Permet aux utilisateurs de consulter les voitures disponibles, effectuer une réservation et suivre l'état de leur réservation.",
+      "Deux types d'utilisateurs : Client (recherche des voitures, consulte leurs détails, réserve et suit la réservation) et Agence (ajoute des voitures, gère leur disponibilité et suit les réservations).",
+      'Objectif : faciliter la réservation de voitures et améliorer la communication entre agences et clients.',
+    ],
+    services: [
+      'Application Mobile',
+      'Système de réservation',
+      'Gestion de flotte',
+      'Design UI/UX',
+    ],
+    tech: ['Expo 54', 'React Native', 'Node.js'],
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MyFleet/myfleet-homescreen.png',
+    bgClass: 'bg-white',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MyFleet/myfleet-homescreen.png',
+    mobileVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MyFleet/myfleet-demo.mp4',
+    mobileGallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MyFleet/myfleet-signup.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MyFleet/myfleet-homescreen.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/MyFleet/myfleet-inspection.png',
+    ],
+  },
+  {
+    id: 16,
+    title: 'Hand2Hand',
+    category: 'Marketplace',
+    description:
+      'Marketplace mobile de mise en relation entre particuliers pour échanger biens et services.',
+    services: [
+      'Application Mobile',
+      'Marketplace',
+      'Messagerie',
+      'Design UI/UX',
+    ],
+    tech: ['Swift', 'Kotlin', 'Node.js'],
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-homepage.png',
+    bgClass: 'bg-white',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-homepage.png',
+    mobileVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-dem0.mp4',
+    mobileGallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-onboarding.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-homepage.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-product.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-missions.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-messages.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Hand2Hand/hand2hand-profile.png',
+    ],
+  },
+  {
+    id: 17,
+    title: 'DriveAds',
+    category: 'Publicité',
+    description:
+      'Application mobile de gestion de campagnes publicitaires diffusées sur véhicules.',
+    services: [
+      'Application Mobile',
+      'Gestion de campagnes',
+      'Tableau de bord',
+      'Design UI/UX',
+    ],
+    tech: ['Swift', 'Kotlin', 'Node.js'],
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DriveAds/driveads-homescreen.png',
+    bgClass: 'bg-white',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DriveAds/driveads-homescreen.png',
+    mobileVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DriveAds/driveads-demo.mp4',
+    mobileGallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DriveAds/driveads-onboarding.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DriveAds/driveads-login.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DriveAds/driveads-homescreen.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DriveAds/driveads-campaigns.png',
+    ],
+  },
+  {
+    id: 18,
+    title: 'Pops',
+    category: 'Restauration',
+    description:
+      'Application mobile restaurant-to-consumer : commandes, fidélisation et expérience client direct du restaurant.',
+    services: [
+      'Application Mobile',
+      'Commande en ligne',
+      'Fidélisation',
+      'Design UI/UX',
+    ],
+    tech: ['Swift', 'Kotlin', 'Node.js'],
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Pops/pops-splash.png',
+    bgClass: 'bg-white',
+    mobilePreview:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Pops/pops-splash.png',
+    mobileVideo:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Pops/pops-demo.mp4',
+    mobileGallery: [
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Pops/pops-splash.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Pops/pops-onboarding.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/Pops/pops-profile.png',
     ],
   },
 ];

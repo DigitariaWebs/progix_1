@@ -3,6 +3,7 @@ import { Montserrat, Inter } from 'next/font/google';
 import './globals.css';
 import PageTransition from '@/components/PageTransition';
 import GlobalMenu from '@/components/GlobalMenu';
+import { GlobalMenuProvider } from '@/components/globalMenuBus';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -89,8 +90,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${inter.variable} font-sans antialiased overflow-x-hidden`}
       >
-        <GlobalMenu />
-        <PageTransition>{children}</PageTransition>
+        <GlobalMenuProvider>
+          <GlobalMenu />
+          <PageTransition>{children}</PageTransition>
+        </GlobalMenuProvider>
       </body>
     </html>
   );

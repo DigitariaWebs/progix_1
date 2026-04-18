@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedButton from '@/components/AnimatedButton';
+import { useRegisterGlobalMenuToggle } from '@/components/globalMenuBus';
 // @ts-expect-error: Importing CSS module
 import './StaggeredMenu.css';
 
@@ -38,6 +39,8 @@ interface StaggeredMenuProps {
   accentColor?: string;
   changeMenuColorOnOpen?: boolean;
   isFixed?: boolean;
+  buttonOnly?: boolean;
+  headless?: boolean;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
 }
@@ -61,6 +64,8 @@ export const StaggeredMenu = ({
   accentColor = '#5227FF',
   changeMenuColorOnOpen = true,
   isFixed = false,
+  buttonOnly = false,
+  headless = false,
   onMenuOpen,
   onMenuClose,
 }: StaggeredMenuProps) => {
@@ -92,14 +97,14 @@ export const StaggeredMenu = ({
       const plusV = plusVRef.current;
       const icon = iconRef.current;
       const textInner = textInnerRef.current;
-      if (!panel || !icon || !textInner) return;
+      if (!panel) return;
 
       const offscreen = position === 'left' ? -100 : 100;
       gsap.set(panel, { xPercent: offscreen });
       if (plusH) gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0 });
       if (plusV) gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 });
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
-      gsap.set(textInner, { yPercent: 0 });
+      if (icon) gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
+      if (textInner) gsap.set(textInner, { yPercent: 0 });
       if (toggleBtnRef.current)
         gsap.set(toggleBtnRef.current, { color: menuButtonColor });
 
@@ -384,6 +389,19 @@ export const StaggeredMenu = ({
     onMenuClose,
   ]);
 
+  useRegisterGlobalMenuToggle(toggleMenu);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && openRef.current) {
+        e.stopPropagation();
+        toggleMenu();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [toggleMenu]);
+
   // Close menu automatically on route change via native anchor clicks
   React.useEffect(() => {
     const anchors = Array.from(
@@ -419,106 +437,114 @@ export const StaggeredMenu = ({
       }}
       data-position={position}
       data-open={open || undefined}
+      onClick={(e) => {
+        if (!openRef.current) return;
+        if (e.target === e.currentTarget) toggleMenu();
+      }}
     >
-      <header
-        className={`staggered-menu-header${hideHeader && !open ? ' sm-header-hidden' : ''}`}
-        aria-label="Main navigation header"
-      >
-        <div
-          className="sm-logo transform -translate-x-2 sm:translate-x-0"
-          aria-label="Logo"
+      {!headless && (
+        <header
+          className={`staggered-menu-header${hideHeader && !open ? ' sm-header-hidden' : ''}${buttonOnly ? ' sm-button-only' : ''}`}
+          aria-label="Main navigation header"
         >
-          <Image
-            src="/images/logo.png"
-            alt="PROGIX Logo"
-            priority
-            onClick={() => (window.location.href = '/')}
-            width={100}
-            height={40}
-            className="h-6 w-auto cursor-pointer"
-            draggable={false}
-            style={{
-              filter: logoFilter,
-              opacity: 0.9,
-              transition: 'filter 0.3s ease',
-            }}
-          />
-          <Image
-            src="/images/CertifiedLogo.png"
-            alt="GPTW Certification"
-            width={100}
-            height={40}
-            className="h-10 sm:h-14 w-auto ml-4 mt-4 cursor-pointer"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = 'none';
-            }}
-            draggable={false}
-          />
-        </div>
-        <div className="flex items-center gap-0 sm:gap-2 md:gap-[12px]">
-          {!open && (
-            <div className="origin-right w-full sm:w-auto flex items-center">
-              {/* Mobile: PARLONS NOUS — hidden; previously only shown due to a CSS collision with a global `.block` rule */}
-              <div className="hidden transform scale-[0.62] ml-0 mr-[-12px]">
-                <Link href="/contact" className="sm-cta-link">
-                  <AnimatedButton
-                    text="PARLONS NOUS"
-                    textColor={ctaButtonTextColor}
-                    borderColor={ctaButtonBorderColor}
-                    circleColor={ctaButtonCircleColor}
-                    arrowColor={ctaButtonArrowColor}
-                    hoverTextColor={ctaButtonHoverTextColor}
-                    hoverArrowColor={ctaButtonHoverArrowColor}
-                  />
-                </Link>
-              </div>
-              {/* Tablet/Desktop: Démarrer un projet */}
-              <div className="hidden sm:block transform sm:scale-75 md:scale-90">
-                <Link href="/contact" className="sm-cta-link">
-                  <AnimatedButton
-                    text="Démarrer un projet"
-                    textColor={ctaButtonTextColor}
-                    borderColor={ctaButtonBorderColor}
-                    circleColor={ctaButtonCircleColor}
-                    arrowColor={ctaButtonArrowColor}
-                    hoverTextColor={ctaButtonHoverTextColor}
-                    hoverArrowColor={ctaButtonHoverArrowColor}
-                  />
-                </Link>
-              </div>
+          {!buttonOnly && (
+            <div
+              className="sm-logo transform -translate-x-2 sm:translate-x-0"
+              aria-label="Logo"
+            >
+              <Image
+                src="/images/logo.png"
+                alt="PROGIX Logo"
+                priority
+                onClick={() => (window.location.href = '/')}
+                width={100}
+                height={40}
+                className="h-6 w-auto cursor-pointer"
+                draggable={false}
+                style={{
+                  filter: logoFilter,
+                  opacity: 0.9,
+                  transition: 'filter 0.3s ease',
+                }}
+              />
+              <Image
+                src="/images/CertifiedLogo.png"
+                alt="GPTW Certification"
+                width={100}
+                height={40}
+                className="h-10 sm:h-14 w-auto ml-4 mt-4 cursor-pointer"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = 'none';
+                }}
+                draggable={false}
+              />
             </div>
           )}
-          <button
-            ref={toggleBtnRef}
-            className="sm-toggle"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            aria-controls="staggered-menu-panel"
-            onClick={toggleMenu}
-            type="button"
-          >
-            <span
-              ref={textWrapRef}
-              className="sm-toggle-textWrap"
-              aria-hidden="true"
+          <div className="flex items-center gap-0 sm:gap-2 md:gap-[12px]">
+            {!open && !buttonOnly && (
+              <div className="origin-right w-full sm:w-auto flex items-center">
+                {/* Mobile: PARLONS NOUS — hidden; previously only shown due to a CSS collision with a global `.block` rule */}
+                <div className="hidden transform scale-[0.62] ml-0 mr-[-12px]">
+                  <Link href="/contact" className="sm-cta-link">
+                    <AnimatedButton
+                      text="PARLONS NOUS"
+                      textColor={ctaButtonTextColor}
+                      borderColor={ctaButtonBorderColor}
+                      circleColor={ctaButtonCircleColor}
+                      arrowColor={ctaButtonArrowColor}
+                      hoverTextColor={ctaButtonHoverTextColor}
+                      hoverArrowColor={ctaButtonHoverArrowColor}
+                    />
+                  </Link>
+                </div>
+                {/* Tablet/Desktop: Démarrer un projet */}
+                <div className="hidden sm:block transform sm:scale-75 md:scale-90">
+                  <Link href="/contact" className="sm-cta-link">
+                    <AnimatedButton
+                      text="Démarrer un projet"
+                      textColor={ctaButtonTextColor}
+                      borderColor={ctaButtonBorderColor}
+                      circleColor={ctaButtonCircleColor}
+                      arrowColor={ctaButtonArrowColor}
+                      hoverTextColor={ctaButtonHoverTextColor}
+                      hoverArrowColor={ctaButtonHoverArrowColor}
+                    />
+                  </Link>
+                </div>
+              </div>
+            )}
+            <button
+              ref={toggleBtnRef}
+              className="sm-toggle"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="staggered-menu-panel"
+              onClick={toggleMenu}
+              type="button"
             >
-              <span ref={textInnerRef} className="sm-toggle-textInner">
-                {textLines.map((l, i) => (
-                  <span className="sm-toggle-line" key={i}>
-                    {l}
-                  </span>
-                ))}
+              <span
+                ref={textWrapRef}
+                className="sm-toggle-textWrap"
+                aria-hidden="true"
+              >
+                <span ref={textInnerRef} className="sm-toggle-textInner">
+                  {textLines.map((l, i) => (
+                    <span className="sm-toggle-line" key={i}>
+                      {l}
+                    </span>
+                  ))}
+                </span>
               </span>
-            </span>
-            <span ref={iconRef} className="sm-icon" aria-hidden="true">
-              <span className="sm-icon-bars">
-                <span className="sm-icon-bar" />
-                <span className="sm-icon-bar" />
+              <span ref={iconRef} className="sm-icon" aria-hidden="true">
+                <span className="sm-icon-bars">
+                  <span className="sm-icon-bar" />
+                  <span className="sm-icon-bar" />
+                </span>
               </span>
-            </span>
-          </button>
-        </div>
-      </header>
+            </button>
+          </div>
+        </header>
+      )}
 
       <aside
         id="staggered-menu-panel"

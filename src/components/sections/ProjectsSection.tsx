@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
 import { type Project, projects } from '@/data/project';
 
-const FILTERS = [
+export const FILTERS = [
   'TOUS',
   'SITE WEB',
   'APP WEB',
@@ -13,7 +13,7 @@ const FILTERS = [
   'CRM',
   'ERP',
 ] as const;
-type FilterType = (typeof FILTERS)[number];
+export type FilterType = (typeof FILTERS)[number];
 
 function stringIncludes(haystack: string | undefined, needle: string) {
   if (!haystack) return false;
@@ -59,7 +59,7 @@ function MediaSurface({
   return <Image src={media.src} alt={alt} fill className={`object-${fit}`} />;
 }
 
-function matchesFilter(project: Project, filter: FilterType): boolean {
+export function matchesFilter(project: Project, filter: FilterType): boolean {
   if (filter === 'TOUS') return true;
 
   const hasService = (name: string) =>

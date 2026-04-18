@@ -53,6 +53,16 @@ button:hover {
   }
 }
 
+/* Shimmer loading */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 /* Logo Carousel Animation */
 @keyframes scroll {
   0% {

@@ -53,11 +53,12 @@ const creations = [
       'Interface utilisateur intuitive',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image: '/labo/ibox/IMG_1835.PNG',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1835.PNG',
     gallery: [
-      '/labo/ibox/IMG_1835.PNG',
-      '/labo/ibox/IMG_1838.PNG',
-      '/labo/ibox/IMG_1840.PNG',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1835.PNG',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1838.PNG',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/iBox/IMG_1840.PNG',
     ],
   },
   {
@@ -76,11 +77,12 @@ const creations = [
       'Support client 24/7',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image: '/labo/coride/CoRideCover.png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/CoRideCover.png',
     gallery: [
-      '/labo/coride/Splash screen.png',
-      '/labo/coride/Splash screen (1).png',
-      '/labo/coride/Splash screen (2).png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/Splash%20screen.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/Splash%20screen%20(1).png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/CoRide/Splash%20screen%20(2).png',
     ],
   },
   {
@@ -99,11 +101,12 @@ const creations = [
       'Historique des versions',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image: '/labo/davinci/Splash Screen (3).png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/SplashScreen-3.png',
     gallery: [
-      '/labo/davinci/Cas B - Plusieurs profils enfants.png',
-      '/labo/davinci/Dashboard Enfant – Mon Espace - Scroll.png',
-      '/labo/davinci/Mathématiques.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/CasB-PlusieursProfilsEnfants.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/DashboardEnfant-MonEspaceScroll.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/DaVinci/Mathematiques.png',
     ],
   },
   {
@@ -121,11 +124,12 @@ const creations = [
       'Support client intégré',
     ],
     badge: "Nous avons réalisé le design et développé l'application",
-    image: '/labo/gosholo/image copy.png',
+    image:
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image%20copy.png',
     gallery: [
-      '/labo/gosholo/image.png',
-      '/labo/gosholo/image copy.png',
-      '/labo/gosholo/image copy 2.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image%20copy.png',
+      'https://lgpngbxkeuyvjcgrftxa.supabase.co/storage/v1/object/public/Projix/Projects/GoSholo/image%20copy%202.png',
     ],
   },
 ];
@@ -377,7 +381,10 @@ function ProjectModal({
                   onClose(e);
                 }}
                 className="absolute top-3 left-3 sm:top-4 sm:left-4 md:top-6 md:left-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-[100]"
-                style={{ backgroundColor: colors.accent, transform: 'translate(9px, 9px)' }}
+                style={{
+                  backgroundColor: colors.accent,
+                  transform: 'translate(9px, 9px)',
+                }}
               >
                 <svg
                   className="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none"

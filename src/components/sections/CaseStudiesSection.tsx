@@ -104,11 +104,9 @@ const CaseStudiesSection = () => {
               if (!isMobile) {
                 setHoveredImage('fahe');
                 if (faheVideoRef.current && !isReducedMotion) {
-                  faheVideoRef.current
-                    .play()
-                    .catch(() => {
-                      // Video play prevented
-                    });
+                  faheVideoRef.current.play().catch(() => {
+                    // Video play prevented
+                  });
                 }
               }
             }}
@@ -124,11 +122,9 @@ const CaseStudiesSection = () => {
             onClick={() => {
               if (isMobile && faheVideoRef.current) {
                 if (faheVideoRef.current.paused) {
-                  faheVideoRef.current
-                    .play()
-                    .catch(() => {
-                      // Video play prevented
-                    });
+                  faheVideoRef.current.play().catch(() => {
+                    // Video play prevented
+                  });
                 } else {
                   faheVideoRef.current.pause();
                 }
@@ -333,11 +329,9 @@ const CaseStudiesSection = () => {
               if (!isMobile) {
                 setHoveredImage('coride');
                 if (coRideVideoRef.current && !isReducedMotion) {
-                  coRideVideoRef.current
-                    .play()
-                    .catch(() => {
-                      // Video play prevented
-                    });
+                  coRideVideoRef.current.play().catch(() => {
+                    // Video play prevented
+                  });
                 }
               }
             }}
@@ -353,11 +347,9 @@ const CaseStudiesSection = () => {
             onClick={() => {
               if (isMobile && coRideVideoRef.current) {
                 if (coRideVideoRef.current.paused) {
-                  coRideVideoRef.current
-                    .play()
-                    .catch(() => {
-                      // Video play prevented
-                    });
+                  coRideVideoRef.current.play().catch(() => {
+                    // Video play prevented
+                  });
                 } else {
                   coRideVideoRef.current.pause();
                 }
