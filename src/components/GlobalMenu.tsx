@@ -2,7 +2,39 @@
 
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { Menu } from 'lucide-react';
 import { StaggeredMenu } from '@/components/StaggeredMenu';
+
+import { useGlobalMenuToggle } from '@/components/globalMenuBus';
+
+export function GlobalMenuToggle({
+  className,
+  label = 'Menu',
+  iconOnly = false,
+}: {
+  className?: string;
+  label?: string;
+  iconOnly?: boolean;
+}) {
+  const toggle = useGlobalMenuToggle();
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        toggle();
+      }}
+      aria-label={label}
+      className={
+        className ??
+        'inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:border-white/40 hover:bg-white/10'
+      }
+    >
+      <Menu className="h-4 w-4" />
+      {!iconOnly && <span>{label}</span>}
+    </button>
+  );
+}
 
 export default function GlobalMenu() {
   const pathname = usePathname();
@@ -10,7 +42,10 @@ export default function GlobalMenu() {
 
   // Set initial state based on pathname to avoid hydration mismatch
   const isDarkHeroPage =
-    pathname === '/' || pathname.startsWith('/services/app-mobile') || pathname === '/labo';
+    pathname === '/' ||
+    pathname.startsWith('/services/app-mobile') ||
+    pathname === '/labo' ||
+    pathname === '/portfolio';
 
   const getInitialState = () => {
     if (isDarkHeroPage) {
@@ -154,8 +189,6 @@ export default function GlobalMenu() {
     { label: 'Twitter', link: 'https://twitter.com/progix' },
   ];
 
-  // duplicates removed
-
   return (
     <StaggeredMenu
       key={pathname}
@@ -178,6 +211,7 @@ export default function GlobalMenu() {
       logoUrl="/images/logo.png"
       accentColor="#ffffff"
       isFixed={true}
+      headless={pathname === '/portfolio'}
     />
   );
 }

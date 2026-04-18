@@ -13,8 +13,8 @@
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: 5;
   pointer-events: none;
 }
@@ -201,14 +201,17 @@
   width: clamp(260px, 38vw, 420px);
   height: 100%;
   background: white;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   padding: 6em 2em 2em 2em;
   overflow-y: auto;
   z-index: 15;
   will-change: transform;
+}
+
+.staggered-menu-wrapper[data-open] .staggered-menu-panel {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 [data-position='left'] .staggered-menu-panel {

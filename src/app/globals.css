@@ -53,6 +53,16 @@ button:hover {
   }
 }
 
+/* Shimmer loading */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 /* Logo Carousel Animation */
 @keyframes scroll {
   0% {
@@ -106,6 +116,10 @@ body {
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
+.font-hubot {
+  font-family: 'Hubot Sans', Montserrat, sans-serif;
+}
+
 /* Force Montserrat for landing page */
 .landing-page {
   font-family: var(--font-montserrat), 'Montserrat', sans-serif !important;
@@ -156,7 +170,7 @@ body {
   z-index: 1000;
 }
 
-.block {
+.transition-overlay > .block {
   flex: 1;
   height: 100%;
   background: #222;

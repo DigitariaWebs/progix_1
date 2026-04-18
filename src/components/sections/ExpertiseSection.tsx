@@ -1,11 +1,15 @@
 'use client';
 
 import React from 'react';
-import styles from './ExpertiseSection.module.css';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
-
-gsap.registerPlugin(ScrollTrigger);
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Autoplay from 'embla-carousel-autoplay';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from '@/components/ui/carousel';
+import { cn } from '@/lib/utils';
 
 type ExpertiseItem = {
   number: string;
@@ -53,220 +57,228 @@ const EXPERTISE_ITEMS: ExpertiseItem[] = [
 ];
 
 export default function ExpertiseSection() {
-  const sectionRef = React.useRef<HTMLDivElement | null>(null);
-  const [isDark] = React.useState(true); // Always use dark mode for this section
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [selectedIdx, setSelectedIdx] = React.useState(0);
+  const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Handle resize and check if mobile
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    // Check on mount
-    checkMobile();
-
-    // Listen for resize events
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const autoplay = React.useRef(
+    Autoplay({
+      delay: 5000,
+      stopOnMouseEnter: true,
+      stopOnInteraction: false,
+    }),
+  );
 
   React.useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    if (!api) return;
 
-    const wrapper = section.querySelector(`.${styles.exhWrapper}`);
-    const items = section.querySelectorAll(`.${styles.exhItem}`);
-    if (!wrapper || !items.length) return;
-
-    // Collect videos per item (same order)
-    const videos: HTMLVideoElement[] = Array.from(items)
-      .map((item) => item.querySelector('video'))
-      .filter(Boolean) as HTMLVideoElement[];
-
-    // Mobile optimization - set lower quality attributes
-    if (isMobile) {
-      videos.forEach((video) => {
-        // Set lower playback quality for mobile
-        video.setAttribute('playsinline', '');
-        video.setAttribute('preload', 'metadata');
-
-        // Only auto-play the first video on mobile
-        if (video !== videos[0]) {
-          video.autoplay = false;
-        }
-      });
-    }
-
-    const pauseAll = () => {
-      videos.forEach((v) => {
-        try {
-          v.pause();
-        } catch {}
-      });
-    };
-
-    const primeVideo = (video: HTMLVideoElement) => {
-      if (!video) return;
-      // Use different preload strategy based on device
-      const desiredPreload = isMobile ? 'metadata' : 'auto';
-
-      if (video.preload !== desiredPreload) {
-        video.preload = desiredPreload;
-        try {
-          // Hint the browser to fetch quickly (but only metadata on mobile)
-          video.load();
-        } catch {}
-      }
-    };
-
-    const setActive = (index: number) => {
-      videos.forEach((v, i) => {
-        if (i === index) {
-          primeVideo(v);
-          // Attempt immediate play; ignore promise rejection on some devices
-          const p = v.play();
-          if (p && typeof p.catch === 'function') {
-            p.catch(() => {});
-          }
+    const onSelect = () => {
+      const idx = api.selectedScrollSnap();
+      setSelectedIdx(idx);
+      videoRefs.current.forEach((video, i) => {
+        if (!video) return;
+        if (i === idx) {
+          const p = video.play();
+          if (p && typeof p.catch === 'function') p.catch(() => {});
         } else {
           try {
-            v.pause();
+            video.pause();
           } catch {}
         }
       });
-      const next = videos[index + 1];
-      if (next) primeVideo(next);
     };
 
-    items.forEach((item, index) => {
-      // Set stacking order so later cards appear above earlier ones
-      (item as HTMLElement).style.zIndex = String(10 + index);
-      if (index !== 0) {
-        // Different initial positioning for mobile vs desktop
-        if (isMobile) {
-          gsap.set(item, { yPercent: 100, xPercent: 0 });
-        } else {
-          gsap.set(item, { xPercent: 100 });
-        }
-      }
-    });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: wrapper,
-        pin: true,
-        start: isMobile ? 'top 5%' : 'top top',
-        // Significantly reduce pinned scroll distance on mobile
-        end: isMobile ? `+=${items.length * 40}%` : `+=${items.length * 100}%`,
-        scrub: isMobile ? 0.3 : 1, // Even faster scrub on mobile for more responsive feel
-        invalidateOnRefresh: true,
-        // anticipatePin slightly delays pin to avoid jank on mobile
-        anticipatePin: 1,
-      },
-      defaults: { ease: 'none' },
-    });
-
-    // Start with first video primed/playing
-    setActive(0);
-
-    items.forEach((item, index) => {
-      // Ensure the first card is fully in view before horizontal transition
-      // Add a small scroll gap before first transition kicks in
-      if (index === 0) {
-        tl.to({}, { duration: 0.05 });
-      }
-      // Simplified animations for mobile
-      if (isMobile) {
-        // Use opacity and y-transform for better mobile performance, with faster transition
-        tl.to(item, {
-          scale: 0.9,
-          borderRadius: '10px',
-          opacity: 0.6,
-          yPercent: -10,
-          duration: 0.6,
-        });
-      } else {
-        tl.to(item, { scale: 0.9, borderRadius: '10px' });
-      }
-
-      const next = items[index + 1];
-      if (next) {
-        // Use Y-direction animation for mobile with faster transition
-        if (isMobile) {
-          gsap.set(next, { yPercent: 100, xPercent: 0 }); // Reset X and set initial Y
-          tl.to(next, { yPercent: 0, duration: 0.8 }, '<');
-        } else {
-          tl.to(next, { xPercent: 0 }, '<');
-        }
-        // When the next item arrives, mark it active and preload the following
-        tl.call(() => setActive(index + 1));
-      }
-    });
-
-    // Safety: pause videos when leaving the section
-    if (tl.scrollTrigger?.vars) {
-      Object.assign(tl.scrollTrigger.vars, {
-        onLeave: () => pauseAll(),
-        onLeaveBack: () => pauseAll(),
-        onEnter: () => setActive(0),
-        onEnterBack: () => setActive(Math.min(videos.length - 1, 1)),
-      });
-    }
+    onSelect();
+    api.on('select', onSelect);
+    api.on('reInit', onSelect);
 
     return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      api.off('select', onSelect);
+      api.off('reInit', onSelect);
     };
-  }, []);
+  }, [api]);
+
+  const activeItem = EXPERTISE_ITEMS[selectedIdx] ?? EXPERTISE_ITEMS[0];
+  const total = EXPERTISE_ITEMS.length;
+  const prevItem = EXPERTISE_ITEMS[(selectedIdx - 1 + total) % total];
+  const nextItem = EXPERTISE_ITEMS[(selectedIdx + 1) % total];
 
   return (
-    <section
-      className={`${styles.exhSection} ${isDark ? styles.exhDark : ''} ${isMobile ? styles.exhMobile : ''}`}
-      ref={sectionRef}
-      style={{ '--contact-bg': '#1D4760' } as React.CSSProperties}
-    >
-      <div className={styles.exhHeading}>
-        <h2
-          className={
-            styles.exhHeadingText + ' text-4xl md:text-5xl font-bold text-white'
-          }
-        >
-          Ce que nous faisons
+    <section className="relative w-full bg-[#0f0f0f] text-white">
+      <div className="mx-auto max-w-[96rem] px-6 pt-24 pb-10 md:px-12 md:pt-36 md:pb-16 lg:pt-44">
+        <div className="flex items-center gap-4 font-mono text-[0.7rem] uppercase tracking-[0.3em] text-white/45 md:text-xs">
+          <span
+            aria-hidden="true"
+            className="inline-block h-px w-10 bg-white/25 md:w-14"
+          />
+          <span>Expertises · Ce que nous construisons</span>
+        </div>
+
+        <h2 className="mt-8 font-bold leading-[0.95] tracking-[-0.02em] text-[clamp(2.75rem,9vw,9rem)] md:mt-14">
+          Ce que
+          <br aria-hidden="true" />
+          nous faisons<span className="text-white/30">.</span>
         </h2>
+
+        <div className="mt-10 flex flex-col gap-10 md:mt-16 md:flex-row md:items-end md:justify-between md:gap-20">
+          <p className="max-w-xl text-base leading-relaxed text-white/70 md:text-lg md:leading-[1.6]">
+            De l&apos;advisory technique à l&apos;augmentation d&apos;équipe,
+            nous concevons des produits numériques durables et performants —
+            taillés pour des ambitions exigeantes.
+          </p>
+
+          <div
+            aria-live="polite"
+            className="flex items-baseline gap-3 font-mono text-[0.7rem] uppercase tracking-[0.25em] text-white/50 md:text-xs"
+          >
+            <span className="text-white tabular-nums">
+              {activeItem.number.padStart(2, '0')}
+            </span>
+            <span
+              aria-hidden="true"
+              className="inline-block h-px w-4 bg-white/30"
+            />
+            <span className="tabular-nums text-white/40">
+              {String(total).padStart(2, '0')}
+            </span>
+            <span className="ml-2 text-white/70">— {activeItem.title}</span>
+          </div>
+        </div>
       </div>
 
-      <div className={`${styles.exhScrollSection}`}>
-        <div className={styles.exhWrapper}>
-          <div className={styles.exhList} role="list">
-            {EXPERTISE_ITEMS.map((item) => (
-              <div key={item.number} role="listitem" className={styles.exhItem}>
-                <div className={styles.exhItemContent}>
-                  <div className={styles.exhBlurAccent} aria-hidden="true" />
-                  <h3 className={styles.exhItemNumber}>{item.number}</h3>
-                  <h3 className={styles.exhItemTitle}>{item.title}</h3>
-                  <p className={styles.exhItemCopy}>{item.copy}</p>
-                </div>
-                <div
-                  className={styles.exhVideoWrap}
-                  style={{ '--brand-blue': '#0A2456' } as React.CSSProperties}
+      <div className="mx-auto max-w-[96rem] px-6 md:px-12">
+        <div
+          role="tablist"
+          aria-label="Expertises"
+          className="flex items-stretch gap-5 overflow-x-auto border-t border-white/10 pt-5 md:gap-10 md:pt-7 lg:gap-14 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {EXPERTISE_ITEMS.map((item, i) => {
+            const isActive = i === selectedIdx;
+            return (
+              <button
+                key={item.number}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-label={`Voir ${item.title}`}
+                onClick={() => api?.scrollTo(i)}
+                className={cn(
+                  'group/tab relative flex shrink-0 cursor-pointer items-baseline gap-2 border-0 bg-transparent px-0 pt-0 pb-3 font-mono text-[0.7rem] font-normal uppercase tracking-[0.12em] transition-colors duration-300 md:gap-3 md:pb-4 md:text-xs',
+                  "after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-500 after:ease-out after:content-['']",
+                  'focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-white/45',
+                  isActive
+                    ? 'text-white after:scale-x-100'
+                    : 'text-white/40 hover:text-white/80',
+                )}
+              >
+                <span
+                  className={cn(
+                    'font-medium tabular-nums transition-opacity duration-300',
+                    isActive ? 'text-white' : 'text-white/50',
+                  )}
                 >
+                  {item.number.padStart(2, '0')}
+                </span>
+                <span className="whitespace-nowrap">{item.title}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="relative mt-8 h-[80vh] min-h-[32rem] w-full overflow-hidden md:mt-12 md:h-[85vh]">
+        <Carousel
+          opts={{ loop: true, align: 'center' }}
+          plugins={[autoplay.current]}
+          setApi={setApi}
+          className="absolute inset-0 [&>div]:h-full [&>div>div]:h-full"
+        >
+          <CarouselContent className="!ml-0 h-full">
+            {EXPERTISE_ITEMS.map((item, i) => (
+              <CarouselItem key={item.number} className="h-full !pl-0">
+                <article className="group relative h-full w-full overflow-hidden bg-black">
                   <video
+                    ref={(el) => {
+                      videoRefs.current[i] = el;
+                    }}
                     key={`video-${item.number}`}
                     src={item.mediaSrc}
-                    className={styles.exhItemMedia}
-                    preload={isMobile ? 'metadata' : 'none'}
+                    className="absolute inset-0 block h-full w-full scale-105 object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-100"
+                    preload="auto"
+                    autoPlay
                     muted
                     loop
-                    autoPlay={!isMobile || item.number === '1'}
                     playsInline
                   />
-                  <div className={styles.exhTint} aria-hidden="true" />
-                </div>
-              </div>
+
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/30 md:bg-gradient-to-r md:via-black/70 md:to-black/5"
+                  />
+
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 overflow-hidden"
+                  >
+                    <span className="absolute -top-6 -right-2 select-none font-mono text-[9rem] font-black leading-none tracking-tighter text-white/[0.06] md:-top-12 md:right-10 md:text-[22rem]">
+                      {item.number.padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  <div className="absolute inset-x-0 bottom-0 left-6 right-6 flex flex-col items-start pb-8 md:inset-y-0 md:left-12 md:right-auto md:max-w-[58%] md:justify-center md:pb-0">
+                    <span className="mb-3 font-mono text-[0.65rem] font-normal uppercase tracking-[0.25em] text-white/50 md:mb-5 md:text-[0.7rem]">
+                      Expertise · {item.number.padStart(2, '0')}
+                    </span>
+
+                    <h3 className="font-bold leading-[1.05] tracking-tight text-white text-[clamp(1.75rem,5vw,2.5rem)] md:text-[clamp(2.5rem,5.5vw,4.5rem)]">
+                      {item.title}
+                    </h3>
+
+                    <div
+                      aria-hidden="true"
+                      className="mt-4 h-px w-10 bg-white/40 transition-all duration-500 ease-out md:mt-6 md:w-14 group-hover:w-20 md:group-hover:w-24"
+                    />
+
+                    <p className="mt-4 max-w-xl text-[0.95rem] font-medium leading-relaxed text-white/80 md:mt-6 md:text-lg md:leading-relaxed">
+                      {item.copy}
+                    </p>
+                  </div>
+                </article>
+              </CarouselItem>
             ))}
-          </div>
+          </CarouselContent>
+        </Carousel>
+
+        <div className="pointer-events-none absolute top-5 right-5 z-20 flex items-center gap-2 md:top-auto md:right-10 md:bottom-10 md:gap-3">
+          <button
+            type="button"
+            onClick={() => api?.scrollPrev()}
+            aria-label={`Précédent — ${prevItem.title}`}
+            className="group/nav pointer-events-auto flex items-center gap-2 rounded-full border border-white/20 bg-white/5 py-2 pr-3 pl-2 font-mono text-[0.65rem] font-medium uppercase tracking-[0.2em] text-white/80 backdrop-blur-md transition-all duration-300 hover:border-white hover:bg-white hover:text-black md:py-2.5 md:pr-4 md:pl-2.5 md:text-[0.7rem]"
+          >
+            <ArrowLeft
+              className="h-3.5 w-3.5 transition-transform duration-300 group-hover/nav:-translate-x-0.5"
+              strokeWidth={1.75}
+            />
+            <span className="tabular-nums">
+              {prevItem.number.padStart(2, '0')}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => api?.scrollNext()}
+            aria-label={`Suivant — ${nextItem.title}`}
+            className="group/nav pointer-events-auto flex items-center gap-2 rounded-full border border-white/20 bg-white/5 py-2 pr-2 pl-3 font-mono text-[0.65rem] font-medium uppercase tracking-[0.2em] text-white/80 backdrop-blur-md transition-all duration-300 hover:border-white hover:bg-white hover:text-black md:py-2.5 md:pr-2.5 md:pl-4 md:text-[0.7rem]"
+          >
+            <span className="tabular-nums">
+              {nextItem.number.padStart(2, '0')}
+            </span>
+            <ArrowRight
+              className="h-3.5 w-3.5 transition-transform duration-300 group-hover/nav:translate-x-0.5"
+              strokeWidth={1.75}
+            />
+          </button>
         </div>
       </div>
     </section>
