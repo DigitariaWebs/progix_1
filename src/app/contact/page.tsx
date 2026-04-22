@@ -1,626 +1,1035 @@
 'use client';
 
-import React from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Barlow } from 'next/font/google';
-import { ThumbsUp } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUp, ArrowDown, Check, ArrowRight } from 'lucide-react';
+import { FaLinkedin, FaInstagram, FaFacebook, FaTwitter } from 'react-icons/fa';
+import Link from 'next/link';
 
-const barlow = Barlow({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-});
+// ─── Palette ──────────────────────────────────────────────────────────────────
+const C = {
+  bg: '#FFFFFF',
+  surface: 'rgba(0,0,0,0.025)',
+  surfaceHover: 'rgba(27,60,94,0.09)',
+  surfaceActive: '#1B3C5E',
+  border: 'rgba(0,0,0,0.09)',
+  borderHover: 'rgba(0,0,0,0.22)',
+  borderActive: '#1B3C5E',
+  text: '#0D1F35',
+  textSub: 'rgba(13,31,53,0.58)',
+  textMuted: 'rgba(13,31,53,0.52)',
+  textOnActive: '#FFFFFF',
+  progress: '#1B3C5E',
+  accent: '#D4711A',
+};
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: 0.08 * i },
+// ─── Types ────────────────────────────────────────────────────────────────────
+type StepKind = 'welcome' | 'input' | 'textarea' | 'choice' | 'yesno' | 'scale' | 'success';
+
+interface FormOption {
+  key: string;
+  label: string;
+  value: string;
+}
+
+interface FormStep {
+  id: string;
+  kind: StepKind;
+  number?: number;
+  question?: string;
+  subtitle?: string;
+  placeholder?: string;
+  field?: keyof FormData;
+  options?: FormOption[];
+}
+
+interface FormData {
+  name: string;
+  company: string;
+  challenge: string;
+  stage: string;
+  blockers: string;
+  opportunity: string;
+  targetUsers: string;
+  goalBlockers: string;
+  investment: string;
+  validation: string;
+  commitment: string;
+  readiness: string;
+  determination: string;
+  callCommitment: string;
+  questions: string;
+}
+
+// ─── Steps ────────────────────────────────────────────────────────────────────
+const STEPS: FormStep[] = [
+  { id: 'welcome', kind: 'welcome' },
+  {
+    id: 'name', kind: 'input', number: 1,
+    question: "First things first,\nwhat's your name?",
+    placeholder: 'Type your answer here...',
+    field: 'name',
+  },
+  {
+    id: 'company', kind: 'choice', number: 2,
+    question: '',
+    field: 'company',
+    options: [
+      { key: 'A', label: 'Oui, une entreprise déjà créée', value: 'created' },
+      { key: 'B', label: 'Oui, en cours de création', value: 'creating' },
+      { key: 'C', label: 'Non, pas encore', value: 'none' },
+    ],
+  },
+  {
+    id: 'challenge', kind: 'textarea', number: 3,
+    question: 'Quel est le principal défi que\nvous souhaitez résoudre ?',
+    subtitle: 'Expliquez le problème principal que votre application doit résoudre pour vos utilisateurs ou votre marché.',
+    placeholder: 'Type your answer here...',
+    field: 'challenge',
+  },
+  {
+    id: 'stage', kind: 'choice', number: 4,
+    question: "Aujourd'hui, où en êtes-vous\nconcrètement avec votre projet ?",
+    field: 'stage',
+    options: [
+      { key: 'A', label: 'Idée', value: 'idea' },
+      { key: 'B', label: 'En cours de développement', value: 'developing' },
+      { key: 'C', label: 'Déjà lancé', value: 'launched' },
+    ],
+  },
+  {
+    id: 'blockers', kind: 'textarea', number: 5,
+    question: "Qu'est-ce qui bloque\nvotre progression actuellement ?",
+    placeholder: 'Type your answer here...',
+    field: 'blockers',
+  },
+  {
+    id: 'opportunity', kind: 'textarea', number: 6,
+    question: 'Quelle est la plus grande opportunité\nque vous voyez avec ce projet ?',
+    placeholder: 'Type your answer here...',
+    field: 'opportunity',
+  },
+  {
+    id: 'targetUsers', kind: 'choice', number: 7,
+    question: "Combien d'utilisateurs ou clients souhaitez-vous\natteindre dans les 4 prochains mois ?",
+    field: 'targetUsers',
+    options: [
+      { key: 'A', label: 'Moins de 1 000', value: '<1k' },
+      { key: 'B', label: '1 000 – 2 000', value: '1k-2k' },
+      { key: 'C', label: '2 000 – 5 000', value: '2k-5k' },
+      { key: 'D', label: '5 000+', value: '5k+' },
+    ],
+  },
+  {
+    id: 'goalBlockers', kind: 'textarea', number: 8,
+    question: "Qu'est-ce qui vous empêche\naujourd'hui d'atteindre cet objectif ?",
+    placeholder: 'Type your answer here...',
+    field: 'goalBlockers',
+  },
+  {
+    id: 'investment', kind: 'choice', number: 9,
+    question: "Quel niveau d'investissement\navez-vous prévu pour ce projet ?",
+    subtitle: "Cela nous aide à vous orienter vers l'approche la plus cohérente en fonction de vos objectifs.",
+    field: 'investment',
+    options: [
+      { key: 'A', label: 'Moins de 5 000 $', value: '<5k' },
+      { key: 'B', label: '5 000 $ à 10 000 $', value: '5k-10k' },
+      { key: 'C', label: '10 000 $ à 20 000 $', value: '10k-20k' },
+      { key: 'D', label: '20 000 $ et plus', value: '20k+' },
+      { key: 'E', label: 'Je souhaite en discuter', value: 'discuss' },
+    ],
+  },
+  {
+    id: 'validation', kind: 'textarea', number: 10,
+    question: "Avez-vous déjà validé certains aspects\nde ce projet auprès de votre marché ?",
+    subtitle: "Tests utilisateurs, retours clients, ventes, liste d'attente, prototype, landing page, etc.",
+    placeholder: 'Type your answer here...',
+    field: 'validation',
+  },
+  {
+    id: 'commitment', kind: 'yesno', number: 11,
+    question: "Êtes-vous prêt à vous impliquer\nactivement dans le projet ?",
+    subtitle: "Cela inclut votre disponibilité pour participer à 2 meetings par semaine, prendre des décisions et valider les étapes sous 24h.",
+    field: 'commitment',
+  },
+  {
+    id: 'readiness', kind: 'choice', number: 12,
+    question: "Seriez-vous en mesure\nd'initier le projet ?",
+    subtitle: "Dans le cas où une approche structurée répond à vos besoins.",
+    field: 'readiness',
+    options: [
+      { key: 'A', label: 'Oui, si la solution correspond à mes attentes', value: 'yes-fit' },
+      { key: 'B', label: 'Oui, sous certaines conditions', value: 'conditional' },
+      { key: 'C', label: 'Je suis encore en réflexion', value: 'considering' },
+      { key: 'D', label: 'Non pour le moment', value: 'no' },
+    ],
+  },
+  {
+    id: 'determination', kind: 'scale', number: 13,
+    question: "Sur une échelle de 1 à 10,\nà quel point êtes-vous déterminé\nà faire réussir ce projet ?",
+    field: 'determination',
+  },
+  {
+    id: 'callCommitment', kind: 'yesno', number: 14,
+    question: "Je comprends que cet appel est une\nétape stratégique et je m'engage\nà être présent et préparé",
+    field: 'callCommitment',
+  },
+  {
+    id: 'questions', kind: 'textarea', number: 15,
+    question: 'Do you have any questions\nabout our solution?',
+    placeholder: 'Type your answer here...',
+    field: 'questions',
+  },
+  { id: 'success', kind: 'success' },
+];
+
+const TOTAL_CONTENT = 15;
+
+// ─── Animation ────────────────────────────────────────────────────────────────
+const variants = {
+  enter: (d: number) => ({ y: d > 0 ? '55%' : '-55%', opacity: 0, filter: 'blur(7px)' }),
+  center: {
+    y: 0, opacity: 1, filter: 'blur(0px)',
+    transition: { type: 'spring' as const, stiffness: 255, damping: 32, mass: 0.95 },
+  },
+  exit: (d: number) => ({
+    y: d > 0 ? '-40%' : '40%', opacity: 0, filter: 'blur(7px)',
+    transition: { duration: 0.26, ease: [0.4, 0, 1, 1] as [number, number, number, number] },
   }),
 };
 
-type SectionProps = {
-  id: string;
-  title: string;
-  children: React.ReactNode;
-  index: number;
-  thumbVisible?: boolean;
-};
-
-const Section: React.FC<SectionProps> = ({
-  id,
-  title,
-  children,
-  thumbVisible = false,
-}) => {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' });
-  return (
-    <section
-      id={id}
-      ref={ref}
-      className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 mb-[74px] md:mb-[106px]"
-    >
-      <motion.div
-        variants={fadeUp}
-        initial="hidden"
-        animate={inView ? 'show' : 'hidden'}
-        custom={0}
-        className="mb-3 flex items-center"
-      >
-        <h2 className="text-black font-semibold text-[15px] md:text-[16px]">
-          {title}
-        </h2>
-        <motion.span
-          initial={{ opacity: 0, scale: 0.6, y: -2 }}
-          animate={
-            thumbVisible
-              ? { opacity: 1, scale: 1, y: 0 }
-              : { opacity: 0, scale: 0.6, y: -2 }
-          }
-          transition={{ type: 'spring', stiffness: 500, damping: 26 }}
-          className="ml-2 text-black"
-          aria-hidden
-        >
-          <ThumbsUp size={20} />
-        </motion.span>
-      </motion.div>
-      <motion.div
-        variants={fadeUp}
-        initial="hidden"
-        animate={inView ? 'show' : 'hidden'}
-        custom={1}
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-};
-
-interface ChoiceButtonProps {
-  label: string;
-  active?: boolean;
-  onClick?: () => void;
-}
-
-const ChoiceButton: React.FC<ChoiceButtonProps> = ({
-  label,
-  active = false,
-  onClick,
-}) => (
-  <motion.button
-    whileHover={{ scale: 1.03, boxShadow: '0 0 0 1px rgba(29, 71, 96, 0.3)' }}
-    whileTap={{ scale: 0.98 }}
-    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-    onClick={onClick}
-    aria-pressed={active}
-    className={`inline-flex items-center justify-center px-1 md:px-1 lg:px-1 py-[14px] md:py-4 lg:py-4 rounded-full border text-[15px] md:text-[15px] font-semibold tracking-[0.04em] min-w-[120px] md:min-w-[140px] lg:min-w-[160px] backdrop-blur-sm transition-colors duration-300 ${
-      active
-        ? 'bg-[#1D4760] text-white border-[#1D4760]'
-        : 'bg-transparent text-[#1D4760] border-[#1D4760]/20 hover:bg-[#1D4760] hover:text-white hover:border-[#1D4760]/60'
-    }`}
-    type="button"
-  >
-    {label}
-  </motion.button>
-);
+// ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function ContactPage() {
-  const [project, setProject] = React.useState<string | null>(null);
-  const [timeline, setTimeline] = React.useState<string | null>(null);
-  const [budget, setBudget] = React.useState<string | null>(null);
-  const [source, setSource] = React.useState<string | null>(null);
-  const [thumbFor, setThumbFor] = React.useState<string | null>(null);
+  const [idx, setIdx] = useState(0);
+  const [dir, setDir] = useState(1);
+  const [formData, setFormData] = useState<FormData>({
+    name: '', company: '', challenge: '', stage: '',
+    blockers: '', opportunity: '', targetUsers: '', goalBlockers: '',
+    investment: '', validation: '', commitment: '', readiness: '',
+    determination: '', callCommitment: '', questions: '',
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const transitioning = useRef(false);
+  const formDataRef = useRef(formData);
+  formDataRef.current = formData;
 
-  // Form fields for "Qui?" section
-  const [fullName, setFullName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [projectDescription, setProjectDescription] = React.useState('');
+  const step = STEPS[idx];
+  const progress = step.number != null
+    ? ((step.number - 1) / TOTAL_CONTENT) * 100
+    : step.kind === 'success' ? 100 : 0;
 
-  // Form submission states
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submitMessage, setSubmitMessage] = React.useState<{
-    type: 'success' | 'error';
-    text: string;
-  } | null>(null);
-
-  const smoothScrollTo = (targetY: number, duration = 750) => {
-    const startY = window.scrollY || window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime: number | null = null;
-
-    const easeInOutCubic = (t: number) =>
-      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    const step = (timestamp: number) => {
-      if (startTime === null) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = easeInOutCubic(progress);
-      window.scrollTo(0, startY + distance * eased);
-      if (elapsed < duration) requestAnimationFrame(step);
-    };
-
-    requestAnimationFrame(step);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validate required fields
-    if (
-      !project ||
-      !timeline ||
-      !budget ||
-      !source ||
-      !fullName ||
-      !email ||
-      !phone ||
-      !projectDescription
-    ) {
-      setSubmitMessage({
-        type: 'error',
-        text: 'Veuillez remplir tous les champs obligatoires.',
+  const submit = useCallback(async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formDataRef.current),
       });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || 'Submission failed');
+      setDir(1);
+      setIdx(STEPS.length - 1);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Une erreur est survenue. Veuillez réessayer.');
+    } finally {
+      setSubmitting(false);
+    }
+  }, [submitting]);
+
+  const navigate = useCallback((delta: number) => {
+    if (transitioning.current) return;
+    if (delta > 0 && idx === STEPS.length - 2) {
+      submit();
       return;
     }
+    const next = idx + delta;
+    if (next < 0 || next >= STEPS.length) return;
+    transitioning.current = true;
+    setDir(delta);
+    setIdx(next);
+    setTimeout(() => { transitioning.current = false; }, 600);
+  }, [idx, submit]);
 
-    setIsSubmitting(true);
-    setSubmitMessage(null);
+  const handleChoice = useCallback((field: keyof FormData, value: string) => {
+    setFormData(p => ({ ...p, [field]: value }));
+    setTimeout(() => navigate(1), 390);
+  }, [navigate]);
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          project,
-          timeline,
-          budget,
-          source,
-          fullName,
-          email,
-          phone,
-          projectDescription,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setSubmitMessage({
-          type: 'success',
-          text: 'Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.',
-        });
-        // Reset form
-        setProject(null);
-        setTimeline(null);
-        setBudget(null);
-        setSource(null);
-        setFullName('');
-        setEmail('');
-        setPhone('');
-        setProjectDescription('');
-      } else {
-        setSubmitMessage({
-          type: 'error',
-          text: "Une erreur est survenue lors de l'envoi. Veuillez réessayer.",
-        });
-      }
-    } catch {
-      setSubmitMessage({
-        type: 'error',
-        text: "Une erreur est survenue lors de l'envoi. Veuillez réessayer.",
-      });
-    } finally {
-      setIsSubmitting(false);
+  const getQuestion = useCallback((s: FormStep): string => {
+    if (s.id === 'company') {
+      const n = formData.name.trim();
+      return n
+        ? `Thanks for your time, ${n}.\nAvez-vous déjà une entreprise\nou une structure liée à ce projet ?`
+        : `Avez-vous déjà une entreprise\nou une structure liée à ce projet ?`;
     }
+    return s.question || '';
+  }, [formData.name]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (transitioning.current) return;
+      const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+      const inField = tag === 'input' || tag === 'textarea';
+
+      if (step.kind === 'welcome') {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(1); }
+        return;
+      }
+      if (step.kind === 'success') return;
+
+      if (!inField) {
+        if (step.kind === 'choice' && step.options) {
+          const opt = step.options.find(o => o.key === e.key.toUpperCase());
+          if (opt && step.field) { handleChoice(step.field, opt.value); return; }
+        }
+        if (step.kind === 'yesno' && step.field) {
+          if (e.key.toUpperCase() === 'Y') { handleChoice(step.field, 'yes'); return; }
+          if (e.key.toUpperCase() === 'N') { handleChoice(step.field, 'no'); return; }
+        }
+        if (step.kind === 'scale' && step.field) {
+          if (e.key >= '1' && e.key <= '9') { handleChoice(step.field, e.key); return; }
+          if (e.key === '0') { handleChoice(step.field, '10'); return; }
+        }
+        if (e.key === 'Enter') { e.preventDefault(); navigate(1); }
+        if (e.key === 'ArrowDown') { e.preventDefault(); navigate(1); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
+      } else {
+        if (step.kind === 'input' && e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault(); navigate(1);
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+          e.preventDefault(); navigate(1);
+        }
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [idx, step, navigate, handleChoice]);
+
+  const isLastContent = step.id === 'questions';
+  const val = step.field ? formData[step.field] : '';
+  const choiceHasValue = (step.kind === 'choice' || step.kind === 'yesno' || step.kind === 'scale') && !!val;
+
+  return (
+    <div
+      className="font-montserrat"
+      style={{ position: 'fixed', inset: 0, background: C.bg, color: C.text, overflow: 'hidden' }}
+    >
+      {/* Grain overlay */}
+      <svg
+        aria-hidden="true"
+        style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 5, opacity: 0.055 }}
+      >
+        <filter id="grain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grain)" />
+      </svg>
+
+      {/* Progress bar */}
+      <div
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'rgba(0,0,0,0.08)', zIndex: 20 }}
+      >
+        <motion.div
+          style={{ height: '100%', background: C.progress }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        />
+      </div>
+
+      {/* Logo */}
+      <div style={{ position: 'absolute', top: 28, left: 36, zIndex: 30 }}>
+        <Link
+          href="/"
+          style={{
+            fontSize: '11px', fontWeight: 800, letterSpacing: '0.28em',
+            textTransform: 'uppercase', color: C.text, textDecoration: 'none',
+          }}
+        >
+          PROGIX
+        </Link>
+      </div>
+
+      {/* Step counter */}
+      {step.number != null && (
+        <div style={{
+          position: 'absolute', top: 24, right: 36, zIndex: 30,
+          display: 'flex', alignItems: 'center', gap: '5px',
+        }}>
+          <span style={{ fontSize: '20px', fontWeight: 800, color: C.text, letterSpacing: '0.02em', lineHeight: 1 }}>
+            {String(step.number).padStart(2, '0')}
+          </span>
+          <span style={{ fontSize: '14px', color: 'rgba(255,255,255,0.22)', fontWeight: 300, lineHeight: 1 }}>/</span>
+          <span style={{ fontSize: '15px', fontWeight: 500, color: C.textMuted, letterSpacing: '0.04em', lineHeight: 1 }}>
+            {String(TOTAL_CONTENT).padStart(2, '0')}
+          </span>
+        </div>
+      )}
+
+      {/* Content */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '80px 40px',
+      }}>
+        <div style={{ width: '100%', maxWidth: '680px' }}>
+          <AnimatePresence mode="wait" custom={dir}>
+            <motion.div key={idx} custom={dir} variants={variants} initial="enter" animate="center" exit="exit">
+              {step.kind === 'welcome' && <WelcomeStep onStart={() => navigate(1)} />}
+
+              {(step.kind === 'input' || step.kind === 'textarea') && step.field && (
+                <InputStep
+                  step={step}
+                  question={getQuestion(step)}
+                  value={formData[step.field]}
+                  onChange={v => setFormData(p => ({ ...p, [step.field!]: v }))}
+                  onNext={() => navigate(1)}
+                  isLast={isLastContent}
+                  submitting={submitting}
+                  error={submitError}
+                />
+              )}
+
+              {step.kind === 'choice' && step.field && step.options && (
+                <ChoiceStep
+                  step={step}
+                  question={getQuestion(step)}
+                  value={formData[step.field]}
+                  onSelect={v => handleChoice(step.field!, v)}
+                />
+              )}
+
+              {step.kind === 'yesno' && step.field && (
+                <YesNoStep
+                  step={step}
+                  question={getQuestion(step)}
+                  value={formData[step.field]}
+                  onSelect={v => handleChoice(step.field!, v)}
+                />
+              )}
+
+              {step.kind === 'scale' && step.field && (
+                <ScaleStep
+                  step={step}
+                  question={getQuestion(step)}
+                  value={formData[step.field]}
+                  onSelect={v => handleChoice(step.field!, v)}
+                />
+              )}
+
+              {step.kind === 'success' && <SuccessStep name={formData.name} />}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Nav arrows */}
+      {step.kind !== 'welcome' && step.kind !== 'success' && (
+        <div style={{
+          position: 'absolute', bottom: 28, right: 36, zIndex: 30,
+          display: 'flex', flexDirection: 'column', gap: '6px',
+        }}>
+          <motion.button
+            whileHover={idx > 1 ? { scale: 1.08 } : {}}
+            whileTap={idx > 1 ? { scale: 0.92 } : {}}
+            onClick={() => navigate(-1)}
+            disabled={idx <= 1}
+            style={{
+              width: 38, height: 38,
+              border: `1px solid ${idx <= 1 ? 'rgba(255,255,255,0.04)' : C.border}`,
+              background: 'transparent',
+              color: idx <= 1 ? 'rgba(255,255,255,0.08)' : C.textMuted,
+              borderRadius: '3px', cursor: idx <= 1 ? 'default' : 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            <ArrowUp size={13} />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={() => navigate(1)}
+            style={{
+              width: 38, height: 38,
+              border: `1px solid ${choiceHasValue ? C.borderActive : C.border}`,
+              background: choiceHasValue ? 'rgba(0,0,0,0.05)' : 'transparent',
+              color: choiceHasValue ? C.text : C.textMuted,
+              borderRadius: '3px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            <ArrowDown size={13} />
+          </motion.button>
+        </div>
+      )}
+
+      {/* Welcome scroll hint */}
+      {step.kind === 'welcome' && (
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
+            zIndex: 30, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
+            color: C.textMuted,
+          }}
+        >
+          <span style={{ fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500 }}>
+            Entrée
+          </span>
+          <ArrowDown size={11} />
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+// ─── Welcome ──────────────────────────────────────────────────────────────────
+
+function WelcomeStep({ onStart }: { onStart: () => void }) {
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08 }}
+        style={{
+          fontSize: '9px', fontWeight: 600, letterSpacing: '0.32em',
+          textTransform: 'uppercase', color: C.accent, marginBottom: '28px',
+        }}
+      >
+        Qualification — Appel Stratégique
+      </motion.p>
+
+      <motion.h1
+        initial={{ opacity: 0, y: 28 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, type: 'spring', stiffness: 240, damping: 26 }}
+        style={{
+          fontSize: 'clamp(2.6rem, 7.5vw, 5.4rem)',
+          fontWeight: 800, lineHeight: 1.05, letterSpacing: '-0.028em',
+          color: C.text, marginBottom: '22px',
+        }}
+      >
+        Parlez-nous de votre<br />
+        <span style={{ color: C.surfaceActive }}>projet d&apos;application</span><br />
+        ou SaaS.
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+        style={{
+          fontSize: '0.93rem', fontWeight: 300, lineHeight: 1.82,
+          color: C.textSub, maxWidth: '420px', margin: '0 auto 38px',
+        }}
+      >
+        Répondez à quelques questions rapides afin que nous puissions préparer une stratégie claire pour le développement, le lancement et l&apos;acquisition de vos premiers utilisateurs.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.33 }}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '22px', flexWrap: 'wrap' }}
+      >
+        <motion.button
+          whileHover={{ scale: 1.02, background: '#1B3C5E' }}
+          whileTap={{ scale: 0.98 }}
+          onClick={onStart}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '10px',
+            padding: '15px 34px', background: C.text, color: C.bg,
+            border: 'none', borderRadius: '3px',
+            fontSize: '12px', fontWeight: 700, fontFamily: 'inherit',
+            letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer',
+          }}
+        >
+          Commencer
+          <ArrowRight size={14} />
+        </motion.button>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          Takes 6 minutes
+        </span>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── Step Header ──────────────────────────────────────────────────────────────
+
+function StepHeader({ number, question, subtitle }: {
+  number?: number; question: string; subtitle?: string;
+}) {
+  return (
+    <div style={{ marginBottom: '30px' }}>
+      {number != null && (
+        <motion.div
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.28 }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}
+        >
+          <span style={{
+            fontSize: '13px', fontWeight: 700, color: C.accent,
+            letterSpacing: '0.12em', lineHeight: 1,
+            background: 'rgba(212,113,26,0.08)',
+            border: '1px solid rgba(212,113,26,0.22)',
+            borderRadius: '4px', padding: '4px 9px',
+          }}>
+            {String(number).padStart(2, '0')}
+          </span>
+          <span style={{ color: 'rgba(13,31,53,0.22)', fontSize: '12px' }}>→</span>
+        </motion.div>
+      )}
+      <motion.h2
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.36 }}
+        style={{
+          fontSize: 'clamp(1.65rem, 4.2vw, 2.7rem)',
+          fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.022em',
+          color: C.text, whiteSpace: 'pre-line',
+          marginBottom: subtitle ? '10px' : 0,
+        }}
+      >
+        {question}
+      </motion.h2>
+      {subtitle && (
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.36, delay: 0.06 }}
+          style={{ fontSize: '0.84rem', fontWeight: 300, lineHeight: 1.72, color: C.textSub }}
+        >
+          {subtitle}
+        </motion.p>
+      )}
+    </div>
+  );
+}
+
+// ─── OK Button ────────────────────────────────────────────────────────────────
+
+function OkButton({ onClick, label = 'OK', loading = false }: {
+  onClick: () => void; label?: string; loading?: boolean;
+}) {
+  return (
+    <motion.button
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.16 }}
+      whileHover={!loading ? { scale: 1.02, background: '#1B3C5E' } : {}}
+      whileTap={!loading ? { scale: 0.97 } : {}}
+      onClick={onClick}
+      disabled={loading}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: '10px',
+        padding: '13px 26px', background: C.text, color: C.bg,
+        border: 'none', borderRadius: '3px',
+        fontSize: '12px', fontWeight: 700, fontFamily: 'inherit',
+        letterSpacing: '0.1em', textTransform: 'uppercase',
+        cursor: loading ? 'not-allowed' : 'pointer', transition: 'background 0.15s',
+      }}
+    >
+      {loading ? 'Envoi en cours...' : label}
+      {!loading && (
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          width: '20px', height: '20px', background: 'rgba(0,0,0,0.1)',
+          borderRadius: '2px', fontSize: '11px', fontWeight: 600,
+        }}>↵</span>
+      )}
+    </motion.button>
+  );
+}
+
+// ─── Input Step ───────────────────────────────────────────────────────────────
+
+function InputStep({ step, question, value, onChange, onNext, isLast, submitting, error }: {
+  step: FormStep; question: string; value: string;
+  onChange: (v: string) => void; onNext: () => void;
+  isLast: boolean; submitting: boolean; error: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (step.kind === 'textarea') textareaRef.current?.focus();
+      else inputRef.current?.focus();
+    }, 440);
+    return () => clearTimeout(t);
+  }, [step.kind]);
+
+  const baseStyle: React.CSSProperties = {
+    width: '100%', background: 'transparent', outline: 'none', border: 'none',
+    borderBottom: `1px solid ${C.border}`, color: C.text,
+    fontSize: '1.08rem', fontWeight: 400, fontFamily: 'inherit',
+    padding: '10px 0', transition: 'border-color 0.2s',
   };
 
-  const goTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const targetY = (window.scrollY || window.pageYOffset) + rect.top - 5; // stop 5px before the section top
-    smoothScrollTo(targetY, 750);
+  const focusIn = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderBottomColor = 'rgba(27,60,94,0.55)';
   };
-
-  const showThumbThenScroll = (currentId: string, nextId: string) => {
-    setThumbFor(currentId);
-    window.setTimeout(() => {
-      goTo(nextId);
-    }, 450);
-    window.setTimeout(() => setThumbFor(null), 1000);
+  const focusOut = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderBottomColor = C.border;
   };
 
   return (
-    <main className="min-h-screen bg-white text-black pt-[120px] md:pt-[80px]">
-      <div className={`${barlow.className} pb-24`}>
-        {/* Submit Message */}
-        {submitMessage && (
-          <div className="fixed top-4 right-4 z-50 max-w-sm">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className={`px-4 py-3 rounded-lg border ${
-                submitMessage.type === 'success'
-                  ? 'bg-green-50 border-green-200 text-green-800'
-                  : 'bg-red-50 border-red-200 text-red-800'
-              }`}
-            >
-              {submitMessage.text}
-            </motion.div>
-          </div>
+    <div>
+      <StepHeader number={step.number} question={question} subtitle={step.subtitle} />
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} style={{ marginBottom: '28px' }}>
+        {step.kind === 'textarea' ? (
+          <textarea
+            ref={textareaRef}
+            value={value}
+            onChange={e => onChange(e.target.value)}
+            placeholder={step.placeholder}
+            rows={4}
+            style={{ ...baseStyle, resize: 'none' }}
+            onFocus={focusIn}
+            onBlur={focusOut}
+            className="placeholder:text-black/25"
+          />
+        ) : (
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={e => onChange(e.target.value)}
+            placeholder={step.placeholder}
+            style={baseStyle}
+            onFocus={focusIn}
+            onBlur={focusOut}
+            className="placeholder:text-black/25"
+          />
         )}
+      </motion.div>
 
-        <form onSubmit={handleSubmit}>
-          {/* Header */}
-          <header className="pt-[140px] md:pt-[180px] pb-8 md:pb-16">
-            <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="uppercase tracking-[0.12em] text-[11px] text-black"
-              >
-                devis
-              </motion.p>
-              <motion.h1
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.05 }}
-                className="mt-2 text-[11vw] md:text-[3.75rem] lg:text-[4.5rem] md:leading-[1] leading-[0.95] font-extrabold -tracking-[0.02em] md:whitespace-nowrap text-black"
-              >
-                Demande de soumission
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="mt-8 md:mt-10 max-w-[520px] text-black font-medium text-[15px] md:text-[16px]"
-              >
-                Ça nous ferait plaisir de parler d'un projet potentiel avec
-                vous. Remplissez ce court formulaire pour qu'on ait un peu
-                d'information et on vous reviendra rapidement par la suite.
-              </motion.p>
-            </div>
-          </header>
+      {error && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{ color: 'rgba(255,85,85,0.9)', fontSize: '0.8rem', marginBottom: '16px' }}
+        >
+          {error}
+        </motion.p>
+      )}
 
-          {/* Quoi */}
-          <Section
-            id="sec-quoi"
-            index={0}
-            title="Quoi? *"
-            thumbVisible={thumbFor === 'sec-quoi'}
-          >
-            <div className="mt-2 space-y-6">
-              <p className="text-black font-medium text-[15px] md:text-[16px]">
-                Quel genre de projets avez-vous en tête?
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-                <ChoiceButton
-                  label="Application Web"
-                  active={project === 'web'}
-                  onClick={() => {
-                    setProject('web');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-                <ChoiceButton
-                  label="Application Mobile"
-                  active={project === 'mobile'}
-                  onClick={() => {
-                    setProject('mobile');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-                <ChoiceButton
-                  label="CRM"
-                  active={project === 'crm'}
-                  onClick={() => {
-                    setProject('crm');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-                <ChoiceButton
-                  label="ERP"
-                  active={project === 'erp'}
-                  onClick={() => {
-                    setProject('erp');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-                <ChoiceButton
-                  label="Intégration SAP, Dynamics"
-                  active={project === 'integration'}
-                  onClick={() => {
-                    setProject('integration');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-                <ChoiceButton
-                  label="E-commerce"
-                  active={project === 'ecommerce'}
-                  onClick={() => {
-                    setProject('ecommerce');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-                <ChoiceButton
-                  label="Data & Analytics"
-                  active={project === 'data'}
-                  onClick={() => {
-                    setProject('data');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-                <ChoiceButton
-                  label="Autre"
-                  active={project === 'autre'}
-                  onClick={() => {
-                    setProject('autre');
-                    showThumbThenScroll('sec-quoi', 'sec-quand');
-                  }}
-                />
-              </div>
-            </div>
-          </Section>
-
-          {/* Quand */}
-          <div className="mt-4 md:mt-6" />
-          <Section
-            id="sec-quand"
-            index={1}
-            title="Quand? *"
-            thumbVisible={thumbFor === 'sec-quand'}
-          >
-            <div className="mt-2 space-y-6">
-              <p className="text-black font-medium text-[15px] md:text-[16px]">
-                Quelle est votre date de mise en ligne idéale?
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                <ChoiceButton
-                  label="D'ICI 1 MOIS"
-                  active={timeline === '1m'}
-                  onClick={() => {
-                    setTimeline('1m');
-                    showThumbThenScroll('sec-quand', 'sec-combien');
-                  }}
-                />
-                <ChoiceButton
-                  label="D'ICI 3 MOIS"
-                  active={timeline === '3m'}
-                  onClick={() => {
-                    setTimeline('3m');
-                    showThumbThenScroll('sec-quand', 'sec-combien');
-                  }}
-                />
-                <ChoiceButton
-                  label="D'ICI 6 MOIS"
-                  active={timeline === '6m'}
-                  onClick={() => {
-                    setTimeline('6m');
-                    showThumbThenScroll('sec-quand', 'sec-combien');
-                  }}
-                />
-                <ChoiceButton
-                  label="D'ICI 12 MOIS"
-                  active={timeline === '12m'}
-                  onClick={() => {
-                    setTimeline('12m');
-                    showThumbThenScroll('sec-quand', 'sec-combien');
-                  }}
-                />
-              </div>
-            </div>
-          </Section>
-
-          {/* Où */}
-          <div className="mt-4 md:mt-6" />
-          <Section
-            id="sec-ou"
-            index={3}
-            title="Où? *"
-            thumbVisible={thumbFor === 'sec-ou'}
-          >
-            <div className="mt-2 space-y-6">
-              <p className="text-black font-medium text-[15px] md:text-[16px]">
-                Où est-ce que vous avez entendu parler de nous?
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                <ChoiceButton
-                  label="GOOGLE"
-                  active={source === 'google'}
-                  onClick={() => {
-                    setSource('google');
-                    showThumbThenScroll('sec-ou', 'sec-qui');
-                  }}
-                />
-                <ChoiceButton
-                  label="RÉFÉRENCE"
-                  active={source === 'ref'}
-                  onClick={() => {
-                    setSource('ref');
-                    showThumbThenScroll('sec-ou', 'sec-qui');
-                  }}
-                />
-                <ChoiceButton
-                  label="RÉSEAUX SOCIAUX"
-                  active={source === 'social'}
-                  onClick={() => {
-                    setSource('social');
-                    showThumbThenScroll('sec-ou', 'sec-qui');
-                  }}
-                />
-                <ChoiceButton
-                  label="AUTRE"
-                  active={source === 'autre'}
-                  onClick={() => {
-                    setSource('autre');
-                    showThumbThenScroll('sec-ou', 'sec-qui');
-                  }}
-                />
-              </div>
-            </div>
-          </Section>
-
-          {/* Qui */}
-          <Section
-            id="sec-qui"
-            index={4}
-            title="Qui? *"
-            thumbVisible={thumbFor === 'sec-qui'}
-          >
-            <div className="mt-2">
-              <p className="text-black font-medium text-[15px] md:text-[16px] mb-8">
-                Maintenant qu'on en connaît un peu plus sur votre projet, on
-                aimerait en apprendre plus sur vous.
-              </p>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-                {/* Left Column */}
-                <div className="space-y-6">
-                  {/* Nom complet */}
-                  <div>
-                    <label
-                      htmlFor="fullName"
-                      className="inline-block text-[14px] font-semibold text-black mb-2"
-                    >
-                      Nom complet <span className="text-red-500">*</span>
-                    </label>
-
-                    <input
-                      type="text"
-                      id="fullName"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-[#1D4760]/20 bg-white text-black text-[15px] focus:outline-none focus:border-[#1D4760] focus:ring-1 focus:ring-[#1D4760] transition-colors"
-                      placeholder="Jean Dupont"
-                    />
-                  </div>
-
-                  {/* Adresse courriel */}
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="inline-block text-[14px] font-semibold text-black mb-2"
-                    >
-                      Adresse courriel <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-[#1D4760]/20 bg-white text-black text-[15px] focus:outline-none focus:border-[#1D4760] focus:ring-1 focus:ring-[#1D4760] transition-colors"
-                      placeholder="jean.dupont@exemple.com"
-                    />
-                  </div>
-
-                  {/* Téléphone */}
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="inline-block text-[14px] font-semibold text-black mb-2"
-                    >
-                      Téléphone <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-[#1D4760]/20 bg-white text-black text-[15px] focus:outline-none focus:border-[#1D4760] focus:ring-1 focus:ring-[#1D4760] transition-colors"
-                      placeholder="+1 514 123 4567"
-                    />
-                  </div>
-                </div>
-
-                {/* Right Column */}
-                <div>
-                  <label
-                    htmlFor="projectDescription"
-                    className="inline-block text-[14px] font-semibold text-black mb-2"
-                  >
-                    Description du projet{' '}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    id="projectDescription"
-                    value={projectDescription}
-                    onChange={(e) => setProjectDescription(e.target.value)}
-                    rows={10}
-                    className="w-full px-4 py-3 rounded-lg border border-[#1D4760]/20 bg-white text-black text-[15px] focus:outline-none focus:border-[#1D4760] focus:ring-1 focus:ring-[#1D4760] transition-colors resize-none"
-                    placeholder="Décrivez votre projet en quelques mots..."
-                  />
-                </div>
-              </div>
-            </div>
-          </Section>
-
-          {/* Submit Button */}
-          <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 mb-[74px] md:mb-[106px]">
-            <div className="mt-10 flex justify-center lg:justify-start">
-              <motion.button
-                whileHover={
-                  !isSubmitting
-                    ? {
-                        scale: 1.03,
-                        boxShadow: '0 8px 24px rgba(29, 71, 96, 0.25)',
-                      }
-                    : {}
-                }
-                whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                type="submit"
-                disabled={isSubmitting}
-                className="inline-flex items-center justify-center px-8 md:px-10 py-4 md:py-5 rounded-full bg-[#1D4760] text-white border-2 border-[#1D4760] text-[15px] md:text-[16px] font-bold tracking-[0.04em] min-w-[200px] hover:bg-[#152f41] hover:border-[#152f41] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? 'Envoi en cours...' : 'Envoyer la demande'}
-              </motion.button>
-            </div>
-          </div>
-        </form>
-
-        {/* Footer-like info rows */}
-        <div className="mt-24 border-t border-[#1D4760]/10">
-          <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 grid md:grid-cols-3 gap-10 py-10 text-sm text-[#1D4760]/80">
-            <div>
-              <h4 className="uppercase text-black font-bold tracking-[0.06em] text-[12px] mb-4">
-                Vous souhaitez nous parler?
-              </h4>
-              <p>
-                contact@progix.pro
-                <br />
-                +1 514 576 5993
-              </p>
-            </div>
-            <div>
-              <h4 className="uppercase text-black font-bold tracking-[0.06em] text-[12px] mb-4">
-                Passez nous voir
-              </h4>
-              <p>
-                11770 5e Avenue
-                <br />
-                Montréal, QC H1E 7C1
-              </p>
-            </div>
-            <div>
-              <h4 className="uppercase text-black font-bold tracking-[0.06em] text-[12px] mb-4">
-                On vous répond rapidement
-              </h4>
-              <ul className="space-y-1">
-                <li>Temps de réponse moyen: &lt; 24 h</li>
-                <li>Modes: visio, présentiel, asynchrone</li>
-                <li>Langues: français, anglais</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <OkButton
+          onClick={onNext}
+          label={isLast ? 'Soumettre' : 'OK'}
+          loading={isLast && submitting}
+        />
+        {!isLast && (
+          <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            {step.kind === 'textarea' ? '⌘ + Entrée' : 'Entrée ↵'}
+          </span>
+        )}
       </div>
-    </main>
+    </div>
+  );
+}
+
+// ─── Choice Step ──────────────────────────────────────────────────────────────
+
+function ChoiceStep({ step, question, value, onSelect }: {
+  step: FormStep; question: string; value: string;
+  onSelect: (v: string) => void;
+}) {
+  const [hovered, setHovered] = useState<string | null>(null);
+  return (
+    <div>
+      <StepHeader number={step.number} question={question} subtitle={step.subtitle} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '26px' }}>
+        {step.options!.map((opt, i) => {
+          const active = value === opt.value;
+          const lit = active || hovered === opt.value;
+          return (
+            <motion.button
+              key={opt.value}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.04 * i, type: 'spring', stiffness: 420, damping: 36 }}
+              whileHover={!active ? { x: 4 } : {}}
+              onMouseEnter={() => { if (!active) setHovered(opt.value); }}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => onSelect(opt.value)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '14px',
+                padding: '13px 16px', textAlign: 'left',
+                border: `1px solid ${lit ? C.borderActive : C.border}`,
+                background: lit ? C.surfaceActive : C.surface,
+                borderRadius: '3px', cursor: 'pointer',
+                transition: 'all 0.17s',
+              }}
+            >
+              <span style={{
+                flexShrink: 0, width: '24px', height: '24px', borderRadius: '2px',
+                border: `1px solid ${lit ? C.textOnActive : C.border}`,
+                background: lit ? C.textOnActive : 'transparent',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '10px', fontWeight: 700, letterSpacing: '0.04em',
+                color: lit ? C.surfaceActive : C.textMuted, transition: 'all 0.17s',
+              }}>
+                {opt.key}
+              </span>
+              <span style={{
+                flex: 1, fontSize: '0.91rem', fontWeight: lit ? 600 : 400,
+                color: lit ? C.textOnActive : C.textSub, fontFamily: 'inherit',
+                transition: 'all 0.17s',
+              }}>
+                {opt.label}
+              </span>
+              {active && (
+                <motion.span initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ color: C.textOnActive, flexShrink: 0 }}>
+                  <Check size={13} />
+                </motion.span>
+              )}
+            </motion.button>
+          );
+        })}
+      </div>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.28 }}
+        style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+      >
+        Touche A – {step.options![step.options!.length - 1].key} pour sélectionner
+      </motion.p>
+    </div>
+  );
+}
+
+// ─── Yes/No Step ──────────────────────────────────────────────────────────────
+
+function YesNoStep({ step, question, value, onSelect }: {
+  step: FormStep; question: string; value: string;
+  onSelect: (v: string) => void;
+}) {
+  const [hovered, setHovered] = useState<string | null>(null);
+  const opts = [
+    { key: 'Y', label: 'Yes', value: 'yes' },
+    { key: 'N', label: 'No', value: 'no' },
+  ];
+  return (
+    <div>
+      <StepHeader number={step.number} question={question} subtitle={step.subtitle} />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', maxWidth: '400px', marginBottom: '26px' }}>
+        {opts.map((opt, i) => {
+          const active = value === opt.value;
+          const lit = active || hovered === opt.value;
+          return (
+            <motion.button
+              key={opt.value}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.04 * i }}
+              onMouseEnter={() => { if (!active) setHovered(opt.value); }}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => onSelect(opt.value)}
+              style={{
+                padding: '22px 16px', textAlign: 'center',
+                border: `1px solid ${lit ? C.borderActive : C.border}`,
+                background: lit ? C.surfaceActive : C.surface,
+                borderRadius: '3px', cursor: 'pointer', transition: 'all 0.17s',
+              }}
+            >
+              <div style={{
+                fontSize: '9px', fontWeight: 700, letterSpacing: '0.22em',
+                textTransform: 'uppercase', color: lit ? C.textOnActive : C.textMuted, marginBottom: '8px',
+              }}>
+                {opt.key}
+              </div>
+              <div style={{
+                fontSize: '1.05rem', fontWeight: lit ? 700 : 400,
+                color: lit ? C.textOnActive : C.textSub,
+              }}>
+                {opt.label}
+              </div>
+            </motion.button>
+          );
+        })}
+      </div>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.16 }}
+        style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+      >
+        Touche Y / N pour sélectionner
+      </motion.p>
+    </div>
+  );
+}
+
+// ─── Scale Step ───────────────────────────────────────────────────────────────
+
+function ScaleStep({ step, question, value, onSelect }: {
+  step: FormStep; question: string; value: string;
+  onSelect: (v: string) => void;
+}) {
+  return (
+    <div>
+      <StepHeader number={step.number} question={question} />
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        style={{ marginBottom: '12px' }}
+      >
+        {[['1', '2', '3', '4', '5'], ['6', '7', '8', '9', '10']].map((row, ri) => (
+          <div key={ri} style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', marginBottom: '8px' }}>
+            {row.map(n => {
+              const active = value === n;
+              return (
+                <motion.button
+                  key={n}
+                  whileHover={!active ? { scale: 1.05, background: C.surfaceActive, borderColor: C.borderActive, color: C.textOnActive } : { scale: 1.05 }}
+                  whileTap={{ scale: 0.93 }}
+                  onClick={() => onSelect(n)}
+                  style={{
+                    padding: '18px 8px', textAlign: 'center',
+                    border: `1px solid ${active ? C.borderActive : C.border}`,
+                    background: active ? C.surfaceActive : C.surface,
+                    color: active ? C.textOnActive : C.textSub,
+                    borderRadius: '3px', cursor: 'pointer',
+                    fontSize: '1.05rem', fontWeight: active ? 700 : 400,
+                    fontFamily: 'inherit', transition: 'all 0.17s',
+                  }}
+                >
+                  {n}
+                </motion.button>
+              );
+            })}
+          </div>
+        ))}
+      </motion.div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
+        {['Moins probable', 'Plus probable'].map(label => (
+          <span key={label} style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            {label}
+          </span>
+        ))}
+      </div>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.26 }}
+        style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+      >
+        Touche 1 – 9, 0 = 10 pour sélectionner
+      </motion.p>
+    </div>
+  );
+}
+
+// ─── Success ──────────────────────────────────────────────────────────────────
+
+const SOCIAL = [
+  { Icon: FaLinkedin, href: 'https://linkedin.com/company/progix', label: 'LinkedIn' },
+  { Icon: FaInstagram, href: 'https://www.instagram.com/teamprogix/', label: 'Instagram' },
+  { Icon: FaFacebook, href: 'https://www.facebook.com/progixinc', label: 'Facebook' },
+  { Icon: FaTwitter, href: 'https://twitter.com/progix', label: 'Twitter' },
+];
+
+function SuccessStep({ name }: { name: string }) {
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <motion.div
+        initial={{ scale: 0.3, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 280, damping: 18 }}
+        style={{
+          width: '54px', height: '54px', borderRadius: '50%',
+          border: '1px solid rgba(13,31,53,0.18)',
+          background: 'rgba(13,31,53,0.04)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          margin: '0 auto 28px',
+        }}
+      >
+        <Check size={22} style={{ color: C.text }} />
+      </motion.div>
+
+      <motion.h2
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.14, type: 'spring', stiffness: 240, damping: 26 }}
+        style={{
+          fontSize: 'clamp(2.4rem, 6.5vw, 4.4rem)',
+          fontWeight: 800, lineHeight: 1.06, letterSpacing: '-0.025em',
+          color: C.text, marginBottom: '16px',
+        }}
+      >
+        {name ? `Merci, ${name}.` : 'Merci.'}
+      </motion.h2>
+
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.22 }}
+        style={{
+          fontSize: '0.95rem', fontWeight: 300, lineHeight: 1.82,
+          color: C.textSub, maxWidth: '380px', margin: '0 auto 44px',
+        }}
+      >
+        Votre réponse a bien été reçue. Notre équipe vous contactera dans les prochaines 24 heures pour planifier votre appel stratégique.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.30 }}
+        style={{ marginBottom: '40px' }}
+      >
+        <p style={{
+          fontSize: '9px', fontWeight: 600, letterSpacing: '0.28em',
+          textTransform: 'uppercase', color: C.textMuted, marginBottom: '18px',
+        }}>
+          Suivez-nous
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+          {SOCIAL.map(({ Icon, href, label }, i) => (
+            <motion.a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.36 + i * 0.06, type: 'spring', stiffness: 340, damping: 24 }}
+              whileHover={{ scale: 1.14, borderColor: 'rgba(27,60,94,0.5)', color: C.text }}
+              style={{
+                width: '44px', height: '44px',
+                border: `1px solid ${C.border}`, borderRadius: '3px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: C.textMuted, textDecoration: 'none', transition: 'all 0.18s',
+              }}
+              aria-label={label}
+            >
+              <Icon size={17} />
+            </motion.a>
+          ))}
+        </div>
+      </motion.div>
+
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.52 }}>
+        <Link
+          href="/"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            fontSize: '11px', fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: C.textMuted, textDecoration: 'none',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = C.text; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = C.textMuted; }}
+        >
+          Retour à l&apos;accueil
+          <ArrowRight size={12} />
+        </Link>
+      </motion.div>
+    </div>
   );
 }
