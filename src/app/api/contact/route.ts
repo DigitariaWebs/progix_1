@@ -1,65 +1,106 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-export const runtime = 'nodejs'; // Force Node.js runtime for crypto operations
+export const runtime = 'nodejs';
+
+const safe = (v: unknown) =>
+  String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+const safeNl = (v: unknown) => safe(v).replace(/\n/g, '<br>');
+
+const label = (key: string, val: string) => `
+  <tr>
+    <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#666;font-size:11px;width:200px;vertical-align:top;letter-spacing:0.06em;text-transform:uppercase">${key}</td>
+    <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#e0e0e0;font-size:13px;vertical-align:top">${val || '<em style="color:#444">—</em>'}</td>
+  </tr>`;
+
+const section = (n: string, title: string, body: string) => body ? `
+  <div style="margin-bottom:28px">
+    <p style="font-size:10px;color:#555;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 8px">${n}. ${title}</p>
+    <p style="font-size:13px;color:#ccc;line-height:1.75;margin:0">${body}</p>
+  </div>` : '';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
-    // Extract form data based on current contact form
     const {
-      project,
-      timeline,
-      budget,
-      source,
-      fullName,
-      email,
-      phone,
-      projectDescription,
+      name, company, challenge, stage, blockers, opportunity,
+      targetUsers, goalBlockers, investment, validation,
+      commitment, readiness, determination, callCommitment, questions,
     } = body;
 
-    // Validate required env vars
-    const missingEnvVars: string[] = [];
-    if (!process.env.SMTP_HOST) missingEnvVars.push('SMTP_HOST');
-    if (!process.env.SMTP_PORT) missingEnvVars.push('SMTP_PORT');
-    if (!process.env.SMTP_USER) missingEnvVars.push('SMTP_USER');
-    if (!process.env.SMTP_PASS) missingEnvVars.push('SMTP_PASS');
-    if (!process.env.SMTP_FROM) missingEnvVars.push('SMTP_FROM');
-    if (!process.env.CONTACT_EMAIL) missingEnvVars.push('CONTACT_EMAIL');
+    const hasResend = !!process.env.RESEND_API_KEY;
+    const hasSmtp = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS && process.env.SMTP_FROM);
 
-    if (missingEnvVars.length > 0) {
+    if (!process.env.CONTACT_EMAIL || (!hasResend && !hasSmtp)) {
+      const missing: string[] = [];
+      if (!process.env.CONTACT_EMAIL) missing.push('CONTACT_EMAIL');
+      if (!hasResend && !hasSmtp) missing.push('RESEND_API_KEY (or SMTP_HOST/USER/PASS/FROM)');
       return NextResponse.json(
-        {
-          success: false,
-          error: 'missing_config',
-          message: 'Server configuration incomplete',
-          details: `Missing: ${missingEnvVars.join(', ')}`,
-        },
+        { success: false, error: 'missing_config', message: 'Server configuration incomplete', details: `Missing: ${missing.join(', ')}` },
         { status: 500 },
       );
     }
 
-    // For now, we'll skip database saving and just send the email
-    // TODO: Implement database saving later if needed
+    const fmt = {
+      company: (v: string) => ({ created: 'Oui, une entreprise déjà créée', creating: 'Oui, en cours de création', none: 'Non, pas encore' }[v] || v),
+      stage: (v: string) => ({ idea: 'Idée', developing: 'En cours de développement', launched: 'Déjà lancé' }[v] || v),
+      targetUsers: (v: string) => ({ '<1k': 'Moins de 1 000', '1k-2k': '1 000 – 2 000', '2k-5k': '2 000 – 5 000', '5k+': '5 000+' }[v] || v),
+      investment: (v: string) => ({ '<5k': 'Moins de 5 000 $', '5k-10k': '5 000 $ à 10 000 $', '10k-20k': '10 000 $ à 20 000 $', '20k+': '20 000 $ et plus', discuss: 'Je souhaite en discuter' }[v] || v),
+      yesno: (v: string) => ({ yes: 'Oui', no: 'Non' }[v] || v),
+      readiness: (v: string) => ({ 'yes-fit': 'Oui, si la solution correspond à mes attentes', conditional: 'Oui, sous certaines conditions', considering: 'Je suis encore en réflexion', no: 'Non pour le moment' }[v] || v),
+    };
 
-    // Helper to send via Resend HTTP API (avoids SMTP restrictions on some hosts)
-    const sendViaResend = async (htmlContent: string) => {
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#080808;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+<div style="max-width:620px;margin:0 auto;padding:48px 28px">
+  <div style="margin-bottom:44px">
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.32em;text-transform:uppercase;color:#444;margin:0 0 14px">PROGIX</p>
+    <h1 style="font-size:26px;font-weight:800;color:#ffffff;margin:0 0 8px;letter-spacing:-0.02em">Nouvelle qualification reçue</h1>
+    <p style="font-size:12px;color:#555;margin:0">Soumission via le formulaire de qualification Progix — ${new Date().toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+  </div>
+
+  <table style="width:100%;border-collapse:collapse;margin-bottom:44px">
+    ${label('Nom', safe(name))}
+    ${label('Structure existante', safe(fmt.company(company)))}
+    ${label('Stade du projet', safe(fmt.stage(stage)))}
+    ${label('Utilisateurs cibles (4 mois)', safe(fmt.targetUsers(targetUsers)))}
+    ${label('Budget prévu', safe(fmt.investment(investment)))}
+    ${label('Prêt à s\'impliquer', safe(fmt.yesno(commitment)))}
+    ${label('Capacité à initier', safe(fmt.readiness(readiness)))}
+    ${label('Détermination', determination ? `${safe(determination)} / 10` : '')}
+    ${label('Engagement appel stratégique', safe(fmt.yesno(callCommitment)))}
+  </table>
+
+  <div style="margin-bottom:40px">
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#444;margin:0 0 24px;padding-bottom:12px;border-bottom:1px solid #1a1a1a">Réponses détaillées</p>
+    ${section('3', 'Défi principal', safeNl(challenge))}
+    ${section('5', 'Blocages actuels', safeNl(blockers))}
+    ${section('6', 'Plus grande opportunité', safeNl(opportunity))}
+    ${section('8', 'Blocages vers l\'objectif', safeNl(goalBlockers))}
+    ${section('10', 'Validation marché', safeNl(validation))}
+    ${section('15', 'Questions', safeNl(questions))}
+  </div>
+
+  <div style="border-top:1px solid #181818;padding-top:20px">
+    <p style="font-size:10px;color:#3a3a3a;margin:0">progix.pro — formulaire de qualification</p>
+  </div>
+</div>
+</body></html>`;
+
+    const sendViaResend = async () => {
       const apiKey = process.env.RESEND_API_KEY;
       const to = process.env.CONTACT_EMAIL;
       if (!apiKey || !to) return false;
       const from = process.env.SMTP_FROM || 'no-reply@progix.pro';
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
+        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           from: `PROGIX <${from}>`,
           to: [to],
-          subject: 'Nouvelle demande de soumission - Progix',
-          html: htmlContent,
+          subject: `Nouvelle qualification — ${safe(name) || 'Anonyme'}`,
+          html,
         }),
       });
       if (!res.ok) {
@@ -69,78 +110,10 @@ export async function POST(request: NextRequest) {
       return true;
     };
 
-    // Format project type
-    const getProjectType = (proj: string) => {
-      const types: { [key: string]: string } = {
-        web: 'Application Web',
-        mobile: 'Application Mobile',
-        crm: 'CRM',
-        erp: 'ERP',
-        integration: 'Intégration SAP, Dynamics',
-        ecommerce: 'E-commerce',
-        data: 'Data & Analytics',
-        autre: 'Autre',
-      };
-      return types[proj] || proj;
-    };
-
-    // Format timeline
-    const getTimelineText = (time: string) => {
-      const times: { [key: string]: string } = {
-        '1m': "D'ICI 1 MOIS",
-        '3m': "D'ICI 3 MOIS",
-        '6m': "D'ICI 6 MOIS",
-        '12m': "D'ICI 12 MOIS",
-      };
-      return times[time] || time;
-    };
-
-    // Format budget
-    const getBudgetText = (bud: string) => {
-      const budgets: { [key: string]: string } = {
-        b1: 'MOINS DE 20 000$',
-        b2: 'DE 20 000$ À 40 000$',
-        b3: 'DE 40 000$ À 60 000$',
-        b4: 'DE 60 000$ À 100 000$',
-        b5: 'PLUS DE 100 000$',
-      };
-      return budgets[bud] || bud;
-    };
-
-    // Format source
-    const getSourceText = (src: string) => {
-      const sources: { [key: string]: string } = {
-        google: 'GOOGLE',
-        ref: 'RÉFÉRENCE',
-        social: 'RÉSEAUX SOCIAUX',
-        autre: 'AUTRE',
-      };
-      return sources[src] || src;
-    };
-
-    const html = `
-      <h2>Nouvelle demande de soumission de projet</h2>
-
-      <h3>Détails du projet</h3>
-      <p><strong>Type de projet:</strong> ${getProjectType(project)}</p>
-      <p><strong>Échéancier souhaité:</strong> ${getTimelineText(timeline)}</p>
-      <p><strong>Budget estimé:</strong> ${getBudgetText(budget)}</p>
-      <p><strong>Source:</strong> ${getSourceText(source)}</p>
-
-      <h3>Informations de contact</h3>
-      <p><strong>Nom complet:</strong> ${fullName}</p>
-      <p><strong>Courriel:</strong> ${email}</p>
-      <p><strong>Téléphone:</strong> ${phone}</p>
-
-      <h3>Description du projet</h3>
-      <p>${projectDescription.replace(/\n/g, '<br>')}</p>
-    `;
-
-    // Prefer Resend if configured, fallback to SMTP
     let sent = false;
     try {
       if (process.env.RESEND_API_KEY) {
-        await sendViaResend(html);
+        await sendViaResend();
         sent = true;
       }
     } catch {
@@ -148,79 +121,53 @@ export async function POST(request: NextRequest) {
     }
 
     if (!sent) {
-      // Validate minimal SMTP config
       const host = process.env.SMTP_HOST;
       const port = parseInt(process.env.SMTP_PORT || '587', 10);
       const user = process.env.SMTP_USER;
       const pass = process.env.SMTP_PASS;
       const configuredFrom = process.env.SMTP_FROM;
       const to = process.env.CONTACT_EMAIL;
+
       if (!host || !user || !pass || !configuredFrom || !to) {
         return NextResponse.json(
-          {
-            success: false,
-            message:
-              'Email service not configured. Set RESEND_API_KEY or SMTP_* env vars.',
-          },
+          { success: false, message: 'Email service not configured. Set RESEND_API_KEY or SMTP_* env vars.' },
           { status: 500 },
         );
       }
+
       const transporter = nodemailer.createTransport({
-        host,
-        port,
-        secure: port === 465,
+        host, port, secure: port === 465,
         auth: { user, pass },
         tls: { rejectUnauthorized: false },
       });
-      // Optional preflight verify to surface clearer errors
+
       try {
         await transporter.verify();
       } catch {
         return NextResponse.json(
-          {
-            success: false,
-            message: 'SMTP verification failed',
-            code: 'SMTP_VERIFY_ERROR',
-            detail: 'Unknown error',
-          },
+          { success: false, message: 'SMTP verification failed', code: 'SMTP_VERIFY_ERROR' },
           { status: 500 },
         );
       }
-      // Gmail requires From to match the authenticated user unless "Send mail as" is configured.
-      const useGmailSafeFrom =
-        /gmail\.com$/i.test(user) || /smtp\.gmail\.com$/i.test(host);
+
+      const useGmailSafeFrom = /gmail\.com$/i.test(user) || /smtp\.gmail\.com$/i.test(host);
       const from = useGmailSafeFrom ? user : configuredFrom!;
 
       await transporter.sendMail({
-        from,
-        to,
-        replyTo: email, // so you can reply directly to la personne
-        subject: 'Nouvelle demande de soumission - Progix',
+        from, to,
+        subject: `Nouvelle qualification — ${safe(name) || 'Anonyme'}`,
         html,
       });
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Email sent successfully',
-    });
+    return NextResponse.json({ success: true, message: 'Submitted successfully' });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error occurred';
-    const errorCode =
-      error && typeof error === 'object' && 'code' in error
-        ? (error as { code?: string }).code
-        : 'UNKNOWN';
-
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    const errorCode = error && typeof error === 'object' && 'code' in error
+      ? (error as { code?: string }).code
+      : 'UNKNOWN';
     return NextResponse.json(
-      {
-        success: false,
-        error: 'email_send_failed',
-        message: 'Failed to send email',
-        details: errorMessage,
-        errorCode: errorCode,
-        timestamp: new Date().toISOString(),
-      },
+      { success: false, error: 'submission_failed', message: 'Failed to submit', details: errorMessage, errorCode, timestamp: new Date().toISOString() },
       { status: 500 },
     );
   }
