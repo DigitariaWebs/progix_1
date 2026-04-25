@@ -378,7 +378,7 @@ export default function ContactPage() {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '80px 40px',
       }}>
-        <div style={{ width: '100%', maxWidth: '680px' }}>
+        <div style={{ width: '100%', maxWidth: step.kind === 'welcome' ? '1020px' : '680px', transition: 'max-width 0.4s ease' }}>
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div key={idx} custom={dir} variants={variants} initial="enter" animate="center" exit="exit">
               {step.kind === 'welcome' && <WelcomeStep onStart={() => navigate(1)} />}
@@ -493,73 +493,212 @@ export default function ContactPage() {
 // ─── Welcome ──────────────────────────────────────────────────────────────────
 
 function WelcomeStep({ onStart }: { onStart: () => void }) {
+  const stats = [
+    { number: '50+', label: 'Projets accompagnés' },
+    { number: '< 24h', label: 'Délai de réponse' },
+    { number: '6 min', label: 'Pour compléter' },
+  ];
+
   return (
-    <div style={{ textAlign: 'center' }}>
-      <motion.p
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.08 }}
-        style={{
-          fontSize: '9px', fontWeight: 600, letterSpacing: '0.32em',
-          textTransform: 'uppercase', color: C.accent, marginBottom: '28px',
-        }}
-      >
-        Qualification — Appel Stratégique
-      </motion.p>
-
-      <motion.h1
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, type: 'spring', stiffness: 240, damping: 26 }}
-        style={{
-          fontSize: 'clamp(2.6rem, 7.5vw, 5.4rem)',
-          fontWeight: 800, lineHeight: 1.05, letterSpacing: '-0.028em',
-          color: C.text, marginBottom: '22px',
-        }}
-      >
-        Parlez-nous de votre<br />
-        <span style={{ color: C.surfaceActive }}>projet d&apos;application</span><br />
-        ou SaaS.
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        style={{
-          fontSize: '0.93rem', fontWeight: 300, lineHeight: 1.82,
-          color: C.textSub, maxWidth: '420px', margin: '0 auto 38px',
-        }}
-      >
-        Répondez à quelques questions rapides afin que nous puissions préparer une stratégie claire pour le développement, le lancement et l&apos;acquisition de vos premiers utilisateurs.
-      </motion.p>
-
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.33 }}
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '22px', flexWrap: 'wrap' }}
-      >
-        <motion.button
-          whileHover={{ scale: 1.02, background: '#1B3C5E' }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onStart}
+    <div style={{ display: 'flex', gap: '48px', alignItems: 'stretch', flexWrap: 'wrap' }}>
+      {/* Left column */}
+      <div style={{ flex: '1 1 340px' }}>
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
           style={{
-            display: 'inline-flex', alignItems: 'center', gap: '10px',
-            padding: '15px 34px', background: C.text, color: C.bg,
-            border: 'none', borderRadius: '3px',
-            fontSize: '12px', fontWeight: 700, fontFamily: 'inherit',
-            letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer',
+            fontSize: '9px', fontWeight: 600, letterSpacing: '0.32em',
+            textTransform: 'uppercase', color: C.accent, marginBottom: '28px',
           }}
         >
-          Commencer
-          <ArrowRight size={14} />
-        </motion.button>
-        <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-          Takes 6 minutes
-        </span>
+          Qualification — Appel Stratégique
+        </motion.p>
+
+        <h1
+          style={{
+            fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
+            fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.028em',
+            color: C.text, marginBottom: '20px',
+          }}
+        >
+          {[
+            { text: 'Parlez-nous', color: C.text },
+            { text: 'de', color: C.text },
+            { text: 'votre', color: C.text },
+            { text: "projet d'application", color: C.surfaceActive },
+            { text: 'ou', color: C.text },
+            { text: 'SaaS.', color: C.text },
+          ].map((word, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 22, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ delay: 0.15 + i * 0.14, type: 'spring', stiffness: 160, damping: 22 }}
+              style={{ display: 'inline-block', color: word.color, marginRight: '0.26em' }}
+            >
+              {word.text}
+            </motion.span>
+          ))}
+        </h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          style={{
+            fontSize: '0.93rem', fontWeight: 300, lineHeight: 1.82,
+            color: C.textSub, marginBottom: '36px',
+          }}
+        >
+          Répondez à quelques questions rapides afin que nous puissions préparer une stratégie claire pour le développement, le lancement et l&apos;acquisition de vos premiers utilisateurs.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.33 }}
+          style={{ display: 'flex', alignItems: 'center', gap: '22px', flexWrap: 'wrap' }}
+        >
+          <motion.button
+            whileHover={{ scale: 1.02, background: '#1B3C5E' }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onStart}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              padding: '15px 34px', background: C.text, color: C.bg,
+              border: 'none', borderRadius: '3px',
+              fontSize: '12px', fontWeight: 700, fontFamily: 'inherit',
+              letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer',
+            }}
+          >
+            Commencer
+            <ArrowRight size={14} />
+          </motion.button>
+          <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            Takes 6 minutes
+          </span>
+        </motion.div>
+      </div>
+
+      {/* Right column — stats panel */}
+      <motion.div
+        initial={{ opacity: 0, x: 32 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 28 }}
+        style={{
+          flex: '1 1 240px',
+          background: 'linear-gradient(150deg, #0D1F35 0%, #162d48 100%)',
+          borderRadius: '6px',
+          padding: '36px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        {/* Decorative glow */}
+        <div style={{
+          position: 'absolute', top: -60, right: -60,
+          width: 200, height: 200, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(212,113,26,0.12) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+
+        {/* Header label */}
+        <motion.p
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28 }}
+          style={{
+            fontSize: '9px', fontWeight: 600, letterSpacing: '0.3em',
+            textTransform: 'uppercase', color: C.accent, marginBottom: '28px',
+          }}
+        >
+          Pourquoi Progix
+        </motion.p>
+
+        {/* Stats with dividers */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          {stats.map(({ number, label }, i) => (
+            <div key={label}>
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.34 + i * 0.1 }}
+                style={{ padding: '18px 0' }}
+              >
+                <div style={{
+                  fontSize: 'clamp(1.9rem, 3.6vw, 2.7rem)',
+                  fontWeight: 800, letterSpacing: '-0.03em',
+                  color: C.accent, lineHeight: 1, marginBottom: '5px',
+                }}>
+                  {number}
+                </div>
+                <div style={{
+                  fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em',
+                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.38)',
+                }}>
+                  {label}
+                </div>
+              </motion.div>
+              {i < stats.length - 1 && (
+                <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)' }} />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Testimonial */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.66 }}
+          style={{
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            paddingTop: '22px',
+            marginTop: '8px',
+          }}
+        >
+          <p style={{
+            fontSize: '0.81rem', fontWeight: 300, lineHeight: 1.72,
+            color: 'rgba(255,255,255,0.52)', fontStyle: 'italic',
+          }}>
+            &ldquo;Du concept au lancement, une équipe structurée et réactive à chaque étape.&rdquo;
+          </p>
+        </motion.div>
       </motion.div>
     </div>
+  );
+}
+
+// ─── Animated Words ───────────────────────────────────────────────────────────
+
+function AnimatedWords({ text, baseDelay = 0 }: { text: string; baseDelay?: number }) {
+  let wordIndex = 0;
+  return (
+    <>
+      {text.split('\n').map((line, li, lines) => (
+        <React.Fragment key={li}>
+          {line.split(' ').filter(Boolean).map((word) => {
+            const idx = wordIndex++;
+            return (
+              <motion.span
+                key={idx}
+                initial={{ opacity: 0, y: 16, filter: 'blur(5px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ delay: baseDelay + idx * 0.04, type: 'spring', stiffness: 220, damping: 26 }}
+                style={{ display: 'inline-block', marginRight: '0.26em' }}
+              >
+                {word}
+              </motion.span>
+            );
+          })}
+          {li < lines.length - 1 && <br />}
+        </React.Fragment>
+      ))}
+    </>
   );
 }
 
@@ -589,19 +728,15 @@ function StepHeader({ number, question, subtitle }: {
           <span style={{ color: 'rgba(13,31,53,0.22)', fontSize: '12px' }}>→</span>
         </motion.div>
       )}
-      <motion.h2
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.36 }}
+      <h2
         style={{
           fontSize: 'clamp(1.65rem, 4.2vw, 2.7rem)',
-          fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.022em',
-          color: C.text, whiteSpace: 'pre-line',
-          marginBottom: subtitle ? '10px' : 0,
+          fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.022em',
+          color: C.text, marginBottom: subtitle ? '10px' : 0,
         }}
       >
-        {question}
-      </motion.h2>
+        <AnimatedWords text={question} />
+      </h2>
       {subtitle && (
         <motion.p
           initial={{ opacity: 0, y: 8 }}
