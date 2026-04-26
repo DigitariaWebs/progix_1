@@ -317,7 +317,7 @@ export default function ContactPage() {
 
   return (
     <div
-      className="font-montserrat"
+      className="font-sans"
       style={{ position: 'fixed', inset: 0, background: C.bg, color: C.text, overflow: 'hidden' }}
     >
       {/* Grain overlay */}
