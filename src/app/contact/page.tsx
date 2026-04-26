@@ -393,8 +393,8 @@ export default function ContactPage() {
       }}>
         <div style={{
           minHeight: '100%',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: mobile ? '72px 20px 80px' : '80px 40px',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          padding: mobile ? '80px 20px 80px' : '80px 40px',
           boxSizing: 'border-box',
         }}>
           <div style={{ width: '100%', maxWidth: step.kind === 'welcome' ? '1020px' : '680px', transition: 'max-width 0.4s ease' }}>
@@ -521,7 +521,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
   ];
 
   return (
-    <div style={{ display: 'flex', gap: mobile ? '24px' : '48px', alignItems: 'stretch', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: mobile ? '16px' : '48px', alignItems: 'stretch', flexWrap: 'wrap' }}>
       {/* Left column */}
       <div style={{ flex: '1 1 340px', textAlign: mobile ? 'center' : 'left' }}>
         <motion.p
@@ -530,7 +530,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           transition={{ delay: 0.08 }}
           style={{
             fontSize: '9px', fontWeight: 600, letterSpacing: '0.32em',
-            textTransform: 'uppercase', color: C.accent, marginBottom: mobile ? '16px' : '28px',
+            textTransform: 'uppercase', color: C.accent, marginBottom: mobile ? '10px' : '28px',
           }}
         >
           Qualification — Appel Stratégique
@@ -540,7 +540,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           style={{
             fontSize: mobile ? 'clamp(1.6rem, 7vw, 2.2rem)' : 'clamp(1.75rem, 3.8vw, 3.4rem)',
             fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.028em',
-            color: C.text, marginBottom: mobile ? '14px' : '20px',
+            color: C.text, marginBottom: mobile ? '10px' : '20px',
           }}
         >
           {[
@@ -569,7 +569,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           transition={{ delay: 0.25 }}
           style={{
             fontSize: mobile ? '0.82rem' : '0.93rem', fontWeight: 300, lineHeight: 1.65,
-            color: C.textSub, marginBottom: mobile ? '20px' : '36px',
+            color: C.textSub, marginBottom: mobile ? '14px' : '36px',
           }}
         >
           Répondez à quelques questions rapides afin que nous puissions préparer une stratégie claire pour le développement, le lancement et l&apos;acquisition de vos premiers utilisateurs.
@@ -622,7 +622,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           flex: '1 1 240px',
           background: 'linear-gradient(150deg, #0D1F35 0%, #162d48 100%)',
           borderRadius: '6px',
-          padding: mobile ? '14px 16px' : '36px',
+          padding: mobile ? '12px 16px' : '36px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -660,7 +660,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.34 + i * 0.1 }}
-                style={{ padding: mobile ? '8px 0' : '18px 0', textAlign: mobile ? 'center' : 'left' }}
+                style={{ padding: mobile ? '6px 0' : '18px 0', textAlign: mobile ? 'center' : 'left' }}
               >
                 <div style={{ fontSize: mobile ? 'clamp(1.4rem, 5vw, 1.9rem)' : 'clamp(1.9rem, 3.6vw, 2.7rem)', fontWeight: 800, letterSpacing: '-0.03em', color: '#FFFFFF', lineHeight: 1, marginBottom: '5px' }}>
                   {number}
