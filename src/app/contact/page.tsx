@@ -356,19 +356,6 @@ export default function ContactPage() {
         />
       </div>
 
-      {/* Logo */}
-      <div style={{ position: 'absolute', top: mobile ? 20 : 28, left: mobile ? 16 : 36, zIndex: 30 }}>
-        <Link
-          href="/"
-          style={{
-            fontSize: '11px', fontWeight: 800, letterSpacing: '0.28em',
-            textTransform: 'uppercase', color: C.text, textDecoration: 'none',
-          }}
-        >
-          PROGIX
-        </Link>
-      </div>
-
       {/* Step counter — bottom-left, mirrors nav arrows at bottom-right */}
       {step.number != null && (
         <div style={{
@@ -394,7 +381,7 @@ export default function ContactPage() {
         <div style={{
           minHeight: '100%',
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          padding: mobile ? '80px 20px 80px' : '80px 40px',
+          padding: mobile ? '120px 20px 80px' : '80px 40px',
           boxSizing: 'border-box',
         }}>
           <div style={{ width: '100%', maxWidth: step.kind === 'welcome' ? '1020px' : '680px', transition: 'max-width 0.4s ease' }}>
