@@ -35,7 +35,7 @@ const NosValeursPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white font-montserrat relative">
+    <div className="min-h-screen bg-white relative">
       {/* BlobCursor avec couleur bleue Progix - Hidden on mobile, smaller on desktop */}
       <div className="fixed inset-0 pointer-events-none z-60 hidden md:block">
         <BlobCursor
@@ -77,9 +77,7 @@ const NosValeursPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-8 leading-tight"
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              >
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-8 leading-tight"              >
                 Demain devrait être{' '}
                 <span className="relative">
                   meilleur
@@ -95,9 +93,7 @@ const NosValeursPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-xl text-black leading-relaxed mb-8"
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              >
+                className="text-xl text-black leading-relaxed mb-8"              >
                 Nous sommes une équipe de stratèges, développeurs,
                 communicateurs et chercheurs. Ensemble, nous croyons que le
                 progrès ne se produit que lorsque vous refusez de jouer la
@@ -106,9 +102,7 @@ const NosValeursPage = () => {
 
               <motion.a
                 href="#principles"
-                className="inline-flex items-center text-black font-semibold text-lg hover:underline"
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              >
+                className="inline-flex items-center text-black font-semibold text-lg hover:underline"              >
                 En savoir plus
                 <svg
                   className="w-5 h-5 ml-2"
@@ -186,9 +180,7 @@ const NosValeursPage = () => {
                 transition={{ duration: 0.6 }}
                 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight transition-colors duration-1000 ${
                   isProgressSectionVisible ? 'text-white' : 'text-black'
-                }`}
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              >
+                }`}              >
                 Voyez comment nous{' '}
                 <span className="relative">
                   pouvons
@@ -229,9 +221,7 @@ const NosValeursPage = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className={`text-xl leading-relaxed mb-8 transition-colors duration-1000 ${
                   isProgressSectionVisible ? 'text-gray-200' : 'text-black'
-                }`}
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              >
+                }`}              >
                 Nous ajoutons une couche d&apos;insights et d&apos;actions
                 audacieuses qui permet aux créateurs de changement
                 d&apos;accélérer leur progrès dans des domaines tels que le
@@ -243,9 +233,7 @@ const NosValeursPage = () => {
                 href="#values"
                 className={`inline-flex items-center font-semibold text-lg hover:underline transition-colors duration-1000 ${
                   isProgressSectionVisible ? 'text-white' : 'text-black'
-                }`}
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              >
+                }`}              >
                 En savoir plus
                 <svg
                   className="w-5 h-5 ml-2"
@@ -342,13 +330,9 @@ const NosValeursPage = () => {
               <input
                 type="email"
                 placeholder="Votre adresse email"
-                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all duration-300"
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              />
+                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all duration-300"              />
               <button
-                className="px-6 py-3 bg-white text-cyan-800 rounded-lg font-semibold hover:bg-white/90 transition-all duration-300 transform hover:scale-105"
-                style={{ fontFamily: 'Hubot Sans, Inter, sans-serif' }}
-              >
+                className="px-6 py-3 bg-white text-cyan-800 rounded-lg font-semibold hover:bg-white/90 transition-all duration-300 transform hover:scale-105"              >
                 S&apos;abonner
               </button>
             </div>
