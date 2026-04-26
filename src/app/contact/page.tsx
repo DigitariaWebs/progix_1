@@ -66,8 +66,8 @@ const STEPS: FormStep[] = [
   { id: 'welcome', kind: 'welcome' },
   {
     id: 'name', kind: 'input', number: 1,
-    question: "First things first,\nwhat's your name?",
-    placeholder: 'Type your answer here...',
+    question: "Avant tout,\nquel est votre prénom ?",
+    placeholder: 'Votre réponse ici...',
     field: 'name',
   },
   {
@@ -84,7 +84,7 @@ const STEPS: FormStep[] = [
     id: 'challenge', kind: 'textarea', number: 3,
     question: 'Quel est le principal défi que\nvous souhaitez résoudre ?',
     subtitle: 'Expliquez le problème principal que votre application doit résoudre pour vos utilisateurs ou votre marché.',
-    placeholder: 'Type your answer here...',
+    placeholder: 'Votre réponse ici...',
     field: 'challenge',
   },
   {
@@ -100,13 +100,13 @@ const STEPS: FormStep[] = [
   {
     id: 'blockers', kind: 'textarea', number: 5,
     question: "Qu'est-ce qui bloque\nvotre progression actuellement ?",
-    placeholder: 'Type your answer here...',
+    placeholder: 'Votre réponse ici...',
     field: 'blockers',
   },
   {
     id: 'opportunity', kind: 'textarea', number: 6,
     question: 'Quelle est la plus grande opportunité\nque vous voyez avec ce projet ?',
-    placeholder: 'Type your answer here...',
+    placeholder: 'Votre réponse ici...',
     field: 'opportunity',
   },
   {
@@ -123,7 +123,7 @@ const STEPS: FormStep[] = [
   {
     id: 'goalBlockers', kind: 'textarea', number: 8,
     question: "Qu'est-ce qui vous empêche\naujourd'hui d'atteindre cet objectif ?",
-    placeholder: 'Type your answer here...',
+    placeholder: 'Votre réponse ici...',
     field: 'goalBlockers',
   },
   {
@@ -143,7 +143,7 @@ const STEPS: FormStep[] = [
     id: 'validation', kind: 'textarea', number: 10,
     question: "Avez-vous déjà validé certains aspects\nde ce projet auprès de votre marché ?",
     subtitle: "Tests utilisateurs, retours clients, ventes, liste d'attente, prototype, landing page, etc.",
-    placeholder: 'Type your answer here...',
+    placeholder: 'Votre réponse ici...',
     field: 'validation',
   },
   {
@@ -176,8 +176,8 @@ const STEPS: FormStep[] = [
   },
   {
     id: 'questions', kind: 'textarea', number: 15,
-    question: 'Do you have any questions\nabout our solution?',
-    placeholder: 'Type your answer here...',
+    question: "Avez-vous des questions\nsur notre solution ?",
+    placeholder: 'Votre réponse ici...',
     field: 'questions',
   },
   { id: 'success', kind: 'success' },
@@ -264,7 +264,7 @@ export default function ContactPage() {
     if (s.id === 'company') {
       const n = formData.name.trim();
       return n
-        ? `Thanks for your time, ${n}.\nAvez-vous déjà une entreprise\nou une structure liée à ce projet ?`
+        ? `Merci, ${n}.\nAvez-vous déjà une entreprise\nou une structure liée à ce projet ?`
         : `Avez-vous déjà une entreprise\nou une structure liée à ce projet ?`;
     }
     return s.question || '';
@@ -576,7 +576,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
             <ArrowRight size={14} />
           </motion.button>
           <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-            Takes 6 minutes
+            6 minutes suffisent
           </span>
         </motion.div>
       </div>
@@ -951,8 +951,8 @@ function YesNoStep({ step, question, value, onSelect }: {
 }) {
   const [hovered, setHovered] = useState<string | null>(null);
   const opts = [
-    { key: 'Y', label: 'Yes', value: 'yes' },
-    { key: 'N', label: 'No', value: 'no' },
+    { key: 'Y', label: 'Oui', value: 'yes' },
+    { key: 'N', label: 'Non', value: 'no' },
   ];
   return (
     <div>
