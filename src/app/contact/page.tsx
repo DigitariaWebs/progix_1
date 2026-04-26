@@ -23,6 +23,18 @@ const C = {
   accent: '#D4711A',
 };
 
+// ─── Breakpoint ───────────────────────────────────────────────────────────────
+function useBreakpoint() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return mobile;
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 type StepKind = 'welcome' | 'input' | 'textarea' | 'choice' | 'yesno' | 'scale' | 'success';
 
@@ -201,6 +213,7 @@ const variants = {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function ContactPage() {
+  const mobile = useBreakpoint();
   const [idx, setIdx] = useState(0);
   const [dir, setDir] = useState(1);
   const [formData, setFormData] = useState<FormData>({
@@ -344,7 +357,7 @@ export default function ContactPage() {
       </div>
 
       {/* Logo */}
-      <div style={{ position: 'absolute', top: 28, left: 36, zIndex: 30 }}>
+      <div style={{ position: 'absolute', top: mobile ? 20 : 28, left: mobile ? 16 : 36, zIndex: 30 }}>
         <Link
           href="/"
           style={{
@@ -356,83 +369,90 @@ export default function ContactPage() {
         </Link>
       </div>
 
-      {/* Step counter */}
+      {/* Step counter — bottom-left, mirrors nav arrows at bottom-right */}
       {step.number != null && (
         <div style={{
-          position: 'absolute', top: 24, right: 36, zIndex: 30,
+          position: 'absolute', bottom: 28, left: mobile ? 20 : 36, zIndex: 30,
           display: 'flex', alignItems: 'center', gap: '5px',
         }}>
-          <span style={{ fontSize: '20px', fontWeight: 800, color: C.text, letterSpacing: '0.02em', lineHeight: 1 }}>
+          <span style={{ fontSize: mobile ? '16px' : '20px', fontWeight: 800, color: C.text, letterSpacing: '0.02em', lineHeight: 1 }}>
             {String(step.number).padStart(2, '0')}
           </span>
-          <span style={{ fontSize: '14px', color: 'rgba(255,255,255,0.22)', fontWeight: 300, lineHeight: 1 }}>/</span>
-          <span style={{ fontSize: '15px', fontWeight: 500, color: C.textMuted, letterSpacing: '0.04em', lineHeight: 1 }}>
+          <span style={{ fontSize: mobile ? '11px' : '14px', color: 'rgba(0,0,0,0.18)', fontWeight: 300, lineHeight: 1 }}>/</span>
+          <span style={{ fontSize: mobile ? '12px' : '15px', fontWeight: 500, color: C.textMuted, letterSpacing: '0.04em', lineHeight: 1 }}>
             {String(TOTAL_CONTENT).padStart(2, '0')}
           </span>
         </div>
       )}
 
-      {/* Content */}
+      {/* Content — outer div scrolls on mobile, inner div centers */}
       <div style={{
         position: 'absolute', inset: 0,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '80px 40px',
+        overflowY: mobile ? 'auto' : 'hidden',
+        overflowX: 'hidden',
       }}>
-        <div style={{ width: '100%', maxWidth: step.kind === 'welcome' ? '1020px' : '680px', transition: 'max-width 0.4s ease' }}>
-          <AnimatePresence mode="wait" custom={dir}>
-            <motion.div key={idx} custom={dir} variants={variants} initial="enter" animate="center" exit="exit">
-              {step.kind === 'welcome' && <WelcomeStep onStart={() => navigate(1)} />}
+        <div style={{
+          minHeight: '100%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: mobile ? '72px 20px 80px' : '80px 40px',
+          boxSizing: 'border-box',
+        }}>
+          <div style={{ width: '100%', maxWidth: step.kind === 'welcome' ? '1020px' : '680px', transition: 'max-width 0.4s ease' }}>
+            <AnimatePresence mode="wait" custom={dir}>
+              <motion.div key={idx} custom={dir} variants={variants} initial="enter" animate="center" exit="exit">
+                {step.kind === 'welcome' && <WelcomeStep onStart={() => navigate(1)} />}
 
-              {(step.kind === 'input' || step.kind === 'textarea') && step.field && (
-                <InputStep
-                  step={step}
-                  question={getQuestion(step)}
-                  value={formData[step.field]}
-                  onChange={v => setFormData(p => ({ ...p, [step.field!]: v }))}
-                  onNext={() => navigate(1)}
-                  isLast={isLastContent}
-                  submitting={submitting}
-                  error={submitError}
-                />
-              )}
+                {(step.kind === 'input' || step.kind === 'textarea') && step.field && (
+                  <InputStep
+                    step={step}
+                    question={getQuestion(step)}
+                    value={formData[step.field]}
+                    onChange={v => setFormData(p => ({ ...p, [step.field!]: v }))}
+                    onNext={() => navigate(1)}
+                    isLast={isLastContent}
+                    submitting={submitting}
+                    error={submitError}
+                  />
+                )}
 
-              {step.kind === 'choice' && step.field && step.options && (
-                <ChoiceStep
-                  step={step}
-                  question={getQuestion(step)}
-                  value={formData[step.field]}
-                  onSelect={v => handleChoice(step.field!, v)}
-                />
-              )}
+                {step.kind === 'choice' && step.field && step.options && (
+                  <ChoiceStep
+                    step={step}
+                    question={getQuestion(step)}
+                    value={formData[step.field]}
+                    onSelect={v => handleChoice(step.field!, v)}
+                  />
+                )}
 
-              {step.kind === 'yesno' && step.field && (
-                <YesNoStep
-                  step={step}
-                  question={getQuestion(step)}
-                  value={formData[step.field]}
-                  onSelect={v => handleChoice(step.field!, v)}
-                />
-              )}
+                {step.kind === 'yesno' && step.field && (
+                  <YesNoStep
+                    step={step}
+                    question={getQuestion(step)}
+                    value={formData[step.field]}
+                    onSelect={v => handleChoice(step.field!, v)}
+                  />
+                )}
 
-              {step.kind === 'scale' && step.field && (
-                <ScaleStep
-                  step={step}
-                  question={getQuestion(step)}
-                  value={formData[step.field]}
-                  onSelect={v => handleChoice(step.field!, v)}
-                />
-              )}
+                {step.kind === 'scale' && step.field && (
+                  <ScaleStep
+                    step={step}
+                    question={getQuestion(step)}
+                    value={formData[step.field]}
+                    onSelect={v => handleChoice(step.field!, v)}
+                  />
+                )}
 
-              {step.kind === 'success' && <SuccessStep name={formData.name} />}
-            </motion.div>
-          </AnimatePresence>
+                {step.kind === 'success' && <SuccessStep name={formData.name} />}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
-      {/* Nav arrows */}
+      {/* Nav arrows — same square buttons on all screen sizes */}
       {step.kind !== 'welcome' && step.kind !== 'success' && (
         <div style={{
-          position: 'absolute', bottom: 28, right: 36, zIndex: 30,
+          position: 'absolute', bottom: 28, right: mobile ? 20 : 36, zIndex: 30,
           display: 'flex', flexDirection: 'column', gap: '6px',
         }}>
           <motion.button
@@ -441,10 +461,10 @@ export default function ContactPage() {
             onClick={() => navigate(-1)}
             disabled={idx <= 1}
             style={{
-              width: 38, height: 38,
-              border: `1px solid ${idx <= 1 ? 'rgba(255,255,255,0.04)' : C.border}`,
+              width: mobile ? 42 : 38, height: mobile ? 42 : 38,
+              border: `1px solid ${idx <= 1 ? 'rgba(0,0,0,0.06)' : C.border}`,
               background: 'transparent',
-              color: idx <= 1 ? 'rgba(255,255,255,0.08)' : C.textMuted,
+              color: idx <= 1 ? 'rgba(0,0,0,0.15)' : C.textMuted,
               borderRadius: '3px', cursor: idx <= 1 ? 'default' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}
@@ -456,7 +476,7 @@ export default function ContactPage() {
             whileTap={{ scale: 0.92 }}
             onClick={() => navigate(1)}
             style={{
-              width: 38, height: 38,
+              width: mobile ? 42 : 38, height: mobile ? 42 : 38,
               border: `1px solid ${choiceHasValue ? C.borderActive : C.border}`,
               background: choiceHasValue ? 'rgba(0,0,0,0.05)' : 'transparent',
               color: choiceHasValue ? C.text : C.textMuted,
@@ -469,8 +489,8 @@ export default function ContactPage() {
         </div>
       )}
 
-      {/* Welcome scroll hint */}
-      {step.kind === 'welcome' && (
+      {/* Welcome scroll hint — desktop only */}
+      {step.kind === 'welcome' && !mobile && (
         <motion.div
           animate={{ y: [0, 5, 0] }}
           transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
@@ -493,6 +513,7 @@ export default function ContactPage() {
 // ─── Welcome ──────────────────────────────────────────────────────────────────
 
 function WelcomeStep({ onStart }: { onStart: () => void }) {
+  const mobile = useBreakpoint();
   const stats = [
     { number: '50+', label: 'Projets accompagnés' },
     { number: '< 24h', label: 'Délai de réponse' },
@@ -500,16 +521,16 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
   ];
 
   return (
-    <div style={{ display: 'flex', gap: '48px', alignItems: 'stretch', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: mobile ? '24px' : '48px', alignItems: 'stretch', flexWrap: 'wrap' }}>
       {/* Left column */}
-      <div style={{ flex: '1 1 340px' }}>
+      <div style={{ flex: '1 1 340px', textAlign: mobile ? 'center' : 'left' }}>
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.08 }}
           style={{
             fontSize: '9px', fontWeight: 600, letterSpacing: '0.32em',
-            textTransform: 'uppercase', color: C.accent, marginBottom: '28px',
+            textTransform: 'uppercase', color: C.accent, marginBottom: mobile ? '16px' : '28px',
           }}
         >
           Qualification — Appel Stratégique
@@ -517,9 +538,9 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
 
         <h1
           style={{
-            fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
-            fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.028em',
-            color: C.text, marginBottom: '20px',
+            fontSize: mobile ? 'clamp(1.6rem, 7vw, 2.2rem)' : 'clamp(1.75rem, 3.8vw, 3.4rem)',
+            fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.028em',
+            color: C.text, marginBottom: mobile ? '14px' : '20px',
           }}
         >
           {[
@@ -547,8 +568,8 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
           style={{
-            fontSize: '0.93rem', fontWeight: 300, lineHeight: 1.82,
-            color: C.textSub, marginBottom: '36px',
+            fontSize: mobile ? '0.82rem' : '0.93rem', fontWeight: 300, lineHeight: 1.65,
+            color: C.textSub, marginBottom: mobile ? '20px' : '36px',
           }}
         >
           Répondez à quelques questions rapides afin que nous puissions préparer une stratégie claire pour le développement, le lancement et l&apos;acquisition de vos premiers utilisateurs.
@@ -558,26 +579,37 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.33 }}
-          style={{ display: 'flex', alignItems: 'center', gap: '22px', flexWrap: 'wrap' }}
+          style={{ display: 'flex', flexDirection: 'column', gap: mobile ? '10px' : '0', alignItems: mobile ? 'stretch' : 'flex-start' }}
         >
-          <motion.button
-            whileHover={{ scale: 1.02, background: '#1B3C5E' }}
-            whileTap={{ scale: 0.98 }}
-            onClick={onStart}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '10px',
-              padding: '15px 34px', background: C.text, color: C.bg,
-              border: 'none', borderRadius: '3px',
-              fontSize: '12px', fontWeight: 700, fontFamily: 'inherit',
-              letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer',
-            }}
-          >
-            Commencer
-            <ArrowRight size={14} />
-          </motion.button>
-          <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-            6 minutes suffisent
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <motion.button
+              whileHover={{ scale: 1.02, background: '#1B3C5E' }}
+              whileTap={{ scale: 0.98 }}
+              onClick={onStart}
+              style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                padding: mobile ? '14px 28px' : '15px 34px',
+                width: mobile ? '100%' : undefined,
+                background: C.text, color: C.bg,
+                border: 'none', borderRadius: '3px',
+                fontSize: '12px', fontWeight: 700, fontFamily: 'inherit',
+                letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer',
+              }}
+            >
+              Commencer
+              <ArrowRight size={14} />
+            </motion.button>
+            {!mobile && (
+              <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.60)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                6 minutes suffisent
+              </span>
+            )}
+          </div>
+          {mobile && (
+            <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(13,31,53,0.50)', letterSpacing: '0.1em', textTransform: 'uppercase', textAlign: 'center' }}>
+              6 minutes suffisent
+            </span>
+          )}
         </motion.div>
       </div>
 
@@ -590,7 +622,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           flex: '1 1 240px',
           background: 'linear-gradient(150deg, #0D1F35 0%, #162d48 100%)',
           borderRadius: '6px',
-          padding: '36px',
+          padding: mobile ? '14px 16px' : '36px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -602,7 +634,7 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
         <div style={{
           position: 'absolute', top: -60, right: -60,
           width: 200, height: 200, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(212,113,26,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(91,156,200,0.10) 0%, transparent 70%)',
           pointerEvents: 'none',
         }} />
 
@@ -613,7 +645,8 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           transition={{ delay: 0.28 }}
           style={{
             fontSize: '9px', fontWeight: 600, letterSpacing: '0.3em',
-            textTransform: 'uppercase', color: C.accent, marginBottom: '28px',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: mobile ? '8px' : '28px',
+            textAlign: mobile ? 'center' : 'left',
           }}
         >
           Pourquoi Progix
@@ -627,19 +660,12 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.34 + i * 0.1 }}
-                style={{ padding: '18px 0' }}
+                style={{ padding: mobile ? '8px 0' : '18px 0', textAlign: mobile ? 'center' : 'left' }}
               >
-                <div style={{
-                  fontSize: 'clamp(1.9rem, 3.6vw, 2.7rem)',
-                  fontWeight: 800, letterSpacing: '-0.03em',
-                  color: C.accent, lineHeight: 1, marginBottom: '5px',
-                }}>
+                <div style={{ fontSize: mobile ? 'clamp(1.4rem, 5vw, 1.9rem)' : 'clamp(1.9rem, 3.6vw, 2.7rem)', fontWeight: 800, letterSpacing: '-0.03em', color: '#FFFFFF', lineHeight: 1, marginBottom: '5px' }}>
                   {number}
                 </div>
-                <div style={{
-                  fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em',
-                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.38)',
-                }}>
+                <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.38)' }}>
                   {label}
                 </div>
               </motion.div>
@@ -650,24 +676,19 @@ function WelcomeStep({ onStart }: { onStart: () => void }) {
           ))}
         </div>
 
-        {/* Testimonial */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.66 }}
-          style={{
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-            paddingTop: '22px',
-            marginTop: '8px',
-          }}
-        >
-          <p style={{
-            fontSize: '0.81rem', fontWeight: 300, lineHeight: 1.72,
-            color: 'rgba(255,255,255,0.52)', fontStyle: 'italic',
-          }}>
-            &ldquo;Du concept au lancement, une équipe structurée et réactive à chaque étape.&rdquo;
-          </p>
-        </motion.div>
+        {/* Testimonial — desktop only */}
+        {!mobile && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.66 }}
+            style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '22px', marginTop: '8px' }}
+          >
+            <p style={{ fontSize: '0.81rem', fontWeight: 300, lineHeight: 1.72, color: 'rgba(255,255,255,0.52)', fontStyle: 'italic' }}>
+              &ldquo;Du concept au lancement, une équipe structurée et réactive à chaque étape.&rdquo;
+            </p>
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );
@@ -730,7 +751,7 @@ function StepHeader({ number, question, subtitle }: {
       )}
       <h2
         style={{
-          fontSize: 'clamp(1.65rem, 4.2vw, 2.7rem)',
+          fontSize: 'clamp(1.4rem, 5.5vw, 2.7rem)',
           fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.022em',
           color: C.text, marginBottom: subtitle ? '10px' : 0,
         }}
