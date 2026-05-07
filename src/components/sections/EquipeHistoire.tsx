@@ -125,20 +125,6 @@ const EquipeHistoire = () => {
           }}
         />
 
-        {/* Drifting cyan orb (subtle tint) */}
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -left-32 top-40 h-[440px] w-[440px] rounded-full bg-cyan-300/30 blur-3xl"
-          animate={{ x: [0, 60, -30, 0], y: [0, 50, -20, 0] }}
-          transition={{ duration: 22, ease: 'easeInOut', repeat: Infinity }}
-        />
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -right-32 bottom-20 h-[460px] w-[460px] rounded-full bg-indigo-200/40 blur-3xl"
-          animate={{ x: [0, -50, 30, 0], y: [0, -40, 20, 0] }}
-          transition={{ duration: 26, ease: 'easeInOut', repeat: Infinity }}
-        />
-
         {/* Subtle scanlines */}
         <div
           aria-hidden
@@ -198,7 +184,7 @@ const EquipeHistoire = () => {
               >
                 D’une publication Facebook
                 <br />
-                <span className="text-cyan-600">à un studio sur mesure.</span>
+                <span className="text-gray-900">à un studio sur mesure.</span>
               </h2>
             </motion.div>
 
@@ -245,9 +231,6 @@ const EquipeHistoire = () => {
                 priority
               />
             </motion.div>
-
-            {/* Solid bottom band so badges remain readable */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-[#08182a]/65" />
 
             {/* Scanlines on photo */}
             <div
@@ -330,13 +313,7 @@ const EquipeHistoire = () => {
           }}
         />
 
-        {/* Drifting orbs */}
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -left-32 top-40 h-[480px] w-[480px] rounded-full bg-cyan-400/12 blur-3xl"
-          animate={{ x: [0, 60, -30, 0], y: [0, 50, -20, 0] }}
-          transition={{ duration: 22, ease: 'easeInOut', repeat: Infinity }}
-        />
+        {/* Drifting indigo orb (right side only) */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute -right-40 bottom-20 h-[520px] w-[520px] rounded-full bg-indigo-500/12 blur-3xl"

@@ -39,14 +39,6 @@ const EquipeManifesto = () => {
         }}
       />
 
-      {/* Drifting cyan orb (subtle tint) */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -left-32 top-1/2 h-[360px] w-[360px] -translate-y-1/2 rounded-full bg-cyan-300/25 blur-3xl"
-        animate={{ x: [0, 60, -20, 0], y: ['-50%', '-40%', '-60%', '-50%'] }}
-        transition={{ duration: 18, ease: 'easeInOut', repeat: Infinity }}
-      />
-
       {/* Subtle scanlines (dark on white) */}
       <div
         aria-hidden
@@ -86,11 +78,12 @@ const EquipeManifesto = () => {
         className="relative mt-1 select-none whitespace-nowrap sm:mt-2"
       >
         <div
-          className="font-black uppercase tracking-tight text-[#0d2235]/[0.10]"
+          className="font-black uppercase tracking-tight"
           style={{
             fontSize: 'clamp(1.4rem, 4vw, 3.25rem)',
             lineHeight: '1',
             fontFamily: 'Montserrat, Inter, system-ui, sans-serif',
+            color: '#0d2235',
           }}
         >
           PROS&nbsp;·&nbsp;PETITE ÉQUIPE&nbsp;·&nbsp;GRANDES
