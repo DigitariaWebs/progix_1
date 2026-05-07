@@ -45,3 +45,8 @@ next-env.d.ts
 
 # OpenNext build artifacts
 .open-next/
+
+# Claude Code / skills tooling (per-developer)
+.agents/
+.claude/
+skills-lock.json

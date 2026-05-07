@@ -41,7 +41,9 @@ export default function GlobalMenu() {
   const [isClient, setIsClient] = useState(false);
 
   // Set initial state based on pathname to avoid hydration mismatch
+  const isAlwaysDarkPage = pathname === '/team';
   const isDarkHeroPage =
+    isAlwaysDarkPage ||
     pathname === '/' ||
     pathname.startsWith('/services/app-mobile') ||
     pathname === '/labo' ||
@@ -98,6 +100,21 @@ export default function GlobalMenu() {
     if (!isClient) return; // Wait for client-side hydration
 
     const checkBackground = () => {
+      // Pages that are dark from top to bottom: always use white
+      if (isAlwaysDarkPage) {
+        setMenuButtonColor('#ffffff');
+        setLogoFilter('brightness(0) invert(1)');
+        setCtaButtonColors({
+          textColor: '#ffffff',
+          borderColor: '#ffffff',
+          circleColor: '#ffffff',
+          arrowColor: '#ffffff',
+          hoverTextColor: '#1a3a52',
+          hoverArrowColor: '#1a3a52',
+        });
+        return;
+      }
+
       // On home page, check if we're in the hero section (dark background)
       if (isDarkHeroPage) {
         const heroSection = document.querySelector('section');
