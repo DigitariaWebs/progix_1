@@ -99,15 +99,3 @@ export const expertiseData: ExpertiseItem[] = [
   },
 ];
 
-export const expertiseCategories = [
-  { id: 'all', name: 'ALL' },
-  { id: 'language', name: 'LANGUAGE' },
-  { id: 'framework', name: 'FRAMEWORK' },
-  { id: 'database', name: 'DATABASE' },
-  { id: 'api', name: 'API' },
-  { id: 'web_app', name: 'WEB APP' },
-  { id: 'mobile', name: 'MOBILE' },
-  { id: 'third_party', name: 'THIRD PARTY' },
-  { id: 'backend', name: 'BACKEND' },
-  { id: 'frontend', name: 'FRONTEND' },
-];

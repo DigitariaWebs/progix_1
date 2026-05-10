@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import type { Project } from '@/data/project';
 import { GlobalMenuToggle } from '@/components/GlobalMenu';
@@ -17,13 +19,37 @@ export default function HudTopBar({
 }: Props) {
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 sm:px-8 py-5">
-      <div className="pointer-events-auto flex items-baseline gap-4">
-        <span className="font-mono text-xs uppercase tracking-[0.35em] text-white/50">
-          Portfolio
-        </span>
-        <span className="hidden sm:block font-mono text-[11px] uppercase tracking-widest text-white/35">
-          /{project.category}
-        </span>
+      <div className="pointer-events-auto flex items-center gap-3 sm:gap-4">
+        <Link
+          href="/"
+          aria-label="Retour à l'accueil PROGIX"
+          className="flex items-center"
+        >
+          <Image
+            src="/images/logo.png"
+            alt="PROGIX Logo"
+            width={100}
+            height={40}
+            priority
+            draggable={false}
+            className="h-6 w-auto cursor-pointer"
+            style={{
+              filter: 'brightness(0) invert(1)',
+              opacity: 0.9,
+            }}
+          />
+          <Image
+            src="/images/CertifiedLogo.png"
+            alt="GPTW Certification"
+            width={100}
+            height={40}
+            draggable={false}
+            className="h-10 sm:h-14 w-auto ml-4 mt-4 cursor-pointer"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = 'none';
+            }}
+          />
+        </Link>
       </div>
 
       <div className="pointer-events-auto flex items-center gap-3 sm:gap-4">

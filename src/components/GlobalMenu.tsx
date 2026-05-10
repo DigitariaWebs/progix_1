@@ -47,7 +47,8 @@ export default function GlobalMenu() {
     pathname === '/' ||
     pathname.startsWith('/services/app-mobile') ||
     pathname === '/labo' ||
-    pathname === '/portfolio';
+    pathname === '/portfolio' ||
+    pathname === '/confoo-2025';
 
   const getInitialState = () => {
     if (isDarkHeroPage) {

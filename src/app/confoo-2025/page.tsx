@@ -351,7 +351,7 @@ export default function ConFoo2025Page() {
             <CircularGallery
               items={galleryItems}
               bend={3}
-              textColor="#ffffff"
+              textColor="#0A2456"
               borderRadius={0.05}
               scrollEase={0.02}
             />

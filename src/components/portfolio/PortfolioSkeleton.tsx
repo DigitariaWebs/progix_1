@@ -1,6 +1,6 @@
 export default function PortfolioSkeleton() {
   return (
-    <div className="relative w-full h-[100svh] bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-[100svh] bg-[#0a1628] flex items-center justify-center overflow-hidden">
       <div
         aria-hidden
         className="absolute inset-0 opacity-40"

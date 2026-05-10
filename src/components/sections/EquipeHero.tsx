@@ -1,8 +1,10 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -28,6 +30,24 @@ const EquipeHero = () => {
 
   const photoY = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const photoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollToPlugin);
+  }, []);
+
+  const smoothScrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const targetY = el.getBoundingClientRect().top + window.scrollY;
+    const distance = Math.abs(targetY - window.scrollY);
+    const duration = Math.min(1.6, Math.max(0.95, distance / 1400));
+    gsap.to(window, {
+      duration,
+      scrollTo: { y: el, offsetY: 0, autoKill: true },
+      ease: 'power3.inOut',
+      overwrite: 'auto',
+    });
+  };
 
   let wordIndex = 0;
 
@@ -171,8 +191,9 @@ const EquipeHero = () => {
               transition={{ duration: 0.9, delay: 1.05, ease: EASE }}
               className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4"
             >
-              <a
-                href="#equipe-grid"
+              <button
+                type="button"
+                onClick={() => smoothScrollTo('equipe-grid')}
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white px-7 py-4 text-xs font-bold uppercase tracking-[0.18em] text-[#0d2235] transition-colors duration-300 hover:bg-cyan-200"
               >
                 <span>Rencontrez l&apos;équipe</span>
@@ -189,13 +210,14 @@ const EquipeHero = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </a>
-              <a
-                href="#about"
+              </button>
+              <button
+                type="button"
+                onClick={() => smoothScrollTo('about')}
                 className="group inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-7 py-4 text-xs font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition-all duration-300 hover:border-white/60 hover:bg-white/10"
               >
                 <span>Notre histoire</span>
-              </a>
+              </button>
             </motion.div>
 
             {/* Mini stats */}

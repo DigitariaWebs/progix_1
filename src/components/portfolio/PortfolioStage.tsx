@@ -33,7 +33,7 @@ export default function PortfolioStage() {
 
   return (
     <div
-      className="relative min-h-[100svh] bg-[#0a0a0a] text-white overflow-hidden"
+      className="relative min-h-[100svh] bg-[#0a1628] text-white overflow-hidden"
       onTouchStart={nav.onTouchStart}
       onTouchEnd={nav.onTouchEnd}
     >
@@ -175,7 +175,7 @@ export default function PortfolioStage() {
       </div>
 
       {/* Bottom nav rail */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-center justify-between gap-4 border-t border-white/5 bg-gradient-to-t from-black/90 to-black/40 px-5 py-5 sm:px-8 backdrop-blur-sm">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-center justify-between gap-4 border-t border-white/5 bg-gradient-to-t from-[#050d1c]/95 to-[#0a1628]/40 px-5 py-5 sm:px-8 backdrop-blur-sm">
         <button
           type="button"
           onClick={nav.prev}

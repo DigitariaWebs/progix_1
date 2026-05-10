@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 const ServicesSection2 = () => {
   const spotlightRef = useRef<HTMLElement>(null);
@@ -20,7 +19,7 @@ const ServicesSection2 = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    gsap.registerPlugin(ScrollTrigger);
 
     const features = featuresRef.current.filter(
       (f): f is HTMLDivElement => f !== null,
@@ -69,26 +68,17 @@ const ServicesSection2 = () => {
     gsap.set(headerContentRef.current, { y: -50, opacity: 0 });
 
     const buildTimeline = () => {
-      const tl = gsap.timeline({ paused: true });
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'none' },
+      });
 
       // Phase A (0 → 2s): coalesce labels toward center + shrink bgs to circle
-      tl.to(
-        featureContents,
-        { opacity: 0, duration: 0.4, ease: 'power1.out' },
-        0,
-      );
-      tl.to(
-        spotlightContentRef.current,
-        { yPercent: -100, duration: 1.33, ease: 'power2.in' },
-        0,
-      );
+      tl.to(featureContents, { opacity: 0, duration: 0.4 }, 0);
+      tl.to(spotlightContentRef.current, { yPercent: -100, duration: 1.33 }, 0);
 
       features.forEach((feature) => {
-        tl.to(
-          feature,
-          { top: '50%', left: '50%', duration: 2, ease: 'power2.inOut' },
-          0,
-        );
+        tl.to(feature, { top: '50%', left: '50%', duration: 2 }, 0);
       });
 
       featureBgs.forEach((bg) => {
@@ -100,7 +90,6 @@ const ServicesSection2 = () => {
             borderRadius: '25rem',
             borderWidth: '0.35rem',
             duration: 2,
-            ease: 'power2.inOut',
           },
           0,
         );
@@ -118,92 +107,54 @@ const ServicesSection2 = () => {
           height: '5rem',
           yPercent: 200,
           duration: 1,
-          ease: 'power2.inOut',
         },
         2,
       );
 
       // Phase C (3 → 4s): CTA text + final header reveal
-      tl.to(
-        searchBarTextRef.current,
-        { opacity: 1, duration: 1, ease: 'power1.out' },
-        3,
-      );
-      tl.to(
-        headerContentRef.current,
-        { y: 0, opacity: 1, duration: 1, ease: 'power2.out' },
-        3,
-      );
+      tl.to(searchBarTextRef.current, { opacity: 1, duration: 1 }, 3);
+      tl.to(headerContentRef.current, { y: 0, opacity: 1, duration: 1 }, 3);
 
       return tl;
     };
 
     let tl = buildTimeline();
-
-    const blockScroll = (e: Event) => e.preventDefault();
-    const lockScroll = () => {
-      window.addEventListener('wheel', blockScroll, { passive: false });
-      window.addEventListener('touchmove', blockScroll, { passive: false });
-    };
-    const unlockScroll = () => {
-      window.removeEventListener('wheel', blockScroll);
-      window.removeEventListener('touchmove', blockScroll);
-    };
-
-    let isAligning = false;
-    const alignAndThen = (action: () => void) => {
-      if (!spotlightRef.current) return action();
-      isAligning = true;
-      lockScroll();
-      let fired = false;
-      const run = () => {
-        if (fired) return;
-        fired = true;
-        isAligning = false;
-        unlockScroll();
-        action();
-      };
-      gsap.to(window, {
-        duration: 0.6,
-        scrollTo: { y: spotlightRef.current, offsetY: 0, autoKill: false },
-        ease: 'power2.inOut',
-        onComplete: run,
-        onInterrupt: run,
-      });
-    };
-
-    const viewportTrigger = ScrollTrigger.create({
+    let viewportTrigger = ScrollTrigger.create({
       trigger: spotlightRef.current,
-      start: 'top 75%',
-      end: 'bottom 25%',
-      onEnter: () => alignAndThen(() => tl.play()),
-      onEnterBack: () => alignAndThen(() => tl.reverse()),
-      onLeave: () => {
-        if (isAligning) return;
-        tl.progress(1).pause();
-      },
-      onLeaveBack: () => {
-        if (isAligning) return;
-        tl.progress(0).pause();
-      },
+      start: 'top top',
+      end: '+=200%',
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      scrub: 0.6,
+      animation: tl,
+      invalidateOnRefresh: true,
     });
 
     const handleResize = () => {
       const next = getSearchBarFinalWidth();
       if (next === searchBarFinalWidth) return;
       searchBarFinalWidth = next;
-      const wasActive = viewportTrigger.isActive;
+      viewportTrigger.kill();
       tl.kill();
       tl = buildTimeline();
-      if (wasActive) tl.progress(1).pause();
-      ScrollTrigger.refresh();
+      viewportTrigger = ScrollTrigger.create({
+        trigger: spotlightRef.current,
+        start: 'top top',
+        end: '+=200%',
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        scrub: 0.6,
+        animation: tl,
+        invalidateOnRefresh: true,
+      });
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      unlockScroll();
       tl.kill();
       viewportTrigger.kill();
     };
