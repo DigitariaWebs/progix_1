@@ -230,6 +230,7 @@ export default function GlobalMenu() {
       logoUrl="/images/logo.png"
       accentColor="#ffffff"
       isFixed={true}
+      displayCta={pathname !== '/qualification'}
       headless={pathname === '/portfolio'}
     />
   );
