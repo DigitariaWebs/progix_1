@@ -36,7 +36,7 @@ function useBreakpoint() {
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-type StepKind = 'welcome' | 'input' | 'textarea' | 'choice' | 'yesno' | 'scale' | 'success';
+type StepKind = 'welcome' | 'input' | 'textarea' | 'choice' | 'yesno' | 'scale' | 'contact' | 'success';
 
 interface FormOption {
   key: string;
@@ -72,6 +72,8 @@ interface FormData {
   determination: string;
   callCommitment: string;
   questions: string;
+  email: string;
+  phone: string;
 }
 
 // ─── Steps ────────────────────────────────────────────────────────────────────
@@ -194,14 +196,22 @@ const STEPS: FormStep[] = [
     field: 'questions',
     optional: true,
   },
+  {
+    id: 'contact', kind: 'contact', number: 16,
+    question: "Dernière étape :\ncomment pouvons-nous vous joindre ?",
+    subtitle: "Votre email nous permet de planifier votre appel stratégique sous 24h.",
+  },
   { id: 'success', kind: 'success' },
 ];
 
-const TOTAL_CONTENT = 15;
+const TOTAL_CONTENT = 16;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ─── Validation ───────────────────────────────────────────────────────────────
 function isStepComplete(step: FormStep, data: FormData): boolean {
   if (step.kind === 'welcome' || step.kind === 'success' || step.optional) return true;
+  if (step.kind === 'contact') return EMAIL_RE.test(data.email.trim());
   if (!step.field) return true;
   return data[step.field].trim().length > 0;
 }
@@ -230,6 +240,7 @@ export default function ContactPage() {
     blockers: '', opportunity: '', targetUsers: '', goalBlockers: '',
     investment: '', validation: '', commitment: '', readiness: '',
     determination: '', callCommitment: '', questions: '',
+    email: '', phone: '',
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -332,7 +343,7 @@ export default function ContactPage() {
         if (e.key === 'ArrowDown') { e.preventDefault(); navigate(1); }
         if (e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
       } else {
-        if (step.kind === 'input' && e.key === 'Enter' && !e.shiftKey) {
+        if ((step.kind === 'input' || step.kind === 'contact') && e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault(); navigate(1);
         }
         if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
@@ -344,10 +355,13 @@ export default function ContactPage() {
     return () => window.removeEventListener('keydown', handler);
   }, [idx, step, navigate, handleChoice]);
 
-  const isLastContent = step.id === 'questions';
+  const isLastContent = step.id === 'contact';
   const val = step.field ? formData[step.field] : '';
   const choiceHasValue = (step.kind === 'choice' || step.kind === 'yesno' || step.kind === 'scale') && !!val;
   const stepComplete = isStepComplete(step, formData);
+  const requiredMessage = step.kind === 'contact' && formData.email.trim()
+    ? 'Veuillez entrer un email valide'
+    : 'Veuillez répondre pour continuer';
 
   return (
     <div
@@ -463,6 +477,19 @@ export default function ContactPage() {
                   />
                 )}
 
+                {step.kind === 'contact' && (
+                  <ContactStep
+                    step={step}
+                    email={formData.email}
+                    phone={formData.phone}
+                    onChangeEmail={v => updateField('email', v)}
+                    onChangePhone={v => updateField('phone', v)}
+                    onNext={() => navigate(1)}
+                    submitting={submitting}
+                    error={submitError}
+                  />
+                )}
+
                 {step.kind === 'success' && <SuccessStep name={formData.name} />}
               </motion.div>
             </AnimatePresence>
@@ -491,7 +518,7 @@ export default function ContactPage() {
             }}
             role="alert"
           >
-            Veuillez répondre pour continuer
+            {requiredMessage}
           </motion.div>
         )}
       </AnimatePresence>
@@ -947,6 +974,90 @@ function InputStep({ step, question, value, onChange, onNext, isLast, submitting
             {step.kind === 'textarea' ? '⌘ + Entrée' : 'Entrée ↵'}
           </span>
         )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Contact Step ─────────────────────────────────────────────────────────────
+
+function ContactStep({ step, email, phone, onChangeEmail, onChangePhone, onNext, submitting, error }: {
+  step: FormStep; email: string; phone: string;
+  onChangeEmail: (v: string) => void; onChangePhone: (v: string) => void;
+  onNext: () => void; submitting: boolean; error: string;
+}) {
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => emailRef.current?.focus(), 440);
+    return () => clearTimeout(t);
+  }, []);
+
+  const baseStyle: React.CSSProperties = {
+    width: '100%', background: 'transparent', outline: 'none', border: 'none',
+    borderBottom: `1px solid ${C.border}`, color: C.text,
+    fontSize: '1.08rem', fontWeight: 400, fontFamily: 'inherit',
+    padding: '10px 0', transition: 'border-color 0.2s',
+  };
+  const labelStyle: React.CSSProperties = {
+    display: 'block', fontSize: '10px', fontWeight: 600,
+    letterSpacing: '0.16em', textTransform: 'uppercase',
+    color: C.textMuted, marginBottom: '2px',
+  };
+  const focusIn = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.borderBottomColor = 'rgba(0,212,255,0.60)';
+  };
+  const focusOut = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.borderBottomColor = C.border;
+  };
+
+  return (
+    <div>
+      <StepHeader number={step.number} question={step.question || ''} subtitle={step.subtitle} />
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} style={{ marginBottom: '28px', display: 'flex', flexDirection: 'column', gap: '26px' }}>
+        <div>
+          <label style={labelStyle}>Email</label>
+          <input
+            ref={emailRef}
+            type="email"
+            value={email}
+            onChange={e => onChangeEmail(e.target.value)}
+            placeholder="vous@entreprise.com"
+            autoComplete="email"
+            style={baseStyle}
+            onFocus={focusIn}
+            onBlur={focusOut}
+            className="placeholder:text-white/25"
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>Téléphone — optionnel</label>
+          <input
+            type="tel"
+            value={phone}
+            onChange={e => onChangePhone(e.target.value)}
+            placeholder="+1 514 000 0000"
+            autoComplete="tel"
+            style={baseStyle}
+            onFocus={focusIn}
+            onBlur={focusOut}
+            className="placeholder:text-white/25"
+          />
+        </div>
+      </motion.div>
+
+      {error && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{ color: 'rgba(255,85,85,0.9)', fontSize: '0.8rem', marginBottom: '16px' }}
+        >
+          {error}
+        </motion.p>
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <OkButton onClick={onNext} label="Soumettre" loading={submitting} />
       </div>
     </div>
   );
