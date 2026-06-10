@@ -8,17 +8,19 @@ const safe = (v: unknown) =>
 
 const safeNl = (v: unknown) => safe(v).replace(/\n/g, '<br>');
 
-const label = (key: string, val: string) => `
+const row = (key: string, val: string) => `
   <tr>
-    <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#666;font-size:11px;width:200px;vertical-align:top;letter-spacing:0.06em;text-transform:uppercase">${key}</td>
-    <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#e0e0e0;font-size:13px;vertical-align:top">${val || '<em style="color:#444">—</em>'}</td>
+    <td style="padding:13px 0;border-bottom:1px solid #e9edf2;color:#8a94a3;font-size:11px;width:190px;vertical-align:top;letter-spacing:0.08em;text-transform:uppercase;font-weight:600">${key}</td>
+    <td style="padding:13px 0;border-bottom:1px solid #e9edf2;color:#0d2235;font-size:14px;vertical-align:top;font-weight:500">${val || '<span style="color:#b6bdc7">—</span>'}</td>
   </tr>`;
 
-const section = (n: string, title: string, body: string) => body ? `
-  <div style="margin-bottom:28px">
-    <p style="font-size:10px;color:#555;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 8px">${n}. ${title}</p>
-    <p style="font-size:13px;color:#ccc;line-height:1.75;margin:0">${body}</p>
-  </div>` : '';
+const answer = (n: string, title: string, body: string) => body ? `
+  <tr>
+    <td style="padding:0 0 26px">
+      <p style="margin:0 0 7px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#0093b8">${n} — ${title}</p>
+      <p style="margin:0;font-size:14px;line-height:1.7;color:#3a4654">${body}</p>
+    </td>
+  </tr>` : '';
 
 export async function POST(request: NextRequest) {
   try {
@@ -67,41 +69,101 @@ export async function POST(request: NextRequest) {
       readiness: (v: string) => ({ 'yes-fit': 'Oui, si la solution correspond à mes attentes', conditional: 'Oui, sous certaines conditions', considering: 'Je suis encore en réflexion', no: 'Non pour le moment' }[v] || v),
     };
 
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#080808;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
-<div style="max-width:620px;margin:0 auto;padding:48px 28px">
-  <div style="margin-bottom:44px">
-    <p style="font-size:9px;font-weight:700;letter-spacing:0.32em;text-transform:uppercase;color:#444;margin:0 0 14px">PROGIX</p>
-    <h1 style="font-size:26px;font-weight:800;color:#ffffff;margin:0 0 8px;letter-spacing:-0.02em">Nouvelle qualification reçue</h1>
-    <p style="font-size:12px;color:#555;margin:0">Soumission via le formulaire de qualification Progix — ${new Date().toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-  </div>
+    const det = parseInt(determination, 10) || 0;
+    const detPct = Math.min(100, Math.max(0, det * 10));
+    const dateStr = new Date().toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  <table style="width:100%;border-collapse:collapse;margin-bottom:44px">
-    ${label('Nom', safe(name))}
-    ${label('Structure existante', safe(fmt.company(company)))}
-    ${label('Stade du projet', safe(fmt.stage(stage)))}
-    ${label('Utilisateurs cibles (4 mois)', safe(fmt.targetUsers(targetUsers)))}
-    ${label('Budget prévu', safe(fmt.investment(investment)))}
-    ${label('Prêt à s\'impliquer', safe(fmt.yesno(commitment)))}
-    ${label('Capacité à initier', safe(fmt.readiness(readiness)))}
-    ${label('Détermination', determination ? `${safe(determination)} / 10` : '')}
-    ${label('Engagement appel stratégique', safe(fmt.yesno(callCommitment)))}
-  </table>
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#eef1f5;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef1f5;padding:32px 12px">
+  <tr><td align="center">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%">
 
-  <div style="margin-bottom:40px">
-    <p style="font-size:9px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#444;margin:0 0 24px;padding-bottom:12px;border-bottom:1px solid #1a1a1a">Réponses détaillées</p>
-    ${section('3', 'Défi principal', safeNl(challenge))}
-    ${section('5', 'Blocages actuels', safeNl(blockers))}
-    ${section('6', 'Plus grande opportunité', safeNl(opportunity))}
-    ${section('8', 'Blocages vers l\'objectif', safeNl(goalBlockers))}
-    ${section('10', 'Validation marché', safeNl(validation))}
-    ${section('15', 'Questions', safeNl(questions))}
-  </div>
+      <!-- Header -->
+      <tr>
+        <td style="background:#0d2235;border-radius:8px 8px 0 0;padding:36px 40px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                <p style="margin:0 0 18px;font-size:13px;font-weight:800;letter-spacing:0.32em;color:#ffffff">PROGIX</p>
+                <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+                  <td width="34" height="2" style="background:#00d4ff;font-size:0;line-height:0">&nbsp;</td>
+                  <td style="padding-left:10px;font-size:10px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#00d4ff">/ Nouvelle qualification</td>
+                </tr></table>
+                <h1 style="margin:16px 0 6px;font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#ffffff;line-height:1.2">${safe(name) || 'Anonyme'}</h1>
+                <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.55)">Reçue le ${dateStr} via progix.pro/contact</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
 
-  <div style="border-top:1px solid #181818;padding-top:20px">
-    <p style="font-size:10px;color:#3a3a3a;margin:0">progix.pro — formulaire de qualification</p>
-  </div>
-</div>
+      <!-- Stat cards -->
+      <tr>
+        <td style="background:#ffffff;padding:28px 40px 0">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td width="48%" style="background:#f4f7fa;border:1px solid #e9edf2;border-radius:6px;padding:16px 18px;vertical-align:top">
+                <p style="margin:0 0 6px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8a94a3">Budget prévu</p>
+                <p style="margin:0;font-size:17px;font-weight:800;color:#0d2235;line-height:1.3">${safe(fmt.investment(investment))}</p>
+              </td>
+              <td width="4%" style="font-size:0">&nbsp;</td>
+              <td width="48%" style="background:#f4f7fa;border:1px solid #e9edf2;border-radius:6px;padding:16px 18px;vertical-align:top">
+                <p style="margin:0 0 6px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8a94a3">Détermination</p>
+                <p style="margin:0 0 8px;font-size:17px;font-weight:800;color:#0d2235">${det} / 10</p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+                  <td style="background:#e3e8ee;border-radius:3px;font-size:0;line-height:0;height:6px">
+                    <table role="presentation" width="${detPct}%" cellpadding="0" cellspacing="0"><tr>
+                      <td style="background:#00d4ff;border-radius:3px;font-size:0;line-height:0;height:6px">&nbsp;</td>
+                    </tr></table>
+                  </td>
+                </tr></table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Profile rows -->
+      <tr>
+        <td style="background:#ffffff;padding:26px 40px 8px">
+          <p style="margin:0 0 4px;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#0093b8">Profil du prospect</p>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+            ${row('Structure existante', safe(fmt.company(company)))}
+            ${row('Stade du projet', safe(fmt.stage(stage)))}
+            ${row('Utilisateurs cibles (4 mois)', safe(fmt.targetUsers(targetUsers)))}
+            ${row('Prêt à s\'impliquer', safe(fmt.yesno(commitment)))}
+            ${row('Capacité à initier', safe(fmt.readiness(readiness)))}
+            ${row('Engagement appel stratégique', safe(fmt.yesno(callCommitment)))}
+          </table>
+        </td>
+      </tr>
+
+      <!-- Detailed answers -->
+      <tr>
+        <td style="background:#ffffff;padding:30px 40px 14px">
+          <p style="margin:0 0 22px;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#0093b8;border-bottom:1px solid #e9edf2;padding-bottom:12px">Réponses détaillées</p>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            ${answer('03', 'Défi principal', safeNl(challenge))}
+            ${answer('05', 'Blocages actuels', safeNl(blockers))}
+            ${answer('06', 'Plus grande opportunité', safeNl(opportunity))}
+            ${answer('08', 'Blocages vers l\'objectif', safeNl(goalBlockers))}
+            ${answer('10', 'Validation marché', safeNl(validation))}
+            ${answer('15', 'Questions du prospect', safeNl(questions))}
+          </table>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background:#0d2235;border-radius:0 0 8px 8px;padding:20px 40px">
+          <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.45)">PROGIX — Développement web, mobile et conseil IT à Montréal &nbsp;·&nbsp; <a href="https://www.progix.pro" style="color:#00d4ff;text-decoration:none">progix.pro</a></p>
+        </td>
+      </tr>
+
+    </table>
+  </td></tr>
+</table>
 </body></html>`;
 
     const sendViaResend = async () => {
