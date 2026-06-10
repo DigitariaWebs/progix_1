@@ -41,7 +41,7 @@ export default function GlobalMenu() {
   const [isClient, setIsClient] = useState(false);
 
   // Set initial state based on pathname to avoid hydration mismatch
-  const isAlwaysDarkPage = pathname === '/team';
+  const isAlwaysDarkPage = pathname === '/team' || pathname === '/contact';
   const isDarkHeroPage =
     isAlwaysDarkPage ||
     pathname === '/' ||

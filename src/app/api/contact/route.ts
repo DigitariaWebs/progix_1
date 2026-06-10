@@ -29,6 +29,22 @@ export async function POST(request: NextRequest) {
       commitment, readiness, determination, callCommitment, questions,
     } = body;
 
+    // All steps are required except 'questions' — mirrors the client-side gate
+    const requiredFields = {
+      name, company, challenge, stage, blockers, opportunity,
+      targetUsers, goalBlockers, investment, validation,
+      commitment, readiness, determination, callCommitment,
+    };
+    const missingFields = Object.entries(requiredFields)
+      .filter(([, v]) => !String(v ?? '').trim())
+      .map(([k]) => k);
+    if (missingFields.length > 0) {
+      return NextResponse.json(
+        { success: false, error: 'validation_failed', message: 'Veuillez répondre à toutes les questions obligatoires.', details: `Missing: ${missingFields.join(', ')}` },
+        { status: 400 },
+      );
+    }
+
     const hasResend = !!process.env.RESEND_API_KEY;
     const hasSmtp = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS && process.env.SMTP_FROM);
 
