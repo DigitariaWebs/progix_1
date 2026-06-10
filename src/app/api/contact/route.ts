@@ -32,12 +32,16 @@ export async function POST(request: NextRequest) {
       email, phone,
     } = body;
 
+    // 'direct' = unlisted /qualification link sent to known clients (no email/phone step)
+    const isDirect = body.variant === 'direct';
+
     // All steps are required except 'questions' and 'phone' — mirrors the client-side gate
-    const requiredFields = {
+    const requiredFields: Record<string, unknown> = {
       name, company, challenge, stage, blockers, opportunity,
       targetUsers, goalBlockers, investment, validation,
-      commitment, readiness, determination, callCommitment, email,
+      commitment, readiness, determination, callCommitment,
     };
+    if (!isDirect) requiredFields.email = email;
     const missingFields = Object.entries(requiredFields)
       .filter(([, v]) => !String(v ?? '').trim())
       .map(([k]) => k);
@@ -47,13 +51,13 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+    if (!isDirect && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
       return NextResponse.json(
         { success: false, error: 'validation_failed', message: 'Veuillez entrer un email valide.' },
         { status: 400 },
       );
     }
-    const leadEmail = String(email).trim();
+    const leadEmail = String(email ?? '').trim();
 
     const hasResend = !!process.env.RESEND_API_KEY;
     const hasSmtp = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS && process.env.SMTP_FROM);
@@ -99,11 +103,11 @@ export async function POST(request: NextRequest) {
                   <td style="padding-left:10px;font-size:10px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#00d4ff">/ Nouvelle qualification</td>
                 </tr></table>
                 <h1 style="margin:16px 0 6px;font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#ffffff;line-height:1.2">${safe(name) || 'Anonyme'}</h1>
-                <p style="margin:0 0 14px;font-size:12px;color:rgba(255,255,255,0.55)">Reçue le ${dateStr} via progix.pro/contact</p>
-                <p style="margin:0;font-size:14px">
+                <p style="margin:0${leadEmail ? ' 0 14px' : ''};font-size:12px;color:rgba(255,255,255,0.55)">Reçue le ${dateStr} via ${isDirect ? 'lien direct (client connu)' : 'progix.pro/contact'}</p>
+                ${leadEmail ? `<p style="margin:0;font-size:14px">
                   <a href="mailto:${safe(leadEmail)}" style="color:#00d4ff;text-decoration:none;font-weight:600">${safe(leadEmail)}</a>
                   ${phone ? `<span style="color:rgba(255,255,255,0.35)">&nbsp;&nbsp;·&nbsp;&nbsp;</span><a href="tel:${safe(String(phone).replace(/[^+\d]/g, ''))}" style="color:#ffffff;text-decoration:none">${safe(phone)}</a>` : ''}
-                </p>
+                </p>` : ''}
               </td>
             </tr>
           </table>
@@ -141,8 +145,9 @@ export async function POST(request: NextRequest) {
         <td style="background:#ffffff;padding:26px 40px 8px">
           <p style="margin:0 0 4px;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#0093b8">Profil du prospect</p>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
-            ${row('Email', `<a href="mailto:${safe(leadEmail)}" style="color:#0093b8;text-decoration:none;font-weight:600">${safe(leadEmail)}</a>`)}
-            ${row('Téléphone', phone ? safe(phone) : '')}
+            ${row('Source', isDirect ? 'Lien direct (client connu)' : 'Site web — progix.pro/contact')}
+            ${leadEmail ? row('Email', `<a href="mailto:${safe(leadEmail)}" style="color:#0093b8;text-decoration:none;font-weight:600">${safe(leadEmail)}</a>`) : ''}
+            ${!isDirect ? row('Téléphone', phone ? safe(phone) : '') : ''}
             ${row('Structure existante', safe(fmt.company(company)))}
             ${row('Stade du projet', safe(fmt.stage(stage)))}
             ${row('Utilisateurs cibles (4 mois)', safe(fmt.targetUsers(targetUsers)))}
@@ -191,8 +196,8 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           from: `PROGIX <${from}>`,
           to: [to],
-          reply_to: leadEmail,
-          subject: `Nouvelle qualification — ${safe(name) || 'Anonyme'}`,
+          ...(leadEmail ? { reply_to: leadEmail } : {}),
+          subject: `Nouvelle qualification — ${safe(name) || 'Anonyme'}${isDirect ? ' (lien direct)' : ''}`,
           html,
         }),
       });
@@ -248,8 +253,8 @@ export async function POST(request: NextRequest) {
 
       await transporter.sendMail({
         from, to,
-        replyTo: leadEmail,
-        subject: `Nouvelle qualification — ${safe(name) || 'Anonyme'}`,
+        ...(leadEmail ? { replyTo: leadEmail } : {}),
+        subject: `Nouvelle qualification — ${safe(name) || 'Anonyme'}${isDirect ? ' (lien direct)' : ''}`,
         html,
       });
     }
