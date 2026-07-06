@@ -6,7 +6,9 @@ import GlobalMenu from '@/components/GlobalMenu';
 import { GlobalMenuProvider } from '@/components/globalMenuBus';
 import MaintenancePage from '@/components/MaintenancePage';
 
-const MAINTENANCE_MODE = process.env.MAINTENANCE_MODE === 'true';
+// Maintenance mode is ON by default (site is closed). To reopen the site,
+// set the env var MAINTENANCE_MODE=false in the host (Vercel) and redeploy.
+const MAINTENANCE_MODE = process.env.MAINTENANCE_MODE !== 'false';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
