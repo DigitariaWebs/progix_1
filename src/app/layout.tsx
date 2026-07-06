@@ -4,6 +4,9 @@ import './globals.css';
 import PageTransition from '@/components/PageTransition';
 import GlobalMenu from '@/components/GlobalMenu';
 import { GlobalMenuProvider } from '@/components/globalMenuBus';
+import MaintenancePage from '@/components/MaintenancePage';
+
+const MAINTENANCE_MODE = process.env.MAINTENANCE_MODE === 'true';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -90,10 +93,14 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${inter.variable} font-sans antialiased overflow-x-hidden`}
       >
-        <GlobalMenuProvider>
-          <GlobalMenu />
-          <PageTransition>{children}</PageTransition>
-        </GlobalMenuProvider>
+        {MAINTENANCE_MODE ? (
+          <MaintenancePage />
+        ) : (
+          <GlobalMenuProvider>
+            <GlobalMenu />
+            <PageTransition>{children}</PageTransition>
+          </GlobalMenuProvider>
+        )}
       </body>
     </html>
   );
