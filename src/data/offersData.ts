@@ -52,36 +52,31 @@ export const benchmark = {
   eyebrow: 'Déjà passés à leur propre app',
   title: 'Les chaînes ont arrêté de payer des commissions.',
   body:
-    "The Burger's Priest, Raising Cane's, Greene King, PattySlaps, POP'S : chacune a publié son application de commande. Même logique, même technologie. La seule différence, c'est le budget d'agence — et c'est exactement ce qu'on a réglé.",
+    "The Burger's Priest, Raising Cane's, Greene King, PattySlaps : chacune a publié son application de commande. Même logique, même technologie. La seule différence, c'est le budget d'agence — et c'est exactement ce qu'on a réglé.",
   disclaimer:
     'Applications publiées par leurs marques respectives. Exemples de marché, présentés à titre de référence — ce ne sont pas des réalisations PROGIX.',
-  // `alt` lives here rather than being templated in the component: until the client
-  // exports the screenshots it is the only content these tiles render.
+  // `alt` lives here rather than being templated in the component: it is what the
+  // tile renders if an image ever fails to load.
   apps: [
     {
       name: "The Burger's Priest",
-      image: '/images/offers/burgers-priest.png',
+      image: '/images/offers/burgers-priest.webp',
       alt: "Fiche App Store de l'application The Burger's Priest",
     },
     {
       name: "Raising Cane's",
-      image: '/images/offers/raising-canes.png',
+      image: '/images/offers/raising-canes.webp',
       alt: "Fiche App Store de l'application Raising Cane's",
     },
     {
       name: 'Greene King',
-      image: '/images/offers/greene-king.png',
+      image: '/images/offers/greene-king.webp',
       alt: "Fiche App Store de l'application Greene King Pubs & Restaurants",
     },
     {
       name: 'PattySlaps',
-      image: '/images/offers/pattyslaps.png',
+      image: '/images/offers/pattyslaps.webp',
       alt: "Fiche App Store de l'application PattySlaps",
-    },
-    {
-      name: "POP'S Villepinte",
-      image: '/images/offers/pops-villepinte.png',
-      alt: "Fiche App Store de l'application POP'S Villepinte",
     },
   ],
 };
@@ -127,8 +122,14 @@ export const dashboard = {
   caption:
     "Aperçu d'interface — maquette. Le back-office est adapté à votre menu et à vos opérations.",
   shots: [
-    { src: '/images/offers/dashboard-reztro.png', alt: 'Vue des ventes et des commandes du back-office' },
-    { src: '/images/offers/dashboard-tst-food.png', alt: 'Vue de la gestion du menu et de la prise de commande' },
+    {
+      src: '/images/offers/dashboard-reztro.webp',
+      alt: 'Vue des ventes et des commandes du back-office',
+    },
+    {
+      src: '/images/offers/dashboard-tst-food.webp',
+      alt: 'Vue de la gestion du menu et de la prise de commande',
+    },
   ],
 };
 

@@ -27,7 +27,7 @@ export default function BenchmarkStrip() {
           {benchmark.body}
         </p>
 
-        <ul className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+        <ul className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-4">
           {benchmark.apps.map((app) => (
             <li key={app.name}>
               <div className="relative aspect-[9/19.5] w-full overflow-hidden rounded-2xl bg-[#f2f4f6] ring-1 ring-black/5">
@@ -35,7 +35,7 @@ export default function BenchmarkStrip() {
                   src={app.image}
                   alt={app.alt}
                   fill
-                  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
+                  sizes="(max-width: 640px) 45vw, 22vw"
                   className="object-cover object-top"
                 />
               </div>
