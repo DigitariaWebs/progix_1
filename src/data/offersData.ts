@@ -44,11 +44,10 @@ export const receipt = {
   header: 'Simulation',
   storeLine: 'PROGIX · COMMISSIONS',
   monthlyTag: 'Par mois',
-  rowSales: 'Ventes en livraison',
-  rowRate: `Commission plateforme ${PLATFORM_RATE_PCT} %`,
-  rowNet: 'Ce qui vous revient',
-  yearlyTag: 'Par année',
-  rowYear: 'Commission versée aux plateformes',
+  rowSales: 'Vos ventes en livraison',
+  rowRate: `Ce que la plateforme garde (${PLATFORM_RATE_PCT} %)`,
+  yearlyTag: 'Sur une année',
+  rowYear: 'Ce que la plateforme garde',
   note: 'Hors frais de traitement de carte, dus quel que soit le canal de vente.',
 };
 
