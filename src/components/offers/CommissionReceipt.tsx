@@ -75,21 +75,35 @@ export default function CommissionReceipt({
         <div className="my-4 h-px w-full" style={dashedRule} />
 
         {/* No aria-live: the slider announces its own value on every step, and a
-            polite region over these rows would re-read all of them during a drag. */}
+            polite region over these rows would re-read all of them during a drag.
+
+            The monthly rows and the annual row are banded separately — without
+            that, the last line reads as if it belonged to the same month as the
+            three above it. */}
         <div>
+          <p className="mb-1 text-[9px] uppercase tracking-[0.26em] text-[#8b96a1]">
+            {receipt.monthlyTag}
+          </p>
           <Line label={receipt.rowSales} value={formatCad(monthlySales)} />
           <Line
             label={receipt.rowRate}
             value={`− ${formatCad(result.monthlyCommission)}`}
             tone="loss"
           />
-          <div className="my-3 h-px w-full" style={dashedRule} />
+          <div className="my-2.5 h-px w-full" style={dashedRule} />
           <Line label={receipt.rowNet} value={formatCad(result.monthlyNet)} strong />
-          <Line
-            label={receipt.rowYear}
-            value={`− ${formatCad(result.yearlyCommission)}`}
-            tone="loss"
-          />
+
+          <div className="mt-5 border-t-2 border-dashed border-[#0E2233]/25 pt-4">
+            <p className="mb-1 text-[9px] uppercase tracking-[0.26em] text-[#8b96a1]">
+              {receipt.yearlyTag}
+            </p>
+            <Line
+              label={receipt.rowYear}
+              value={`− ${formatCad(result.yearlyCommission)}`}
+              tone="loss"
+              strong
+            />
+          </div>
         </div>
 
         <p className="mt-4 text-[10px] leading-relaxed text-[#5c6a76]">

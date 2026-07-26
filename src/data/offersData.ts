@@ -41,12 +41,14 @@ export const hero = {
 };
 
 export const receipt = {
-  header: 'Relevé mensuel',
-  storeLine: 'PROGIX · SIMULATION',
-  rowSales: 'Ventes livraison',
+  header: 'Simulation',
+  storeLine: 'PROGIX · COMMISSIONS',
+  monthlyTag: 'Par mois',
+  rowSales: 'Ventes en livraison',
   rowRate: `Commission plateforme ${PLATFORM_RATE_PCT} %`,
-  rowNet: 'Il vous reste',
-  rowYear: 'Sur 12 mois',
+  rowNet: 'Ce qui vous revient',
+  yearlyTag: 'Par année',
+  rowYear: 'Commission versée aux plateformes',
   note: 'Hors frais de traitement de carte, dus quel que soit le canal de vente.',
 };
 
