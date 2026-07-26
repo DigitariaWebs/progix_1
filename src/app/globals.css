@@ -206,6 +206,19 @@ body {
   transform: scale(0.8);
 }
 
+/* Benchmark strip: hovering one listing dims the others, so attention lands on
+   the one under the cursor. Two rules rather than a Tailwind specificity fight —
+   the second is more specific, so it always wins over the first. */
+.bench-grid .bench-tile {
+  transition: opacity 300ms ease;
+}
+.bench-grid:hover .bench-tile {
+  opacity: 0.45;
+}
+.bench-grid .bench-tile:hover {
+  opacity: 1;
+}
+
 /* Offers page: honour the OS "reduce motion" setting for every transition. */
 @media (prefers-reduced-motion: reduce) {
   .offers-page *,

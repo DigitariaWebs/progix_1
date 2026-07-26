@@ -45,19 +45,24 @@ const Header = () => {
             damping: 30,
             duration: 0.3,
           }}
-          className={`fixed top-12 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
-            isScrolled ? 'w-[80%] max-w-5xl mx-8' : 'w-[85%] max-w-6xl mx-6'
-          }`}
+          // Width is fixed on purpose. It used to shrink from max-w-7xl to
+          // max-w-6xl at the scroll threshold, with `transition-all` animating
+          // the layout — so the bar visibly resized, and because the threshold
+          // has no hysteresis, scrolling around 50px made it flip back and
+          // forth. Only colour and shadow react to scroll now.
+          className="fixed top-6 left-1/2 w-[94%] max-w-7xl -translate-x-1/2 transform z-50 lg:top-12"
         >
           <div
-            className={`px-10 py-4 rounded-full shadow-lg backdrop-blur-md border transition-all duration-300 ${
+            className={`px-5 py-3 sm:px-6 lg:px-8 rounded-full backdrop-blur-md border transition-[background-color,border-color,box-shadow] duration-300 ${
               isScrolled
                 ? 'bg-white/95 border-gray-200/50 shadow-xl'
                 : 'bg-white/90 border-white/20 shadow-lg'
             }`}
           >
-            <div className="flex justify-between items-center">
-              <div className="flex items-center">
+            <div className="flex justify-between items-center gap-4">
+              {/* shrink-0 on both ends: without it the nav pushes the CTA past the
+                  pill and it clips whatever link sits last. */}
+              <div className="flex items-center gap-3 shrink-0">
                 <Image
                   src={assets.logo}
                   alt="PROGIX Logo"
@@ -70,7 +75,7 @@ const Header = () => {
                   alt="GPTW Certification"
                   width={80}
                   height={32}
-                  className="h-8 w-auto ml-4 mt-4 cursor-pointer"
+                  className="hidden h-8 w-auto sm:block"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display =
                       'none';
@@ -78,7 +83,7 @@ const Header = () => {
                 />
               </div>
 
-              <nav className="hidden md:flex space-x-6 lg:space-x-8">
+              <nav className="hidden lg:flex items-center gap-5 xl:gap-7 whitespace-nowrap">
                 <div className="relative group">
                   <a
                     href="#expertises"
@@ -316,7 +321,7 @@ const Header = () => {
                 </a>
                 <a
                   href="/team"
-                  className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
+                  className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm whitespace-nowrap"
                 >
                   Notre équipe
                 </a>
@@ -329,7 +334,7 @@ const Header = () => {
               </nav>
 
               <button
-                className="px-8 py-3 rounded-full text-white font-medium transition-all hover:scale-105 shadow-md flex items-center gap-2 group"
+                className="shrink-0 whitespace-nowrap px-5 py-2.5 lg:px-6 lg:py-3 rounded-full text-white font-medium text-sm transition-all hover:scale-105 shadow-md flex items-center gap-2 group"
                 style={{ backgroundColor: colors.secondary }}
               >
                 Nous contacter

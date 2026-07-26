@@ -6,7 +6,7 @@ import DashboardSection from '@/components/offers/DashboardSection';
 import FaqSection from '@/components/offers/FaqSection';
 import InclusionsTable from '@/components/offers/InclusionsTable';
 import OfferLeadForm from '@/components/offers/OfferLeadForm';
-import OffersHeader from '@/components/offers/OffersHeader';
+import Header from '@/components/layout/Header';
 import OffersHero from '@/components/offers/OffersHero';
 import ProcessTimeline from '@/components/offers/ProcessTimeline';
 import StickyCta from '@/components/offers/StickyCta';
@@ -28,16 +28,15 @@ export const metadata: Metadata = {
 };
 
 /**
- * Deliberately without GlobalMenu: this route sits outside the (site) route
- * group so it stays reachable while the rest of progix.pro is in maintenance,
- * and every site link would land on the maintenance screen. OffersHeader
- * navigates within this page instead; restore the site links there once
- * MAINTENANCE_MODE flips in src/app/(site)/layout.tsx.
+ * This route sits outside the (site) route group so it stays reachable while
+ * the rest of progix.pro is in maintenance. The shared Header's links point at
+ * routes that currently render the maintenance screen — they start working
+ * again when MAINTENANCE_MODE flips in src/app/(site)/layout.tsx.
  */
 export default function OffersPage() {
   return (
     <main id="top" className="offers-page overflow-x-hidden">
-      <OffersHeader />
+      <Header />
       <OffersHero />
       <BenchmarkStrip />
       <AppSpecSection />

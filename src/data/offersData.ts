@@ -25,23 +25,6 @@ export const MIN_MONTHLY_SALES = 2000;
 export const MAX_MONTHLY_SALES = 40000;
 export const SALES_STEP = 500;
 
-export const siteHeader = {
-  home: "Haut de page",
-  // In-page anchors only. Every other route on progix.pro currently renders the
-  // maintenance screen, so linking to them from here would be a dead end. When
-  // MAINTENANCE_MODE flips in src/app/(site)/layout.tsx, point the logo at "/"
-  // and add the site links back.
-  nav: [
-    { label: 'Ce qui est inclus', href: '#inclus' },
-    { label: 'Le back-office', href: '#back-office' },
-    { label: 'Délais', href: '#processus' },
-    { label: 'Questions', href: '#faq' },
-  ],
-  cta: 'Recevoir une proposition',
-  menuOpen: 'Ouvrir le menu',
-  menuClose: 'Fermer le menu',
-};
-
 export const hero = {
   eyebrow: 'Offre restaurants · Montréal',
   title: 'Vos livraisons paient',
@@ -136,24 +119,38 @@ export const appSpec = {
 export const dashboard = {
   eyebrow: 'Le back-office',
   title: 'Chaque commande, chaque plat, chaque dollar au même endroit.',
-  body:
-    "Vous suivez le service en direct, changez un prix en une minute et voyez d'où vient le chiffre d'affaires. Accessible depuis le comptoir comme depuis votre téléphone.",
-  bullets: [
-    'Commandes en direct, avec statut et temps de préparation',
-    'Menu, prix et disponibilité modifiables sans nous appeler',
-    'Ventes par jour, par plat et par canal de vente',
-    'Fiches clients et historique de commandes',
-  ],
   caption:
-    "Aperçu d'interface — maquette. Le back-office est adapté à votre menu et à vos opérations.",
-  shots: [
+    "Aperçus d'interface — maquettes. Le back-office est adapté à votre menu et à vos opérations.",
+  // `imageSide` alternates so the eye zigzags down the section instead of
+  // running past two identical rows.
+  blocks: [
     {
-      src: '/images/offers/dashboard-reztro.webp',
-      alt: 'Vue des ventes et des commandes du back-office',
+      imageSide: 'left' as const,
+      title: 'Le service, en direct',
+      body:
+        "Chaque commande arrive avec son statut et son temps de préparation. Le menu, les prix et les disponibilités se changent en une minute — sans nous appeler.",
+      bullets: [
+        'Commandes en direct, avec statut et temps de préparation',
+        'Menu, prix et disponibilité modifiables vous-même',
+      ],
+      shot: {
+        src: '/images/offers/dashboard-tst-food.webp',
+        alt: 'Vue de la gestion du menu et de la prise de commande',
+      },
     },
     {
-      src: '/images/offers/dashboard-tst-food.webp',
-      alt: 'Vue de la gestion du menu et de la prise de commande',
+      imageSide: 'right' as const,
+      title: 'Vos chiffres, en clair',
+      body:
+        "Vous voyez d'où vient le chiffre d'affaires, plat par plat et canal par canal. Depuis le comptoir comme depuis votre téléphone.",
+      bullets: [
+        'Ventes par jour, par plat et par canal de vente',
+        'Fiches clients et historique de commandes',
+      ],
+      shot: {
+        src: '/images/offers/dashboard-reztro.webp',
+        alt: 'Vue des ventes et des commandes du back-office',
+      },
     },
   ],
 };
