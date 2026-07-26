@@ -16,36 +16,41 @@ export const DISPLAY = "'Hubot Sans', Inter, sans-serif";
 
 /** Average commission rate charged by delivery marketplaces, in percent. */
 export const PLATFORM_RATE_PCT = 29;
-export const DEFAULT_MONTHLY_SALES = 12000;
-export const MIN_MONTHLY_SALES = 1000;
-export const MAX_MONTHLY_SALES = 60000;
+
+// Sized for an independent Québec restaurant: most do somewhere between a few
+// thousand and ~30 k$ a month through the marketplaces, so the range covers the
+// realistic band instead of running to figures only a chain would recognise.
+export const DEFAULT_MONTHLY_SALES = 10000;
+export const MIN_MONTHLY_SALES = 2000;
+export const MAX_MONTHLY_SALES = 40000;
 export const SALES_STEP = 500;
 
 export const hero = {
   eyebrow: 'Offre restaurants · Montréal',
-  title: 'Vos clients commandent chez vous.',
-  titleAccent: 'Les plateformes encaissent 29 %.',
+  title: 'Vos livraisons paient',
+  titleAccent: 'les plateformes.',
   body:
-    "PROGIX construit l'application de commande de votre restaurant et le back-office qui va avec. Vous gardez la marge, la relation client et les données. En ligne en 4 à 6 semaines.",
+    "Uber Eats, DoorDash et SkipTheDishes retiennent jusqu'à 30 % de chaque commande. Votre propre application les remplace — et vous gardez la marge.",
+  lossLabel: 'Ce que les plateformes vous prennent',
+  lossUnit: 'par année',
+  keepInline: 'Avec votre application : 0 $ de commission.',
   ctaPrimary: 'Recevoir une proposition',
   ctaSecondary: 'Voir ce qui est inclus',
   sliderLabel: 'Vos ventes en livraison par mois',
-  rateNote: 'Taux de 29 % — moyenne constatée sur les places de marché (25 à 30 %).',
+  rateNote:
+    'Taux de 29 % — moyenne des places de marché au Canada (25 à 30 % selon le forfait).',
+  chips: ['4 à 6 semaines', 'Vous en êtes propriétaire', 'Montréal'],
+  scrollCue: 'Faites défiler',
 };
 
 export const receipt = {
-  header: 'Ce que les plateformes retiennent',
+  header: 'Relevé mensuel',
   storeLine: 'PROGIX · SIMULATION',
-  rowSales: 'Ventes livraison / mois',
+  rowSales: 'Ventes livraison',
   rowRate: `Commission plateforme ${PLATFORM_RATE_PCT} %`,
   rowNet: 'Il vous reste',
-  rowYear: 'Perte sur 12 mois',
-  keepTitle: 'Avec votre propre application',
-  keepRow: 'Commission versée',
-  keepValue: '0 $',
-  keepYear: 'Récupéré sur 12 mois',
-  keepNote:
-    "Hors frais de traitement de carte, qui restent dus quel que soit le canal.",
+  rowYear: 'Sur 12 mois',
+  note: 'Hors frais de traitement de carte, dus quel que soit le canal de vente.',
 };
 
 export const benchmark = {
@@ -84,23 +89,28 @@ export const benchmark = {
 export const appSpec = {
   eyebrow: 'Ce que vos clients installent',
   title: 'Votre enseigne, votre application, vos règles.',
+  // `icon` names a lucide-react export, resolved in AppSpecSection.
   features: [
     {
+      icon: 'UtensilsCrossed',
       label: 'Menu et commande',
       body:
         'Menu complet avec options, extras et allergènes. Commande pour emporter ou en livraison, prête quand le client arrive.',
     },
     {
+      icon: 'CreditCard',
       label: 'Paiement intégré',
       body:
         "Carte, Apple Pay et Google Pay. L'argent arrive sur votre compte, sans intermédiaire qui prélève au passage.",
     },
     {
+      icon: 'UserRound',
       label: 'Compte client',
       body:
         'Historique des commandes et adresses enregistrées : un habitué recommande en deux touches.',
     },
     {
+      icon: 'Store',
       label: 'Marque blanche',
       body:
         "Vos couleurs, votre logo, votre nom sur l'App Store et Google Play. Aucune mention d'agence.",
@@ -243,6 +253,9 @@ export const leadForm = {
   sending: 'Envoi en cours…',
   success: 'Demande reçue. On vous rappelle sous 24 heures ouvrables.',
   errorGeneric: "L'envoi a échoué. Réessayez ou écrivez à contact@progix.pro.",
+  errorRequired: 'Ce champ est obligatoire.',
+  errorEmail: 'Entrez un courriel valide, par exemple nom@restaurant.com.',
+  errorSelect: 'Choisissez une option.',
   fields: {
     name: 'Votre nom',
     restaurant: 'Nom du restaurant',

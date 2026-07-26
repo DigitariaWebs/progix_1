@@ -1,33 +1,26 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { DISPLAY, MONO, faq, offersTheme } from '@/data/offersData';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { faq, offersTheme } from '@/data/offersData';
+import SectionHeader from './SectionHeader';
 
 export default function FaqSection() {
   const [open, setOpen] = useState<number | null>(0);
   const baseId = useId();
+  const reduce = useReducedMotion();
 
   return (
-    <section className="bg-white px-5 py-24 sm:px-8 lg:px-12">
+    <section
+      aria-labelledby="offers-faq-title"
+      className="bg-white px-5 py-24 sm:px-8 lg:px-12"
+    >
       <div className="mx-auto max-w-3xl">
-        <p
-          className="text-[11px] uppercase tracking-[0.3em]"
-          style={{ fontFamily: MONO, color: offersTheme.muted }}
-        >
-          {faq.eyebrow}
-        </p>
-        <h2
-          className="mt-6 font-bold"
-          style={{
-            fontFamily: DISPLAY,
-            color: offersTheme.ink,
-            fontSize: 'clamp(1.7rem, 3.6vw, 2.6rem)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          {faq.title}
-        </h2>
+        <SectionHeader
+          id="offers-faq-title"
+          eyebrow={faq.eyebrow}
+          title={faq.title}
+        />
 
         <div className="mt-12 border-t border-black/10">
           {faq.items.map((item, index) => {
@@ -44,11 +37,11 @@ export default function FaqSection() {
                     aria-expanded={expanded}
                     aria-controls={panelId}
                     onClick={() => setOpen(expanded ? null : index)}
-                    className="flex w-full items-center justify-between gap-6 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0E2233]"
+                    className="flex w-full items-center justify-between gap-6 py-6 text-left transition-colors duration-200 hover:text-[#00708C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0E2233]"
                   >
                     <span
                       className="text-base font-semibold"
-                      style={{ color: offersTheme.ink }}
+                      style={{ color: expanded ? offersTheme.cyanInk : offersTheme.ink }}
                     >
                       {item.q}
                     </span>
@@ -64,16 +57,36 @@ export default function FaqSection() {
                     </span>
                   </button>
                 </h3>
-                <div
-                  id={panelId}
-                  role="region"
-                  aria-labelledby={buttonId}
-                  hidden={!expanded}
-                  className="pb-6 pr-10 text-sm leading-relaxed"
-                  style={{ color: offersTheme.muted }}
-                >
-                  {item.a}
-                </div>
+
+                {/* Height is animated rather than toggled with `hidden`, so the
+                    rotating icon and the panel move together instead of one
+                    easing while the other snaps. */}
+                <AnimatePresence initial={false}>
+                  {expanded && (
+                    <motion.div
+                      id={panelId}
+                      role="region"
+                      aria-labelledby={buttonId}
+                      key="panel"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={
+                        reduce
+                          ? { duration: 0 }
+                          : { duration: 0.28, ease: [0.22, 1, 0.36, 1] }
+                      }
+                      className="overflow-hidden"
+                    >
+                      <p
+                        className="pb-6 pr-10 text-sm leading-relaxed"
+                        style={{ color: offersTheme.muted }}
+                      >
+                        {item.a}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

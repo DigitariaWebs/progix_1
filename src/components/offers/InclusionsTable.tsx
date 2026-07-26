@@ -1,36 +1,31 @@
-import { DISPLAY, MONO, inclusions, offersTheme } from '@/data/offersData';
+import { MONO, inclusions, offersTheme } from '@/data/offersData';
+import Reveal from './Reveal';
+import SectionHeader from './SectionHeader';
 
 export default function InclusionsTable() {
   return (
-    <section id="inclus" className="scroll-mt-24 bg-white px-5 py-24 sm:px-8 lg:px-12">
+    <section
+      id="inclus"
+      aria-labelledby="offers-inclusions-title"
+      className="scroll-mt-24 bg-white px-5 py-24 sm:px-8 lg:px-12"
+    >
       <div className="mx-auto max-w-5xl">
-        <p
-          className="text-[11px] uppercase tracking-[0.3em]"
-          style={{ fontFamily: MONO, color: offersTheme.muted }}
-        >
-          {inclusions.eyebrow}
-        </p>
-        <h2
-          className="mt-6 font-bold"
-          style={{
-            fontFamily: DISPLAY,
-            color: offersTheme.ink,
-            fontSize: 'clamp(1.7rem, 3.6vw, 2.8rem)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          {inclusions.title}
-        </h2>
+        <SectionHeader
+          id="offers-inclusions-title"
+          eyebrow={inclusions.eyebrow}
+          title={inclusions.title}
+        />
 
         <ul className="mt-14 border-t border-black/10">
-          {inclusions.rows.map((row) => (
-            <li
+          {inclusions.rows.map((row, index) => (
+            <Reveal
               key={row.code}
-              className="grid gap-2 border-b border-black/10 py-6 sm:grid-cols-[72px_1fr_1.1fr] sm:gap-8"
+              as="li"
+              delay={index * 0.05}
+              className="group grid gap-2 border-b border-black/10 py-6 transition-colors duration-300 hover:bg-[#f7f8f9] sm:grid-cols-[72px_1fr_1.1fr] sm:gap-8 sm:px-3 sm:-mx-3"
             >
               <span
-                className="text-xs uppercase tracking-[0.18em]"
+                className="text-xs uppercase tracking-[0.18em] transition-transform duration-300 group-hover:translate-x-0.5"
                 style={{ fontFamily: MONO, color: offersTheme.cyanInk }}
               >
                 {row.code}
@@ -47,7 +42,7 @@ export default function InclusionsTable() {
               >
                 {row.detail}
               </span>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>

@@ -1,42 +1,37 @@
 import Image from 'next/image';
-import { DISPLAY, MONO, benchmark, offersTheme } from '@/data/offersData';
+import { MONO, benchmark, offersTheme } from '@/data/offersData';
+import Reveal from './Reveal';
+import SectionHeader from './SectionHeader';
 
 export default function BenchmarkStrip() {
   return (
-    <section className="bg-white px-5 py-24 sm:px-8 lg:px-12">
+    <section
+      aria-labelledby="offers-benchmark-title"
+      className="bg-white px-5 py-24 sm:px-8 lg:px-12"
+    >
       <div className="mx-auto max-w-6xl">
-        <p
-          className="text-[11px] uppercase tracking-[0.3em]"
-          style={{ fontFamily: MONO, color: offersTheme.muted }}
-        >
-          {benchmark.eyebrow}
-        </p>
-        <h2
-          className="mt-6 max-w-3xl font-bold"
-          style={{
-            fontFamily: DISPLAY,
-            color: offersTheme.ink,
-            fontSize: 'clamp(1.7rem, 3.6vw, 2.8rem)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          {benchmark.title}
-        </h2>
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#425466]">
-          {benchmark.body}
-        </p>
+        <SectionHeader
+          id="offers-benchmark-title"
+          eyebrow={benchmark.eyebrow}
+          title={benchmark.title}
+        />
+
+        <Reveal delay={0.08}>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#425466]">
+            {benchmark.body}
+          </p>
+        </Reveal>
 
         <ul className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-4">
-          {benchmark.apps.map((app) => (
-            <li key={app.name}>
-              <div className="relative aspect-[9/19.5] w-full overflow-hidden rounded-2xl bg-[#f2f4f6] ring-1 ring-black/5">
+          {benchmark.apps.map((app, index) => (
+            <Reveal key={app.name} as="li" delay={index * 0.07} className="group">
+              <div className="relative aspect-[9/19.5] w-full overflow-hidden rounded-2xl bg-[#f2f4f6] ring-1 ring-black/5 transition-all duration-500 group-hover:-translate-y-1.5 group-hover:shadow-[0_24px_48px_-24px_rgba(14,34,51,0.45)] group-hover:ring-black/10">
                 <Image
                   src={app.image}
                   alt={app.alt}
                   fill
                   sizes="(max-width: 640px) 45vw, 22vw"
-                  className="object-cover object-top"
+                  className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                 />
               </div>
               <p
@@ -45,13 +40,15 @@ export default function BenchmarkStrip() {
               >
                 {app.name}
               </p>
-            </li>
+            </Reveal>
           ))}
         </ul>
 
-        <p className="mt-10 max-w-2xl border-l-2 border-black/10 pl-4 text-xs leading-relaxed text-[#6b7683]">
-          {benchmark.disclaimer}
-        </p>
+        <Reveal delay={0.1}>
+          <p className="mt-10 max-w-2xl border-l-2 border-black/10 pl-4 text-xs leading-relaxed text-[#5c6a76]">
+            {benchmark.disclaimer}
+          </p>
+        </Reveal>
       </div>
     </section>
   );
