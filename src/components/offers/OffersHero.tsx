@@ -40,7 +40,7 @@ export default function OffersHero() {
   return (
     <section
       aria-labelledby="offers-hero-title"
-      className="relative flex flex-col justify-center overflow-hidden px-5 py-20 sm:px-8 lg:min-h-dvh lg:px-12 lg:py-16"
+      className="relative flex flex-col justify-center overflow-hidden px-5 pb-20 pt-28 sm:px-8 lg:min-h-dvh lg:px-12 lg:pb-16 lg:pt-24"
       style={{ background: offersTheme.ink }}
     >
       <div

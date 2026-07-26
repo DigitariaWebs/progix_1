@@ -10,8 +10,9 @@ export default function ProcessTimeline() {
 
   return (
     <section
+      id="processus"
       aria-labelledby="offers-process-title"
-      className="bg-[#f7f8f9] px-5 py-24 sm:px-8 lg:px-12"
+      className="scroll-mt-20 bg-[#f7f8f9] px-5 py-24 sm:px-8 lg:px-12"
     >
       <div className="mx-auto max-w-6xl">
         <SectionHeader

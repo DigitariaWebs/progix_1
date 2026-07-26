@@ -8,8 +8,9 @@ import SectionHeader from './SectionHeader';
 export default function DashboardSection() {
   return (
     <section
+      id="back-office"
       aria-labelledby="offers-dashboard-title"
-      className="px-5 py-24 sm:px-8 lg:px-12"
+      className="scroll-mt-20 px-5 py-24 sm:px-8 lg:px-12"
       style={{ background: offersTheme.steel }}
     >
       <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">

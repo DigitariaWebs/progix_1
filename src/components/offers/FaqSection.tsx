@@ -12,8 +12,9 @@ export default function FaqSection() {
 
   return (
     <section
+      id="faq"
       aria-labelledby="offers-faq-title"
-      className="bg-white px-5 py-24 sm:px-8 lg:px-12"
+      className="scroll-mt-20 bg-white px-5 py-24 sm:px-8 lg:px-12"
     >
       <div className="mx-auto max-w-3xl">
         <SectionHeader

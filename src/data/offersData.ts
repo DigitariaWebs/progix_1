@@ -25,6 +25,23 @@ export const MIN_MONTHLY_SALES = 2000;
 export const MAX_MONTHLY_SALES = 40000;
 export const SALES_STEP = 500;
 
+export const siteHeader = {
+  home: "Haut de page",
+  // In-page anchors only. Every other route on progix.pro currently renders the
+  // maintenance screen, so linking to them from here would be a dead end. When
+  // MAINTENANCE_MODE flips in src/app/(site)/layout.tsx, point the logo at "/"
+  // and add the site links back.
+  nav: [
+    { label: 'Ce qui est inclus', href: '#inclus' },
+    { label: 'Le back-office', href: '#back-office' },
+    { label: 'Délais', href: '#processus' },
+    { label: 'Questions', href: '#faq' },
+  ],
+  cta: 'Recevoir une proposition',
+  menuOpen: 'Ouvrir le menu',
+  menuClose: 'Fermer le menu',
+};
+
 export const hero = {
   eyebrow: 'Offre restaurants · Montréal',
   title: 'Vos livraisons paient',
