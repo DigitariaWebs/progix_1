@@ -4,7 +4,8 @@ export const offersTheme = {
   paper: '#EFEAE0',
   cyan: '#00D4FF',
   loss: '#E4572E',
-  muted: '#7C8B99',
+  // 5.56:1 on white, 5.23:1 on #f7f8f9 — the 11px labels need it.
+  muted: '#5C6A76',
 } as const;
 
 export const MONO = "'DM Mono', ui-monospace, SFMono-Regular, monospace";
@@ -51,12 +52,34 @@ export const benchmark = {
     "The Burger's Priest, Raising Cane's, Greene King, PattySlaps, POP'S : chacune a publié son application de commande. Même logique, même technologie. La seule différence, c'est le budget d'agence — et c'est exactement ce qu'on a réglé.",
   disclaimer:
     'Applications publiées par leurs marques respectives. Exemples de marché, présentés à titre de référence — ce ne sont pas des réalisations PROGIX.',
+  // `alt` lives here rather than being templated in the component: until the client
+  // exports the screenshots it is the only content these tiles render.
   apps: [
-    { name: "The Burger's Priest", image: '/images/offers/burgers-priest.png' },
-    { name: "Raising Cane's", image: '/images/offers/raising-canes.png' },
-    { name: 'Greene King', image: '/images/offers/greene-king.png' },
-    { name: 'PattySlaps', image: '/images/offers/pattyslaps.png' },
-    { name: "POP'S Villepinte", image: '/images/offers/pops-villepinte.png' },
+    {
+      name: "The Burger's Priest",
+      image: '/images/offers/burgers-priest.png',
+      alt: "Fiche App Store de l'application The Burger's Priest",
+    },
+    {
+      name: "Raising Cane's",
+      image: '/images/offers/raising-canes.png',
+      alt: "Fiche App Store de l'application Raising Cane's",
+    },
+    {
+      name: 'Greene King',
+      image: '/images/offers/greene-king.png',
+      alt: "Fiche App Store de l'application Greene King Pubs & Restaurants",
+    },
+    {
+      name: 'PattySlaps',
+      image: '/images/offers/pattyslaps.png',
+      alt: "Fiche App Store de l'application PattySlaps",
+    },
+    {
+      name: "POP'S Villepinte",
+      image: '/images/offers/pops-villepinte.png',
+      alt: "Fiche App Store de l'application POP'S Villepinte",
+    },
   ],
 };
 

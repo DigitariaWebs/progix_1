@@ -6,9 +6,16 @@ import { DISPLAY, MONO, hero, offersTheme } from '@/data/offersData';
 
 export default function OffersHero() {
   const reduce = useReducedMotion();
-  const rise = reduce
-    ? {}
-    : { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } };
+
+  // `initial` and `animate` stay unconditional so the server and the client agree.
+  // Branching the props instead is a trap: useReducedMotion() returns null during
+  // SSR, so the server always emits `opacity:0` inline, while a reduced-motion
+  // client renders no motion props at all — and nothing clears that inline style
+  // at hydration. The whole hero would stay invisible. Collapse the duration
+  // instead: same end state, reached on the first frame.
+  const rise = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } };
+  const t = (duration: number, delay = 0) =>
+    reduce ? { duration: 0 } : { duration, delay };
 
   return (
     <section
@@ -29,8 +36,8 @@ export default function OffersHero() {
         <div>
           <motion.p
             {...rise}
-            transition={{ duration: 0.6 }}
-            className="text-[11px] uppercase tracking-[0.3em] text-white/45"
+            transition={t(0.6)}
+            className="text-[11px] uppercase tracking-[0.3em] text-white/60"
             style={{ fontFamily: MONO }}
           >
             {hero.eyebrow}
@@ -38,7 +45,7 @@ export default function OffersHero() {
 
           <motion.h1
             {...rise}
-            transition={{ duration: 0.7, delay: 0.08 }}
+            transition={t(0.7, 0.08)}
             className="mt-7 font-bold text-white"
             style={{
               fontFamily: DISPLAY,
@@ -54,7 +61,7 @@ export default function OffersHero() {
 
           <motion.p
             {...rise}
-            transition={{ duration: 0.7, delay: 0.16 }}
+            transition={t(0.7, 0.16)}
             className="mt-7 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg"
           >
             {hero.body}
@@ -62,7 +69,7 @@ export default function OffersHero() {
 
           <motion.div
             {...rise}
-            transition={{ duration: 0.7, delay: 0.24 }}
+            transition={t(0.7, 0.24)}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
             <a
@@ -82,10 +89,9 @@ export default function OffersHero() {
         </div>
 
         <motion.div
-          {...(reduce
-            ? {}
-            : { initial: { opacity: 0, y: 32 }, animate: { opacity: 1, y: 0 } })}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={t(0.8, 0.3)}
           className="flex justify-center lg:justify-end"
         >
           <CommissionReceipt />

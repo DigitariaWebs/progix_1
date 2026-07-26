@@ -33,14 +33,14 @@ export default function BenchmarkStrip() {
               <div className="relative aspect-[9/19.5] w-full overflow-hidden rounded-2xl bg-[#f2f4f6] ring-1 ring-black/5">
                 <Image
                   src={app.image}
-                  alt={`Fiche App Store de l'application ${app.name}`}
+                  alt={app.alt}
                   fill
                   sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
                   className="object-cover object-top"
                 />
               </div>
               <p
-                className="mt-3 text-[11px] uppercase tracking-[0.1em]"
+                className="mt-3 text-xs uppercase tracking-[0.1em]"
                 style={{ fontFamily: MONO, color: offersTheme.muted }}
               >
                 {app.name}

@@ -140,14 +140,14 @@ export default function CommissionReceipt() {
           onChange={(e) => setMonthlySales(Number(e.target.value))}
           className="mt-3 w-full cursor-pointer accent-[#00D4FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D4FF]"
         />
-        <p className="mt-3 text-[11px] leading-relaxed text-white/40">
+        <p className="mt-3 text-xs leading-relaxed text-white/60">
           {hero.rateNote}
         </p>
       </div>
 
       {/* Relief card */}
       <div className="mt-7 border border-white/10 bg-white/[0.04] p-5">
-        <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">
+        <p className="text-[10px] uppercase tracking-[0.24em] text-white/60">
           {receipt.keepTitle}
         </p>
         <div className="mt-4 flex items-baseline justify-between gap-4">
@@ -169,7 +169,7 @@ export default function CommissionReceipt() {
             + {formatCad(result.yearlyCommission)}
           </span>
         </div>
-        <p className="mt-4 text-[11px] leading-relaxed text-white/40">
+        <p className="mt-4 text-xs leading-relaxed text-white/60">
           {receipt.keepNote}
         </p>
       </div>

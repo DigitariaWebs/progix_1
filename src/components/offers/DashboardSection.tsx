@@ -12,7 +12,7 @@ export default function DashboardSection() {
       <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
         <div>
           <p
-            className="text-[11px] uppercase tracking-[0.3em] text-white/45"
+            className="text-[11px] uppercase tracking-[0.3em] text-white/60"
             style={{ fontFamily: MONO }}
           >
             {dashboard.eyebrow}
@@ -53,7 +53,9 @@ export default function DashboardSection() {
               alt={shot.alt}
             />
           ))}
-          <p className="text-[11px] leading-relaxed text-white/40">
+          {/* The mockup disclosure. It qualifies the images above it, so it has to be
+              as readable as they are — 4.5:1 minimum, not a whispered footnote. */}
+          <p className="text-xs leading-relaxed text-white/70">
             {dashboard.caption}
           </p>
         </div>
