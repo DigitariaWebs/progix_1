@@ -180,6 +180,11 @@ export default function GlobalMenu() {
   const menuItems = [
     { label: 'Accueil', ariaLabel: "Aller à la page d'accueil", link: '/' },
     {
+      label: 'Offre restaurants',
+      ariaLabel: "Découvrir l'offre application pour restaurants",
+      link: '/offers',
+    },
+    {
       label: 'Expertise',
       ariaLabel: 'Voir notre expertise',
       link: '/expertise',

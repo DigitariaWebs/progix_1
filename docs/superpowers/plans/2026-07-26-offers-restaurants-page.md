@@ -78,9 +78,12 @@ public/images/offers/dashboard-tst-food.png
 | `ink` | `#0E2233` | dark section backgrounds |
 | `steel` | `#1A3A52` | secondary dark, matches the home hero |
 | `paper` | `#EFEAE0` | receipt stock — **only** the receipt surface |
-| `cyan` | `#00D4FF` | CTAs, and the kept-money figure on the relief card |
+| `cyan` | `#00D4FF` | CTAs and accents **on dark bands only** — 1.77:1 on white |
+| `cyanInk` | `#00708C` | the same accent role on light bands — 5.68:1 on white |
 | `loss` | `#E4572E` | money leaving — commission figures only |
-| `muted` | `#7C8B99` | labels, captions |
+| `muted` | `#5C6A76` | labels, captions |
+
+Every colour above clears 4.5:1 against the background it is used on. `muted` started at `#7C8B99` and was darkened after an audit put it at 3.49:1 on white — below the floor for the 11px labels it is used on, including the third-party brand names that carry the benchmark attribution. On dark bands the equivalent floor is `text-white/60`; `white/45` and `white/40` do not clear it.
 
 `loss` is semantic, never decorative: if a number is not money leaving, it is not red. A dark green for "money kept" was considered and dropped — at the contrast needed against `ink` it stops reading as green, and cyan already carries "good" everywhere else on the page.
 
@@ -262,8 +265,12 @@ export const offersTheme = {
   steel: '#1A3A52',
   paper: '#EFEAE0',
   cyan: '#00D4FF',
+  // Same accent, darkened for light backgrounds. `cyan` is 1.77:1 on white —
+  // below even the 3:1 non-text floor — so it must never carry text there.
+  cyanInk: '#00708C',
   loss: '#E4572E',
-  muted: '#7C8B99',
+  // 5.56:1 on white, 5.23:1 on #f7f8f9 — the 11px labels need it.
+  muted: '#5C6A76',
 } as const;
 
 export const MONO = "'DM Mono', ui-monospace, SFMono-Regular, monospace";
@@ -310,12 +317,34 @@ export const benchmark = {
     "The Burger's Priest, Raising Cane's, Greene King, PattySlaps, POP'S : chacune a publié son application de commande. Même logique, même technologie. La seule différence, c'est le budget d'agence — et c'est exactement ce qu'on a réglé.",
   disclaimer:
     'Applications publiées par leurs marques respectives. Exemples de marché, présentés à titre de référence — ce ne sont pas des réalisations PROGIX.',
+  // `alt` lives here rather than being templated in the component: until the client
+  // exports the screenshots it is the only content these tiles render.
   apps: [
-    { name: "The Burger's Priest", image: '/images/offers/burgers-priest.png' },
-    { name: "Raising Cane's", image: '/images/offers/raising-canes.png' },
-    { name: 'Greene King', image: '/images/offers/greene-king.png' },
-    { name: 'PattySlaps', image: '/images/offers/pattyslaps.png' },
-    { name: "POP'S Villepinte", image: '/images/offers/pops-villepinte.png' },
+    {
+      name: "The Burger's Priest",
+      image: '/images/offers/burgers-priest.png',
+      alt: "Fiche App Store de l'application The Burger's Priest",
+    },
+    {
+      name: "Raising Cane's",
+      image: '/images/offers/raising-canes.png',
+      alt: "Fiche App Store de l'application Raising Cane's",
+    },
+    {
+      name: 'Greene King',
+      image: '/images/offers/greene-king.png',
+      alt: "Fiche App Store de l'application Greene King Pubs & Restaurants",
+    },
+    {
+      name: 'PattySlaps',
+      image: '/images/offers/pattyslaps.png',
+      alt: "Fiche App Store de l'application PattySlaps",
+    },
+    {
+      name: "POP'S Villepinte",
+      image: '/images/offers/pops-villepinte.png',
+      alt: "Fiche App Store de l'application POP'S Villepinte",
+    },
   ],
 };
 
@@ -823,14 +852,14 @@ export default function CommissionReceipt() {
           onChange={(e) => setMonthlySales(Number(e.target.value))}
           className="mt-3 w-full cursor-pointer accent-[#00D4FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D4FF]"
         />
-        <p className="mt-3 text-[11px] leading-relaxed text-white/40">
+        <p className="mt-3 text-xs leading-relaxed text-white/60">
           {hero.rateNote}
         </p>
       </div>
 
       {/* Relief card */}
       <div className="mt-7 border border-white/10 bg-white/[0.04] p-5">
-        <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">
+        <p className="text-[10px] uppercase tracking-[0.24em] text-white/60">
           {receipt.keepTitle}
         </p>
         <div className="mt-4 flex items-baseline justify-between gap-4">
@@ -852,7 +881,7 @@ export default function CommissionReceipt() {
             + {formatCad(result.yearlyCommission)}
           </span>
         </div>
-        <p className="mt-4 text-[11px] leading-relaxed text-white/40">
+        <p className="mt-4 text-xs leading-relaxed text-white/60">
           {receipt.keepNote}
         </p>
       </div>
@@ -896,9 +925,16 @@ import { DISPLAY, MONO, hero, offersTheme } from '@/data/offersData';
 
 export default function OffersHero() {
   const reduce = useReducedMotion();
-  const rise = reduce
-    ? {}
-    : { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } };
+
+  // `initial` and `animate` stay unconditional so the server and the client agree.
+  // Branching the props instead is a trap: useReducedMotion() returns null during
+  // SSR, so the server always emits `opacity:0` inline, while a reduced-motion
+  // client renders no motion props at all — and nothing clears that inline style
+  // at hydration. The whole hero would stay invisible. Collapse the duration
+  // instead: same end state, reached on the first frame.
+  const rise = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } };
+  const t = (duration: number, delay = 0) =>
+    reduce ? { duration: 0 } : { duration, delay };
 
   return (
     <section
@@ -919,8 +955,8 @@ export default function OffersHero() {
         <div>
           <motion.p
             {...rise}
-            transition={{ duration: 0.6 }}
-            className="text-[11px] uppercase tracking-[0.3em] text-white/45"
+            transition={t(0.6)}
+            className="text-[11px] uppercase tracking-[0.3em] text-white/60"
             style={{ fontFamily: MONO }}
           >
             {hero.eyebrow}
@@ -928,7 +964,7 @@ export default function OffersHero() {
 
           <motion.h1
             {...rise}
-            transition={{ duration: 0.7, delay: 0.08 }}
+            transition={t(0.7, 0.08)}
             className="mt-7 font-bold text-white"
             style={{
               fontFamily: DISPLAY,
@@ -944,7 +980,7 @@ export default function OffersHero() {
 
           <motion.p
             {...rise}
-            transition={{ duration: 0.7, delay: 0.16 }}
+            transition={t(0.7, 0.16)}
             className="mt-7 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg"
           >
             {hero.body}
@@ -952,7 +988,7 @@ export default function OffersHero() {
 
           <motion.div
             {...rise}
-            transition={{ duration: 0.7, delay: 0.24 }}
+            transition={t(0.7, 0.24)}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
             <a
@@ -972,10 +1008,9 @@ export default function OffersHero() {
         </div>
 
         <motion.div
-          {...(reduce
-            ? {}
-            : { initial: { opacity: 0, y: 32 }, animate: { opacity: 1, y: 0 } })}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={t(0.8, 0.3)}
           className="flex justify-center lg:justify-end"
         >
           <CommissionReceipt />
@@ -1050,14 +1085,14 @@ export default function BenchmarkStrip() {
               <div className="relative aspect-[9/19.5] w-full overflow-hidden rounded-2xl bg-[#f2f4f6] ring-1 ring-black/5">
                 <Image
                   src={app.image}
-                  alt={`Fiche App Store de l'application ${app.name}`}
+                  alt={app.alt}
                   fill
                   sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
                   className="object-cover object-top"
                 />
               </div>
               <p
-                className="mt-3 text-[11px] uppercase tracking-[0.1em]"
+                className="mt-3 text-xs uppercase tracking-[0.1em]"
                 style={{ fontFamily: MONO, color: offersTheme.muted }}
               >
                 {app.name}
@@ -1191,7 +1226,7 @@ export default function DashboardSection() {
       <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
         <div>
           <p
-            className="text-[11px] uppercase tracking-[0.3em] text-white/45"
+            className="text-[11px] uppercase tracking-[0.3em] text-white/60"
             style={{ fontFamily: MONO }}
           >
             {dashboard.eyebrow}
@@ -1232,7 +1267,9 @@ export default function DashboardSection() {
               alt={shot.alt}
             />
           ))}
-          <p className="text-[11px] leading-relaxed text-white/40">
+          {/* The mockup disclosure. It qualifies the images above it, so it has to be
+              as readable as they are — 4.5:1 minimum, not a whispered footnote. */}
+          <p className="text-xs leading-relaxed text-white/70">
             {dashboard.caption}
           </p>
         </div>
@@ -1301,8 +1338,8 @@ export default function InclusionsTable() {
               className="grid gap-2 border-b border-black/10 py-6 sm:grid-cols-[72px_1fr_1.1fr] sm:gap-8"
             >
               <span
-                className="text-[11px] uppercase tracking-[0.18em]"
-                style={{ fontFamily: MONO, color: offersTheme.cyan }}
+                className="text-xs uppercase tracking-[0.18em]"
+                style={{ fontFamily: MONO, color: offersTheme.cyanInk }}
               >
                 {row.code}
               </span>
@@ -1312,7 +1349,10 @@ export default function InclusionsTable() {
               >
                 {row.label}
               </span>
-              <span className="text-sm leading-relaxed text-[#5c6a76]">
+              <span
+                className="text-sm leading-relaxed"
+                style={{ color: offersTheme.muted }}
+              >
                 {row.detail}
               </span>
             </li>
@@ -1324,7 +1364,7 @@ export default function InclusionsTable() {
 }
 ```
 
-Note: `offersTheme.cyan` on white fails contrast for body text, which is why the code column is a short uppercase label paired with the adjacent full label, never the only carrier of meaning. Keep it that way.
+Note: the code column uses `cyanInk`, not `cyan`. Brand cyan measures 1.77:1 on white — "it is redundant with the label beside it" is not a WCAG exemption; 1.4.3 exempts incidental text, and a rendered label is not incidental.
 
 - [ ] **Step 2: Type-check and lint**
 
@@ -1380,7 +1420,11 @@ export default function ProcessTimeline() {
 
         <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {processSteps.phases.map((phase) => (
-            <li key={phase.label} className="border-t-2 border-[#0E2233] pt-5">
+            <li
+              key={phase.label}
+              className="border-t-2 pt-5"
+              style={{ borderColor: offersTheme.ink }}
+            >
               <p
                 className="text-[11px] uppercase tracking-[0.16em]"
                 style={{ fontFamily: MONO, color: offersTheme.muted }}
@@ -1393,7 +1437,10 @@ export default function ProcessTimeline() {
               >
                 {phase.label}
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-[#5c6a76]">
+              <p
+                className="mt-3 text-sm leading-relaxed"
+                style={{ color: offersTheme.muted }}
+              >
                 {phase.body}
               </p>
             </li>
@@ -1503,7 +1550,8 @@ export default function FaqSection() {
                   role="region"
                   aria-labelledby={buttonId}
                   hidden={!expanded}
-                  className="pb-6 pr-10 text-sm leading-relaxed text-[#5c6a76]"
+                  className="pb-6 pr-10 text-sm leading-relaxed"
+                  style={{ color: offersTheme.muted }}
                 >
                   {item.a}
                 </div>
@@ -1935,7 +1983,7 @@ export default function OfferLeadForm() {
     >
       <div className="mx-auto max-w-3xl">
         <p
-          className="text-[11px] uppercase tracking-[0.3em] text-white/45"
+          className="text-[11px] uppercase tracking-[0.3em] text-white/60"
           style={{ fontFamily: MONO }}
         >
           {leadForm.eyebrow}
@@ -2372,6 +2420,11 @@ git commit -m "chore(offers): final verification pass"
 ---
 
 ## Deferred, on purpose
+
+- **A shared `SectionHeader` component.** The eyebrow + `h2` + inline style object repeats across six section files, differing only in clamp values and light/dark tone. Extracting it would cut roughly a third of each file. Not done here because all six already exist and the churn outweighs the win mid-build — worth doing as a standalone refactor.
+- **`LaptopFrame` renders a `disabled` `<button>` when given no `onOpen`.** Screen readers announce each dashboard mockup as "…, button, unavailable". The fix is to render a plain `<div>` when `onOpen` is absent, but `LaptopFrame` is shared with the portfolio and changing it is outside this feature's blast radius.
+- **`LaptopFrame` hardcodes `priority` on its `SmartMedia`.** Both below-the-fold dashboard images eager-load at full size, since `images.unoptimized: true`. Same reason for deferring: shared component.
+- **`<section>` landmarks have no accessible names.** Adding `aria-labelledby` pointing at each `h2` would expose them in the landmark rota.
 
 - `src/app/api/contact/route.ts` still has its own inline mail transport. Migrating it onto `src/lib/email/sendLeadEmail.ts` is a separate, low-risk change once `/api/offers` has run in production for a while.
 - The hero slider value does not prefill the form's `monthlySales` select. Wiring it would need shared state across two sections for a marginal gain — revisit if the form's drop-off rate says it matters.

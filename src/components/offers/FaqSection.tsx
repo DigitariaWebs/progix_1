@@ -69,7 +69,8 @@ export default function FaqSection() {
                   role="region"
                   aria-labelledby={buttonId}
                   hidden={!expanded}
-                  className="pb-6 pr-10 text-sm leading-relaxed text-[#5c6a76]"
+                  className="pb-6 pr-10 text-sm leading-relaxed"
+                  style={{ color: offersTheme.muted }}
                 >
                   {item.a}
                 </div>

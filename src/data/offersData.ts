@@ -3,6 +3,9 @@ export const offersTheme = {
   steel: '#1A3A52',
   paper: '#EFEAE0',
   cyan: '#00D4FF',
+  // Same accent, darkened for light backgrounds. `cyan` is 1.77:1 on white —
+  // below even the 3:1 non-text floor — so it must never carry text there.
+  cyanInk: '#00708C',
   loss: '#E4572E',
   // 5.56:1 on white, 5.23:1 on #f7f8f9 — the 11px labels need it.
   muted: '#5C6A76',

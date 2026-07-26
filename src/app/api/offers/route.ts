@@ -1,41 +1,161 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { missingMailConfig, sendLeadEmail } from '@/lib/email/sendLeadEmail';
+import { leadForm } from '@/data/offersData';
 
 export const runtime = 'nodejs';
 
+/**
+ * App Router route handlers have no built-in body limit, and `output: 'standalone'`
+ * means there is no platform cap either — so the ceiling is enforced here. Without
+ * it a single anonymous POST can turn a 10 MB body into a 10 MB email.
+ */
+const MAX_BODY_BYTES = 64_000;
+
+const MAX_LENGTH: Record<string, number> = {
+  name: 200,
+  restaurant: 200,
+  city: 120,
+  locations: 40,
+  monthlySales: 40,
+  phone: 40,
+  email: 254,
+  message: 5000,
+};
+
+/**
+ * Per-instance and in memory: enough for a single standalone deployment fronting
+ * one marketing form. A multi-instance rollout needs a shared store.
+ */
+const RATE_LIMIT = { windowMs: 10 * 60_000, max: 5 };
+const hits = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter(
+    (at) => now - at < RATE_LIMIT.windowMs,
+  );
+  recent.push(now);
+  if (hits.size > 5000) hits.clear();
+  hits.set(ip, recent);
+  return recent.length > RATE_LIMIT.max;
+}
+
+/** Escapes for both text and attribute positions — the quotes matter in `href`. */
 const safe = (v: unknown) =>
   String(v ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 
 const safeNl = (v: unknown) => safe(v).replace(/\n/g, '<br>');
 
+/** A mail header is plain text: no HTML entities, no newlines, bounded length. */
+const headerSafe = (v: unknown) =>
+  String(v ?? '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 120);
+
+// Rejects the quote, angle-bracket and comma forms that the mail layer would
+// reinterpret as a display name or a second address.
+const EMAIL_RE = /^[^\s@"'<>,]+@[^\s@"'<>,]+\.[^\s@"'<>,]{2,}$/;
+
+/** Reads the label straight off the form options so the two can never drift. */
+const labelFor = (
+  options: ReadonlyArray<{ value: string; label: string }>,
+  value: unknown,
+) => options.find((o) => o.value === String(value))?.label ?? String(value ?? '');
+
 const row = (key: string, val: string) => `
   <tr>
-    <td style="padding:13px 0;border-bottom:1px solid #e9edf2;color:#8a94a3;font-size:11px;width:190px;vertical-align:top;letter-spacing:0.08em;text-transform:uppercase;font-weight:600">${key}</td>
+    <td style="padding:13px 0;border-bottom:1px solid #e9edf2;color:#6b7484;font-size:11px;width:190px;vertical-align:top;letter-spacing:0.08em;text-transform:uppercase;font-weight:600">${key}</td>
     <td style="padding:13px 0;border-bottom:1px solid #e9edf2;color:#0d2235;font-size:14px;vertical-align:top;font-weight:500">${val || '<span style="color:#b6bdc7">—</span>'}</td>
   </tr>`;
 
-const LOCATIONS: Record<string, string> = {
-  '1': '1 établissement',
-  '2-5': '2 à 5 établissements',
-  '6-20': '6 à 20 établissements',
-  '20+': 'Plus de 20 établissements',
-};
-
-const SALES: Record<string, string> = {
-  '<5k': 'Moins de 5 000 $ / mois',
-  '5k-15k': '5 000 $ à 15 000 $ / mois',
-  '15k-40k': '15 000 $ à 40 000 $ / mois',
-  '40k+': 'Plus de 40 000 $ / mois',
-  none: 'Pas encore de livraison',
-};
-
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { name, restaurant, city, locations, monthlySales, phone, email, message } = body;
+    const declared = Number(request.headers.get('content-length') ?? 0);
+    if (declared > MAX_BODY_BYTES) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'payload_too_large',
+          message: 'Votre message est trop long.',
+        },
+        { status: 413 },
+      );
+    }
+
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'invalid_json',
+          message: 'Requête invalide.',
+        },
+        { status: 400 },
+      );
+    }
+
+    const {
+      name,
+      restaurant,
+      city,
+      locations,
+      monthlySales,
+      phone,
+      email,
+      message,
+      website,
+    } = body;
+
+    // Honeypot: a hidden field no human ever fills. Answer 200 so bots learn nothing.
+    if (String(website ?? '').trim()) {
+      return NextResponse.json({ success: true, message: 'Submitted successfully' });
+    }
+
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    if (rateLimited(ip)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'rate_limited',
+          message: 'Trop de demandes. Réessayez dans quelques minutes.',
+        },
+        { status: 429 },
+      );
+    }
+
+    const fields: Record<string, unknown> = {
+      name,
+      restaurant,
+      city,
+      locations,
+      monthlySales,
+      phone,
+      email,
+      message,
+    };
+
+    const tooLong = Object.entries(fields)
+      .filter(([key, value]) => String(value ?? '').length > MAX_LENGTH[key])
+      .map(([key]) => key);
+
+    if (tooLong.length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'validation_failed',
+          message: 'Un des champs dépasse la longueur autorisée.',
+          details: `Too long: ${tooLong.join(', ')}`,
+        },
+        { status: 400 },
+      );
+    }
 
     const required: Record<string, unknown> = {
       name,
@@ -62,7 +182,7 @@ export async function POST(request: NextRequest) {
     }
 
     const leadEmail = String(email).trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(leadEmail)) {
+    if (!EMAIL_RE.test(leadEmail)) {
       return NextResponse.json(
         {
           success: false,
@@ -75,12 +195,13 @@ export async function POST(request: NextRequest) {
 
     const missingConfig = missingMailConfig();
     if (missingConfig.length > 0) {
+      // Logged, not returned: env var names are not an anonymous caller's business.
+      console.error(`[api/offers] missing config: ${missingConfig.join(', ')}`);
       return NextResponse.json(
         {
           success: false,
           error: 'missing_config',
           message: 'Server configuration incomplete',
-          details: `Missing: ${missingConfig.join(', ')}`,
         },
         { status: 500 },
       );
@@ -102,10 +223,10 @@ export async function POST(request: NextRequest) {
           <p style="margin:0 0 18px;font-size:13px;font-weight:800;letter-spacing:0.32em;color:#ffffff">PROGIX</p>
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>
             <td width="34" height="2" style="background:#00d4ff;font-size:0;line-height:0">&nbsp;</td>
-            <td style="padding-left:10px;font-size:10px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#00d4ff">/ Offre restaurants</td>
+            <td style="padding-left:10px;font-size:10px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#00708c">/ Offre restaurants</td>
           </tr></table>
           <h1 style="margin:16px 0 6px;font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#ffffff;line-height:1.2">${safe(restaurant)}</h1>
-          <p style="margin:0 0 14px;font-size:12px;color:rgba(255,255,255,0.55)">Reçue le ${dateStr} via progix.pro/offers</p>
+          <p style="margin:0 0 14px;font-size:12px;color:rgba(255,255,255,0.6)">Reçue le ${dateStr} via progix.pro/offers</p>
           <p style="margin:0;font-size:14px">
             <a href="mailto:${safe(leadEmail)}" style="color:#00d4ff;text-decoration:none;font-weight:600">${safe(leadEmail)}</a>
             <span style="color:rgba(255,255,255,0.35)">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
@@ -115,13 +236,13 @@ export async function POST(request: NextRequest) {
       </tr>
       <tr>
         <td style="background:#ffffff;padding:26px 40px 8px">
-          <p style="margin:0 0 4px;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#0093b8">Profil du restaurant</p>
+          <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#00708c">Profil du restaurant</p>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
             ${row('Contact', safe(name))}
             ${row('Restaurant', safe(restaurant))}
             ${row('Ville', safe(city))}
-            ${row('Établissements', safe(LOCATIONS[String(locations)] || locations))}
-            ${row('Ventes livraison', safe(SALES[String(monthlySales)] || monthlySales))}
+            ${row('Établissements', safe(labelFor(leadForm.locationOptions, locations)))}
+            ${row('Ventes livraison', safe(labelFor(leadForm.salesOptions, monthlySales)))}
           </table>
         </td>
       </tr>
@@ -129,7 +250,7 @@ export async function POST(request: NextRequest) {
         String(message ?? '').trim()
           ? `<tr>
         <td style="background:#ffffff;padding:26px 40px 14px">
-          <p style="margin:0 0 10px;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#0093b8">Précisions</p>
+          <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#00708c">Précisions</p>
           <p style="margin:0;font-size:14px;line-height:1.7;color:#3a4654">${safeNl(message)}</p>
         </td>
       </tr>`
@@ -137,7 +258,7 @@ export async function POST(request: NextRequest) {
       }
       <tr>
         <td style="background:#0d2235;border-radius:0 0 8px 8px;padding:20px 40px">
-          <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.45)">PROGIX — Développement web, mobile et conseil IT à Montréal &nbsp;·&nbsp; <a href="https://www.progix.pro" style="color:#00d4ff;text-decoration:none">progix.pro</a></p>
+          <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.6)">PROGIX — Développement web, mobile et conseil IT à Montréal &nbsp;·&nbsp; <a href="https://www.progix.pro" style="color:#00d4ff;text-decoration:none">progix.pro</a></p>
         </td>
       </tr>
     </table>
@@ -146,21 +267,27 @@ export async function POST(request: NextRequest) {
 </body></html>`;
 
     await sendLeadEmail({
-      subject: `Offre restaurants — ${safe(restaurant) || 'Sans nom'}`,
+      subject: `Offre restaurants — ${headerSafe(restaurant)}`,
       html,
       replyTo: leadEmail,
     });
 
     return NextResponse.json({ success: true, message: 'Submitted successfully' });
   } catch (error) {
-    const details = error instanceof Error ? error.message : 'Unknown error occurred';
+    // Mail-stack errors carry internal hostnames, ports and credential hints.
+    // They belong in the server log, not in an anonymous caller's response.
+    console.error('[api/offers] submission failed', error);
     return NextResponse.json(
       {
         success: false,
         error: 'submission_failed',
         message: 'Failed to submit',
-        details,
-        timestamp: new Date().toISOString(),
+        ...(process.env.NODE_ENV === 'production'
+          ? {}
+          : {
+              details:
+                error instanceof Error ? error.message : 'Unknown error occurred',
+            }),
       },
       { status: 500 },
     );

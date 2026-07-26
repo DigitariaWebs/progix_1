@@ -30,8 +30,8 @@ export default function InclusionsTable() {
               className="grid gap-2 border-b border-black/10 py-6 sm:grid-cols-[72px_1fr_1.1fr] sm:gap-8"
             >
               <span
-                className="text-[11px] uppercase tracking-[0.18em]"
-                style={{ fontFamily: MONO, color: offersTheme.cyan }}
+                className="text-xs uppercase tracking-[0.18em]"
+                style={{ fontFamily: MONO, color: offersTheme.cyanInk }}
               >
                 {row.code}
               </span>
@@ -41,7 +41,10 @@ export default function InclusionsTable() {
               >
                 {row.label}
               </span>
-              <span className="text-sm leading-relaxed text-[#5c6a76]">
+              <span
+                className="text-sm leading-relaxed"
+                style={{ color: offersTheme.muted }}
+              >
                 {row.detail}
               </span>
             </li>

@@ -25,7 +25,11 @@ export default function ProcessTimeline() {
 
         <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {processSteps.phases.map((phase) => (
-            <li key={phase.label} className="border-t-2 border-[#0E2233] pt-5">
+            <li
+              key={phase.label}
+              className="border-t-2 pt-5"
+              style={{ borderColor: offersTheme.ink }}
+            >
               <p
                 className="text-[11px] uppercase tracking-[0.16em]"
                 style={{ fontFamily: MONO, color: offersTheme.muted }}
@@ -38,7 +42,10 @@ export default function ProcessTimeline() {
               >
                 {phase.label}
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-[#5c6a76]">
+              <p
+                className="mt-3 text-sm leading-relaxed"
+                style={{ color: offersTheme.muted }}
+              >
                 {phase.body}
               </p>
             </li>
