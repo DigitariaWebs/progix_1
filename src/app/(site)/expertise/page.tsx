@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { expertiseData } from '../../data/expertiseData';
+import { expertiseData } from '../../../data/expertiseData';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
 

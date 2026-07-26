@@ -7,8 +7,8 @@ import HeroSection from '@/components/sections/HeroSection';
 import TeamSection from '@/components/sections/TeamSection';
 import SectionFadeBg from '@/components/SectionFadeBg';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
-import CtaButton from '../components/sections/CtaButtonSection';
-import Footer from '../components/layout/Footer';
+import CtaButton from '../../components/sections/CtaButtonSection';
+import Footer from '../../components/layout/Footer';
 import ScrollVelocity from '@/components/ScrollVelocity';
 import ServicesSection2 from '@/components/sections/ServicesSection2';
 

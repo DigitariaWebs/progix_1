@@ -1,17 +1,6 @@
 import type { Metadata } from 'next';
 import { Montserrat, Inter } from 'next/font/google';
 import './globals.css';
-import PageTransition from '@/components/PageTransition';
-import GlobalMenu from '@/components/GlobalMenu';
-import { GlobalMenuProvider } from '@/components/globalMenuBus';
-import MaintenancePage from '@/components/MaintenancePage';
-
-// Maintenance mode is hard-ON: the whole site is closed.
-// NOTE: intentionally NOT reading process.env here — a stale MAINTENANCE_MODE
-// env var on the host (Vercel) was overriding the flag. To REOPEN the site,
-// change this to `false` and push (and/or remove the MAINTENANCE_MODE env var
-// in the Vercel project settings).
-const MAINTENANCE_MODE = true;
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -98,14 +87,7 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${inter.variable} font-sans antialiased overflow-x-hidden`}
       >
-        {MAINTENANCE_MODE ? (
-          <MaintenancePage />
-        ) : (
-          <GlobalMenuProvider>
-            <GlobalMenu />
-            <PageTransition>{children}</PageTransition>
-          </GlobalMenuProvider>
-        )}
+        {children}
       </body>
     </html>
   );
