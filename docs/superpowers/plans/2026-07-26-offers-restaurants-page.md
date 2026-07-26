@@ -20,6 +20,8 @@ npm run lint           # eslint src/
 npm run build          # next build
 ```
 
+**Neither `type-check` nor `lint` exits 0 on this repo, and that is not your fault.** Verified at the branch point: 38 type-error lines across 5 files (`CircularGallery.tsx`, `CircularText.tsx`, `GlobalMenu.tsx`, `ScrollVelocity.tsx`, `StaggeredMenu.tsx`) and 2 lint errors (`QualificationForm.tsx:299`, `portfolio/hud/HudTopBar.tsx:15`). All predate this work. Wherever a step below says "exits 0", read it as **"produces no new error naming a file you touched"** — diff against the base commit if you are unsure. Do not fix the pre-existing debt; it is out of scope.
+
 The one piece of real logic (commission math) *is* unit-tested, via Node's built-in type stripping — no new dependency. Verified working on this machine (Node v22.12.0).
 
 **Site is currently closed.** `src/app/layout.tsx:14` hard-codes `MAINTENANCE_MODE = true` and renders `<MaintenancePage />` instead of the app. Task 1 relocates that gate so `/offers` escapes it.
@@ -76,12 +78,11 @@ public/images/offers/dashboard-tst-food.png
 | `ink` | `#0E2233` | dark section backgrounds |
 | `steel` | `#1A3A52` | secondary dark, matches the home hero |
 | `paper` | `#EFEAE0` | receipt stock — **only** the receipt surface |
-| `cyan` | `#00D4FF` | brand accent, CTA only |
+| `cyan` | `#00D4FF` | CTAs, and the kept-money figure on the relief card |
 | `loss` | `#E4572E` | money leaving — commission figures only |
-| `keep` | `#0B7A5A` | money kept — the relief card only |
 | `muted` | `#7C8B99` | labels, captions |
 
-`loss` and `keep` are semantic, never decorative. If a number is not money moving, it is not colored.
+`loss` is semantic, never decorative: if a number is not money leaving, it is not red. A dark green for "money kept" was considered and dropped — at the contrast needed against `ink` it stops reading as green, and cyan already carries "good" everywhere else on the page.
 
 **Type** — all three faces are already loaded by `src/app/globals.css`, zero new font cost:
 
@@ -262,7 +263,6 @@ export const offersTheme = {
   paper: '#EFEAE0',
   cyan: '#00D4FF',
   loss: '#E4572E',
-  keep: '#0B7A5A',
   muted: '#7C8B99',
 } as const;
 
@@ -366,7 +366,7 @@ export const dashboard = {
 };
 
 export const inclusions = {
-  eyebrow: 'Inclus dans l’offre',
+  eyebrow: "Inclus dans l'offre",
   title: 'Sept livrables. Un seul interlocuteur.',
   rows: [
     {
@@ -407,7 +407,9 @@ export const inclusions = {
   ],
 };
 
-export const process = {
+// Named `processSteps`, not `process` — a module-scope `process` would shadow the
+// Node global in every file that imports it.
+export const processSteps = {
   eyebrow: 'Du premier appel à la mise en ligne',
   title: '4 à 6 semaines.',
   phases: [
@@ -551,6 +553,16 @@ assert.equal(computeCommission({ monthlySales: -500, ratePct: 29 }).monthlyCommi
 assert.equal(computeCommission({ monthlySales: 12000, ratePct: -5 }).monthlyCommission, 0);
 assert.equal(computeCommission({ monthlySales: 12000, ratePct: 500 }).monthlyNet, 0);
 
+// Infinity saturates at the cap rather than collapsing to zero; NaN falls to the floor.
+assert.equal(
+  computeCommission({ monthlySales: Infinity, ratePct: 29 }).monthlyCommission,
+  290000,
+);
+assert.equal(
+  computeCommission({ monthlySales: Number.NaN, ratePct: 29 }).monthlyCommission,
+  0,
+);
+
 // Results are whole dollars — no cents leak into the receipt.
 const odd = computeCommission({ monthlySales: 9999, ratePct: 29 });
 assert.equal(Number.isInteger(odd.monthlyCommission), true);
@@ -587,8 +599,9 @@ export type CommissionResult = {
   yearlyNet: number;
 };
 
+/** Saturates at the bounds. `NaN` has no meaningful clamp, so it falls back to `min`. */
 const clamp = (value: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, Number.isFinite(value) ? value : min));
+  Number.isNaN(value) ? min : Math.min(max, Math.max(min, value));
 
 export function computeCommission({
   monthlySales,
@@ -614,9 +627,14 @@ const cad = new Intl.NumberFormat('fr-CA', {
   maximumFractionDigits: 0,
 });
 
-/** Formats whole dollars the Québec way: `41 760 $`. */
+/**
+ * Formats whole dollars the Québec way: `41 760 $`.
+ *
+ * Expects a non-negative amount. Callers that prefix their own minus sign would
+ * otherwise render a double negative — `computeCommission` never returns one.
+ */
 export function formatCad(value: number): string {
-  return cad.format(Math.round(value));
+  return cad.format(Math.abs(Math.round(value)));
 }
 ```
 
@@ -746,7 +764,10 @@ export default function CommissionReceipt() {
           }}
         />
 
-        <div aria-live="polite">
+        {/* No aria-live here: the range input announces its own value on every
+            step, and a polite region over four rows would re-read all of them
+            up to 119 times during a single drag. */}
+        <div>
           <Line label={receipt.rowSales} value={formatCad(monthlySales)} />
           <Line
             label={receipt.rowRate}
@@ -771,19 +792,26 @@ export default function CommissionReceipt() {
           />
         </div>
       </div>
-      <div className="h-[14px] w-full max-w-[380px]" style={tearEdge} aria-hidden />
+      <div className="h-[14px] w-full" style={tearEdge} aria-hidden />
 
       {/* Slider */}
       <div className="mt-7">
-        <label
-          htmlFor={sliderId}
-          className="flex items-baseline justify-between gap-4 text-[11px] uppercase tracking-[0.12em] text-white/60"
-        >
-          {hero.sliderLabel}
-          <span className="tabular-nums text-sm text-white">
+        {/* Label and amount are siblings, not nested: putting the amount inside the
+            <label> would fold it into the input's accessible name, which would then
+            change on every step. aria-valuetext carries the formatted value instead. */}
+        <div className="flex items-baseline justify-between gap-4">
+          <label
+            htmlFor={sliderId}
+            className="text-[11px] uppercase tracking-[0.12em] text-white/60"
+          >
+            {hero.sliderLabel}
+          </label>
+          <span aria-hidden className="tabular-nums text-sm text-white">
             {formatCad(monthlySales)}
           </span>
-        </label>
+        </div>
+        {/* Native range widget on purpose. `appearance-none` would strip the thumb and
+            make `accent-color` inert, leaving a bare track with nothing to grab. */}
         <input
           id={sliderId}
           type="range"
@@ -791,8 +819,9 @@ export default function CommissionReceipt() {
           max={MAX_MONTHLY_SALES}
           step={SALES_STEP}
           value={monthlySales}
+          aria-valuetext={formatCad(monthlySales)}
           onChange={(e) => setMonthlySales(Number(e.target.value))}
-          className="mt-3 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/15 accent-[#00D4FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D4FF]"
+          className="mt-3 w-full cursor-pointer accent-[#00D4FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D4FF]"
         />
         <p className="mt-3 text-[11px] leading-relaxed text-white/40">
           {hero.rateNote}
@@ -1324,7 +1353,7 @@ git commit -m "feat(offers): add inclusions spec table"
 Create `src/components/offers/ProcessTimeline.tsx`:
 
 ```tsx
-import { DISPLAY, MONO, offersTheme, process } from '@/data/offersData';
+import { DISPLAY, MONO, offersTheme, processSteps } from '@/data/offersData';
 
 export default function ProcessTimeline() {
   return (
@@ -1334,7 +1363,7 @@ export default function ProcessTimeline() {
           className="text-[11px] uppercase tracking-[0.3em]"
           style={{ fontFamily: MONO, color: offersTheme.muted }}
         >
-          {process.eyebrow}
+          {processSteps.eyebrow}
         </p>
         <h2
           className="mt-6 font-bold"
@@ -1346,11 +1375,11 @@ export default function ProcessTimeline() {
             letterSpacing: '-0.03em',
           }}
         >
-          {process.title}
+          {processSteps.title}
         </h2>
 
         <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {process.phases.map((phase) => (
+          {processSteps.phases.map((phase) => (
             <li key={phase.label} className="border-t-2 border-[#0E2233] pt-5">
               <p
                 className="text-[11px] uppercase tracking-[0.16em]"

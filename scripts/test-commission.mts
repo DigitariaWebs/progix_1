@@ -18,6 +18,16 @@ assert.equal(computeCommission({ monthlySales: -500, ratePct: 29 }).monthlyCommi
 assert.equal(computeCommission({ monthlySales: 12000, ratePct: -5 }).monthlyCommission, 0);
 assert.equal(computeCommission({ monthlySales: 12000, ratePct: 500 }).monthlyNet, 0);
 
+// Infinity saturates at the cap rather than collapsing to zero; NaN falls to the floor.
+assert.equal(
+  computeCommission({ monthlySales: Infinity, ratePct: 29 }).monthlyCommission,
+  290000,
+);
+assert.equal(
+  computeCommission({ monthlySales: Number.NaN, ratePct: 29 }).monthlyCommission,
+  0,
+);
+
 // Results are whole dollars — no cents leak into the receipt.
 const odd = computeCommission({ monthlySales: 9999, ratePct: 29 });
 assert.equal(Number.isInteger(odd.monthlyCommission), true);

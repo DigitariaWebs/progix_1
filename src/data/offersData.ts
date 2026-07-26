@@ -4,7 +4,6 @@ export const offersTheme = {
   paper: '#EFEAE0',
   cyan: '#00D4FF',
   loss: '#E4572E',
-  keep: '#0B7A5A',
   muted: '#7C8B99',
 } as const;
 
@@ -108,7 +107,7 @@ export const dashboard = {
 };
 
 export const inclusions = {
-  eyebrow: 'Inclus dans l’offre',
+  eyebrow: "Inclus dans l'offre",
   title: 'Sept livrables. Un seul interlocuteur.',
   rows: [
     {
@@ -149,7 +148,9 @@ export const inclusions = {
   ],
 };
 
-export const process = {
+// Named `processSteps`, not `process` — a module-scope `process` would shadow the
+// Node global in every file that imports it.
+export const processSteps = {
   eyebrow: 'Du premier appel à la mise en ligne',
   title: '4 à 6 semaines.',
   phases: [

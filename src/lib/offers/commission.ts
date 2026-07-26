@@ -12,8 +12,9 @@ export type CommissionResult = {
   yearlyNet: number;
 };
 
+/** Saturates at the bounds. `NaN` has no meaningful clamp, so it falls back to `min`. */
 const clamp = (value: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, Number.isFinite(value) ? value : min));
+  Number.isNaN(value) ? min : Math.min(max, Math.max(min, value));
 
 export function computeCommission({
   monthlySales,
@@ -39,7 +40,12 @@ const cad = new Intl.NumberFormat('fr-CA', {
   maximumFractionDigits: 0,
 });
 
-/** Formats whole dollars the Québec way: `41 760 $`. */
+/**
+ * Formats whole dollars the Québec way: `41 760 $`.
+ *
+ * Expects a non-negative amount. Callers that prefix their own minus sign would
+ * otherwise render a double negative — `computeCommission` never returns one.
+ */
 export function formatCad(value: number): string {
-  return cad.format(Math.round(value));
+  return cad.format(Math.abs(Math.round(value)));
 }

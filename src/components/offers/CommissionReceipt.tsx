@@ -81,7 +81,10 @@ export default function CommissionReceipt() {
           }}
         />
 
-        <div aria-live="polite">
+        {/* No aria-live here: the range input announces its own value on every
+            step, and a polite region over four rows would re-read all of them
+            up to 119 times during a single drag. */}
+        <div>
           <Line label={receipt.rowSales} value={formatCad(monthlySales)} />
           <Line
             label={receipt.rowRate}
@@ -106,19 +109,26 @@ export default function CommissionReceipt() {
           />
         </div>
       </div>
-      <div className="h-[14px] w-full max-w-[380px]" style={tearEdge} aria-hidden />
+      <div className="h-[14px] w-full" style={tearEdge} aria-hidden />
 
       {/* Slider */}
       <div className="mt-7">
-        <label
-          htmlFor={sliderId}
-          className="flex items-baseline justify-between gap-4 text-[11px] uppercase tracking-[0.12em] text-white/60"
-        >
-          {hero.sliderLabel}
-          <span className="tabular-nums text-sm text-white">
+        {/* Label and amount are siblings, not nested: putting the amount inside the
+            <label> would fold it into the input's accessible name, which would then
+            change on every step. aria-valuetext carries the formatted value instead. */}
+        <div className="flex items-baseline justify-between gap-4">
+          <label
+            htmlFor={sliderId}
+            className="text-[11px] uppercase tracking-[0.12em] text-white/60"
+          >
+            {hero.sliderLabel}
+          </label>
+          <span aria-hidden className="tabular-nums text-sm text-white">
             {formatCad(monthlySales)}
           </span>
-        </label>
+        </div>
+        {/* Native range widget on purpose. `appearance-none` would strip the thumb and
+            make `accent-color` inert, leaving a bare track with nothing to grab. */}
         <input
           id={sliderId}
           type="range"
@@ -126,8 +136,9 @@ export default function CommissionReceipt() {
           max={MAX_MONTHLY_SALES}
           step={SALES_STEP}
           value={monthlySales}
+          aria-valuetext={formatCad(monthlySales)}
           onChange={(e) => setMonthlySales(Number(e.target.value))}
-          className="mt-3 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/15 accent-[#00D4FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D4FF]"
+          className="mt-3 w-full cursor-pointer accent-[#00D4FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D4FF]"
         />
         <p className="mt-3 text-[11px] leading-relaxed text-white/40">
           {hero.rateNote}
