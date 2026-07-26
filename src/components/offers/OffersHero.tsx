@@ -135,17 +135,27 @@ export default function OffersHero() {
           </motion.ul>
         </div>
 
-        {/* Right — the instrument. Figure, control, and the printed proof. */}
+        {/* Right — the instrument: the printed result first, the control that
+            drives it underneath. */}
         <motion.div
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={t(0.7, 0.22)}
-          className="w-full lg:justify-self-end lg:max-w-md"
+          className="w-full lg:max-w-md lg:justify-self-end"
         >
+          <motion.div
+            initial={{ opacity: 0, y: 18, rotate: reduce ? 0 : -1.5 }}
+            animate={{ opacity: 1, y: 0, rotate: reduce ? 0 : -1.5 }}
+            transition={t(0.7, 0.28)}
+            className="flex justify-center"
+          >
+            <CommissionReceipt monthlySales={monthlySales} />
+          </motion.div>
+
           {/* Slider. Label and amount are siblings, not nested: nesting the amount
               inside the <label> folds it into the input's accessible name, which
               would then change on every step. aria-valuetext carries it instead. */}
-          <div>
+          <div className="mt-8">
             <div className="flex items-baseline justify-between gap-4">
               <label
                 htmlFor={sliderId}
@@ -180,15 +190,6 @@ export default function OffersHero() {
               {hero.rateNote}
             </p>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18, rotate: reduce ? 0 : -1.5 }}
-            animate={{ opacity: 1, y: 0, rotate: reduce ? 0 : -1.5 }}
-            transition={t(0.7, 0.34)}
-            className="mt-8 flex justify-center lg:justify-start"
-          >
-            <CommissionReceipt monthlySales={monthlySales} />
-          </motion.div>
         </motion.div>
       </div>
 
