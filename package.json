@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx",
     "type-check": "tsc --noEmit",
+    "test:commission": "node --experimental-strip-types scripts/test-commission.mts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
