@@ -4,14 +4,13 @@ import { useId, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import CommissionReceipt from './CommissionReceipt';
-import { computeCommission, formatCad } from '@/lib/offers/commission';
+import { formatCad } from '@/lib/offers/commission';
 import {
   DEFAULT_MONTHLY_SALES,
   DISPLAY,
   MAX_MONTHLY_SALES,
   MIN_MONTHLY_SALES,
   MONO,
-  PLATFORM_RATE_PCT,
   SALES_STEP,
   hero,
   offersTheme,
@@ -19,18 +18,14 @@ import {
 
 /**
  * Split by job, not by weight: the left column argues, the right column is the
- * instrument. Everything interactive — figure, slider, receipt — lives together
- * on the right so the visitor has one place to poke at.
+ * instrument — slider and printed receipt together, so the control sits with
+ * the thing it drives. The receipt carries the figures; the hero does not
+ * restate them.
  */
 export default function OffersHero() {
   const [monthlySales, setMonthlySales] = useState(DEFAULT_MONTHLY_SALES);
   const sliderId = useId();
   const reduce = useReducedMotion();
-
-  const result = computeCommission({
-    monthlySales,
-    ratePct: PLATFORM_RATE_PCT,
-  });
 
   // `initial` and `animate` stay unconditional so the server and the client agree.
   // Branching the props instead is a trap: useReducedMotion() returns null during
@@ -147,43 +142,10 @@ export default function OffersHero() {
           transition={t(0.7, 0.22)}
           className="w-full lg:justify-self-end lg:max-w-md"
         >
-          <div className="border-l-2 pl-5" style={{ borderColor: offersTheme.loss }}>
-            <p
-              className="text-[10px] uppercase tracking-[0.22em] text-white/50"
-              style={{ fontFamily: MONO }}
-            >
-              {hero.lossLabel}
-            </p>
-            <p className="mt-2 flex flex-wrap items-baseline gap-x-3">
-              <motion.span
-                key={reduce ? 'static' : result.yearlyCommission}
-                initial={reduce ? false : { opacity: 0.4, y: -3 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="font-bold leading-none tabular-nums"
-                style={{
-                  color: offersTheme.loss,
-                  fontFamily: DISPLAY,
-                  fontSize: 'clamp(2.4rem, 5vw, 3.6rem)',
-                  letterSpacing: '-0.04em',
-                }}
-              >
-                − {formatCad(result.yearlyCommission)}
-              </motion.span>
-              <span
-                className="text-[11px] uppercase tracking-[0.18em] text-white/50"
-                style={{ fontFamily: MONO }}
-              >
-                {hero.lossUnit}
-              </span>
-            </p>
-            <p className="mt-2 text-xs text-white/60">{hero.keepInline}</p>
-          </div>
-
           {/* Slider. Label and amount are siblings, not nested: nesting the amount
               inside the <label> folds it into the input's accessible name, which
               would then change on every step. aria-valuetext carries it instead. */}
-          <div className="mt-7">
+          <div>
             <div className="flex items-baseline justify-between gap-4">
               <label
                 htmlFor={sliderId}

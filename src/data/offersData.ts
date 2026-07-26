@@ -31,9 +31,6 @@ export const hero = {
   titleAccent: 'les plateformes.',
   body:
     "Uber Eats, DoorDash et SkipTheDishes retiennent jusqu'à 30 % de chaque commande. Votre propre application les remplace — et vous gardez la marge.",
-  lossLabel: 'Ce que les plateformes vous prennent',
-  lossUnit: 'par année',
-  keepInline: 'Avec votre application : 0 $ de commission.',
   ctaPrimary: 'Recevoir une proposition',
   ctaSecondary: 'Voir ce qui est inclus',
   sliderLabel: 'Vos ventes en livraison par mois',
