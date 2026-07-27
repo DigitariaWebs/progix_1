@@ -29,9 +29,9 @@ export const metadata: Metadata = {
 
 /**
  * This route sits outside the (site) route group so it stays reachable while
- * the rest of progix.pro is in maintenance. The shared Header's links point at
- * routes that currently render the maintenance screen — they start working
- * again when MAINTENANCE_MODE flips in src/app/(site)/layout.tsx.
+ * the rest of progix.pro is in maintenance. The shared Header's nav links all
+ * point at "/" for now — they can point at their real routes again once
+ * MAINTENANCE_MODE flips in src/app/(site)/layout.tsx.
  */
 export default function OffersPage() {
   return (

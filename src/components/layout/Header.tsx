@@ -63,13 +63,15 @@ const Header = () => {
               {/* shrink-0 on both ends: without it the nav pushes the CTA past the
                   pill and it clips whatever link sits last. */}
               <div className="flex items-center gap-3 shrink-0">
-                <Image
-                  src={assets.logo}
-                  alt="PROGIX Logo"
-                  width={32}
-                  height={32}
-                  className="h-8 w-auto"
-                />
+                <a href="/">
+                  <Image
+                    src={assets.logo}
+                    alt="PROGIX Logo"
+                    width={32}
+                    height={32}
+                    className="h-8 w-auto"
+                  />
+                </a>
                 <Image
                   src="/images/CertifiedLogo.png"
                   alt="GPTW Certification"
@@ -86,7 +88,7 @@ const Header = () => {
               <nav className="hidden lg:flex items-center gap-5 xl:gap-7 whitespace-nowrap">
                 <div className="relative group">
                   <a
-                    href="#expertises"
+                    href="/"
                     className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm flex items-center gap-1"
                   >
                     Expertises
@@ -114,7 +116,10 @@ const Header = () => {
 
                       <div className="p-6 space-y-1">
                         {/* Développement Section */}
-                        <div className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg cursor-pointer">
+                        <a
+                          href="/"
+                          className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg"
+                        >
                           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                             <svg
                               className="w-4 h-4 text-white"
@@ -151,10 +156,13 @@ const Header = () => {
                               d="M9 5l7 7-7 7"
                             />
                           </svg>
-                        </div>
+                        </a>
 
                         {/* Product Section */}
-                        <div className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg cursor-pointer">
+                        <a
+                          href="/"
+                          className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg"
+                        >
                           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                             <FaRocket className="text-white text-sm" />
                           </div>
@@ -166,10 +174,13 @@ const Header = () => {
                               Management, Design (UX/UI)
                             </p>
                           </div>
-                        </div>
+                        </a>
 
                         {/* Data & IA Section */}
-                        <div className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg cursor-pointer">
+                        <a
+                          href="/"
+                          className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg"
+                        >
                           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                             <FaDatabase className="text-white text-sm" />
                           </div>
@@ -181,10 +192,13 @@ const Header = () => {
                               Data Engineering, BI & DataViz, ...
                             </p>
                           </div>
-                        </div>
+                        </a>
 
                         {/* Conseil Section */}
-                        <div className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg cursor-pointer">
+                        <a
+                          href="/"
+                          className="flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg"
+                        >
                           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                             <FaUsers className="text-white text-sm" />
                           </div>
@@ -196,7 +210,7 @@ const Header = () => {
                               Conseil IT, Transformation Digitale
                             </p>
                           </div>
-                        </div>
+                        </a>
                       </div>
                     </div>
 
@@ -208,7 +222,7 @@ const Header = () => {
                             Nos services
                           </span>
                           <a
-                            href="#"
+                            href="/"
                             className="text-blue-600 text-sm font-medium hover:underline flex items-center gap-1"
                           >
                             Découvrez nos réalisations
@@ -230,7 +244,10 @@ const Header = () => {
 
                         <div className="grid grid-cols-2 gap-3">
                           {/* Application mobile */}
-                          <div className="p-4 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
+                          <a
+                            href="/"
+                            className="p-4 rounded-xl hover:bg-gray-50 transition-colors block"
+                          >
                             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                               <FaMobile className="text-blue-600 text-lg" />
                             </div>
@@ -240,10 +257,13 @@ const Header = () => {
                             <p className="text-gray-500 text-xs leading-relaxed">
                               Une app cross-platform sur mesure qui performe.
                             </p>
-                          </div>
+                          </a>
 
                           {/* Logiciel métier */}
-                          <div className="p-4 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
+                          <a
+                            href="/"
+                            className="p-4 rounded-xl hover:bg-gray-50 transition-colors block"
+                          >
                             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                               <svg
                                 className="w-5 h-5 text-blue-600"
@@ -259,10 +279,13 @@ const Header = () => {
                             <p className="text-gray-500 text-xs leading-relaxed">
                               Une solution puissante pour vos process internes.
                             </p>
-                          </div>
+                          </a>
 
                           {/* Site e-commerce */}
-                          <div className="p-4 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
+                          <a
+                            href="/"
+                            className="p-4 rounded-xl hover:bg-gray-50 transition-colors block"
+                          >
                             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                               <FaUsers className="text-blue-600 text-lg" />
                             </div>
@@ -272,10 +295,13 @@ const Header = () => {
                             <p className="text-gray-500 text-xs leading-relaxed">
                               Une boutique en ligne qui convertit.
                             </p>
-                          </div>
+                          </a>
 
                           {/* Développement web */}
-                          <div className="p-4 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
+                          <a
+                            href="/"
+                            className="p-4 rounded-xl hover:bg-gray-50 transition-colors block"
+                          >
                             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                               <svg
                                 className="w-5 h-5 text-blue-600"
@@ -295,45 +321,46 @@ const Header = () => {
                             <p className="text-gray-500 text-xs leading-relaxed">
                               Une application SaaS robuste et scalable.
                             </p>
-                          </div>
+                          </a>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <a
-                  href="#technos"
+                  href="/"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
                 >
                   Technos
                 </a>
                 <a
-                  href="#realisations"
+                  href="/"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
                 >
                   Réalisations
                 </a>
                 <a
-                  href="#blog"
+                  href="/"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
                 >
                   Blog
                 </a>
                 <a
-                  href="/team"
+                  href="/"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm whitespace-nowrap"
                 >
                   Notre équipe
                 </a>
                 <a
-                  href="#advisory"
+                  href="/"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
                 >
                   Advisory
                 </a>
               </nav>
 
-              <button
+              <a
+                href="/"
                 className="shrink-0 whitespace-nowrap px-5 py-2.5 lg:px-6 lg:py-3 rounded-full text-white font-medium text-sm transition-all hover:scale-105 shadow-md flex items-center gap-2 group"
                 style={{ backgroundColor: colors.secondary }}
               >
@@ -353,7 +380,7 @@ const Header = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </button>
+              </a>
             </div>
           </div>
         </motion.header>

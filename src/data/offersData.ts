@@ -56,8 +56,6 @@ export const benchmark = {
   title: 'Les chaînes ont arrêté de payer des commissions.',
   body:
     "The Burger's Priest, Raising Cane's, Greene King, PattySlaps : chacune a publié son application de commande. Même logique, même technologie. La seule différence, c'est le budget d'agence — et c'est exactement ce qu'on a réglé.",
-  disclaimer:
-    'Applications publiées par leurs marques respectives. Exemples de marché, présentés à titre de référence — ce ne sont pas des réalisations PROGIX.',
   // `alt` lives here rather than being templated in the component: it is what the
   // tile renders if an image ever fails to load.
   apps: [

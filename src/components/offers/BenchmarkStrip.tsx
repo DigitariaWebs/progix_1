@@ -33,12 +33,6 @@ export default function BenchmarkStrip() {
             />
           ))}
         </ul>
-
-        <Reveal delay={0.1}>
-          <p className="mt-10 max-w-2xl border-l-2 border-black/10 pl-4 text-xs leading-relaxed text-[#5c6a76]">
-            {benchmark.disclaimer}
-          </p>
-        </Reveal>
       </div>
     </section>
   );
