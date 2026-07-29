@@ -38,7 +38,7 @@ Same product behavior as `ProgixLandingPage`'s specs 003 and 004, running inside
 - `src/app/admin/layout.tsx`, `src/app/admin/_lib/auth.tsx` (+ `types.ts` for the `AdminUser` type), `src/app/admin/login/page.tsx`
 - `src/app/admin/(dashboard)/layout.tsx`, `src/app/admin/(dashboard)/page.tsx` (redirects to `/admin/devis`, matching upstream's current de-scoped state), `src/app/admin/(dashboard)/devis/page.tsx`, `src/app/admin/(dashboard)/devis/[slug]/page.tsx`
 - `src/app/devis/layout.tsx`, `src/app/devis/page.tsx`, `src/app/devis/[client]/layout.tsx`, `src/app/devis/[client]/page.tsx`, `src/app/devis/[client]/cahier-des-charges/page.tsx`, `src/app/devis/[client]/calendrier/page.tsx`, `src/app/devis/[client]/contrat/page.tsx`
-- `public/progix-logo.png` — `SiteGate` renders it; `Progix` currently only has a `.blend1` source, no PNG
+- No new logo asset: `SiteGate` renders it via `assets.logo` (`@/config/assets`, → `/images/logo.png`), Progix's existing brand logo, instead of copying `progix-logo.png` from upstream
 - `supabase/migrations/0001_security_baseline.sql`, `0002_profiles.sql`, `0005_client_estimates.sql`, `0006_seed_admin_and_karima.sql` — copied into this repo **for schema documentation and local-dev parity only**. They are **not re-run**: the shared Supabase project already has them applied.
 
 ### New dependencies
