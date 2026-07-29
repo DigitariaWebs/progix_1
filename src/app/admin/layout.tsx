@@ -18,18 +18,18 @@ export const metadata: Metadata = {
 };
 
 /**
- * The admin panel lives outside the i18n `[locale]` tree, so it owns its own
- * `<html>`/`<body>` (the root layout is a pass-through). Authenticates against
- * the NestJS API — no marketing header/footer, no next-intl.
+ * Upstream's admin panel owns its own `<html>`/`<body>` because its root
+ * layout is a pass-through. Progix's root layout (src/app/layout.tsx) already
+ * renders a real `<html>`/`<body>` for the marketing site, so a second one
+ * here would nest invalid HTML and hydration would mismatch. This renders a
+ * wrapping `<div>` instead, carrying the same fonts/background/text color.
  */
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistMono.variable} ${newsreader.variable} min-h-dvh bg-[#060d1c] font-sans text-white antialiased`}
-      >
-        <AuthProvider>{children}</AuthProvider>
-      </body>
-    </html>
+    <div
+      className={`${geistMono.variable} ${newsreader.variable} min-h-dvh bg-[#060d1c] font-sans text-white antialiased`}
+    >
+      <AuthProvider>{children}</AuthProvider>
+    </div>
   );
 }

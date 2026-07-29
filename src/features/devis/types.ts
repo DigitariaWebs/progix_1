@@ -41,6 +41,18 @@ export interface ClientEstimate {
   updated_at?: string;
 }
 
+/**
+ * The devis document UI (AccueilCinematic, DevisDocument, etc.) is a "use
+ * client" tree — anything passed into it as a prop is serialized into the
+ * page's RSC payload and shipped to the browser, unlocked or not (the gate is
+ * enforced upstream of this, in layout.tsx/page.tsx, before these components
+ * are ever reached). None of them display access_code; redact it before
+ * handing an estimate down so the real value never leaves the server.
+ */
+export function redactAccessCode(estimate: ClientEstimate): ClientEstimate {
+  return { ...estimate, access_code: "" };
+}
+
 export const DEFAULT_KARIMA_ESTIMATE: Omit<ClientEstimate, "id"> = {
   slug: "karima",
   access_code: "progix2026",

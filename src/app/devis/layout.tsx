@@ -33,17 +33,18 @@ export const metadata: Metadata = {
 };
 
 /**
- * Client estimates and specifications live outside the i18n `[locale]` tree so they
- * own their own `<html>`/`<body>` with brand typography (Space Grotesk + Inter).
+ * Upstream's devis portal owns its own `<html>`/`<body>` because its root
+ * layout is a pass-through. Progix's root layout (src/app/layout.tsx) already
+ * renders a real `<html>`/`<body>` for the marketing site, so a second one
+ * here would nest invalid HTML and hydration would mismatch. This renders a
+ * wrapping `<div>` instead, carrying the same brand typography.
  */
 export default function DevisLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${inter.variable} font-sans antialiased`}
-      >
-        <MotionProvider>{children}</MotionProvider>
-      </body>
-    </html>
+    <div
+      className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${inter.variable} font-sans antialiased`}
+    >
+      <MotionProvider>{children}</MotionProvider>
+    </div>
   );
 }

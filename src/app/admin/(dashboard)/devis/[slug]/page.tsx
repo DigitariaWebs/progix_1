@@ -57,7 +57,10 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     client_name: isNew ? "" : DEFAULT_KARIMA_ESTIMATE.client_name,
     project_name: isNew ? "" : DEFAULT_KARIMA_ESTIMATE.project_name,
     total_amount: isNew ? "" : DEFAULT_KARIMA_ESTIMATE.total_amount,
-    access_code: isNew ? "progix2026" : DEFAULT_KARIMA_ESTIMATE.access_code,
+    // Never pre-fill a new estimate with Karima's real access code — this
+    // form's initial state ships in the page's public JS chunk regardless of
+    // who's viewing it, auth or not.
+    access_code: isNew ? "" : DEFAULT_KARIMA_ESTIMATE.access_code,
   });
 
   const [loading, setLoading] = useState(!isNew);

@@ -7,11 +7,38 @@ import { DEFAULT_KARIMA_ESTIMATE, ClientEstimate } from "./types";
 import { getAllEstimates, getEstimateBySlug } from "./queries";
 import { revalidatePath } from "next/cache";
 
+/**
+ * Server Actions are public POST endpoints regardless of which page renders the
+ * calling form -- the client-side admin auth gate never touches this layer.
+ * Every action below that reads or writes the admin dashboard's data must call
+ * this first and bail out if there's no real signed-in Supabase user.
+ *
+ * Checked by email, not just "is logged in": this Supabase project is
+ * intentionally shared with another app, so any other authenticated user of
+ * that project must not automatically get admin rights here. Matches the
+ * `client_estimates: admin *` RLS policies (supabase/migrations/0007), which
+ * enforce the same rule at the database layer as a second, independent gate.
+ */
+const ADMIN_EMAIL = "admin@progix.pro";
+
+async function requireAdmin() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || user.email !== ADMIN_EMAIL) {
+    throw new Error("Non autorisé.");
+  }
+  return user;
+}
+
 export async function fetchEstimatesAction(): Promise<ClientEstimate[]> {
+  await requireAdmin();
   return await getAllEstimates();
 }
 
 export async function fetchEstimateBySlugAction(slug: string): Promise<ClientEstimate | null> {
+  await requireAdmin();
   return await getEstimateBySlug(slug);
 }
 
@@ -67,6 +94,12 @@ const estimateInputSchema = z.object({
 export type SaveEstimateResult = { ok: true; slug: string } | { ok: false; error: string };
 
 export async function saveEstimateAction(input: unknown): Promise<SaveEstimateResult> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+
   const parsed = estimateInputSchema.safeParse(input);
   if (!parsed.success) {
     const errorMsg = parsed.error.issues.map((i) => i.message).join(", ");
@@ -113,6 +146,12 @@ export async function saveEstimateAction(input: unknown): Promise<SaveEstimateRe
 
 export async function deleteEstimateAction(slug: string): Promise<{ ok: boolean; error?: string }> {
   try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+
+  try {
     const supabase = await getWriteClient();
     const { error } = await supabase.from("client_estimates").delete().eq("slug", slug);
     if (error) {
@@ -126,6 +165,12 @@ export async function deleteEstimateAction(slug: string): Promise<{ ok: boolean;
 }
 
 export async function seedDefaultEstimateAction(): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+
   try {
     const supabase = await getWriteClient();
     const { error } = await supabase

@@ -6,3 +6,4 @@ export { CalendrierDocument } from "./ui/calendrier-document";
 export * from "./types";
 export * from "./queries";
 export * from "./actions";
+export * from "./gate";
