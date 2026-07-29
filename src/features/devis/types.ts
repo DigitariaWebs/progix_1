@@ -1,0 +1,222 @@
+export interface EstimateFeatureItem {
+  id: string;
+  category: "dev" | "api" | "marketing";
+  labelStrong?: string;
+  label: string;
+  included: boolean;
+  isCustom?: boolean;
+}
+
+export interface EstimateInvestmentItem {
+  id: string;
+  labelStrong?: string;
+  label: string;
+  amount: string;
+}
+
+export interface EstimateInstallmentItem {
+  label: string; // e.g. "Acompte à la signature"
+  percentage: number; // e.g. 20
+  amount: string; // e.g. "1 120 €"
+}
+
+export interface ClientEstimate {
+  id: string;
+  slug: string;
+  access_code: string;
+  client_name: string;
+  project_name: string;
+  project_title: string;
+  project_description: string;
+  currency: "€" | "$CAD";
+  total_amount: string;
+  delivery_days: string;
+  marketing_included: boolean;
+  features: EstimateFeatureItem[];
+  investments: EstimateInvestmentItem[];
+  payment_schedule_type: "monthly" | "installments";
+  payment_months: number;
+  payment_installments: EstimateInstallmentItem[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export const DEFAULT_KARIMA_ESTIMATE: Omit<ClientEstimate, "id"> = {
+  slug: "karima",
+  access_code: "progix2026",
+  client_name: "Karima",
+  project_name: "Trajeo (nom de travail)",
+  project_title: "plateforme de mobilité à la demande",
+  project_description:
+    "Application mobile de mise en relation entre passagers et chauffeurs : réservation de trajets, géolocalisation et suivi de course en temps réel, estimation de prix, profils vérifiés et notation mutuelle — plus back-office, landing page, API, infrastructure cloud et accompagnement marketing premium jusqu’à la mise en marché. Un prix fixe, une équipe senior, votre propriété à 100 %.",
+  currency: "€",
+  total_amount: "5 600",
+  delivery_days: "90",
+  marketing_included: true,
+  features: [
+    // Category: dev
+    {
+      id: "f1",
+      category: "dev",
+      labelStrong: "Application mobile iOS & Android",
+      label: " (passager + chauffeur), design sur mesure",
+      included: true,
+    },
+    {
+      id: "f2",
+      category: "dev",
+      labelStrong: "Réservation de trajets & mise en relation",
+      label: " en temps réel",
+      included: true,
+    },
+    {
+      id: "f3",
+      category: "dev",
+      labelStrong: "Géolocalisation & suivi de course",
+      label: " sur carte",
+      included: true,
+    },
+    {
+      id: "f4",
+      category: "dev",
+      labelStrong: "Profils passagers & chauffeurs",
+      label: " avec vérification des documents",
+      included: true,
+    },
+    {
+      id: "f5",
+      category: "dev",
+      labelStrong: "Estimation de prix & itinéraire",
+      label: " avant réservation",
+      included: true,
+    },
+    {
+      id: "f6",
+      category: "dev",
+      labelStrong: "Historique des courses & notation",
+      label: " mutuelle",
+      included: true,
+    },
+    {
+      id: "f7",
+      category: "dev",
+      labelStrong: "Back-office d’administration",
+      label: " (courses, chauffeurs, litiges)",
+      included: true,
+    },
+    {
+      id: "f8",
+      category: "dev",
+      labelStrong: "Landing page",
+      label: " de présentation, optimisée acquisition",
+      included: true,
+    },
+    {
+      id: "f9",
+      category: "dev",
+      labelStrong: "3 révisions de maquettes",
+      label: " incluses dans le forfait",
+      included: true,
+    },
+    // Category: api
+    {
+      id: "f10",
+      category: "api",
+      labelStrong: "API & base de données",
+      label: " dédiées à la plateforme",
+      included: true,
+    },
+    {
+      id: "f11",
+      category: "api",
+      labelStrong: "Infrastructure cloud scalable & intégrations",
+      label: " selon la charge",
+      included: true,
+    },
+    {
+      id: "f12",
+      category: "api",
+      labelStrong: "Monétisation",
+      label: " par commission ou abonnement (modèle retenu avec le Client)",
+      included: true,
+    },
+    {
+      id: "f13",
+      category: "api",
+      labelStrong: "Publication App Store & Google Play",
+      label: " — phase de production (30 j) incluse",
+      included: true,
+    },
+    // Category: marketing
+    {
+      id: "f14",
+      category: "marketing",
+      labelStrong: "Marketing premium clé en main",
+      label: " : stratégie, UGC, créatifs, campagnes gérées de A à Z",
+      included: true,
+    },
+    {
+      id: "f15",
+      category: "marketing",
+      labelStrong: "Gestion Meta Ads, Google Ads & Apple Search Ads",
+      label: " — optimisation quotidienne",
+      included: true,
+    },
+    {
+      id: "f16",
+      category: "marketing",
+      labelStrong: "Analyse des KPIs, réunion hebdomadaire",
+      label: " & reporting continu",
+      included: true,
+    },
+    {
+      id: "f17",
+      category: "marketing",
+      labelStrong: "Support technique",
+      label: " + documentation technique complète",
+      included: true,
+    },
+  ],
+  investments: [
+    {
+      id: "inv1",
+      labelStrong: "Application mobile iOS + Android",
+      label: " (passager + chauffeur, design sur mesure)",
+      amount: "1 700 €",
+    },
+    {
+      id: "inv2",
+      label: "Back-office d’administration & gestion des courses",
+      amount: "650 €",
+    },
+    { id: "inv3", label: "API & base de données", amount: "600 €" },
+    {
+      id: "inv4",
+      label: "Infrastructure cloud scalable & intégrations",
+      amount: "550 €",
+    },
+    { id: "inv5", label: "Landing page de présentation", amount: "250 €" },
+    {
+      id: "inv6",
+      label: "Déploiement & phase de production stores (30 j, reviews, test Google Play)",
+      amount: "500 €",
+    },
+    {
+      id: "inv7",
+      label: "Accompagnement marketing premium (clé en main, campagnes gérées)",
+      amount: "900 €",
+    },
+    {
+      id: "inv8",
+      label: "Documentation, maintenance & support",
+      amount: "450 €",
+    },
+  ],
+  payment_schedule_type: "monthly",
+  payment_months: 6,
+  payment_installments: [
+    { label: "Acompte à la signature", percentage: 20, amount: "1 120 €" },
+    { label: "Livraison technique", percentage: 50, amount: "2 800 €" },
+    { label: "Publication sur les stores", percentage: 30, amount: "1 680 €" },
+  ],
+};
