@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AccueilCinematic, getEstimateBySlug } from "@/features/devis";
+import { AccueilCinematic, redactAccessCode } from "@/features/devis";
+import { getEstimateBySlug } from "@/features/devis/queries";
+import { isDevisUnlocked } from "@/features/devis/gate";
 
 type Params = { params: Promise<{ client: string }> };
 
@@ -17,8 +19,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
  */
 export default async function ClientDevisPage({ params }: Params) {
   const { client } = await params;
+  if (!(await isDevisUnlocked(client))) notFound();
+
   const estimate = await getEstimateBySlug(client);
   if (!estimate) notFound();
 
-  return <AccueilCinematic estimate={estimate} />;
+  return <AccueilCinematic estimate={redactAccessCode(estimate)} />;
 }

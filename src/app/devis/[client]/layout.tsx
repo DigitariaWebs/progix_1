@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { SiteGate } from "@/features/site-gate";
-import { getEstimateBySlug } from "@/features/devis";
+import { getEstimateBySlug } from "@/features/devis/queries";
+import { isDevisUnlocked, verifyDevisAccessAction } from "@/features/devis/gate";
 
 type Params = { params: Promise<{ client: string }> };
 
@@ -17,9 +18,9 @@ export default async function ClientLayout({
     notFound();
   }
 
-  return (
-    <SiteGate accessCode={estimate.access_code} slug={estimate.slug}>
-      {children}
-    </SiteGate>
-  );
+  if (!(await isDevisUnlocked(client))) {
+    return <SiteGate verify={verifyDevisAccessAction.bind(null, client)} />;
+  }
+
+  return <>{children}</>;
 }
