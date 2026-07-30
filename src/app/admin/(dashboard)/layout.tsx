@@ -1,11 +1,14 @@
 "use client";
 
-import { LogOut, FileText } from "lucide-react";
+import { LogOut, FileText, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRequireAuth } from "../_lib/auth";
 
-const NAV = [{ href: "/admin/devis", label: "Devis Clients", icon: FileText, exact: false }];
+const NAV = [
+  { href: "/admin/devis", label: "Devis Clients", icon: FileText, exact: false },
+  { href: "/admin/closers", label: "Closers", icon: Users, exact: false },
+];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, logout } = useRequireAuth();
