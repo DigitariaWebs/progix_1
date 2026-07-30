@@ -20,11 +20,13 @@ import {
 import {
   fetchEstimateBySlugAction,
   saveEstimateAction,
+  resendClosingEmailAction,
   DEFAULT_ESTIMATE,
   ClientEstimate,
   EstimateFeatureItem,
   EstimateInvestmentItem,
 } from "@/features/devis";
+import { fetchClosersAction, Closer } from "@/features/closers";
 
 /** Fixed 3-installment plan: 20 / 50 / 30 % */
 const INSTALLMENT_PLAN = [
@@ -63,6 +65,7 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     client_name: isNew ? "" : DEFAULT_ESTIMATE.client_name,
     project_name: isNew ? "" : DEFAULT_ESTIMATE.project_name,
     project_title: isNew ? "" : DEFAULT_ESTIMATE.project_title,
+    closer_id: isNew ? "" : DEFAULT_ESTIMATE.closer_id,
     total_amount: isNew ? "" : DEFAULT_ESTIMATE.total_amount,
     // Never pre-fill a new estimate with a real access code — this form's
     // initial state ships in the page's public JS chunk regardless of who's
@@ -74,6 +77,22 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [closers, setClosers] = useState<Closer[]>([]);
+  const [resending, setResending] = useState(false);
+
+  useEffect(() => {
+    fetchClosersAction()
+      .then(setClosers)
+      .catch(() => setClosers([]));
+  }, []);
+
+  async function handleResendEmail() {
+    setResending(true);
+    const res = await resendClosingEmailAction(form.slug);
+    setResending(false);
+    if (res.ok) alert("Email renvoyé au closer.");
+    else alert(`Erreur : ${res.error}`);
+  }
 
   useEffect(() => {
     if (isNew) return;
@@ -215,14 +234,20 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
             {isNew ? "Créer une proposition client" : `Éditer : ${form.client_name || form.slug}`}
           </h1>
         </div>
-        <button
-          type="submit"
-          disabled={saving}
-          className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-5 py-2.5 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
-        >
-          <Save className="size-4" />
-          {saving ? "Enregistrement…" : "Enregistrer"}
-        </button>
+        {form.locked ? (
+          <span className="rounded-lg bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white/50">
+            Verrouillé
+          </span>
+        ) : (
+          <button
+            type="submit"
+            disabled={saving}
+            className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-5 py-2.5 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
+          >
+            <Save className="size-4" />
+            {saving ? "Enregistrement…" : "Enregistrer"}
+          </button>
+        )}
       </div>
 
       {error && (
@@ -239,7 +264,25 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
         </div>
       )}
 
-      <div className="mt-8 space-y-8">
+      {form.locked && (
+        <div className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">
+          <span className="flex items-center gap-2">
+            <Lock className="size-4 shrink-0" />
+            Signé{form.signature ? ` le ${new Date(form.signature.signed_at).toLocaleDateString("fr-FR")}` : ""} — verrouillé, non modifiable.
+          </span>
+          <button
+            type="button"
+            onClick={handleResendEmail}
+            disabled={resending}
+            className="shrink-0 rounded-lg bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/30 disabled:opacity-50"
+          >
+            {resending ? "Envoi…" : "Renvoyer l'email au closer"}
+          </button>
+        </div>
+      )}
+
+      <fieldset disabled={form.locked} className="contents">
+        <div className="mt-8 space-y-8">
         {/* Carte 1 : Identité & Sécurité */}
         <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
           <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
@@ -305,6 +348,24 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 placeholder="ex : Trajeo (nom de travail)"
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
+            </div>
+            <div>
+              <label className="block font-mono text-xs text-white/60">CLOSER ASSIGNÉ</label>
+              <select
+                required
+                value={form.closer_id ?? ""}
+                onChange={(e) => setForm({ ...form, closer_id: e.target.value })}
+                className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+              >
+                <option value="" disabled>
+                  Sélectionner un closer…
+                </option>
+                {closers.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.first_name} {c.last_name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -648,6 +709,7 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
           )}
         </div>
       </div>
+      </fieldset>
     </form>
   );
 }
