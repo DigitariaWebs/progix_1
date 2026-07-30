@@ -2,7 +2,13 @@
 
 // PDF generation (headless Chromium) + email dispatch can take several
 // seconds; the default Vercel function duration is too short for that.
-export const maxDuration = 60;
+// A "use server" file may only export async functions, so `maxDuration`
+// can't live here — it's set instead on the page(s) that invoke these
+// actions (Next.js resolves a Server Action's timeout from the invoking
+// page's route-segment config): see maxDuration exports in
+// src/app/devis/[client]/contrat/page.tsx (signAndLockEstimateAction /
+// getSignedPdfAction) and src/app/admin/layout.tsx (resendClosingEmailAction,
+// inherited down through the admin route tree).
 
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";

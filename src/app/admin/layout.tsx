@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// The (dashboard)/devis/[slug] page is a Client Component, so it can't
+// export route-segment config itself; maxDuration is inherited down from
+// here. resendClosingEmailAction (invoked from that page) renders a PDF via
+// headless Chromium and sends an email, which can take several seconds —
+// longer than Vercel's default function timeout.
+export const maxDuration = 60;
+
 /**
  * Upstream's admin panel owns its own `<html>`/`<body>` because its root
  * layout is a pass-through. Progix's root layout (src/app/layout.tsx) already
