@@ -76,7 +76,7 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
   slug: "client",
   access_code: "",
   client_name: "",
-  closer_id: "",
+  closer_id: null,
   project_name: "Trajeo (nom de travail)",
   project_title: "plateforme de mobilité à la demande",
   project_description:
