@@ -11,7 +11,7 @@ import { ClientEstimate } from "./types";
  * supabase/migrations/0007_lock_down_client_estimates.sql) because neither
  * admin dashboard visitors nor devis-portal visitors hold a Supabase Auth
  * session that RLS could key off. Authorization instead lives entirely in the
- * callers of this module: src/features/devis/actions.ts's `requireAdmin()`
+ * callers of this module: src/lib/auth/requireAdmin.ts's `requireAdmin()`
  * for the admin dashboard, and the access-code-gated cookie check in
  * src/app/devis/[client]/** for the public portal. Every caller MUST enforce
  * its own check before calling these — this module trusts its callers.

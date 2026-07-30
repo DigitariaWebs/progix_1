@@ -10,8 +10,11 @@ import { createClient } from "@/lib/supabase/server";
  * Checked by email, not just "is logged in": this Supabase project is
  * intentionally shared with another app, so any other authenticated user of
  * that project must not automatically get admin rights here. Matches the
- * `admin *` RLS lockdown policies (supabase/migrations/0007, 0008), which
- * enforce the same rule at the database layer as a second, independent gate.
+ * RLS lockdown in supabase/migrations/0007 and 0008 -- both tables have RLS
+ * enabled with zero policies defined, so anon/authenticated get nothing back
+ * regardless of email; only the service-role client (which bypasses RLS) can
+ * read/write. That's the same rule enforced a second, independent way at the
+ * database layer.
  */
 const ADMIN_EMAIL = "admin@progix.pro";
 
