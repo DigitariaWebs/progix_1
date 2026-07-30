@@ -3,34 +3,10 @@
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/auth/requireAdmin";
 import { DEFAULT_ESTIMATE, ClientEstimate } from "./types";
 import { getAllEstimates, getEstimateBySlug } from "./queries";
 import { revalidatePath } from "next/cache";
-
-/**
- * Server Actions are public POST endpoints regardless of which page renders the
- * calling form -- the client-side admin auth gate never touches this layer.
- * Every action below that reads or writes the admin dashboard's data must call
- * this first and bail out if there's no real signed-in Supabase user.
- *
- * Checked by email, not just "is logged in": this Supabase project is
- * intentionally shared with another app, so any other authenticated user of
- * that project must not automatically get admin rights here. Matches the
- * `client_estimates: admin *` RLS policies (supabase/migrations/0007), which
- * enforce the same rule at the database layer as a second, independent gate.
- */
-const ADMIN_EMAIL = "admin@progix.pro";
-
-async function requireAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user || user.email !== ADMIN_EMAIL) {
-    throw new Error("Non autorisé.");
-  }
-  return user;
-}
 
 export async function fetchEstimatesAction(): Promise<ClientEstimate[]> {
   await requireAdmin();
