@@ -38,6 +38,12 @@ function parseAmount(raw: string): number {
   return parseFloat(raw.replace(/\s/g, "").replace(",", ".")) || 0;
 }
 
+/** Strip a trailing " <currency>" suffix so an amount can be edited as a bare number */
+function amountDigits(amount: string, currency: string): string {
+  const suffix = ` ${currency}`;
+  return amount.endsWith(suffix) ? amount.slice(0, -suffix.length) : amount;
+}
+
 /** Format a number as "1 680" (French spacing, no decimals) */
 function fmtAmount(n: number): string {
   return Math.round(n)
@@ -87,6 +93,25 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
       return { label, percentage, amount: `${fmtAmount(amount)} ${form.currency}` };
     });
   }, [form.total_amount, form.currency]);
+
+  // Investment amounts always follow the currency chosen at the top of the
+  // generator (DEVISE) — re-suffix every row whenever it changes so a row
+  // typed under one currency never lingers with the old symbol.
+  useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
+      investments: prev.investments.map((inv) =>
+        inv.amount ? { ...inv, amount: `${fmtAmount(parseAmount(inv.amount))} ${prev.currency}` } : inv
+      ),
+    }));
+  }, [form.currency]);
+
+  const investmentsTotal = useMemo(
+    () => form.investments.reduce((sum, inv) => sum + parseAmount(inv.amount), 0),
+    [form.investments]
+  );
+  const targetTotal = parseAmount(form.total_amount);
+  const investmentsMatchTarget = Math.round(investmentsTotal) === Math.round(targetTotal);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -140,13 +165,15 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
   }
 
   function addInvestment() {
-    const newItem: EstimateInvestmentItem = {
-      id: `inv-${Date.now()}`,
-      labelStrong: "Nouveau poste",
-      label: " (détail complet)",
-      amount: "500 €",
-    };
-    setForm((prev) => ({ ...prev, investments: [...prev.investments, newItem] }));
+    setForm((prev) => {
+      const newItem: EstimateInvestmentItem = {
+        id: `inv-${Date.now()}`,
+        labelStrong: "Nouveau poste",
+        label: " (détail complet)",
+        amount: `${fmtAmount(500)} ${prev.currency}`,
+      };
+      return { ...prev, investments: [...prev.investments, newItem] };
+    });
   }
 
   function removeInvestment(id: string) {
@@ -469,13 +496,23 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                   placeholder="Détails"
                   className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-xs text-white/80 focus:outline-none"
                 />
-                <input
-                  type="text"
-                  value={inv.amount}
-                  onChange={(e) => updateInvestment(inv.id, { amount: e.target.value })}
-                  placeholder="ex : 1 700 €"
-                  className="w-28 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-right font-mono text-xs font-bold text-white focus:outline-none"
-                />
+                <div className="flex w-32 shrink-0 items-center gap-1.5">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={amountDigits(inv.amount, form.currency)}
+                    onChange={(e) =>
+                      updateInvestment(inv.id, {
+                        amount: e.target.value ? `${e.target.value} ${form.currency}` : "",
+                      })
+                    }
+                    placeholder="1 700"
+                    className="w-full min-w-0 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-right font-mono text-xs font-bold text-white focus:outline-none"
+                  />
+                  <span className="shrink-0 font-mono text-[11px] text-white/40">
+                    {form.currency}
+                  </span>
+                </div>
                 <button
                   type="button"
                   onClick={() => removeInvestment(inv.id)}
@@ -485,6 +522,28 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 </button>
               </div>
             ))}
+          </div>
+          <div
+            className={`mt-3 flex items-center justify-between rounded-lg border px-3 py-2 ${
+              investmentsMatchTarget
+                ? "border-emerald-500/20 bg-emerald-500/[0.06]"
+                : "border-red-500/20 bg-red-500/[0.06]"
+            }`}
+          >
+            <span className="flex items-center gap-1.5 text-xs font-medium text-white/70">
+              {investmentsMatchTarget ? (
+                <CheckCircle2 className="size-3.5 text-emerald-400" />
+              ) : (
+                <AlertCircle className="size-3.5 text-red-400" />
+              )}
+              Total des postes
+            </span>
+            <span className="font-mono text-sm font-bold text-white">
+              {fmtAmount(investmentsTotal)} {form.currency}
+              <span className="ml-2 font-normal text-white/40">
+                / {fmtAmount(targetTotal)} {form.currency} visé
+              </span>
+            </span>
           </div>
         </div>
 
