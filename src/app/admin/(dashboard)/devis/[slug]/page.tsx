@@ -83,7 +83,16 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
   useEffect(() => {
     fetchClosersAction()
       .then(setClosers)
-      .catch(() => setClosers([]));
+      .catch((e) => {
+        console.error("Failed to load closers", e);
+        setClosers([]);
+        setError((prev) =>
+          prev ??
+          (e instanceof Error
+            ? `Impossible de charger les closers : ${e.message}`
+            : "Impossible de charger les closers.")
+        );
+      });
   }, []);
 
   async function handleResendEmail() {
