@@ -20,6 +20,16 @@ export interface EstimateInstallmentItem {
   amount: string; // e.g. "1 120 €"
 }
 
+export interface SignatureData {
+  client_name: string;
+  company: string;
+  title: string;
+  date: string;
+  email: string;
+  signature_data_url: string;
+  signed_at: string;
+}
+
 export interface ClientEstimate {
   id: string;
   slug: string;
@@ -32,11 +42,20 @@ export interface ClientEstimate {
   total_amount: string;
   delivery_days: string;
   marketing_included: boolean;
+  // Nullable: the DB column allows null (existing rows predate this field,
+  // and the FK is `on delete set null`). Required-ness is enforced only at
+  // save time, by the admin form's `required` select + the Zod schema in
+  // saveEstimateAction — not by this type, which must stay honest about what
+  // an already-loaded row can actually contain.
+  closer_id: string | null;
   features: EstimateFeatureItem[];
   investments: EstimateInvestmentItem[];
   payment_schedule_type: "monthly" | "installments";
   payment_months: number;
   payment_installments: EstimateInstallmentItem[];
+  signature: SignatureData | null;
+  locked: boolean;
+  pdf_email_sent_at: string | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -57,6 +76,7 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
   slug: "client",
   access_code: "",
   client_name: "",
+  closer_id: "",
   project_name: "Trajeo (nom de travail)",
   project_title: "plateforme de mobilité à la demande",
   project_description:
@@ -231,4 +251,7 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
     { label: "Livraison technique", percentage: 50, amount: "2 800 €" },
     { label: "Publication sur les stores", percentage: 30, amount: "1 680 €" },
   ],
+  signature: null,
+  locked: false,
+  pdf_email_sent_at: null,
 };
