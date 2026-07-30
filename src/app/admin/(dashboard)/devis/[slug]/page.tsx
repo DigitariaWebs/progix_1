@@ -62,6 +62,7 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     slug: isNew ? "" : slug,
     client_name: isNew ? "" : DEFAULT_ESTIMATE.client_name,
     project_name: isNew ? "" : DEFAULT_ESTIMATE.project_name,
+    project_title: isNew ? "" : DEFAULT_ESTIMATE.project_title,
     total_amount: isNew ? "" : DEFAULT_ESTIMATE.total_amount,
     // Never pre-fill a new estimate with a real access code — this form's
     // initial state ships in the page's public JS chunk regardless of who's
@@ -291,7 +292,16 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 type="text"
                 required
                 value={form.project_name}
-                onChange={(e) => setForm({ ...form, project_name: e.target.value })}
+                onChange={(e) =>
+                  setForm((prev) => {
+                    const synced = !prev.project_title || prev.project_title === prev.project_name;
+                    return {
+                      ...prev,
+                      project_name: e.target.value,
+                      project_title: synced ? e.target.value : prev.project_title,
+                    };
+                  })
+                }
                 placeholder="ex : Trajeo (nom de travail)"
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
@@ -353,7 +363,16 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 type="text"
                 required
                 value={form.project_title}
-                onChange={(e) => setForm({ ...form, project_title: e.target.value })}
+                onChange={(e) =>
+                  setForm((prev) => {
+                    const synced = !prev.project_name || prev.project_name === prev.project_title;
+                    return {
+                      ...prev,
+                      project_title: e.target.value,
+                      project_name: synced ? e.target.value : prev.project_name,
+                    };
+                  })
+                }
                 placeholder="ex : plateforme de mobilité à la demande"
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
