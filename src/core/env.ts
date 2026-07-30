@@ -13,8 +13,11 @@ const serverEnvSchema = z.object({
   // browser. The Supabase service_role key bypasses RLS; use it only in trusted
   // server code (e.g. the account-deletion route). Optional until you wire it up.
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(20).optional(),
-  // Add real server vars here, mirrored in .env.example, e.g.:
-  // DATABASE_URL: z.string().url(),
+  // This deployment's own public URL — the server-side PDF renderer (Puppeteer)
+  // needs a real HTTP(S) address to navigate to, since it makes an actual
+  // request rather than rendering in-process. Falls back to VERCEL_URL (set
+  // automatically by Vercel) or localhost when unset.
+  SITE_URL: z.string().url().optional(),
 });
 
 export const env = serverEnvSchema.parse(process.env);
