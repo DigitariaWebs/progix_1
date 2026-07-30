@@ -90,8 +90,8 @@ const signInputSchema = z.object({
  * it look like the client's signature didn't take; the signature + lock are
  * already committed to the database by the time this runs.
  */
-async function emailPdfToCloser(estimate: ClientEstimate, pdf: Buffer): Promise<void> {
-  if (!estimate.closer_id) return;
+async function emailPdfToCloser(estimate: ClientEstimate, pdf: Buffer): Promise<boolean> {
+  if (!estimate.closer_id) return false;
 
   try {
     const supabase = createAdminClient();
@@ -100,7 +100,7 @@ async function emailPdfToCloser(estimate: ClientEstimate, pdf: Buffer): Promise<
       .select("*")
       .eq("id", estimate.closer_id)
       .single();
-    if (!closer) return;
+    if (!closer) return false;
 
     await sendLeadEmail({
       to: closer.email,
@@ -114,8 +114,10 @@ async function emailPdfToCloser(estimate: ClientEstimate, pdf: Buffer): Promise<
       .from("client_estimates")
       .update({ pdf_email_sent_at: new Date().toISOString() })
       .eq("slug", estimate.slug);
+    return true;
   } catch (err) {
     console.error("[devis] failed to email closer", estimate.slug, err);
+    return false;
   }
 }
 
@@ -219,14 +221,23 @@ export async function signAndLockEstimateAction(
   const supabase = await getWriteClient();
   // The `.eq("locked", false)` guard makes this update a no-op if a
   // concurrent request already locked the row — the first signer wins.
-  const { error } = await supabase
+  // `.select().single()` is what actually lets us detect that no-op: without
+  // it, a zero-row match still comes back as `error: null`, indistinguishable
+  // from a real success (e.g. a double-click on "Sign" during the multi-second
+  // PDF-render window would otherwise pass silently and send a second email).
+  const { data, error } = await supabase
     .from("client_estimates")
     .update({ signature, locked: true, updated_at: new Date().toISOString() })
     .eq("slug", slug)
-    .eq("locked", false);
+    .eq("locked", false)
+    .select("slug")
+    .single();
 
-  if (error) {
-    return { ok: false, error: `Erreur Supabase: ${error.message}` };
+  if (error || !data) {
+    return {
+      ok: false,
+      error: "Ce devis vient d'être signé (par un autre onglet ou une double soumission).",
+    };
   }
 
   let pdf: Buffer;
@@ -287,9 +298,11 @@ export async function resendClosingEmailAction(slug: string): Promise<{ ok: bool
 
   try {
     const pdf = await renderDevisPdf(slug);
-    await emailPdfToCloser(estimate, pdf);
+    const sent = await emailPdfToCloser(estimate, pdf);
     revalidatePath(`/admin/devis/${slug}`);
-    return { ok: true };
+    return sent
+      ? { ok: true }
+      : { ok: false, error: "Le PDF a été régénéré mais l'envoi de l'email a échoué." };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
