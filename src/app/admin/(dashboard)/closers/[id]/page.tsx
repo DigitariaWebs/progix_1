@@ -42,6 +42,7 @@ export default function AdminCloserEditorPage({ params }: { params: Promise<{ id
     const res = await saveCloserAction(form);
     setSaving(false);
     if (res.ok) {
+      setForm((prev) => ({ ...prev, id: res.id }));
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
       if (isNew) router.push(`/admin/closers/${res.id}`);
