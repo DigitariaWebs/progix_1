@@ -18,6 +18,18 @@ function sign(slug: string): string {
   return createHmac("sha256", secret()).update(slug).digest("hex");
 }
 
+/**
+ * Server-only: mints the same signed cookie value verifyDevisAccessAction
+ * issues after a correct access code. Used by the PDF renderer, which always
+ * runs after a caller (signAndLockEstimateAction / getSignedPdfAction) has
+ * already independently verified access via isDevisUnlocked — there is no
+ * real access code to hand Puppeteer here, so it authenticates the same way
+ * a real unlocked browser would: by presenting this cookie.
+ */
+export function mintUnlockCookieValue(slug: string): string {
+  return sign(slug);
+}
+
 function bytesEqual(a: string, b: string): boolean {
   const bufA = Buffer.from(a);
   const bufB = Buffer.from(b);
