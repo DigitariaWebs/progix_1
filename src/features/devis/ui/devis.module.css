@@ -873,17 +873,6 @@
   overflow: hidden;
 }
 
-.totalArrow {
-  position: absolute;
-  right: 14px;
-  bottom: -28px;
-  font-size: 130px;
-  color: rgba(56, 182, 255, 0.12);
-  font-family: var(--font-disp);
-  font-weight: 700;
-  line-height: 1;
-}
-
 .totalEyebrow {
   font-family: var(--font-disp);
   font-size: 11px;

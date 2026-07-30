@@ -65,6 +65,8 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
   const monthlyAmountStr = estimate
     ? `${Math.round(parseAmount(estimate.total_amount) / (estimate.payment_months || 6)).toLocaleString("fr-FR")} ${estimate.currency}`
     : "933 €";
+  const maintenanceAmountStr = estimate ? `90 ${estimate.currency} / mois` : "90 € / mois";
+  const evolutionAmountStr = estimate ? `80 ${estimate.currency} / heure` : "80 $ / heure";
 
   const payCards = estimate
     ? estimate.payment_schedule_type === "installments"
@@ -176,9 +178,6 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
           </div>
           <div className={cn(styles.totalPanel, styles.lift)}>
             <div className={styles.totalPanelInner}>
-              <span className={styles.totalArrow} aria-hidden="true">
-                —
-              </span>
               <div className={styles.totalEyebrow}>Montant total · forfait fixe</div>
               <div className={styles.totalValue}>{totalAmountStr}</div>
               <div className={styles.totalNote}>
@@ -342,7 +341,7 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
                 Maintenance mensuelle
               </h3>
               <p className={styles.cardText}>
-                <Strong>90 € / mois</Strong> — support continu, correction de bugs et petites
+                <Strong>{maintenanceAmountStr}</Strong> — support continu, correction de bugs et petites
                 corrections, disponibilité étendue grâce à l’équipe sur plusieurs fuseaux horaires.
               </p>
             </div>
@@ -354,7 +353,7 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
                 Évolutions & nouvelles fonctionnalités
               </h3>
               <p className={styles.cardText}>
-                <Strong>80 $ / heure</Strong> — pour toute évolution postérieure de l’Application
+                <Strong>{evolutionAmountStr}</Strong> — pour toute évolution postérieure de l’Application
                 (paiement en ligne intégré, modules spécifiques, fonctionnalités additionnelles…).
               </p>
             </div>
@@ -386,9 +385,6 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
             <li className={styles.arrowItem}>
               Créer un compte <Strong>Stripe</Strong> et fournir un accès développeur pour les
               paiements le cas échéant.
-            </li>
-            <li className={styles.arrowItem}>
-              Prévoir le <Strong>budget publicitaire minimum</Strong> de 1 000 € pour les campagnes.
             </li>
             <li className={styles.arrowItem}>
               <Strong>Valider les éléments nécessaires</Strong> et respecter les recommandations —

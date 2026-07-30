@@ -212,36 +212,6 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
           <Strong>La signature ci-dessous vaut bon de commande et engagement ferme.</Strong>
         </p>
 
-        <div data-noprint className={styles.dlBar} style={{ marginBottom: "32px" }}>
-          <div>
-            <div className={styles.dlBarTitle}>Téléchargez votre devis signé</div>
-            <div className={styles.dlBarText}>
-              Complétez et signez ci-dessous, puis exportez le document complet en PDF. Vos
-              informations restent sur votre appareil.
-            </div>
-          </div>
-          <button
-            type="button"
-            className={styles.btnPrimary}
-            onClick={() => {
-              if (isFormComplete && isSigned) window.print();
-              else if (!isFormComplete)
-                alert(
-                  "Veuillez remplir vos informations (nom, titre, date, courriel) avant de télécharger le PDF.",
-                );
-              else
-                alert(
-                  "Veuillez d'abord dessiner votre signature dans le cadre ci-dessous avant de télécharger le PDF.",
-                );
-            }}
-            style={{
-              opacity: isFormComplete && isSigned ? 1 : 0.65,
-              cursor: isFormComplete && isSigned ? "pointer" : "not-allowed",
-            }}
-          >
-            <span aria-hidden="true">⤓</span> Télécharger le PDF
-          </button>
-        </div>
         <div className={styles.signGrid}>
           {/* Le Client — à compléter */}
           <div className={styles.signClient} ref={formRef}>
@@ -362,6 +332,37 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
               <div className={styles.fieldValueBlankTall} />
             </div>
           </div>
+        </div>
+
+        <div data-noprint className={styles.dlBar} style={{ marginTop: "32px" }}>
+          <div>
+            <div className={styles.dlBarTitle}>Téléchargez votre devis signé</div>
+            <div className={styles.dlBarText}>
+              Complétez et signez ci-dessus, puis exportez le document complet en PDF. Vos
+              informations restent sur votre appareil.
+            </div>
+          </div>
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={() => {
+              if (isFormComplete && isSigned) window.print();
+              else if (!isFormComplete)
+                alert(
+                  "Veuillez remplir vos informations (nom, titre, date, courriel) avant de télécharger le PDF.",
+                );
+              else
+                alert(
+                  "Veuillez d'abord dessiner votre signature dans le cadre ci-dessus avant de télécharger le PDF.",
+                );
+            }}
+            style={{
+              opacity: isFormComplete && isSigned ? 1 : 0.65,
+              cursor: isFormComplete && isSigned ? "pointer" : "not-allowed",
+            }}
+          >
+            <span aria-hidden="true">⤓</span> Télécharger le PDF
+          </button>
         </div>
       </div>
     </section>
