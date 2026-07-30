@@ -59,10 +59,15 @@ export async function saveCloserAction(input: unknown): Promise<SaveCloserResult
     };
 
     if (parsed.data.id) {
-      const { error } = await supabase.from("closers").update(payload).eq("id", parsed.data.id);
-      if (error) return { ok: false, error: `Erreur Supabase: ${error.message}` };
+      const { data, error } = await supabase
+        .from("closers")
+        .update(payload)
+        .eq("id", parsed.data.id)
+        .select("id")
+        .single();
+      if (error || !data) return { ok: false, error: error?.message ?? "Closer introuvable." };
       revalidatePath("/admin/closers");
-      return { ok: true, id: parsed.data.id };
+      return { ok: true, id: data.id };
     }
 
     const { data, error } = await supabase.from("closers").insert(payload).select("id").single();
