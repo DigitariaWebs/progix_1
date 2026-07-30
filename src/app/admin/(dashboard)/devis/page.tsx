@@ -32,7 +32,11 @@ export default function AdminDevisPage() {
   }, []);
 
   async function handleDelete(slug: string) {
-    if (!window.confirm(`Supprimer définitivement le devis pour « ${slug} » ?`)) return;
+    const target = estimates?.find((e) => e.slug === slug);
+    const confirmMsg = target?.locked
+      ? `« ${target.client_name || slug} » est un devis signé et verrouillé. La suppression sera bloquée. Tenter quand même ?`
+      : `Supprimer définitivement le devis pour « ${slug} » ?`;
+    if (!window.confirm(confirmMsg)) return;
     setBusySlug(slug);
     const res = await deleteEstimateAction(slug);
     setBusySlug(null);

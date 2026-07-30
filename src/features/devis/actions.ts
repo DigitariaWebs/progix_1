@@ -321,6 +321,11 @@ export async function deleteEstimateAction(slug: string): Promise<{ ok: boolean;
     return { ok: false, error: "Non autorisé." };
   }
 
+  const existing = await getEstimateBySlug(slug);
+  if (existing?.locked) {
+    return { ok: false, error: "Ce devis est verrouillé (signé) et ne peut plus être supprimé." };
+  }
+
   try {
     const supabase = await getWriteClient();
     const { error } = await supabase.from("client_estimates").delete().eq("slug", slug);

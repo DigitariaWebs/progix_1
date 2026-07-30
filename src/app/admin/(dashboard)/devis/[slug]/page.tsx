@@ -274,19 +274,26 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
       )}
 
       {form.locked && (
-        <div className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">
-          <span className="flex items-center gap-2">
-            <Lock className="size-4 shrink-0" />
-            Signé{form.signature ? ` le ${new Date(form.signature.signed_at).toLocaleDateString("fr-FR")}` : ""} — verrouillé, non modifiable.
-          </span>
-          <button
-            type="button"
-            onClick={handleResendEmail}
-            disabled={resending}
-            className="shrink-0 rounded-lg bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/30 disabled:opacity-50"
-          >
-            {resending ? "Envoi…" : "Renvoyer l'email au closer"}
-          </button>
+        <div className="mt-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">
+          <div className="flex items-center justify-between gap-4">
+            <span className="flex items-center gap-2">
+              <Lock className="size-4 shrink-0" />
+              Signé{form.signature ? ` le ${new Date(form.signature.signed_at).toLocaleDateString("fr-FR")}` : ""} — verrouillé, non modifiable.
+            </span>
+            <button
+              type="button"
+              onClick={handleResendEmail}
+              disabled={resending}
+              className="shrink-0 rounded-lg bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/30 disabled:opacity-50"
+            >
+              {resending ? "Envoi…" : "Renvoyer l'email au closer"}
+            </button>
+          </div>
+          <p className="mt-2 text-xs text-amber-200/80">
+            {form.pdf_email_sent_at
+              ? `Email envoyé au closer le ${new Date(form.pdf_email_sent_at).toLocaleString("fr-FR")}.`
+              : "⚠ Email jamais envoyé avec succès au closer — utilisez « Renvoyer l'email »."}
+          </p>
         </div>
       )}
 
