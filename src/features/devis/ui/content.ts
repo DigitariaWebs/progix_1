@@ -142,19 +142,13 @@ export const phases = [
   },
 ] as const;
 
-/** Header / footer navigation across the document set. */
-export const navLinks = [
-  { key: "accueil", label: "Présentation", href: "/devis/client" },
-  { key: "cahier", label: "Cahier des charges", href: "/devis/client/cahier-des-charges" },
-  { key: "calendrier", label: "Calendrier", href: "/devis/client/calendrier" },
-  { key: "devis", label: "Devis contractuel", href: "/devis/client/contrat" },
-] as const;
+/**
+ * Header / footer navigation across the document set. Only "Devis
+ * contractuel" is exposed in the UI — the other documents (présentation,
+ * cahier des charges, calendrier) still exist as routes, just not linked to.
+ */
+export const navLinks = [{ key: "devis", label: "Devis contractuel", href: "/devis/client/contrat" }] as const;
 
 export function getNavLinks(slug = "client") {
-  return [
-    { key: "accueil", label: "Présentation", href: `/devis/${slug}` },
-    { key: "cahier", label: "Cahier des charges", href: `/devis/${slug}/cahier-des-charges` },
-    { key: "calendrier", label: "Calendrier", href: `/devis/${slug}/calendrier` },
-    { key: "devis", label: "Devis contractuel", href: `/devis/${slug}/contrat` },
-  ] as const;
+  return [{ key: "devis", label: "Devis contractuel", href: `/devis/${slug}/contrat` }] as const;
 }

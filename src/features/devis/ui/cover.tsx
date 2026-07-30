@@ -27,10 +27,10 @@ export function Cover({
   return (
     <section className={styles.cover}>
       <div className={styles.coverDots} aria-hidden="true" />
-      <img className={styles.coverWatermark} src="/progix-logo.png" alt="" aria-hidden="true" />
+      <img className={styles.coverWatermark} src="/images/logo.png" alt="" aria-hidden="true" />
       <div className={styles.coverInner}>
         <span className={styles.coverChip}>
-          <img src="/progix-logo.png" alt="Progix" />
+          <img src="/images/logo.png" alt="Progix" />
         </span>
         <div className={styles.coverEyebrow}>
           <span className={styles.coverEyebrowBar} aria-hidden="true" />

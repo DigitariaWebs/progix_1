@@ -41,7 +41,7 @@ export function CinematicHero() {
         <span className={`${styles.heroBlob} ${styles.heroBlob2}`} />
         <span className={`${styles.heroBlob} ${styles.heroBlob3}`} />
       </m.div>
-      <img className={styles.heroWatermark} src="/progix-logo.png" alt="" aria-hidden="true" />
+      <img className={styles.heroWatermark} src="/images/logo.png" alt="" aria-hidden="true" />
 
       <m.div className={styles.heroInner} style={{ y: contentY }}>
         <div className={styles.heroLeft}>

@@ -43,8 +43,8 @@ export function CinematicHeader({ active = "accueil" }: { active?: string }) {
   return (
     <header className={cn(styles.header, scrolled && styles.headerScrolled)}>
       <div className={styles.headerInner}>
-        <Link href={`/devis/${slug}`} className={styles.brand} aria-label="Progix — Présentation">
-          <img className={styles.brandLogo} src="/progix-logo.png" alt="Progix" />
+        <Link href={`/devis/${slug}/contrat`} className={styles.brand} aria-label="Progix — Devis contractuel">
+          <img className={styles.brandLogo} src="/images/logo.png" alt="Progix" />
         </Link>
 
         <nav aria-label="Navigation principale" className={styles.nav}>

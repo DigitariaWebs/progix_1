@@ -349,7 +349,7 @@ export function AccueilDocument() {
             }}
           />
           <img
-            src="/progix-logo.png"
+            src="/images/logo.png"
             alt=""
             aria-hidden="true"
             style={{
@@ -372,7 +372,7 @@ export function AccueilDocument() {
             }}
           >
             <img
-              src="/progix-logo.png"
+              src="/images/logo.png"
               alt="Progix"
               style={{ height: "30px", filter: "brightness(0) invert(1)", display: "block" }}
             />

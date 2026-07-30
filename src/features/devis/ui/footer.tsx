@@ -19,7 +19,7 @@ export function Footer({ heading, text }: { heading: string; text: string }) {
         <div className={styles.footerGlow2} aria-hidden="true" />
         <div className={styles.footerDots} aria-hidden="true" />
         <div className={styles.footerInner}>
-          <img className={styles.footerLogo} src="/progix-logo.png" alt="Progix" />
+          <img className={styles.footerLogo} src="/images/logo.png" alt="Progix" />
           <h3 className={styles.footerHeading}>{heading}</h3>
           <p className={styles.footerText}>{text}</p>
           <div className={styles.footerContacts}>
