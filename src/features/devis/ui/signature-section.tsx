@@ -1,3 +1,4 @@
+// src/features/devis/ui/signature-section.tsx
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -5,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { SectionHeader, Strong } from "./primitives";
 import styles from "./devis.module.css";
 import type { ClientEstimate } from "../types";
+import { signAndLockEstimateAction, getSignedPdfAction } from "../actions";
 
 const KEY = "progix.devis.v1";
 const FIELD_IDS = ["cli_nom", "cli_societe", "cli_titre", "cli_date", "cli_courriel"] as const;
@@ -25,11 +27,27 @@ function writeStore(patch: Record<string, string>) {
   }
 }
 
+function downloadBase64Pdf(base64: string, filename: string) {
+  const byteChars = atob(base64);
+  const byteNumbers = new Array(byteChars.length);
+  for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
+  const blob = new Blob([new Uint8Array(byteNumbers)], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 /**
- * Section 08 — acceptance & signatures. Client side persists the buyer's fields
- * + drawn signature to localStorage (nothing leaves the device) and exports the
- * whole document to PDF via the browser print dialog. The fields are
- * uncontrolled and hydrated from storage in an effect (matching the source).
+ * Section 08 — acceptance & signatures. Before signing: client-side persists
+ * the buyer's fields + drawn signature to localStorage (nothing leaves the
+ * device until they actually submit) and exports the whole document to PDF.
+ * On submit, signAndLockEstimateAction saves the signature server-side,
+ * locks the devis, emails the closer, and returns the same PDF for download.
+ * Once locked (either right after signing, or on a later visit), this
+ * renders a static read-only view instead of the editable form/pad.
  */
 export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
   const formRef = useRef<HTMLDivElement>(null);
@@ -37,6 +55,10 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
   const hintRef = useRef<HTMLDivElement>(null);
   const [isSigned, setIsSigned] = useState(false);
   const [isFormComplete, setIsFormComplete] = useState(false);
+  const [locked, setLocked] = useState(!!estimate?.locked);
+  const [signature, setSignature] = useState(estimate?.signature ?? null);
+  const [signing, setSigning] = useState(false);
+  const [signError, setSignError] = useState<string | null>(null);
 
   useEffect(() => {
     const cleanups: Array<() => void> = [];
@@ -202,6 +224,58 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
     if (hintRef.current) hintRef.current.style.display = "flex";
   };
 
+  async function handleDownloadClick() {
+    if (!estimate) return;
+
+    if (locked) {
+      setSigning(true);
+      setSignError(null);
+      const res = await getSignedPdfAction(estimate.slug);
+      setSigning(false);
+      if (res.ok) downloadBase64Pdf(res.pdfBase64, `devis-${estimate.slug}.pdf`);
+      else setSignError(res.error);
+      return;
+    }
+
+    if (!isFormComplete) {
+      alert(
+        "Veuillez remplir vos informations (nom, titre, date, courriel) avant de télécharger le PDF.",
+      );
+      return;
+    }
+    if (!isSigned) {
+      alert(
+        "Veuillez d'abord dessiner votre signature dans le cadre ci-dessus avant de télécharger le PDF.",
+      );
+      return;
+    }
+
+    const root = formRef.current;
+    const canvas = canvasRef.current;
+    const payload = {
+      client_name: root?.querySelector<HTMLInputElement>("#cli_nom")?.value ?? "",
+      company: root?.querySelector<HTMLInputElement>("#cli_societe")?.value ?? "",
+      title: root?.querySelector<HTMLInputElement>("#cli_titre")?.value ?? "",
+      date: root?.querySelector<HTMLInputElement>("#cli_date")?.value ?? "",
+      email: root?.querySelector<HTMLInputElement>("#cli_courriel")?.value ?? "",
+      signature_data_url: canvas?.toDataURL("image/png") ?? "",
+    };
+
+    setSigning(true);
+    setSignError(null);
+    const res = await signAndLockEstimateAction(estimate.slug, payload);
+    setSigning(false);
+    if (!res.ok) {
+      setSignError(res.error);
+      return;
+    }
+    setSignature({ ...payload, signed_at: new Date().toISOString() });
+    setLocked(true);
+    downloadBase64Pdf(res.pdfBase64, `devis-${estimate.slug}.pdf`);
+  }
+
+  const downloadDisabled = signing || (!locked && (!isFormComplete || !isSigned));
+
   return (
     <section id="s8" data-dc-section className={cn(styles.section, styles.sectionA)}>
       <div className={styles.container}>
@@ -213,86 +287,134 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
         </p>
 
         <div className={styles.signGrid}>
-          {/* Le Client — à compléter */}
-          <div className={styles.signClient} ref={formRef}>
-            <div className={styles.signKicker}>
-              <span className={styles.signKickerDot} aria-hidden="true" />
-              <div className={styles.signKickerLabel}>
-                {estimate ? estimate.client_name : "Le Client"} · à compléter
-              </div>
-            </div>
-            <div className={styles.signHint}>Remplissez vos informations et signez ci-dessous</div>
-
-            <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="cli_nom">
-                Nom complet
-              </label>
-              <input
-                id="cli_nom"
-                type="text"
-                placeholder="Votre nom"
-                className={styles.fieldInput}
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="cli_societe">
-                Société (le cas échéant)
-              </label>
-              <input id="cli_societe" type="text" className={styles.fieldInput} />
-            </div>
-
-            <div className={styles.fieldRow}>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel} htmlFor="cli_titre">
-                  Titre / fonction
-                </label>
-                <input id="cli_titre" type="text" className={styles.fieldInput} />
+          {/* Le Client — édition, ou lecture seule une fois signé */}
+          {locked ? (
+            <div className={styles.signClient}>
+              <div className={styles.signKicker}>
+                <span className={styles.signKickerDot} aria-hidden="true" />
+                <div className={styles.signKickerLabel}>
+                  {estimate ? estimate.client_name : "Le Client"} · signé
+                </div>
               </div>
               <div className={styles.field}>
-                <label className={styles.fieldLabel} htmlFor="cli_date">
-                  Date
+                <div className={styles.fieldLabel}>Nom complet</div>
+                <div className={styles.fieldValue}>{signature?.client_name}</div>
+              </div>
+              {signature?.company && (
+                <div className={styles.field}>
+                  <div className={styles.fieldLabel}>Société</div>
+                  <div className={styles.fieldValue}>{signature.company}</div>
+                </div>
+              )}
+              <div className={styles.fieldRow}>
+                <div className={styles.field}>
+                  <div className={styles.fieldLabel}>Titre / fonction</div>
+                  <div className={styles.fieldValue}>{signature?.title}</div>
+                </div>
+                <div className={styles.field}>
+                  <div className={styles.fieldLabel}>Date</div>
+                  <div className={styles.fieldValue}>{signature?.date}</div>
+                </div>
+              </div>
+              <div className={styles.field}>
+                <div className={styles.fieldLabel}>Courriel</div>
+                <div className={styles.fieldValue}>{signature?.email}</div>
+              </div>
+              <div>
+                <div className={styles.signPadLabel}>Signature</div>
+                {signature?.signature_data_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={signature.signature_data_url}
+                    alt="Signature du client"
+                    style={{ display: "block", width: "100%", marginTop: "8px" }}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={styles.signClient} ref={formRef}>
+              <div className={styles.signKicker}>
+                <span className={styles.signKickerDot} aria-hidden="true" />
+                <div className={styles.signKickerLabel}>
+                  {estimate ? estimate.client_name : "Le Client"} · à compléter
+                </div>
+              </div>
+              <div className={styles.signHint}>
+                Remplissez vos informations et signez ci-dessous
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.fieldLabel} htmlFor="cli_nom">
+                  Nom complet
                 </label>
-                <input id="cli_date" type="date" className={styles.fieldInput} />
-              </div>
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="cli_courriel">
-                Courriel
-              </label>
-              <input
-                id="cli_courriel"
-                type="email"
-                placeholder="vous@exemple.com"
-                className={styles.fieldInput}
-              />
-            </div>
-
-            <div>
-              <div className={styles.signPadHead}>
-                <span className={styles.signPadLabel}>Signature</span>
-                <button
-                  type="button"
-                  data-noprint
-                  className={styles.signClearBtn}
-                  onClick={clearSignature}
-                >
-                  Effacer
-                </button>
-              </div>
-              <div className={styles.signPadWrap}>
-                <canvas
-                  ref={canvasRef}
-                  className={styles.signCanvas}
-                  aria-label="Zone de signature"
+                <input
+                  id="cli_nom"
+                  type="text"
+                  placeholder="Votre nom"
+                  className={styles.fieldInput}
                 />
-                <div ref={hintRef} className={styles.signPadHint}>
-                  Signez ici — souris, stylet ou doigt
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.fieldLabel} htmlFor="cli_societe">
+                  Société (le cas échéant)
+                </label>
+                <input id="cli_societe" type="text" className={styles.fieldInput} />
+              </div>
+
+              <div className={styles.fieldRow}>
+                <div className={styles.field}>
+                  <label className={styles.fieldLabel} htmlFor="cli_titre">
+                    Titre / fonction
+                  </label>
+                  <input id="cli_titre" type="text" className={styles.fieldInput} />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.fieldLabel} htmlFor="cli_date">
+                    Date
+                  </label>
+                  <input id="cli_date" type="date" className={styles.fieldInput} />
+                </div>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.fieldLabel} htmlFor="cli_courriel">
+                  Courriel
+                </label>
+                <input
+                  id="cli_courriel"
+                  type="email"
+                  placeholder="vous@exemple.com"
+                  className={styles.fieldInput}
+                />
+              </div>
+
+              <div>
+                <div className={styles.signPadHead}>
+                  <span className={styles.signPadLabel}>Signature</span>
+                  <button
+                    type="button"
+                    data-noprint
+                    className={styles.signClearBtn}
+                    onClick={clearSignature}
+                  >
+                    Effacer
+                  </button>
+                </div>
+                <div className={styles.signPadWrap}>
+                  <canvas
+                    ref={canvasRef}
+                    className={styles.signCanvas}
+                    aria-label="Zone de signature"
+                  />
+                  <div ref={hintRef} className={styles.signPadHint}>
+                    Signez ici — souris, stylet ou doigt
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Le Prestataire — Progix Inc. */}
           <div className={styles.signProvider}>
@@ -338,30 +460,23 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
           <div>
             <div className={styles.dlBarTitle}>Téléchargez votre devis signé</div>
             <div className={styles.dlBarText}>
-              Complétez et signez ci-dessus, puis exportez le document complet en PDF. Vos
-              informations restent sur votre appareil.
+              {locked
+                ? "Ce devis est signé et verrouillé. Vous pouvez retélécharger le PDF à tout moment."
+                : "Complétez et signez ci-dessus, puis exportez le document complet en PDF. Vos informations restent sur votre appareil jusqu'à l'envoi."}
+              {signError && <span style={{ color: "#f87171", display: "block" }}>{signError}</span>}
             </div>
           </div>
           <button
             type="button"
             className={styles.btnPrimary}
-            onClick={() => {
-              if (isFormComplete && isSigned) window.print();
-              else if (!isFormComplete)
-                alert(
-                  "Veuillez remplir vos informations (nom, titre, date, courriel) avant de télécharger le PDF.",
-                );
-              else
-                alert(
-                  "Veuillez d'abord dessiner votre signature dans le cadre ci-dessus avant de télécharger le PDF.",
-                );
-            }}
+            onClick={handleDownloadClick}
+            disabled={downloadDisabled}
             style={{
-              opacity: isFormComplete && isSigned ? 1 : 0.65,
-              cursor: isFormComplete && isSigned ? "pointer" : "not-allowed",
+              opacity: downloadDisabled ? 0.65 : 1,
+              cursor: downloadDisabled ? "not-allowed" : "pointer",
             }}
           >
-            <span aria-hidden="true">⤓</span> Télécharger le PDF
+            <span aria-hidden="true">⤓</span> {signing ? "Génération…" : "Télécharger le PDF"}
           </button>
         </div>
       </div>
