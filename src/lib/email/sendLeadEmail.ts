@@ -4,6 +4,9 @@ export type LeadEmail = {
   subject: string;
   html: string;
   replyTo?: string;
+  /** Overrides CONTACT_EMAIL for this send — used to email a specific closer. */
+  to?: string;
+  attachments?: { filename: string; content: Buffer }[];
 };
 
 const RESEND_TIMEOUT_MS = 10_000;
@@ -27,14 +30,10 @@ export function missingMailConfig(): string[] {
   return missing;
 }
 
-async function sendViaResend({
-  subject,
-  html,
-  replyTo,
-}: LeadEmail): Promise<void> {
+async function sendViaResend({ subject, html, replyTo, to, attachments }: LeadEmail): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_EMAIL;
-  if (!apiKey || !to) throw new Error('Resend configuration incomplete');
+  const recipient = to || process.env.CONTACT_EMAIL;
+  if (!apiKey || !recipient) throw new Error('Resend configuration incomplete');
 
   const from = process.env.SMTP_FROM || 'no-reply@progix.pro';
   const res = await fetch('https://api.resend.com/emails', {
@@ -45,10 +44,18 @@ async function sendViaResend({
     },
     body: JSON.stringify({
       from: `PROGIX <${from}>`,
-      to: [to],
+      to: [recipient],
       ...(replyTo ? { reply_to: replyTo } : {}),
       subject,
       html,
+      ...(attachments?.length
+        ? {
+            attachments: attachments.map((a) => ({
+              filename: a.filename,
+              content: a.content.toString('base64'),
+            })),
+          }
+        : {}),
     }),
     // Without this, a hung connection hangs the whole request.
     signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
@@ -60,12 +67,12 @@ async function sendViaResend({
   }
 }
 
-async function sendViaSmtp({ subject, html, replyTo }: LeadEmail): Promise<void> {
+async function sendViaSmtp({ subject, html, replyTo, to, attachments }: LeadEmail): Promise<void> {
   const host = process.env.SMTP_HOST as string;
   const user = process.env.SMTP_USER as string;
   const pass = process.env.SMTP_PASS as string;
   const configuredFrom = process.env.SMTP_FROM as string;
-  const to = process.env.CONTACT_EMAIL as string;
+  const recipient = to || (process.env.CONTACT_EMAIL as string);
   const port = Number.parseInt(process.env.SMTP_PORT ?? '', 10) || 587;
 
   // Certificate validation stays ON. This connection carries SMTP AUTH
@@ -84,10 +91,11 @@ async function sendViaSmtp({ subject, html, replyTo }: LeadEmail): Promise<void>
 
   await transporter.sendMail({
     from: useGmailSafeFrom ? user : configuredFrom,
-    to,
+    to: recipient,
     ...(replyTo ? { replyTo } : {}),
     subject,
     html,
+    ...(attachments?.length ? { attachments } : {}),
   });
 }
 
