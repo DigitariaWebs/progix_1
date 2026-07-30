@@ -18,7 +18,7 @@ const coverBadges: ReadonlyArray<{ l: string; v: string; u: string }> = [
 
 const coverMeta: ReadonlyArray<{ l: string; v: string }> = [
   { l: "Projet", v: "Trajeo (nom de travail)" },
-  { l: "Client", v: "Karima" },
+  { l: "Client", v: "Client" },
   { l: "Prestataire", v: "Progix Inc. · NEQ 1181317117" },
   { l: "Référence · Version", v: "SPRINT-PROGIX-2026 · v1.0" },
 ];
@@ -279,6 +279,7 @@ const dispFont = "var(--font-disp)";
  * edges.
  */
 export function CalendrierDocument({ estimate }: { estimate?: ClientEstimate }) {
+  const slug = estimate?.slug ?? "client";
   const meta = estimate
     ? [
         { l: "Projet", v: estimate.project_name },
@@ -1274,14 +1275,14 @@ export function CalendrierDocument({ estimate }: { estimate?: ClientEstimate }) 
                 </span>
                 Toute modification du périmètre fait l’objet d’un accord écrit (voir{" "}
                 <Link
-                  href="/devis/karima/contrat"
+                  href={`/devis/${slug}/contrat`}
                   style={{ color: "var(--cyan-ink)", fontWeight: 600, textDecoration: "none" }}
                 >
                   devis
                 </Link>{" "}
                 &{" "}
                 <Link
-                  href="/devis/karima/cahier-des-charges"
+                  href={`/devis/${slug}/cahier-des-charges`}
                   style={{ color: "var(--cyan-ink)", fontWeight: 600, textDecoration: "none" }}
                 >
                   cahier des charges

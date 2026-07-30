@@ -19,7 +19,7 @@ export const cover = {
   ],
   meta: [
     { l: "Projet", v: "Trajeo (nom de travail)" },
-    { l: "Client", v: "Karima" },
+    { l: "Client", v: "Client" },
     { l: "Prestataire", v: "Progix Inc. · NEQ 1181317117" },
     { l: "Référence · Date", v: "DEVIS-PROGIX-2026 · ____________" },
   ],
@@ -34,7 +34,7 @@ export const trust = [
 
 /** Section 02 — prestations included, grouped. `b` is emphasized, `t` follows. */
 export const incl1 = [
-  { b: "Application mobile iOS & Android", t: " (passager + chauffeur), design sur mesure" },
+  { b: "Application mobile iOS & Android", t: " design sur mesure" },
   { b: "Réservation de trajets & mise en relation", t: " en temps réel" },
   { b: "Géolocalisation & suivi de course", t: " sur carte" },
   { b: "Profils passagers & chauffeurs", t: " avec vérification des documents" },
@@ -76,7 +76,7 @@ export const incl3 = [
 export const investment = [
   {
     strong: "Application mobile iOS + Android",
-    text: " (passager + chauffeur, design sur mesure)",
+    text: " (design sur mesure)",
     amount: "1 700 €",
     alt: false,
   },
@@ -144,13 +144,13 @@ export const phases = [
 
 /** Header / footer navigation across the document set. */
 export const navLinks = [
-  { key: "accueil", label: "Présentation", href: "/devis/karima" },
-  { key: "cahier", label: "Cahier des charges", href: "/devis/karima/cahier-des-charges" },
-  { key: "calendrier", label: "Calendrier", href: "/devis/karima/calendrier" },
-  { key: "devis", label: "Devis contractuel", href: "/devis/karima/contrat" },
+  { key: "accueil", label: "Présentation", href: "/devis/client" },
+  { key: "cahier", label: "Cahier des charges", href: "/devis/client/cahier-des-charges" },
+  { key: "calendrier", label: "Calendrier", href: "/devis/client/calendrier" },
+  { key: "devis", label: "Devis contractuel", href: "/devis/client/contrat" },
 ] as const;
 
-export function getNavLinks(slug = "karima") {
+export function getNavLinks(slug = "client") {
   return [
     { key: "accueil", label: "Présentation", href: `/devis/${slug}` },
     { key: "cahier", label: "Cahier des charges", href: `/devis/${slug}/cahier-des-charges` },

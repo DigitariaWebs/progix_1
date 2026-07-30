@@ -53,10 +53,10 @@ export function redactAccessCode(estimate: ClientEstimate): ClientEstimate {
   return { ...estimate, access_code: "" };
 }
 
-export const DEFAULT_KARIMA_ESTIMATE: Omit<ClientEstimate, "id"> = {
-  slug: "karima",
-  access_code: "progix2026",
-  client_name: "Karima",
+export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
+  slug: "client",
+  access_code: "",
+  client_name: "",
   project_name: "Trajeo (nom de travail)",
   project_title: "plateforme de mobilité à la demande",
   project_description:
@@ -71,7 +71,7 @@ export const DEFAULT_KARIMA_ESTIMATE: Omit<ClientEstimate, "id"> = {
       id: "f1",
       category: "dev",
       labelStrong: "Application mobile iOS & Android",
-      label: " (passager + chauffeur), design sur mesure",
+      label: " design sur mesure",
       included: true,
     },
     {
@@ -193,7 +193,7 @@ export const DEFAULT_KARIMA_ESTIMATE: Omit<ClientEstimate, "id"> = {
     {
       id: "inv1",
       labelStrong: "Application mobile iOS + Android",
-      label: " (passager + chauffeur, design sur mesure)",
+      label: " (design sur mesure)",
       amount: "1 700 €",
     },
     {

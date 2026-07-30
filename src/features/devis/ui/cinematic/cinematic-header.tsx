@@ -16,7 +16,7 @@ import styles from "./cinematic.module.css";
  */
 export function CinematicHeader({ active = "accueil" }: { active?: string }) {
   const params = useParams();
-  const slug = (params?.client as string) || "karima";
+  const slug = (params?.client as string) || "client";
   const links = getNavLinks(slug);
 
   const [scrolled, setScrolled] = useState(false);

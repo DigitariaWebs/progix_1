@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { DEFAULT_KARIMA_ESTIMATE, ClientEstimate } from "./types";
+import { DEFAULT_ESTIMATE, ClientEstimate } from "./types";
 import { getAllEstimates, getEstimateBySlug } from "./queries";
 import { revalidatePath } from "next/cache";
 
@@ -175,7 +175,7 @@ export async function seedDefaultEstimateAction(): Promise<{ ok: boolean; error?
     const supabase = await getWriteClient();
     const { error } = await supabase
       .from("client_estimates")
-      .upsert(DEFAULT_KARIMA_ESTIMATE, { onConflict: "slug" });
+      .upsert(DEFAULT_ESTIMATE, { onConflict: "slug" });
     if (error) {
       return { ok: false, error: error.message };
     }

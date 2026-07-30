@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
 /**
- * Root `/devis` route redirects to the canonical `/devis/karima` presentation.
+ * Root `/devis` route redirects to the default client presentation.
  */
 export default function DevisRootPage() {
-  redirect("/devis/karima");
+  redirect("/devis/client");
 }

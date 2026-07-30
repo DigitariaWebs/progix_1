@@ -14,7 +14,7 @@ import styles from "./devis.module.css";
  */
 export function DcHeader({ active = "devis" }: { active?: string }) {
   const params = useParams();
-  const slug = (params?.client as string) || "karima";
+  const slug = (params?.client as string) || "client";
   const links = getNavLinks(slug);
 
   const [scrolled, setScrolled] = useState(false);

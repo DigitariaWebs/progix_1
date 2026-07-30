@@ -9,7 +9,7 @@ import styles from "./devis.module.css";
 /** Closing call-to-action footer with contact block and document navigation. */
 export function Footer({ heading, text }: { heading: string; text: string }) {
   const params = useParams();
-  const slug = (params?.client as string) || "karima";
+  const slug = (params?.client as string) || "client";
   const links = getNavLinks(slug);
 
   return (

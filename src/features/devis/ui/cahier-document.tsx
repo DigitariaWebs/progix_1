@@ -273,7 +273,7 @@ function InfoCallout({
 
 const meta = [
   { l: "Projet", v: "Trajeo (nom de travail)" },
-  { l: "Client", v: "Karima" },
+  { l: "Client", v: "Client" },
   { l: "Prestataire", v: "Progix Inc. · NEQ 1181317117" },
   { l: "Référence · Version", v: "CDC-PROGIX-2026 · v1.0" },
 ] as const;
