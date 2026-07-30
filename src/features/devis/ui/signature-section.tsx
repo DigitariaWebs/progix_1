@@ -269,6 +269,8 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
       setSignError(res.error);
       return;
     }
+    // signed_at here is optimistic (client clock) — the server persists its own
+    // authoritative signed_at; don't display this field without refetching.
     setSignature({ ...payload, signed_at: new Date().toISOString() });
     setLocked(true);
     downloadBase64Pdf(res.pdfBase64, `devis-${estimate.slug}.pdf`);
@@ -353,6 +355,7 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
                   type="text"
                   placeholder="Votre nom"
                   className={styles.fieldInput}
+                  disabled={signing}
                 />
               </div>
 
@@ -360,7 +363,12 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
                 <label className={styles.fieldLabel} htmlFor="cli_societe">
                   Société (le cas échéant)
                 </label>
-                <input id="cli_societe" type="text" className={styles.fieldInput} />
+                <input
+                  id="cli_societe"
+                  type="text"
+                  className={styles.fieldInput}
+                  disabled={signing}
+                />
               </div>
 
               <div className={styles.fieldRow}>
@@ -368,13 +376,23 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
                   <label className={styles.fieldLabel} htmlFor="cli_titre">
                     Titre / fonction
                   </label>
-                  <input id="cli_titre" type="text" className={styles.fieldInput} />
+                  <input
+                    id="cli_titre"
+                    type="text"
+                    className={styles.fieldInput}
+                    disabled={signing}
+                  />
                 </div>
                 <div className={styles.field}>
                   <label className={styles.fieldLabel} htmlFor="cli_date">
                     Date
                   </label>
-                  <input id="cli_date" type="date" className={styles.fieldInput} />
+                  <input
+                    id="cli_date"
+                    type="date"
+                    className={styles.fieldInput}
+                    disabled={signing}
+                  />
                 </div>
               </div>
 
@@ -387,6 +405,7 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
                   type="email"
                   placeholder="vous@exemple.com"
                   className={styles.fieldInput}
+                  disabled={signing}
                 />
               </div>
 
@@ -398,6 +417,7 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
                     data-noprint
                     className={styles.signClearBtn}
                     onClick={clearSignature}
+                    disabled={signing}
                   >
                     Effacer
                   </button>
@@ -407,6 +427,7 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
                     ref={canvasRef}
                     className={styles.signCanvas}
                     aria-label="Zone de signature"
+                    style={{ pointerEvents: signing ? "none" : undefined, opacity: signing ? 0.5 : 1 }}
                   />
                   <div ref={hintRef} className={styles.signPadHint}>
                     Signez ici — souris, stylet ou doigt
@@ -463,7 +484,11 @@ export function SignatureSection({ estimate }: { estimate?: ClientEstimate }) {
               {locked
                 ? "Ce devis est signé et verrouillé. Vous pouvez retélécharger le PDF à tout moment."
                 : "Complétez et signez ci-dessus, puis exportez le document complet en PDF. Vos informations restent sur votre appareil jusqu'à l'envoi."}
-              {signError && <span style={{ color: "#f87171", display: "block" }}>{signError}</span>}
+              {signError && (
+                <span role="alert" style={{ color: "#f87171", display: "block" }}>
+                  {signError}
+                </span>
+              )}
             </div>
           </div>
           <button
