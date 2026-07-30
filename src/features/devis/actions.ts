@@ -1,5 +1,9 @@
 "use server";
 
+// PDF generation (headless Chromium) + email dispatch can take several
+// seconds; the default Vercel function duration is too short for that.
+export const maxDuration = 60;
+
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -7,6 +11,9 @@ import { requireAdmin } from "@/lib/auth/requireAdmin";
 import { DEFAULT_ESTIMATE, ClientEstimate } from "./types";
 import { getAllEstimates, getEstimateBySlug } from "./queries";
 import { revalidatePath } from "next/cache";
+import { isDevisUnlocked } from "./gate";
+import { renderDevisPdf } from "@/lib/pdf/renderDevisPdf";
+import { sendLeadEmail } from "@/lib/email/sendLeadEmail";
 
 export async function fetchEstimatesAction(): Promise<ClientEstimate[]> {
   await requireAdmin();
@@ -53,6 +60,7 @@ const estimateInputSchema = z.object({
   slug: z.string().min(1, "Le slug est requis").max(80),
   access_code: z.string().min(1, "Le code d'accès est requis").max(80),
   client_name: z.string().min(1, "Le nom du client est requis"),
+  closer_id: z.string().min(1, "Le closer est requis"),
   project_name: z.string().min(1, "Le nom du projet est requis"),
   project_title: z.string().min(1, "Le titre du projet est requis"),
   project_description: z.string().min(1, "La description est requise"),
@@ -66,6 +74,50 @@ const estimateInputSchema = z.object({
   payment_months: z.number().int().min(1),
   payment_installments: z.array(installmentItemSchema),
 });
+
+const signInputSchema = z.object({
+  client_name: z.string().min(1, "Le nom est requis"),
+  company: z.string().optional().default(""),
+  title: z.string().min(1, "Le titre est requis"),
+  date: z.string().min(1, "La date est requise"),
+  email: z.string().email("Courriel invalide"),
+  signature_data_url: z.string().min(1, "La signature est requise"),
+});
+
+/**
+ * Emails the signed PDF to the devis's assigned closer. Swallows its own
+ * errors (logged, not thrown) — a failed notification email must never make
+ * it look like the client's signature didn't take; the signature + lock are
+ * already committed to the database by the time this runs.
+ */
+async function emailPdfToCloser(estimate: ClientEstimate, pdf: Buffer): Promise<void> {
+  if (!estimate.closer_id) return;
+
+  try {
+    const supabase = createAdminClient();
+    const { data: closer } = await supabase
+      .from("closers")
+      .select("*")
+      .eq("id", estimate.closer_id)
+      .single();
+    if (!closer) return;
+
+    await sendLeadEmail({
+      to: closer.email,
+      subject: `Devis signé — ${estimate.project_name} (${estimate.client_name})`,
+      html: `<p>${estimate.client_name} vient de signer le devis « ${estimate.project_name} ». Le PDF signé est en pièce jointe.</p>`,
+      attachments: [{ filename: `devis-${estimate.slug}.pdf`, content: pdf }],
+    });
+
+    const writeClient = await getWriteClient();
+    await writeClient
+      .from("client_estimates")
+      .update({ pdf_email_sent_at: new Date().toISOString() })
+      .eq("slug", estimate.slug);
+  } catch (err) {
+    console.error("[devis] failed to email closer", estimate.slug, err);
+  }
+}
 
 export type SaveEstimateResult = { ok: true; slug: string } | { ok: false; error: string };
 
@@ -82,12 +134,18 @@ export async function saveEstimateAction(input: unknown): Promise<SaveEstimateRe
     return { ok: false, error: errorMsg };
   }
 
+  const existing = await getEstimateBySlug(parsed.data.slug);
+  if (existing?.locked) {
+    return { ok: false, error: "Ce devis est verrouillé (signé) et ne peut plus être modifié." };
+  }
+
   try {
     const supabase = await getWriteClient();
     const payload = {
       slug: parsed.data.slug,
       access_code: parsed.data.access_code,
       client_name: parsed.data.client_name,
+      closer_id: parsed.data.closer_id,
       project_name: parsed.data.project_name,
       project_title: parsed.data.project_title,
       project_description: parsed.data.project_description,
@@ -117,6 +175,123 @@ export async function saveEstimateAction(input: unknown): Promise<SaveEstimateRe
   } catch (err) {
     const message = err instanceof Error ? err.message : "Erreur inattendue lors de la sauvegarde.";
     return { ok: false, error: message };
+  }
+}
+
+export type SignEstimateResult = { ok: true; pdfBase64: string } | { ok: false; error: string };
+
+/**
+ * Public-facing (not requireAdmin-gated) — a client on the devis portal calls
+ * this, authenticated the same way the rest of that portal is: the signed
+ * "already unlocked" cookie from gate.ts, not an admin session.
+ */
+export async function signAndLockEstimateAction(
+  slug: string,
+  input: unknown,
+): Promise<SignEstimateResult> {
+  if (!(await isDevisUnlocked(slug))) {
+    return { ok: false, error: "Accès non autorisé." };
+  }
+
+  const parsed = signInputSchema.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+
+  const estimate = await getEstimateBySlug(slug);
+  if (!estimate) {
+    return { ok: false, error: "Devis introuvable." };
+  }
+  if (estimate.locked) {
+    return { ok: false, error: "Ce devis est déjà signé." };
+  }
+
+  const signature = {
+    client_name: parsed.data.client_name,
+    company: parsed.data.company,
+    title: parsed.data.title,
+    date: parsed.data.date,
+    email: parsed.data.email,
+    signature_data_url: parsed.data.signature_data_url,
+    signed_at: new Date().toISOString(),
+  };
+
+  const supabase = await getWriteClient();
+  // The `.eq("locked", false)` guard makes this update a no-op if a
+  // concurrent request already locked the row — the first signer wins.
+  const { error } = await supabase
+    .from("client_estimates")
+    .update({ signature, locked: true, updated_at: new Date().toISOString() })
+    .eq("slug", slug)
+    .eq("locked", false);
+
+  if (error) {
+    return { ok: false, error: `Erreur Supabase: ${error.message}` };
+  }
+
+  let pdf: Buffer;
+  try {
+    pdf = await renderDevisPdf(slug);
+  } catch (err) {
+    console.error("[devis] PDF render failed after signing", slug, err);
+    revalidatePath(`/devis/${slug}/contrat`);
+    return {
+      ok: false,
+      error: "Signature enregistrée, mais la génération du PDF a échoué. Contactez le support.",
+    };
+  }
+
+  await emailPdfToCloser({ ...estimate, signature, locked: true }, pdf);
+
+  revalidatePath(`/devis/${slug}/contrat`);
+  revalidatePath(`/admin/devis/${slug}`);
+  return { ok: true, pdfBase64: pdf.toString("base64") };
+}
+
+export type GetSignedPdfResult = { ok: true; pdfBase64: string } | { ok: false; error: string };
+
+/**
+ * Re-download path for an already-signed devis. Deliberately separate from
+ * signAndLockEstimateAction so re-downloading never re-triggers the closer
+ * email — it only regenerates the PDF from the already-locked state.
+ */
+export async function getSignedPdfAction(slug: string): Promise<GetSignedPdfResult> {
+  if (!(await isDevisUnlocked(slug))) {
+    return { ok: false, error: "Accès non autorisé." };
+  }
+
+  const estimate = await getEstimateBySlug(slug);
+  if (!estimate || !estimate.locked) {
+    return { ok: false, error: "Ce devis n'est pas encore signé." };
+  }
+
+  try {
+    const pdf = await renderDevisPdf(slug);
+    return { ok: true, pdfBase64: pdf.toString("base64") };
+  } catch {
+    return { ok: false, error: "Échec de la génération du PDF." };
+  }
+}
+
+export async function resendClosingEmailAction(slug: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+
+  const estimate = await getEstimateBySlug(slug);
+  if (!estimate || !estimate.locked) {
+    return { ok: false, error: "Ce devis n'est pas signé." };
+  }
+
+  try {
+    const pdf = await renderDevisPdf(slug);
+    await emailPdfToCloser(estimate, pdf);
+    revalidatePath(`/admin/devis/${slug}`);
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
 }
 
