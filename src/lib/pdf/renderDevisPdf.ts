@@ -117,7 +117,37 @@ export async function renderDevisPdf(slug: string): Promise<Buffer> {
       httpOnly: true,
     });
 
-    await page.goto(`${baseUrl}/devis/${slug}/contrat`, { waitUntil: "networkidle0" });
+    // Vercel Deployment Protection sits in front of the deployment URL and
+    // answers Puppeteer with its own login page. The devis unlock cookie above
+    // is useless against it — it gates our app, not Vercel's edge. This is the
+    // documented automation escape hatch (Project Settings → Deployment
+    // Protection → Protection Bypass for Automation).
+    const bypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+    if (bypassSecret) {
+      await page.setExtraHTTPHeaders({
+        "x-vercel-protection-bypass": bypassSecret,
+        "x-vercel-set-bypass-cookie": "true",
+      });
+    }
+
+    const url = `${baseUrl}/devis/${slug}/contrat`;
+    const response = await page.goto(url, { waitUntil: "networkidle0" });
+
+    // Without these two checks a protection wall, a 404 or an error page all
+    // render into a perfectly valid-looking PDF — which signAndLockEstimateAction
+    // then emails to the closer as if it were the signed contract. Fail loudly
+    // instead: a thrown error surfaces in the logs and to the caller.
+    if (!response || !response.ok()) {
+      throw new Error(
+        `Devis page did not load: HTTP ${response?.status() ?? "no response"} for ${url}`,
+      );
+    }
+    if (!(await page.$("[data-devis-root]"))) {
+      throw new Error(
+        `Devis page loaded but rendered something else (auth wall / redirect?): ended at ${page.url()}`,
+      );
+    }
+
     await page.emulateMediaType("print");
     // preferCSSPageSize honors the @page { margin: 12mm; } rule in
     // devis.module.css — without it, margin defaults to 0 on all sides and
