@@ -247,9 +247,9 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
   payment_schedule_type: "monthly",
   payment_months: 6,
   payment_installments: [
-    { label: "Acompte à la signature", percentage: 20, amount: "1 120 €" },
+    { label: "Acompte à la signature", percentage: 30, amount: "1 680 €" },
     { label: "Livraison technique", percentage: 50, amount: "2 800 €" },
-    { label: "Publication sur les stores", percentage: 30, amount: "1 680 €" },
+    { label: "Publication sur les stores", percentage: 20, amount: "1 120 €" },
   ],
   signature: null,
   locked: false,

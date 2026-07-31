@@ -285,7 +285,11 @@ export async function getSignedPdfAction(slug: string): Promise<GetSignedPdfResu
   try {
     const pdf = await renderDevisPdf(slug);
     return { ok: true, pdfBase64: pdf.toString("base64") };
-  } catch {
+  } catch (err) {
+    // Swallowing this silently meant a browser-launch failure looked identical
+    // to a render failure from the client side, with nothing server-side to go
+    // on. The client message stays generic; the cause goes to the logs.
+    console.error("[devis] PDF re-download failed", slug, err);
     return { ok: false, error: "Échec de la génération du PDF." };
   }
 }

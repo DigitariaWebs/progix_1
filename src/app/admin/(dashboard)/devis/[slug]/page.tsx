@@ -28,11 +28,11 @@ import {
 } from "@/features/devis";
 import { fetchClosersAction, Closer } from "@/features/closers";
 
-/** Fixed 3-installment plan: 20 / 50 / 30 % */
+/** Fixed 3-installment plan: 30 / 50 / 20 % */
 const INSTALLMENT_PLAN = [
-  { label: "Acompte à la signature", percentage: 20 },
+  { label: "Acompte à la signature", percentage: 30 },
   { label: "Livraison technique", percentage: 50 },
-  { label: "Publication sur les stores", percentage: 30 },
+  { label: "Publication sur les stores", percentage: 20 },
 ] as const;
 
 /** Parse a formatted amount string like "5 600" or "5600" → number */
@@ -718,7 +718,7 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 ))}
               </div>
               <p className="mt-3 text-xs text-white/40">
-                Formule fixe : 20 % acompte · 50 % livraison technique · 30 % publication sur les
+                Formule fixe : 30 % acompte · 50 % livraison technique · 20 % publication sur les
                 stores.
               </p>
             </div>

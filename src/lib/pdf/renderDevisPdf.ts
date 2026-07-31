@@ -1,12 +1,91 @@
 import "server-only";
+import { existsSync } from "node:fs";
 import chromium from "@sparticuz/chromium";
-import puppeteer from "puppeteer-core";
+import puppeteer, { type Browser } from "puppeteer-core";
 import { mintUnlockCookieValue } from "@/features/devis/gate";
 
 function siteBaseUrl(): string {
   if (process.env.SITE_URL) return process.env.SITE_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return "http://localhost:3000";
+}
+
+/**
+ * @sparticuz/chromium ships a single Linux x64 binary (that's its whole point:
+ * a Chromium small enough to fit in a Lambda bundle). Outside that runtime —
+ * i.e. a developer's machine — extracting it produces an ELF file the OS can't
+ * exec, and puppeteer.launch dies with a bare "spawn ... ENOENT". So only use
+ * it where it actually applies, and fall back to a locally installed browser.
+ */
+function isServerlessRuntime(): boolean {
+  return Boolean(process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.VERCEL);
+}
+
+/** Chrome/Edge install locations to probe, per platform. Edge counts: it's Chromium. */
+function localBrowserCandidates(): string[] {
+  const { ProgramFiles, "ProgramFiles(x86)": programFilesX86, LOCALAPPDATA } = process.env;
+
+  if (process.platform === "win32") {
+    const roots = [ProgramFiles, programFilesX86, LOCALAPPDATA].filter(Boolean) as string[];
+    return roots.flatMap((root) => [
+      `${root}\\Google\\Chrome\\Application\\chrome.exe`,
+      `${root}\\Microsoft\\Edge\\Application\\msedge.exe`,
+    ]);
+  }
+
+  if (process.platform === "darwin") {
+    return [
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "/Applications/Chromium.app/Contents/MacOS/Chromium",
+      "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+    ];
+  }
+
+  return [
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "/usr/bin/microsoft-edge",
+  ];
+}
+
+function localBrowserPath(): string {
+  const override = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (override) {
+    if (!existsSync(override)) {
+      throw new Error(`PUPPETEER_EXECUTABLE_PATH points at a missing file: ${override}`);
+    }
+    return override;
+  }
+
+  const found = localBrowserCandidates().find((p) => existsSync(p));
+  if (!found) {
+    throw new Error(
+      "No local Chrome/Chromium/Edge found for PDF rendering. Install one, or set " +
+        "PUPPETEER_EXECUTABLE_PATH to its executable.",
+    );
+  }
+  return found;
+}
+
+async function launchBrowser(): Promise<Browser> {
+  if (!isServerlessRuntime()) {
+    return puppeteer.launch({ executablePath: localBrowserPath(), headless: true });
+  }
+
+  // @sparticuz/chromium only ships (and only supports) the cut-down
+  // chrome-headless-shell binary — its own `chromium.args` already bakes in
+  // `--headless='shell'`. Passing `headless: true` here would make
+  // puppeteer-core additionally inject the full-Chrome `--headless=new` flag
+  // via its own defaultArgs(), handing the binary two conflicting --headless
+  // flags. `puppeteer.defaultArgs({ args: chromium.args, headless: "shell" })`
+  // is the invocation documented for this package/version pairing.
+  return puppeteer.launch({
+    args: await puppeteer.defaultArgs({ args: chromium.args, headless: "shell" }),
+    executablePath: await chromium.executablePath(),
+    headless: "shell",
+  });
 }
 
 /**
@@ -20,18 +99,7 @@ function siteBaseUrl(): string {
  * path, just captured server-side into an actual file.
  */
 export async function renderDevisPdf(slug: string): Promise<Buffer> {
-  // @sparticuz/chromium only ships (and only supports) the cut-down
-  // chrome-headless-shell binary — its own `chromium.args` already bakes in
-  // `--headless='shell'`. Passing `headless: true` here would make
-  // puppeteer-core additionally inject the full-Chrome `--headless=new` flag
-  // via its own defaultArgs(), handing the binary two conflicting --headless
-  // flags. `puppeteer.defaultArgs({ args: chromium.args, headless: "shell" })`
-  // is the invocation documented for this package/version pairing.
-  const browser = await puppeteer.launch({
-    args: await puppeteer.defaultArgs({ args: chromium.args, headless: "shell" }),
-    executablePath: await chromium.executablePath(),
-    headless: "shell",
-  });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();
