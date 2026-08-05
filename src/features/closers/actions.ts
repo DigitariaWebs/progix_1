@@ -31,7 +31,6 @@ const closerInputSchema = z.object({
   first_name: z.string().min(1, "Le prénom est requis"),
   last_name: z.string().min(1, "Le nom est requis"),
   email: z.string().email("Courriel invalide"),
-  address: z.string().min(1, "L'adresse est requise"),
 });
 
 export type SaveCloserResult = { ok: true; id: string } | { ok: false; error: string };
@@ -54,7 +53,6 @@ export async function saveCloserAction(input: unknown): Promise<SaveCloserResult
       first_name: parsed.data.first_name,
       last_name: parsed.data.last_name,
       email: parsed.data.email,
-      address: parsed.data.address,
       updated_at: new Date().toISOString(),
     };
 

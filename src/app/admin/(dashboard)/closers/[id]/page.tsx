@@ -15,7 +15,6 @@ export default function AdminCloserEditorPage({ params }: { params: Promise<{ id
     first_name: "",
     last_name: "",
     email: "",
-    address: "",
   });
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
@@ -126,16 +125,6 @@ export default function AdminCloserEditorPage({ params }: { params: Promise<{ id
             required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block font-mono text-xs text-white/60">ADRESSE</label>
-          <input
-            type="text"
-            required
-            value={form.address}
-            onChange={(e) => setForm({ ...form, address: e.target.value })}
             className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
           />
         </div>

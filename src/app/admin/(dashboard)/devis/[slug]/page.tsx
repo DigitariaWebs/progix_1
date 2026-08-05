@@ -28,12 +28,21 @@ import {
 } from "@/features/devis";
 import { fetchClosersAction, Closer } from "@/features/closers";
 
-/** Fixed 3-installment plan: 30 / 50 / 20 % */
-const INSTALLMENT_PLAN = [
-  { label: "Acompte à la signature", percentage: 30 },
-  { label: "Livraison technique", percentage: 50 },
-  { label: "Publication sur les stores", percentage: 20 },
-] as const;
+/** Installment plans keyed by number of payments */
+const INSTALLMENT_PLANS = {
+  1: [{ label: "Paiement intégral à la signature", percentage: 100 }],
+  2: [
+    { label: "Acompte à la signature", percentage: 50 },
+    { label: "Livraison technique", percentage: 50 },
+  ],
+  3: [
+    { label: "Acompte à la signature", percentage: 30 },
+    { label: "Livraison technique", percentage: 50 },
+    { label: "Publication sur les stores", percentage: 20 },
+  ],
+} as const;
+
+type InstallmentCount = keyof typeof INSTALLMENT_PLANS;
 
 /** Parse a formatted amount string like "5 600" or "5600" → number */
 function parseAmount(raw: string): number {
@@ -53,6 +62,23 @@ function fmtAmount(n: number): string {
     .replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
 }
 
+/** Fixed client-portal password \u2014 no longer admin-editable, always this value */
+const AUTO_ACCESS_CODE = "progix2026";
+
+/** Delivery time is always 90 days \u2014 no longer admin-editable */
+const AUTO_DELIVERY_DAYS = "90";
+
+/** Slug auto-derived from the client name (accent-stripped, dash-separated) */
+function slugify(input: string): string {
+  return input
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export default function AdminDevisEditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const isNew = slug === "new";
@@ -65,12 +91,12 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     client_name: isNew ? "" : DEFAULT_ESTIMATE.client_name,
     project_name: isNew ? "" : DEFAULT_ESTIMATE.project_name,
     project_title: isNew ? "" : DEFAULT_ESTIMATE.project_title,
+    project_description: isNew ? "" : DEFAULT_ESTIMATE.project_description,
     closer_id: isNew ? "" : DEFAULT_ESTIMATE.closer_id,
     total_amount: isNew ? "" : DEFAULT_ESTIMATE.total_amount,
-    // Never pre-fill a new estimate with a real access code — this form's
-    // initial state ships in the page's public JS chunk regardless of who's
-    // viewing it, auth or not.
-    access_code: isNew ? "" : DEFAULT_ESTIMATE.access_code,
+    access_code: AUTO_ACCESS_CODE,
+    delivery_days: AUTO_DELIVERY_DAYS,
+    marketing_included: true,
   });
 
   const [loading, setLoading] = useState(!isNew);
@@ -79,6 +105,7 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
   const [success, setSuccess] = useState(false);
   const [closers, setClosers] = useState<Closer[]>([]);
   const [resending, setResending] = useState(false);
+  const [installmentCount, setInstallmentCount] = useState<InstallmentCount>(3);
 
   useEffect(() => {
     fetchClosersAction()
@@ -107,8 +134,13 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     if (isNew) return;
     fetchEstimateBySlugAction(slug)
       .then((data) => {
-        if (data) setForm(data);
-        else setError("Devis introuvable.");
+        if (data) {
+          setForm(data);
+          const count = data.payment_installments.length;
+          if (data.payment_schedule_type === "installments" && (count === 1 || count === 2 || count === 3)) {
+            setInstallmentCount(count);
+          }
+        } else setError("Devis introuvable.");
       })
       .catch((e) => setError(e instanceof Error ? e.message : "Erreur de chargement"))
       .finally(() => setLoading(false));
@@ -117,11 +149,11 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
   /** Auto-computed installments derived from total_amount — not stored separately */
   const computedInstallments = useMemo(() => {
     const total = parseAmount(form.total_amount);
-    return INSTALLMENT_PLAN.map(({ label, percentage }) => {
+    return INSTALLMENT_PLANS[installmentCount].map(({ label, percentage }) => {
       const amount = (total * percentage) / 100;
       return { label, percentage, amount: `${fmtAmount(amount)} ${form.currency}` };
     });
-  }, [form.total_amount, form.currency]);
+  }, [form.total_amount, form.currency, installmentCount]);
 
   // Investment amounts always follow the currency chosen at the top of the
   // generator (DEVISE) — re-suffix every row whenever it changes so a row
@@ -148,10 +180,16 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     setError(null);
     setSuccess(false);
 
-    // Always save the auto-computed installments so the document renders correctly
+    // Always save the auto-computed installments, plus the fields no longer
+    // admin-editable: fixed portal password, fixed 90-day delivery, project
+    // title mirroring the project name, and marketing always included.
     const payload: ClientEstimate = {
       ...form,
       payment_installments: computedInstallments,
+      access_code: AUTO_ACCESS_CODE,
+      delivery_days: AUTO_DELIVERY_DAYS,
+      project_title: form.project_name,
+      marketing_included: true,
     };
 
     const res = await saveEstimateAction(payload);
@@ -190,25 +228,6 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     setForm((prev) => ({
       ...prev,
       features: prev.features.map((f) => (f.id === id ? { ...f, ...updates } : f)),
-    }));
-  }
-
-  function addInvestment() {
-    setForm((prev) => {
-      const newItem: EstimateInvestmentItem = {
-        id: `inv-${Date.now()}`,
-        labelStrong: "Nouveau poste",
-        label: " (détail complet)",
-        amount: `${fmtAmount(500)} ${prev.currency}`,
-      };
-      return { ...prev, investments: [...prev.investments, newItem] };
-    });
-  }
-
-  function removeInvestment(id: string) {
-    setForm((prev) => ({
-      ...prev,
-      investments: prev.investments.filter((i) => i.id !== id),
     }));
   }
 
@@ -307,43 +326,25 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
-              <label className="block font-mono text-xs text-white/60">SLUG URL (UNIQUE)</label>
-              <div className="mt-1 flex items-center rounded-lg border border-white/15 bg-black/40">
-                <span className="pl-3 font-mono text-xs text-white/40">/devis/</span>
-                <input
-                  type="text"
-                  required
-                  value={form.slug}
-                  disabled={!isNew}
-                  onChange={(e) => setForm({ ...form, slug: e.target.value.toLowerCase().trim() })}
-                  placeholder="ex : acme"
-                  className="w-full bg-transparent px-2 py-2 text-sm text-white focus:outline-none disabled:text-white/40"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block font-mono text-xs text-white/60">
-                MOT DE PASSE CLIENT (PORTAIL)
-              </label>
-              <input
-                type="text"
-                required
-                value={form.access_code}
-                onChange={(e) => setForm({ ...form, access_code: e.target.value })}
-                placeholder="ex : acme2026"
-                className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
-              />
-            </div>
-            <div>
               <label className="block font-mono text-xs text-white/60">NOM DU CLIENT</label>
               <input
                 type="text"
                 required
                 value={form.client_name}
-                onChange={(e) => setForm({ ...form, client_name: e.target.value })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setForm((prev) => ({
+                    ...prev,
+                    client_name: value,
+                    slug: isNew ? slugify(value) : prev.slug,
+                  }));
+                }}
                 placeholder="ex : Acme Corp"
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
+              {isNew && form.slug && (
+                <p className="mt-1 font-mono text-[11px] text-white/40">/devis/{form.slug}</p>
+              )}
             </div>
             <div>
               <label className="block font-mono text-xs text-white/60">NOM DU PROJET</label>
@@ -352,14 +353,11 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 required
                 value={form.project_name}
                 onChange={(e) =>
-                  setForm((prev) => {
-                    const synced = !prev.project_title || prev.project_title === prev.project_name;
-                    return {
-                      ...prev,
-                      project_name: e.target.value,
-                      project_title: synced ? e.target.value : prev.project_title,
-                    };
-                  })
+                  setForm((prev) => ({
+                    ...prev,
+                    project_name: e.target.value,
+                    project_title: e.target.value,
+                  }))
                 }
                 placeholder="ex : Trajeo (nom de travail)"
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
@@ -392,7 +390,7 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
             <DollarSign className="size-4" />
             <h2>Tarification & description du projet</h2>
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
               <label className="block font-mono text-xs text-white/60">DEVISE</label>
               <select
@@ -417,43 +415,8 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
             </div>
-            <div>
-              <label className="block font-mono text-xs text-white/60">
-                DÉLAI DE LIVRAISON (JOURS)
-              </label>
-              <input
-                type="text"
-                required
-                value={form.delivery_days}
-                onChange={(e) => setForm({ ...form, delivery_days: e.target.value })}
-                placeholder="ex : 90"
-                className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
-              />
-            </div>
           </div>
           <div className="mt-6 space-y-4">
-            <div>
-              <label className="block font-mono text-xs text-white/60">
-                TITRE DU PROJET (PAGE D&apos;ACCUEIL)
-              </label>
-              <input
-                type="text"
-                required
-                value={form.project_title}
-                onChange={(e) =>
-                  setForm((prev) => {
-                    const synced = !prev.project_name || prev.project_name === prev.project_title;
-                    return {
-                      ...prev,
-                      project_title: e.target.value,
-                      project_name: synced ? e.target.value : prev.project_name,
-                    };
-                  })
-                }
-                placeholder="ex : plateforme de mobilité à la demande"
-                className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
-              />
-            </div>
             <div>
               <label className="block font-mono text-xs text-white/60">
                 DESCRIPTION DÉTAILLÉE DU PROJET
@@ -465,19 +428,6 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 onChange={(e) => setForm({ ...form, project_description: e.target.value })}
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
-            </div>
-            <div className="flex items-center gap-3 pt-2">
-              <input
-                type="checkbox"
-                id="mkt-toggle"
-                checked={form.marketing_included}
-                onChange={(e) => setForm({ ...form, marketing_included: e.target.checked })}
-                className="size-4 rounded border-white/20 bg-black/40 text-[#67c8ff]"
-              />
-              <label htmlFor="mkt-toggle" className="text-sm text-white">
-                Accompagnement marketing premium inclus dans le forfait (badge page d&apos;accueil
-                &amp; section 04)
-              </label>
             </div>
           </div>
         </div>
@@ -559,65 +509,51 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
 
         {/* Carte 4 : Décomposition de l'investissement */}
         <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
-              <FileText className="size-4" />
-              <h2>Décomposition de l&apos;investissement (section 03)</h2>
-            </div>
-            <button
-              type="button"
-              onClick={addInvestment}
-              className="flex items-center gap-1 rounded bg-white/[0.06] px-3 py-1.5 text-xs font-medium text-white hover:bg-white/[0.1]"
-            >
-              <Plus className="size-3" /> Ajouter un poste
-            </button>
+          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
+            <FileText className="size-4" />
+            <h2>Décomposition de l&apos;investissement (section 03)</h2>
           </div>
+          <p className="mb-4 text-xs text-white/50">
+            Seul le poste &laquo; Application mobile &raquo; est modifiable, pour ajuster le tarif
+            du devis. Les autres postes sont fixes.
+          </p>
           <div className="space-y-2">
-            {form.investments.map((inv) => (
-              <div
-                key={inv.id}
-                className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.01] p-2.5"
-              >
-                <input
-                  type="text"
-                  value={inv.labelStrong || ""}
-                  onChange={(e) => updateInvestment(inv.id, { labelStrong: e.target.value })}
-                  placeholder="Poste principal (ex : App mobile)"
-                  className="w-1/3 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-xs font-semibold text-white focus:outline-none"
-                />
-                <input
-                  type="text"
-                  value={inv.label}
-                  onChange={(e) => updateInvestment(inv.id, { label: e.target.value })}
-                  placeholder="Détails"
-                  className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-xs text-white/80 focus:outline-none"
-                />
-                <div className="flex w-32 shrink-0 items-center gap-1.5">
+            {form.investments.map((inv, idx) => {
+              const editable = idx === 0;
+              return (
+                <div
+                  key={inv.id}
+                  className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.01] p-2.5"
+                >
                   <input
                     type="text"
-                    inputMode="decimal"
-                    value={amountDigits(inv.amount, form.currency)}
-                    onChange={(e) =>
-                      updateInvestment(inv.id, {
-                        amount: e.target.value ? `${e.target.value} ${form.currency}` : "",
-                      })
-                    }
-                    placeholder="1 700"
-                    className="w-full min-w-0 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-right font-mono text-xs font-bold text-white focus:outline-none"
+                    value={inv.label}
+                    disabled={!editable}
+                    onChange={(e) => updateInvestment(inv.id, { label: e.target.value })}
+                    placeholder="Détails"
+                    className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-xs text-white/80 focus:outline-none disabled:text-white/40"
                   />
-                  <span className="shrink-0 font-mono text-[11px] text-white/40">
-                    {form.currency}
-                  </span>
+                  <div className="flex w-32 shrink-0 items-center gap-1.5">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={amountDigits(inv.amount, form.currency)}
+                      disabled={!editable}
+                      onChange={(e) =>
+                        updateInvestment(inv.id, {
+                          amount: e.target.value ? `${e.target.value} ${form.currency}` : "",
+                        })
+                      }
+                      placeholder="1 700"
+                      className="w-full min-w-0 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-right font-mono text-xs font-bold text-white focus:outline-none disabled:text-white/40"
+                    />
+                    <span className="shrink-0 font-mono text-[11px] text-white/40">
+                      {form.currency}
+                    </span>
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => removeInvestment(inv.id)}
-                  className="p-1 text-white/30 hover:text-red-400"
-                >
-                  <Trash2 className="size-4" />
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div
             className={`mt-3 flex items-center justify-between rounded-lg border px-3 py-2 ${
@@ -649,7 +585,7 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
             <Calendar className="size-4" />
             <h2>Échéancier & modalités de paiement (section 05)</h2>
           </div>
-          <div className="flex gap-6 border-b border-white/10 pb-6">
+          <div className="flex flex-wrap gap-6 border-b border-white/10 pb-6">
             <label className="flex cursor-pointer items-center gap-3">
               <input
                 type="radio"
@@ -664,8 +600,37 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
               <input
                 type="radio"
                 name="sched_type"
-                checked={form.payment_schedule_type === "installments"}
-                onChange={() => setForm({ ...form, payment_schedule_type: "installments" })}
+                checked={form.payment_schedule_type === "installments" && installmentCount === 1}
+                onChange={() => {
+                  setInstallmentCount(1);
+                  setForm({ ...form, payment_schedule_type: "installments" });
+                }}
+                className="size-4 text-[#67c8ff]"
+              />
+              <span className="text-sm font-medium text-white">Paiement en 1 fois</span>
+            </label>
+            <label className="flex cursor-pointer items-center gap-3">
+              <input
+                type="radio"
+                name="sched_type"
+                checked={form.payment_schedule_type === "installments" && installmentCount === 2}
+                onChange={() => {
+                  setInstallmentCount(2);
+                  setForm({ ...form, payment_schedule_type: "installments" });
+                }}
+                className="size-4 text-[#67c8ff]"
+              />
+              <span className="text-sm font-medium text-white">Paiement en 2 fois</span>
+            </label>
+            <label className="flex cursor-pointer items-center gap-3">
+              <input
+                type="radio"
+                name="sched_type"
+                checked={form.payment_schedule_type === "installments" && installmentCount === 3}
+                onChange={() => {
+                  setInstallmentCount(3);
+                  setForm({ ...form, payment_schedule_type: "installments" });
+                }}
                 className="size-4 text-[#67c8ff]"
               />
               <span className="text-sm font-medium text-white">Plan en 3 versements</span>
@@ -718,8 +683,11 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 ))}
               </div>
               <p className="mt-3 text-xs text-white/40">
-                Formule fixe : 30 % acompte · 50 % livraison technique · 20 % publication sur les
-                stores.
+                Formule fixe :{" "}
+                {INSTALLMENT_PLANS[installmentCount]
+                  .map((p) => `${p.percentage} % ${p.label.toLowerCase()}`)
+                  .join(" · ")}
+                .
               </p>
             </div>
           )}

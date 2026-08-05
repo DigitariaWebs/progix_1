@@ -3,7 +3,6 @@ export interface Closer {
   first_name: string;
   last_name: string;
   email: string;
-  address: string;
   created_at?: string;
   updated_at?: string;
 }
