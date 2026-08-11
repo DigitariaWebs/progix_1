@@ -9,6 +9,7 @@
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx",
     "type-check": "tsc --noEmit",
     "test:commission": "node --experimental-strip-types scripts/test-commission.mts",
+    "test:ai-draft": "node --experimental-strip-types scripts/test-ai-draft.mts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -31,6 +32,7 @@
     "next": "16.0.8",
     "nodemailer": "^7.0.10",
     "ogl": "^1.0.11",
+    "openai": "^7.4.0",
     "puppeteer-core": "^25.4.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",

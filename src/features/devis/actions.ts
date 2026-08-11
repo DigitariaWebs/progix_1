@@ -20,6 +20,8 @@ import { revalidatePath } from "next/cache";
 import { isDevisUnlocked } from "./gate";
 import { renderDevisPdf } from "@/lib/pdf/renderDevisPdf";
 import { sendLeadEmail } from "@/lib/email/sendLeadEmail";
+import { parseCloserPrompt, AiDevisDraft, AiParseError } from "./prompt-parse";
+import { MissingOpenAiKeyError } from "@/lib/ai/openai";
 
 export async function fetchEstimatesAction(): Promise<ClientEstimate[]> {
   await requireAdmin();
@@ -340,6 +342,38 @@ export async function deleteEstimateAction(slug: string): Promise<{ ok: boolean;
     return { ok: true };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Erreur inattendue" };
+  }
+}
+
+export type ParseCloserPromptResult =
+  | { ok: true; draft: AiDevisDraft }
+  | { ok: false; error: string };
+
+export async function parseCloserPromptAction(rawText: string): Promise<ParseCloserPromptResult> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+
+  if (!rawText.trim()) {
+    return { ok: false, error: "Colle d'abord le texte à analyser." };
+  }
+
+  try {
+    const draft = await parseCloserPrompt(rawText);
+    return { ok: true, draft };
+  } catch (err) {
+    if (err instanceof MissingOpenAiKeyError) {
+      return { ok: false, error: `Analyse IA indisponible : ${err.message}` };
+    }
+    if (err instanceof AiParseError) {
+      return { ok: false, error: err.message };
+    }
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Erreur inattendue lors de l'analyse IA.",
+    };
   }
 }
 

@@ -16,11 +16,15 @@ import {
   Calendar,
   Lock,
   FileText,
+  Sparkles,
 } from "lucide-react";
 import {
   fetchEstimateBySlugAction,
   saveEstimateAction,
   resendClosingEmailAction,
+  parseCloserPromptAction,
+  applyAiDraft,
+  slugify,
   DEFAULT_ESTIMATE,
   ClientEstimate,
   EstimateFeatureItem,
@@ -68,17 +72,6 @@ const AUTO_ACCESS_CODE = "progix2026";
 /** Delivery time is always 90 days \u2014 no longer admin-editable */
 const AUTO_DELIVERY_DAYS = "90";
 
-/** Slug auto-derived from the client name (accent-stripped, dash-separated) */
-function slugify(input: string): string {
-  return input
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 export default function AdminDevisEditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const isNew = slug === "new";
@@ -106,6 +99,10 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
   const [closers, setClosers] = useState<Closer[]>([]);
   const [resending, setResending] = useState(false);
   const [installmentCount, setInstallmentCount] = useState<InstallmentCount>(3);
+  const [closerPrompt, setCloserPrompt] = useState("");
+  const [analyzing, setAnalyzing] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [aiWarnings, setAiWarnings] = useState<string[]>([]);
 
   useEffect(() => {
     fetchClosersAction()
@@ -128,6 +125,31 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     setResending(false);
     if (res.ok) alert("Email renvoyé au closer.");
     else alert(`Erreur : ${res.error}`);
+  }
+
+  async function handleAnalyzeCloserPrompt() {
+    if (form.client_name.trim()) {
+      const proceed = window.confirm(
+        "Le formulaire contient déjà des données. Les remplacer par le résultat de l'analyse IA ?"
+      );
+      if (!proceed) return;
+    }
+
+    setAnalyzing(true);
+    setAiError(null);
+    setAiWarnings([]);
+
+    const res = await parseCloserPromptAction(closerPrompt);
+    setAnalyzing(false);
+
+    if (!res.ok) {
+      setAiError(res.error);
+      return;
+    }
+
+    const { next, warnings } = applyAiDraft(form, res.draft, closers);
+    setForm(next);
+    setAiWarnings(warnings);
   }
 
   useEffect(() => {
@@ -313,6 +335,59 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
               ? `Email envoyé au closer le ${new Date(form.pdf_email_sent_at).toLocaleString("fr-FR")}.`
               : "⚠ Email jamais envoyé avec succès au closer — utilisez « Renvoyer l'email »."}
           </p>
+        </div>
+      )}
+
+      {isNew && (
+        <div className="mt-8 rounded-xl border border-white/10 bg-white/[0.02] p-6">
+          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
+            <Sparkles className="size-4" />
+            <h2>Prompt closer</h2>
+          </div>
+          <p className="mb-4 text-xs text-white/50">
+            Colle ici le résultat de ton prompt. L&apos;IA pré-remplit le formulaire ci-dessous —
+            vérifie et corrige avant d&apos;enregistrer.
+          </p>
+          <textarea
+            rows={6}
+            value={closerPrompt}
+            onChange={(e) => setCloserPrompt(e.target.value)}
+            placeholder="Colle ici le JSON ou le texte généré par ton prompt…"
+            className="w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+          />
+
+          {aiError && (
+            <div className="mt-3 flex items-center gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+              <AlertCircle className="size-4 shrink-0 text-red-400" />
+              <span>{aiError}</span>
+            </div>
+          )}
+
+          {aiWarnings.length > 0 && (
+            <ul className="mt-3 space-y-1.5">
+              {aiWarnings.map((w, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs text-amber-200"
+                >
+                  <AlertCircle className="mt-0.5 size-3.5 shrink-0 text-amber-400" />
+                  <span>{w}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <div className="mt-4 flex justify-end">
+            <button
+              type="button"
+              onClick={handleAnalyzeCloserPrompt}
+              disabled={analyzing || !closerPrompt.trim()}
+              className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-4 py-2 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
+            >
+              <Sparkles className="size-4" />
+              {analyzing ? "Analyse…" : "Analyser avec l'IA"}
+            </button>
+          </div>
         </div>
       )}
 
