@@ -849,13 +849,13 @@ export default function AdminDevisEditorPage({
             Seul le poste &laquo; Application mobile &raquo; est modifiable, pour ajuster le tarif
             du devis. Les autres postes sont fixes.
           </p>
-          <div className="space-y-2">
+          <div className="space-y-1">
             {form.investments.map((inv, idx) => {
               const editable = idx === 0;
               return (
                 <div
                   key={inv.id}
-                  className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.01] p-2.5"
+                  className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.01] px-2.5 py-1"
                 >
                   <input
                     type="text"
@@ -863,7 +863,7 @@ export default function AdminDevisEditorPage({
                     disabled={!editable}
                     onChange={(e) => updateInvestment(inv.id, { label: e.target.value })}
                     placeholder="Détails"
-                    className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-xs text-white/80 focus:outline-none disabled:text-white/40"
+                    className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1 text-xs text-white/80 focus:outline-none disabled:text-white/40"
                   />
                   <div className="flex w-32 shrink-0 items-center gap-1.5">
                     <input
@@ -877,7 +877,7 @@ export default function AdminDevisEditorPage({
                         })
                       }
                       placeholder="1 700"
-                      className="w-full min-w-0 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-right font-mono text-xs font-bold text-white focus:outline-none disabled:text-white/40"
+                      className="w-full min-w-0 rounded border border-white/10 bg-black/40 px-2 py-1 text-right font-mono text-xs font-bold text-white focus:outline-none disabled:text-white/40"
                     />
                     <span className="shrink-0 font-mono text-[11px] text-white/40">
                       {form.currency}
