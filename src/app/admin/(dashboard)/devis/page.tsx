@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, ExternalLink, Edit, Trash2, AlertCircle } from "lucide-react";
+import { Plus, Sparkles, ExternalLink, Edit, Trash2, AlertCircle } from "lucide-react";
 import { fetchEstimatesAction, deleteEstimateAction, ClientEstimate } from "@/features/devis";
 
 export default function AdminDevisPage() {
@@ -64,10 +64,17 @@ export default function AdminDevisPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/admin/devis/new"
-            className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-4 py-2.5 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff]"
+            className="flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/80 transition hover:bg-white/[0.06]"
           >
             <Plus className="size-4" />
-            Nouveau Devis
+            Créer un devis vierge
+          </Link>
+          <Link
+            href="/admin/devis/new?mode=prompt"
+            className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-4 py-2.5 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff]"
+          >
+            <Sparkles className="size-4" />
+            Créer un devis à partir d&apos;un prompt
           </Link>
         </div>
       </div>

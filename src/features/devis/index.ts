@@ -6,6 +6,7 @@ export { CalendrierDocument } from "./ui/calendrier-document";
 export * from "./types";
 export * from "./actions";
 export * from "./ai-draft";
+export * from "./estimate-math";
 // NOTE: "./queries", "./gate" and "./prompt-parse" are deliberately NOT
 // re-exported here. All three are `server-only` (queries.ts uses the
 // service-role client; gate.ts touches next/headers cookies; prompt-parse.ts

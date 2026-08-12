@@ -17,65 +17,55 @@ import {
   Lock,
   FileText,
   Sparkles,
+  FilePlus,
+  ExternalLink,
 } from "lucide-react";
 import {
   fetchEstimateBySlugAction,
   saveEstimateAction,
   resendClosingEmailAction,
   parseCloserPromptAction,
-  applyAiDraft,
+  buildDraftFormFromAi,
+  buildEstimateFromPromptForm,
   slugify,
   DEFAULT_ESTIMATE,
   ClientEstimate,
   EstimateFeatureItem,
   EstimateInvestmentItem,
+  CloserPromptFormState,
+  FunctionalitySlot,
+  INSTALLMENT_PLANS,
+  InstallmentCount,
+  parseAmount,
+  fmtAmount,
+  amountDigits,
+  AUTO_ACCESS_CODE,
+  DELIVERY_DAY_OPTIONS,
 } from "@/features/devis";
 import { fetchClosersAction, Closer } from "@/features/closers";
 
-/** Installment plans keyed by number of payments */
-const INSTALLMENT_PLANS = {
-  1: [{ label: "Paiement intégral à la signature", percentage: 100 }],
-  2: [
-    { label: "Acompte à la signature", percentage: 50 },
-    { label: "Livraison technique", percentage: 50 },
-  ],
-  3: [
-    { label: "Acompte à la signature", percentage: 30 },
-    { label: "Livraison technique", percentage: 50 },
-    { label: "Publication sur les stores", percentage: 20 },
-  ],
-} as const;
+type Mode = "vierge" | "prompt";
 
-type InstallmentCount = keyof typeof INSTALLMENT_PLANS;
+const PAYMENT_MODALITIES_LABELS: Record<CloserPromptFormState["paymentModalities"], string> = {
+  "1x": "Paiement en 1 fois",
+  "2x": "Paiement en 2 fois",
+  "3x": "Paiement en 3 fois",
+  mensualité: "Mensualité",
+};
 
-/** Parse a formatted amount string like "5 600" or "5600" → number */
-function parseAmount(raw: string): number {
-  return parseFloat(raw.replace(/\s/g, "").replace(",", ".")) || 0;
-}
-
-/** Strip a trailing " <currency>" suffix so an amount can be edited as a bare number */
-function amountDigits(amount: string, currency: string): string {
-  const suffix = ` ${currency}`;
-  return amount.endsWith(suffix) ? amount.slice(0, -suffix.length) : amount;
-}
-
-/** Format a number as "1 680" (French spacing, no decimals) */
-function fmtAmount(n: number): string {
-  return Math.round(n)
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
-}
-
-/** Fixed client-portal password \u2014 no longer admin-editable, always this value */
-const AUTO_ACCESS_CODE = "progix2026";
-
-/** Delivery time is always 90 days \u2014 no longer admin-editable */
-const AUTO_DELIVERY_DAYS = "90";
-
-export default function AdminDevisEditorPage({ params }: { params: Promise<{ slug: string }> }) {
+export default function AdminDevisEditorPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ mode?: string }>;
+}) {
   const { slug } = use(params);
+  const { mode: modeParam } = use(searchParams);
   const isNew = slug === "new";
   const router = useRouter();
+
+  const [mode, setMode] = useState<Mode>(modeParam === "prompt" ? "prompt" : "vierge");
 
   const [form, setForm] = useState<ClientEstimate>({
     id: "",
@@ -88,7 +78,6 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     closer_id: isNew ? "" : DEFAULT_ESTIMATE.closer_id,
     total_amount: isNew ? "" : DEFAULT_ESTIMATE.total_amount,
     access_code: AUTO_ACCESS_CODE,
-    delivery_days: AUTO_DELIVERY_DAYS,
     marketing_included: true,
   });
 
@@ -99,10 +88,15 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
   const [closers, setClosers] = useState<Closer[]>([]);
   const [resending, setResending] = useState(false);
   const [installmentCount, setInstallmentCount] = useState<InstallmentCount>(3);
+
+  // "Depuis un prompt" mode state — kept entirely separate from `form`
+  // (the full ClientEstimate shape) since the review form only has the 9
+  // reduced fields from the boss's spec, not the full editor's shape.
   const [closerPrompt, setCloserPrompt] = useState("");
-  const [analyzing, setAnalyzing] = useState(false);
+  const [extracting, setExtracting] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
   const [aiWarnings, setAiWarnings] = useState<string[]>([]);
+  const [promptForm, setPromptForm] = useState<CloserPromptFormState | null>(null);
 
   useEffect(() => {
     fetchClosersAction()
@@ -127,29 +121,69 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     else alert(`Erreur : ${res.error}`);
   }
 
-  async function handleAnalyzeCloserPrompt() {
-    if (form.client_name.trim()) {
-      const proceed = window.confirm(
-        "Le formulaire contient déjà des données. Les remplacer par le résultat de l'analyse IA ?"
-      );
-      if (!proceed) return;
-    }
+  function switchMode(next: Mode) {
+    setMode(next);
+    setCloserPrompt("");
+    setAiError(null);
+    setAiWarnings([]);
+    setPromptForm(null);
+    setError(null);
+  }
 
-    setAnalyzing(true);
+  async function handleExtract() {
+    setExtracting(true);
     setAiError(null);
     setAiWarnings([]);
 
     const res = await parseCloserPromptAction(closerPrompt);
-    setAnalyzing(false);
+    setExtracting(false);
 
     if (!res.ok) {
       setAiError(res.error);
       return;
     }
 
-    const { next, warnings } = applyAiDraft(form, res.draft, closers);
-    setForm(next);
+    const { form: draftForm, warnings } = buildDraftFormFromAi(res.draft, closers);
+    setPromptForm(draftForm);
     setAiWarnings(warnings);
+  }
+
+  function updatePromptForm(updates: Partial<CloserPromptFormState>) {
+    setPromptForm((prev) => (prev ? { ...prev, ...updates } : prev));
+  }
+
+  function updateFunctionalitySlot(index: number, updates: Partial<FunctionalitySlot>) {
+    setPromptForm((prev) => {
+      if (!prev) return prev;
+      const functionalities = prev.functionalities.map((slot, i) =>
+        i === index ? { ...slot, ...updates } : slot
+      );
+      return { ...prev, functionalities };
+    });
+  }
+
+  const canValidatePromptForm =
+    !!promptForm &&
+    promptForm.clientName.trim() !== "" &&
+    promptForm.projectName.trim() !== "" &&
+    promptForm.closerId !== "" &&
+    promptForm.price.trim() !== "";
+
+  async function handleValidatePromptForm(e: React.FormEvent) {
+    e.preventDefault();
+    if (!promptForm) return;
+    setSaving(true);
+    setError(null);
+
+    const estimate = buildEstimateFromPromptForm(promptForm);
+    const res = await saveEstimateAction(estimate);
+    setSaving(false);
+
+    if (res.ok) {
+      router.push(`/admin/devis/${res.slug}`);
+    } else {
+      setError(res.error);
+    }
   }
 
   useEffect(() => {
@@ -203,13 +237,15 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     setSuccess(false);
 
     // Always save the auto-computed installments, plus the fields no longer
-    // admin-editable: fixed portal password, fixed 90-day delivery, project
-    // title mirroring the project name, and marketing always included.
+    // admin-editable: fixed portal password, project title mirroring the
+    // project name, and marketing always included. delivery_days is a real
+    // editable field (see DELIVERY_DAY_OPTIONS select below) — it must NOT
+    // be overwritten here, or a value set via the "depuis un prompt" flow
+    // would revert on the very next save.
     const payload: ClientEstimate = {
       ...form,
       payment_installments: computedInstallments,
       access_code: AUTO_ACCESS_CODE,
-      delivery_days: AUTO_DELIVERY_DAYS,
       project_title: form.project_name,
       marketing_included: true,
     };
@@ -269,8 +305,10 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
     );
   }
 
+  const showFullForm = !isNew || mode === "vierge";
+
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-5xl px-8 py-12">
+    <div className="mx-auto max-w-5xl px-8 py-12">
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div>
@@ -284,20 +322,33 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
             {isNew ? "Créer une proposition client" : `Éditer : ${form.client_name || form.slug}`}
           </h1>
         </div>
-        {form.locked ? (
-          <span className="rounded-lg bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white/50">
-            Verrouillé
-          </span>
-        ) : (
-          <button
-            type="submit"
-            disabled={saving}
-            className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-5 py-2.5 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
-          >
-            <Save className="size-4" />
-            {saving ? "Enregistrement…" : "Enregistrer"}
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {!isNew && (
+            <Link
+              href={`/devis/${form.slug}`}
+              target="_blank"
+              className="flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/80 transition hover:bg-white/[0.06]"
+            >
+              <ExternalLink className="size-4" />
+              Voir le devis
+            </Link>
+          )}
+          {form.locked ? (
+            <span className="rounded-lg bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white/50">
+              Verrouillé
+            </span>
+          ) : showFullForm ? (
+            <button
+              type="submit"
+              form="devis-form"
+              disabled={saving}
+              className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-5 py-2.5 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
+            >
+              <Save className="size-4" />
+              {saving ? "Enregistrement…" : "Enregistrer"}
+            </button>
+          ) : null}
+        </div>
       </div>
 
       {error && (
@@ -339,60 +390,281 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
       )}
 
       {isNew && (
-        <div className="mt-8 rounded-xl border border-white/10 bg-white/[0.02] p-6">
-          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
-            <Sparkles className="size-4" />
-            <h2>Prompt closer</h2>
-          </div>
-          <p className="mb-4 text-xs text-white/50">
-            Colle ici le résultat de ton prompt. L&apos;IA pré-remplit le formulaire ci-dessous —
-            vérifie et corrige avant d&apos;enregistrer.
-          </p>
-          <textarea
-            rows={6}
-            value={closerPrompt}
-            onChange={(e) => setCloserPrompt(e.target.value)}
-            placeholder="Colle ici le JSON ou le texte généré par ton prompt…"
-            className="w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
-          />
-
-          {aiError && (
-            <div className="mt-3 flex items-center gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
-              <AlertCircle className="size-4 shrink-0 text-red-400" />
-              <span>{aiError}</span>
-            </div>
-          )}
-
-          {aiWarnings.length > 0 && (
-            <ul className="mt-3 space-y-1.5">
-              {aiWarnings.map((w, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs text-amber-200"
-                >
-                  <AlertCircle className="mt-0.5 size-3.5 shrink-0 text-amber-400" />
-                  <span>{w}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <div className="mt-4 flex justify-end">
-            <button
-              type="button"
-              onClick={handleAnalyzeCloserPrompt}
-              disabled={analyzing || !closerPrompt.trim()}
-              className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-4 py-2 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
-            >
-              <Sparkles className="size-4" />
-              {analyzing ? "Analyse…" : "Analyser avec l'IA"}
-            </button>
-          </div>
+        <div className="mt-8 inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.02] p-1">
+          <button
+            type="button"
+            onClick={() => switchMode("vierge")}
+            className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold transition ${
+              mode === "vierge" ? "bg-[#67c8ff] text-[#0a101d]" : "text-white/60 hover:text-white"
+            }`}
+          >
+            <FilePlus className="size-3.5" />
+            Vierge
+          </button>
+          <button
+            type="button"
+            onClick={() => switchMode("prompt")}
+            className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold transition ${
+              mode === "prompt" ? "bg-[#67c8ff] text-[#0a101d]" : "text-white/60 hover:text-white"
+            }`}
+          >
+            <Sparkles className="size-3.5" />
+            Depuis un prompt
+          </button>
         </div>
       )}
 
-      <fieldset disabled={form.locked} className="contents">
-        <div className="mt-8 space-y-8">
+      {isNew && mode === "prompt" && (
+        <div className="mt-6 space-y-6">
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
+            <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
+              <Sparkles className="size-4" />
+              <h2>Prompt closer</h2>
+            </div>
+            <p className="mb-4 text-xs text-white/50">
+              Colle ici le résultat de ton prompt.
+            </p>
+            <textarea
+              rows={8}
+              value={closerPrompt}
+              onChange={(e) => setCloserPrompt(e.target.value)}
+              placeholder="Colle ici le texte généré par ton prompt…"
+              className="w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+            />
+
+            {aiError && (
+              <div className="mt-3 flex items-center gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+                <AlertCircle className="size-4 shrink-0 text-red-400" />
+                <span>{aiError}</span>
+              </div>
+            )}
+
+            {aiWarnings.length > 0 && (
+              <ul className="mt-3 space-y-1.5">
+                {aiWarnings.map((w, idx) => (
+                  <li
+                    key={idx}
+                    className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs text-amber-200"
+                  >
+                    <AlertCircle className="mt-0.5 size-3.5 shrink-0 text-amber-400" />
+                    <span>{w}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                onClick={handleExtract}
+                disabled={extracting || !closerPrompt.trim()}
+                className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-4 py-2 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
+              >
+                <Sparkles className="size-4" />
+                {extracting ? "Extraction…" : "Extraire les informations"}
+              </button>
+            </div>
+          </div>
+
+          {promptForm && (
+            <form onSubmit={handleValidatePromptForm} className="space-y-6">
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
+                <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
+                  <Lock className="size-4" />
+                  <h2>Informations extraites — à relire avant validation</h2>
+                </div>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div>
+                    <label className="block font-mono text-xs text-white/60">NOM DU CLIENT</label>
+                    <input
+                      type="text"
+                      required
+                      value={promptForm.clientName}
+                      onChange={(e) => updatePromptForm({ clientName: e.target.value })}
+                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                    />
+                    {promptForm.clientName && (
+                      <p className="mt-1 font-mono text-[11px] text-white/40">
+                        /devis/{slugify(promptForm.clientName)}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block font-mono text-xs text-white/60">NOM DU PROJET</label>
+                    <input
+                      type="text"
+                      required
+                      value={promptForm.projectName}
+                      onChange={(e) => updatePromptForm({ projectName: e.target.value })}
+                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-mono text-xs text-white/60">CLOSER ASSIGNÉ</label>
+                    <select
+                      required
+                      value={promptForm.closerId}
+                      onChange={(e) => updatePromptForm({ closerId: e.target.value })}
+                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                    >
+                      <option value="" disabled>
+                        Sélectionner un closer…
+                      </option>
+                      {closers.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.first_name} {c.last_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block font-mono text-xs text-white/60">DEVISE</label>
+                    <select
+                      value={promptForm.currency}
+                      onChange={(e) =>
+                        updatePromptForm({ currency: e.target.value as "€" | "$CAD" })
+                      }
+                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                    >
+                      <option value="€">Euro (€)</option>
+                      <option value="$CAD">Dollar canadien ($CAD)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block font-mono text-xs text-white/60">PRIX</label>
+                    <input
+                      type="number"
+                      required
+                      min={0}
+                      step={1}
+                      value={promptForm.price}
+                      onChange={(e) =>
+                        updatePromptForm({ price: e.target.value.replace(/[^\d]/g, "") })
+                      }
+                      placeholder="12480"
+                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-mono text-xs text-white/60">DÉLAI RECOMMANDÉ</label>
+                    <select
+                      value={promptForm.timeRecommanded}
+                      onChange={(e) =>
+                        updatePromptForm({
+                          timeRecommanded: e.target.value as CloserPromptFormState["timeRecommanded"],
+                        })
+                      }
+                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                    >
+                      {DELIVERY_DAY_OPTIONS.map((d) => (
+                        <option key={d} value={d}>
+                          {d} jours
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block font-mono text-xs text-white/60">MODALITÉ DE PAIEMENT</label>
+                    <select
+                      value={promptForm.paymentModalities}
+                      onChange={(e) =>
+                        updatePromptForm({
+                          paymentModalities: e.target
+                            .value as CloserPromptFormState["paymentModalities"],
+                        })
+                      }
+                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                    >
+                      {Object.entries(PAYMENT_MODALITIES_LABELS).map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {promptForm.paymentModalities === "mensualité" && (
+                    <div>
+                      <label className="block font-mono text-xs text-white/60">
+                        NOMBRE DE MOIS
+                      </label>
+                      <input
+                        type="number"
+                        min={1}
+                        max={36}
+                        value={promptForm.paymentMonths}
+                        onChange={(e) => updatePromptForm({ paymentMonths: e.target.value })}
+                        className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="mt-6">
+                  <label className="block font-mono text-xs text-white/60">
+                    DESCRIPTION DÉTAILLÉE DU PROJET
+                  </label>
+                  <textarea
+                    rows={3}
+                    required
+                    value={promptForm.fullDescription}
+                    onChange={(e) => updatePromptForm({ fullDescription: e.target.value })}
+                    className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
+                <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
+                  <Layers className="size-4" />
+                  <h2>Fonctionnalités (jusqu&apos;à 6)</h2>
+                </div>
+                <p className="mb-4 text-xs text-white/50">
+                  Décoche celles à ne pas inclure. Tu peux aussi corriger le texte.
+                </p>
+                <div className="space-y-2">
+                  {promptForm.functionalities.map((slot, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.01] p-2.5"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={slot.included}
+                        onChange={(e) =>
+                          updateFunctionalitySlot(idx, { included: e.target.checked })
+                        }
+                        className="size-4 rounded border-white/20 bg-black/40 text-[#67c8ff]"
+                      />
+                      <input
+                        type="text"
+                        value={slot.text}
+                        onChange={(e) => updateFunctionalitySlot(idx, { text: e.target.value })}
+                        placeholder={`Fonctionnalité ${idx + 1}`}
+                        className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-xs text-white/80 focus:outline-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={saving || !canValidatePromptForm}
+                  className="flex items-center gap-2 rounded-lg bg-[#67c8ff] px-5 py-2.5 text-sm font-semibold text-[#0a101d] transition hover:bg-[#85d4ff] disabled:opacity-50"
+                >
+                  <Save className="size-4" />
+                  {saving ? "Création…" : "Valider et créer le devis"}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      )}
+
+      {showFullForm && (
+        <form id="devis-form" onSubmit={handleSubmit}>
+          <fieldset disabled={form.locked} className="contents">
+            <div className="mt-8 space-y-8">
         {/* Carte 1 : Identité & Sécurité */}
         <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
           <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
@@ -489,6 +761,20 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
                 placeholder="ex : 5 600"
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
+            </div>
+            <div>
+              <label className="block font-mono text-xs text-white/60">DÉLAI RECOMMANDÉ</label>
+              <select
+                value={form.delivery_days}
+                onChange={(e) => setForm({ ...form, delivery_days: e.target.value })}
+                className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+              >
+                {DELIVERY_DAY_OPTIONS.map((d) => (
+                  <option key={d} value={d}>
+                    {d} jours
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           <div className="mt-6 space-y-4">
@@ -767,8 +1053,10 @@ export default function AdminDevisEditorPage({ params }: { params: Promise<{ slu
             </div>
           )}
         </div>
-      </div>
-      </fieldset>
-    </form>
+            </div>
+          </fieldset>
+        </form>
+      )}
+    </div>
   );
 }
