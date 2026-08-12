@@ -7,8 +7,6 @@ import Link from "next/link";
 import {
   ArrowLeft,
   Save,
-  Plus,
-  Trash2,
   CheckCircle2,
   AlertCircle,
   Layers,
@@ -53,6 +51,18 @@ const PAYMENT_MODALITIES_LABELS: Record<CloserPromptFormState["paymentModalities
   mensualité: "Mensualité",
 };
 
+// Identifies the (up to 6) "Fonctionnalité N" placeholder dev features so
+// Carte 3 can show only those — computed once per load, not on every
+// keystroke, so a slot doesn't vanish from the UI the moment its placeholder
+// text is replaced with a real feature name.
+const FEATURE_SLOT_LABEL = /^fonctionnalit[eé]\s*\d+$/i;
+
+function getFeatureSlotIds(features: EstimateFeatureItem[]): string[] {
+  return features
+    .filter((f) => f.category === "dev" && FEATURE_SLOT_LABEL.test((f.labelStrong ?? "").trim()))
+    .map((f) => f.id);
+}
+
 export default function AdminDevisEditorPage({
   params,
   searchParams,
@@ -88,6 +98,9 @@ export default function AdminDevisEditorPage({
   const [closers, setClosers] = useState<Closer[]>([]);
   const [resending, setResending] = useState(false);
   const [installmentCount, setInstallmentCount] = useState<InstallmentCount>(3);
+  const [featureSlotIds, setFeatureSlotIds] = useState<string[]>(() =>
+    getFeatureSlotIds(DEFAULT_ESTIMATE.features)
+  );
 
   // "Depuis un prompt" mode state — kept entirely separate from `form`
   // (the full ClientEstimate shape) since the review form only has the 9
@@ -192,6 +205,7 @@ export default function AdminDevisEditorPage({
       .then((data) => {
         if (data) {
           setForm(data);
+          setFeatureSlotIds(getFeatureSlotIds(data.features));
           const count = data.payment_installments.length;
           if (data.payment_schedule_type === "installments" && (count === 1 || count === 2 || count === 3)) {
             setInstallmentCount(count);
@@ -261,25 +275,6 @@ export default function AdminDevisEditorPage({
     } else {
       setError(res.error);
     }
-  }
-
-  function addFeature(category: "dev" | "api" | "marketing") {
-    const newItem: EstimateFeatureItem = {
-      id: `custom-${Date.now()}`,
-      category,
-      labelStrong: "Nouvelle prestation",
-      label: " — description personnalisée",
-      included: true,
-      isCustom: true,
-    };
-    setForm((prev) => ({ ...prev, features: [...prev.features, newItem] }));
-  }
-
-  function removeFeature(id: string) {
-    setForm((prev) => ({
-      ...prev,
-      features: prev.features.filter((f) => f.id !== id),
-    }));
   }
 
   function updateFeature(id: string, updates: Partial<EstimateFeatureItem>) {
@@ -776,6 +771,20 @@ export default function AdminDevisEditorPage({
                 ))}
               </select>
             </div>
+            <div>
+              <label className="block font-mono text-xs text-white/60">DURÉE DE DÉVELOPPEMENT</label>
+              <select
+                value={form.dev_duration_days}
+                onChange={(e) => setForm({ ...form, dev_duration_days: e.target.value })}
+                className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
+              >
+                {DELIVERY_DAY_OPTIONS.map((d) => (
+                  <option key={d} value={d}>
+                    {d} jours
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="mt-6 space-y-4">
             <div>
@@ -795,76 +804,38 @@ export default function AdminDevisEditorPage({
 
         {/* Carte 3 : Prestations */}
         <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
-              <Layers className="size-4" />
-              <h2>Prestations incluses (section 02)</h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => addFeature("dev")}
-                className="flex items-center gap-1 rounded bg-white/[0.06] px-2.5 py-1 text-xs text-white/80 hover:bg-white/[0.1]"
-              >
-                <Plus className="size-3" /> + Développement
-              </button>
-              <button
-                type="button"
-                onClick={() => addFeature("api")}
-                className="flex items-center gap-1 rounded bg-white/[0.06] px-2.5 py-1 text-xs text-white/80 hover:bg-white/[0.1]"
-              >
-                <Plus className="size-3" /> + API / Infra
-              </button>
-              <button
-                type="button"
-                onClick={() => addFeature("marketing")}
-                className="flex items-center gap-1 rounded bg-white/[0.06] px-2.5 py-1 text-xs text-white/80 hover:bg-white/[0.1]"
-              >
-                <Plus className="size-3" /> + Marketing
-              </button>
-            </div>
+          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
+            <Layers className="size-4" />
+            <h2>Prestations incluses (section 02)</h2>
           </div>
           <p className="mb-4 text-xs text-white/50">
-            Cochez pour inclure dans le devis ou ajoutez vos propres éléments personnalisés.
+            Jusqu&apos;à 6 fonctionnalités spécifiques au projet. Les autres prestations
+            (application, back-office, API, marketing…) sont toujours incluses dans le devis et ne
+            se configurent pas ici.
           </p>
-          <div className="max-h-96 space-y-2 overflow-y-auto pr-2">
-            {form.features.map((feat) => (
-              <div
-                key={feat.id}
-                className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.01] p-2.5 transition hover:bg-white/[0.03]"
-              >
-                <input
-                  type="checkbox"
-                  checked={feat.included}
-                  onChange={(e) => updateFeature(feat.id, { included: e.target.checked })}
-                  className="size-4 rounded border-white/20 bg-black/40 text-[#67c8ff]"
-                />
-                <span className="w-24 shrink-0 font-mono text-[10px] text-white/40 uppercase">
-                  [{feat.category}]
-                </span>
-                <input
-                  type="text"
-                  value={feat.labelStrong || ""}
-                  onChange={(e) => updateFeature(feat.id, { labelStrong: e.target.value })}
-                  placeholder="Titre (ex : Application mobile)"
-                  className="w-1/3 rounded border border-white/10 bg-black/40 px-2 py-1 text-xs font-semibold text-white focus:outline-none"
-                />
-                <input
-                  type="text"
-                  value={feat.label}
-                  onChange={(e) => updateFeature(feat.id, { label: e.target.value })}
-                  placeholder="Détail (ex : design sur mesure)"
-                  className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1 text-xs text-white/80 focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeFeature(feat.id)}
-                  className="p-1 text-white/30 hover:text-red-400"
+          <div className="space-y-2">
+            {form.features
+              .filter((feat) => featureSlotIds.includes(feat.id))
+              .map((feat, idx) => (
+                <div
+                  key={feat.id}
+                  className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.01] p-2.5"
                 >
-                  <Trash2 className="size-4" />
-                </button>
-              </div>
-            ))}
+                  <input
+                    type="checkbox"
+                    checked={feat.included}
+                    onChange={(e) => updateFeature(feat.id, { included: e.target.checked })}
+                    className="size-4 rounded border-white/20 bg-black/40 text-[#67c8ff]"
+                  />
+                  <input
+                    type="text"
+                    value={feat.labelStrong || ""}
+                    onChange={(e) => updateFeature(feat.id, { labelStrong: e.target.value })}
+                    placeholder={`Fonctionnalité ${idx + 1}`}
+                    className="flex-1 rounded border border-white/10 bg-black/40 px-2 py-1.5 text-xs text-white/80 focus:outline-none"
+                  />
+                </div>
+              ))}
           </div>
         </div>
 

@@ -41,6 +41,9 @@ export interface ClientEstimate {
   currency: "€" | "$CAD";
   total_amount: string;
   delivery_days: string;
+  /** Development-phase duration (Phase 1), distinct from `delivery_days`
+   *  (total project delay including production/publication). */
+  dev_duration_days: string;
   marketing_included: boolean;
   // Nullable: the DB column allows null (existing rows predate this field,
   // and the FK is `on delete set null`). Required-ness is enforced only at
@@ -84,6 +87,7 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
   currency: "€",
   total_amount: "5 600",
   delivery_days: "90",
+  dev_duration_days: "60",
   marketing_included: true,
   features: [
     // Category: dev
@@ -126,6 +130,13 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
       id: "f6",
       category: "dev",
       labelStrong: "Fonctionnalité 5",
+      label: "",
+      included: true,
+    },
+    {
+      id: "f6b",
+      category: "dev",
+      labelStrong: "Fonctionnalité 6",
       label: "",
       included: true,
     },
@@ -176,7 +187,7 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
       id: "f13",
       category: "api",
       labelStrong: "Publication Appstore & Playstore",
-      label: " phase de production - 60j incluse",
+      label: " phase de production",
       included: true,
     },
     // Category: marketing

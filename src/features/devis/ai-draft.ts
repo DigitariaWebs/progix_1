@@ -299,6 +299,7 @@ export function buildEstimateFromPromptForm(form: CloserPromptFormState): Client
     currency: form.currency,
     total_amount: form.price,
     delivery_days: form.timeRecommanded,
+    dev_duration_days: DEFAULT_ESTIMATE.dev_duration_days,
     marketing_included: true,
     features: replacePlaceholderFeatures(DEFAULT_ESTIMATE.features, form.functionalities),
     investments: scaleInvestments(priceNum, form.currency),
