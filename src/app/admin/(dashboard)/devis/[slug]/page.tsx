@@ -179,7 +179,6 @@ export default function AdminDevisEditorPage({
     !!promptForm &&
     promptForm.clientName.trim() !== "" &&
     promptForm.projectName.trim() !== "" &&
-    promptForm.closerId !== "" &&
     promptForm.price.trim() !== "";
 
   async function handleValidatePromptForm(e: React.FormEvent) {
@@ -367,19 +366,25 @@ export default function AdminDevisEditorPage({
               <Lock className="size-4 shrink-0" />
               Signé{form.signature ? ` le ${new Date(form.signature.signed_at).toLocaleDateString("fr-FR")}` : ""} — verrouillé, non modifiable.
             </span>
-            <button
-              type="button"
-              onClick={handleResendEmail}
-              disabled={resending}
-              className="shrink-0 rounded-lg bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/30 disabled:opacity-50"
-            >
-              {resending ? "Envoi…" : "Renvoyer l'email au closer"}
-            </button>
+            {form.closer_id && (
+              <button
+                type="button"
+                onClick={handleResendEmail}
+                disabled={resending}
+                className="shrink-0 rounded-lg bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/30 disabled:opacity-50"
+              >
+                {resending ? "Envoi…" : "Renvoyer l'email au closer"}
+              </button>
+            )}
           </div>
+          {/* No closer assigned → no email is ever sent, so the "jamais envoyé"
+              warning below would be a false alarm. */}
           <p className="mt-2 text-xs text-amber-200/80">
-            {form.pdf_email_sent_at
-              ? `Email envoyé au closer le ${new Date(form.pdf_email_sent_at).toLocaleString("fr-FR")}.`
-              : "⚠ Email jamais envoyé avec succès au closer — utilisez « Renvoyer l'email »."}
+            {!form.closer_id
+              ? "Aucun closer assigné — aucun email n'est envoyé pour ce devis."
+              : form.pdf_email_sent_at
+                ? `Email envoyé au closer le ${new Date(form.pdf_email_sent_at).toLocaleString("fr-FR")}.`
+                : "⚠ Email jamais envoyé avec succès au closer — utilisez « Renvoyer l'email »."}
           </p>
         </div>
       )}
@@ -497,14 +502,11 @@ export default function AdminDevisEditorPage({
                   <div>
                     <label className="block font-mono text-xs text-white/60">CLOSER ASSIGNÉ</label>
                     <select
-                      required
                       value={promptForm.closerId}
                       onChange={(e) => updatePromptForm({ closerId: e.target.value })}
                       className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
                     >
-                      <option value="" disabled>
-                        Sélectionner un closer…
-                      </option>
+                      <option value="">Pas de closer</option>
                       {closers.map((c) => (
                         <option key={c.id} value={c.id}>
                           {c.first_name} {c.last_name}
@@ -708,14 +710,11 @@ export default function AdminDevisEditorPage({
             <div>
               <label className="block font-mono text-xs text-white/60">CLOSER ASSIGNÉ</label>
               <select
-                required
                 value={form.closer_id ?? ""}
                 onChange={(e) => setForm({ ...form, closer_id: e.target.value })}
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               >
-                <option value="" disabled>
-                  Sélectionner un closer…
-                </option>
+                <option value="">Pas de closer</option>
                 {closers.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.first_name} {c.last_name}

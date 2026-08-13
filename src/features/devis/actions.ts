@@ -68,7 +68,9 @@ const estimateInputSchema = z.object({
   slug: z.string().min(1, "Le slug est requis").max(80),
   access_code: z.string().min(1, "Le code d'accès est requis").max(80),
   client_name: z.string().min(1, "Le nom du client est requis"),
-  closer_id: z.string().min(1, "Le closer est requis"),
+  // Optional: a devis can be created without a closer ("Pas de closer") —
+  // sent as "" by the form, stored as null.
+  closer_id: z.string().nullable().optional(),
   project_name: z.string().min(1, "Le nom du projet est requis"),
   project_title: z.string().min(1, "Le titre du projet est requis"),
   project_description: z.string().min(1, "La description est requise"),
@@ -156,7 +158,7 @@ export async function saveEstimateAction(input: unknown): Promise<SaveEstimateRe
       slug: parsed.data.slug,
       access_code: parsed.data.access_code,
       client_name: parsed.data.client_name,
-      closer_id: parsed.data.closer_id,
+      closer_id: parsed.data.closer_id || null,
       project_name: parsed.data.project_name,
       project_title: parsed.data.project_title,
       project_description: parsed.data.project_description,
@@ -308,6 +310,9 @@ export async function resendClosingEmailAction(slug: string): Promise<{ ok: bool
   const estimate = await getEstimateBySlug(slug);
   if (!estimate || !estimate.locked) {
     return { ok: false, error: "Ce devis n'est pas signé." };
+  }
+  if (!estimate.closer_id) {
+    return { ok: false, error: "Aucun closer assigné à ce devis." };
   }
 
   try {
