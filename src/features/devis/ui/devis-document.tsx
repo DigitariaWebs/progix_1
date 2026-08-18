@@ -24,7 +24,6 @@ export function DevisDocument({ estimate }: { estimate?: ClientEstimate }) {
   const badges = estimate
     ? [
         { l: "Montant total", v: `${estimate.total_amount} ${estimate.currency}`, u: "" },
-        { l: "Délai de livraison", v: `${estimate.delivery_days}`, u: " jours" },
         {
           l: "Marketing",
           v: "Premium",

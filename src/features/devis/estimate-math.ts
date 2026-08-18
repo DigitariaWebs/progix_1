@@ -42,5 +42,5 @@ export function fmtAmount(n: number): string {
 /** Fixed client-portal password — not admin-editable */
 export const AUTO_ACCESS_CODE = "progix2026";
 
-/** Delivery-time options offered in both the full editor and the prompt-review form */
+/** Duration options for the full editor's "durée de développement" select */
 export const DELIVERY_DAY_OPTIONS = ["30", "45", "60", "90"] as const;

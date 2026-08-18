@@ -2,7 +2,7 @@ import type { ClientEstimate, EstimateFeatureItem } from "./types";
 import type { Closer } from "@/features/closers/types";
 import type { AiDevisDraft } from "./prompt-parse";
 import { DEFAULT_ESTIMATE } from "./types";
-import { INSTALLMENT_PLANS, parseAmount, fmtAmount, AUTO_ACCESS_CODE, DELIVERY_DAY_OPTIONS } from "./estimate-math";
+import { INSTALLMENT_PLANS, parseAmount, fmtAmount, AUTO_ACCESS_CODE } from "./estimate-math";
 
 /** Slug auto-derived from a client name (accent-stripped, dash-separated) */
 export function slugify(input: string): string {
@@ -29,8 +29,6 @@ const PLACEHOLDER_LABEL = /^fonctionnalit[eé]\s*\d+$/i;
 
 const PAYMENT_MODALITIES = ["1x", "2x", "3x", "mensualité"] as const;
 export type PaymentModalities = (typeof PAYMENT_MODALITIES)[number];
-
-export type TimeRecommanded = (typeof DELIVERY_DAY_OPTIONS)[number];
 
 /**
  * Resolves a free-text closer name (from a call transcript) against the
@@ -73,7 +71,7 @@ export function functionalitiesToSlots(functionalities: string[]): Functionality
 }
 
 /** Editable state behind the "Depuis un prompt" review form — the reduced
- *  9-field set from the boss's spec, not the full ClientEstimate shape. */
+ *  field set from the boss's spec, not the full ClientEstimate shape. */
 export interface CloserPromptFormState {
   clientName: string;
   projectName: string;
@@ -87,7 +85,6 @@ export interface CloserPromptFormState {
    *  supplies this (it isn't in the JSON), so it always starts at a sane
    *  default and the closer confirms/adjusts it. */
   paymentMonths: string;
-  timeRecommanded: TimeRecommanded;
   functionalities: FunctionalitySlot[];
 }
 
@@ -127,12 +124,6 @@ export function buildDraftFormFromAi(draft: AiDevisDraft, closers: Closer[]): Bu
     ? (draft.paymentModalities as PaymentModalities)
     : "mensualité";
 
-  const timeRecommanded: TimeRecommanded = (DELIVERY_DAY_OPTIONS as readonly string[]).includes(
-    draft.timeRecommanded
-  )
-    ? (draft.timeRecommanded as TimeRecommanded)
-    : "90";
-
   const functionalitiesSupported = draft.functionalities.some((f) => f.trim());
   const nothingExtracted =
     !draft.clientName.trim() &&
@@ -142,7 +133,6 @@ export function buildDraftFormFromAi(draft: AiDevisDraft, closers: Closer[]): Bu
     !price &&
     !draft.fullDescription.trim() &&
     !draft.paymentModalities &&
-    !draft.timeRecommanded &&
     !functionalitiesSupported;
   if (nothingExtracted) {
     warnings.unshift("Aucune information exploitable n'a été extraite du texte collé.");
@@ -158,7 +148,6 @@ export function buildDraftFormFromAi(draft: AiDevisDraft, closers: Closer[]): Bu
       fullDescription: draft.fullDescription.trim(),
       paymentModalities,
       paymentMonths: "6",
-      timeRecommanded,
       functionalities: functionalitiesToSlots(draft.functionalities),
     },
     warnings,
@@ -298,7 +287,7 @@ export function buildEstimateFromPromptForm(form: CloserPromptFormState): Client
     project_description: form.fullDescription.trim(),
     currency: form.currency,
     total_amount: form.price,
-    delivery_days: form.timeRecommanded,
+    delivery_days: null,
     dev_duration_days: DEFAULT_ESTIMATE.dev_duration_days,
     marketing_included: true,
     features: replacePlaceholderFeatures(DEFAULT_ESTIMATE.features, form.functionalities),

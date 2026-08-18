@@ -320,7 +320,7 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
             documentation technique complète est remise — l’Application peut être reprise par tout
             développeur de votre choix. <Strong>Aucun verrouillage.</Strong>
           </InfoBox>
-          <SubHeading>Support inclus — {estimate ? estimate.delivery_days : "90"} jours</SubHeading>
+          <SubHeading>Support inclus</SubHeading>
           <ul className={styles.arrowList}>
             <li className={styles.arrowItem}>
               Correction des bugs et ajustements mineurs (hors nouvelles fonctionnalités).
@@ -330,7 +330,7 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
             </li>
           </ul>
           <SubHeading>
-            Au-delà des {estimate ? estimate.delivery_days : "90"} jours <Pill>Optionnel</Pill>
+            Au-delà de la période de support incluse <Pill>Optionnel</Pill>
           </SubHeading>
           <div className={styles.grid2}>
             <div className={cn(styles.card, styles.lift)}>
@@ -369,8 +369,8 @@ export function BodySections({ estimate }: { estimate?: ClientEstimate }) {
             Ce que le Client fournit
           </BadgeHeading>
           <p className={styles.p}>
-            Pour permettre la tenue du délai, la qualité de la livraison et l’atteinte des objectifs
-            garantis, le Client s’engage à :
+            Pour permettre la qualité de la livraison et l’atteinte des objectifs garantis, le Client
+            s’engage à :
           </p>
           <ul className={styles.arrowList}>
             <li className={styles.arrowItem}>

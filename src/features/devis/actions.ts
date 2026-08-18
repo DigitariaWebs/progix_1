@@ -76,7 +76,6 @@ const estimateInputSchema = z.object({
   project_description: z.string().min(1, "La description est requise"),
   currency: z.enum(["€", "$CAD"]),
   total_amount: z.string().min(1, "Le montant est requis"),
-  delivery_days: z.string().min(1, "Le délai est requis"),
   dev_duration_days: z.string().min(1, "La durée de développement est requise"),
   marketing_included: z.boolean(),
   features: z.array(featureItemSchema),
@@ -164,7 +163,9 @@ export async function saveEstimateAction(input: unknown): Promise<SaveEstimateRe
       project_description: parsed.data.project_description,
       currency: parsed.data.currency,
       total_amount: parsed.data.total_amount,
-      delivery_days: parsed.data.delivery_days,
+      // No longer collected from commercials or shown on the client-facing
+      // devis — always saved as null (see 0011_delivery_days_optional).
+      delivery_days: null,
       dev_duration_days: parsed.data.dev_duration_days,
       marketing_included: parsed.data.marketing_included,
       features: parsed.data.features,

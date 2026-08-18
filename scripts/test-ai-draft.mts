@@ -19,7 +19,6 @@ function mkDraft(overrides = {}) {
     price: '',
     fullDescription: '',
     paymentModalities: '',
-    timeRecommanded: '',
     functionalities: [],
     ...overrides,
   };
@@ -86,19 +85,13 @@ const closers = [
   assert.ok(missing.some((w) => w.includes('Prix')));
 }
 
-// --- buildDraftFormFromAi: paymentModalities / timeRecommanded fallback ---
+// --- buildDraftFormFromAi: paymentModalities fallback ---
 {
   const { form: valid } = buildDraftFormFromAi(mkDraft({ paymentModalities: '2x' }), closers);
   assert.equal(valid.paymentModalities, '2x');
 
   const { form: invalid } = buildDraftFormFromAi(mkDraft({ paymentModalities: 'garbage' }), closers);
   assert.equal(invalid.paymentModalities, 'mensualité', 'unrecognized value falls back to mensualité');
-
-  const { form: validDays } = buildDraftFormFromAi(mkDraft({ timeRecommanded: '45' }), closers);
-  assert.equal(validDays.timeRecommanded, '45');
-
-  const { form: invalidDays } = buildDraftFormFromAi(mkDraft({ timeRecommanded: '75' }), closers);
-  assert.equal(invalidDays.timeRecommanded, '90', 'unrecognized value falls back to 90');
 }
 
 // --- functionalitiesToSlots: always exactly 6, padded or truncated ---
@@ -132,7 +125,6 @@ function mkPromptForm(overrides = {}) {
     fullDescription: 'Une description.',
     paymentModalities: '3x',
     paymentMonths: '6',
-    timeRecommanded: '90',
     functionalities: functionalitiesToSlots([
       'Réservation de trajet en temps réel',
       'Suivi GPS du chauffeur',
@@ -150,7 +142,7 @@ function mkPromptForm(overrides = {}) {
   assert.equal(estimate.project_title, 'Trajeo');
   assert.equal(estimate.closer_id, 'c1');
   assert.equal(estimate.total_amount, '5600');
-  assert.equal(estimate.delivery_days, '90');
+  assert.equal(estimate.delivery_days, null);
   assert.equal(estimate.currency, '€');
   assert.equal(estimate.marketing_included, true);
   assert.equal(estimate.locked, false);

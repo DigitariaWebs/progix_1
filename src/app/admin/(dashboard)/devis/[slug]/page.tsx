@@ -103,8 +103,8 @@ export default function AdminDevisEditorPage({
   );
 
   // "Depuis un prompt" mode state — kept entirely separate from `form`
-  // (the full ClientEstimate shape) since the review form only has the 9
-  // reduced fields from the boss's spec, not the full editor's shape.
+  // (the full ClientEstimate shape) since the review form only has the
+  // reduced field set from the boss's spec, not the full editor's shape.
   const [closerPrompt, setCloserPrompt] = useState("");
   const [extracting, setExtracting] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
@@ -251,10 +251,7 @@ export default function AdminDevisEditorPage({
 
     // Always save the auto-computed installments, plus the fields no longer
     // admin-editable: fixed portal password, project title mirroring the
-    // project name, and marketing always included. delivery_days is a real
-    // editable field (see DELIVERY_DAY_OPTIONS select below) — it must NOT
-    // be overwritten here, or a value set via the "depuis un prompt" flow
-    // would revert on the very next save.
+    // project name, and marketing always included.
     const payload: ClientEstimate = {
       ...form,
       payment_installments: computedInstallments,
@@ -543,24 +540,6 @@ export default function AdminDevisEditorPage({
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-xs text-white/60">DÉLAI RECOMMANDÉ</label>
-                    <select
-                      value={promptForm.timeRecommanded}
-                      onChange={(e) =>
-                        updatePromptForm({
-                          timeRecommanded: e.target.value as CloserPromptFormState["timeRecommanded"],
-                        })
-                      }
-                      className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
-                    >
-                      {DELIVERY_DAY_OPTIONS.map((d) => (
-                        <option key={d} value={d}>
-                          {d} jours
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
                     <label className="block font-mono text-xs text-white/60">MODALITÉ DE PAIEMENT</label>
                     <select
                       value={promptForm.paymentModalities}
@@ -755,20 +734,6 @@ export default function AdminDevisEditorPage({
                 placeholder="ex : 5 600"
                 className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
               />
-            </div>
-            <div>
-              <label className="block font-mono text-xs text-white/60">DÉLAI RECOMMANDÉ</label>
-              <select
-                value={form.delivery_days}
-                onChange={(e) => setForm({ ...form, delivery_days: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#67c8ff] focus:outline-none"
-              >
-                {DELIVERY_DAY_OPTIONS.map((d) => (
-                  <option key={d} value={d}>
-                    {d} jours
-                  </option>
-                ))}
-              </select>
             </div>
             <div>
               <label className="block font-mono text-xs text-white/60">DURÉE DE DÉVELOPPEMENT</label>

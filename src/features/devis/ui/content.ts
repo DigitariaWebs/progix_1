@@ -14,7 +14,6 @@ export const cover = {
     "Application mobile de mise en relation entre passagers et chauffeurs : réservation de trajets, géolocalisation et suivi de course en temps réel, estimation de prix, profils vérifiés et notation mutuelle — plus back-office, landing page, API, infrastructure cloud et accompagnement marketing premium jusqu’à la mise en marché. Un prix fixe, une équipe senior, votre propriété à 100 %.",
   badges: [
     { l: "Montant total", v: "5 600 €", u: "" },
-    { l: "Délai de livraison", v: "90", u: " jours" },
     { l: "Marketing", v: "Premium", u: " inclus" },
   ],
   meta: [

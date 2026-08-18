@@ -40,9 +40,12 @@ export interface ClientEstimate {
   project_description: string;
   currency: "€" | "$CAD";
   total_amount: string;
-  delivery_days: string;
-  /** Development-phase duration (Phase 1), distinct from `delivery_days`
-   *  (total project delay including production/publication). */
+  // Nullable: no longer collected from commercials or shown on the
+  // client-facing devis (see 0011_delivery_days_optional migration) — the
+  // column is kept only so pre-existing rows don't lose their historical
+  // value. New/edited devis always save this as null.
+  delivery_days: string | null;
+  /** Development-phase duration (Phase 1) — unrelated to `delivery_days`. */
   dev_duration_days: string;
   marketing_included: boolean;
   // Nullable: the DB column allows null (existing rows predate this field,
@@ -86,7 +89,7 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
     "Application mobile de mise en relation entre passagers et chauffeurs : réservation de trajets, géolocalisation et suivi de course en temps réel, estimation de prix, profils vérifiés et notation mutuelle — plus back-office, landing page, API, infrastructure cloud et accompagnement marketing premium jusqu’à la mise en marché. Un prix fixe, une équipe senior, votre propriété à 100 %.",
   currency: "€",
   total_amount: "5 600",
-  delivery_days: "90",
+  delivery_days: null,
   dev_duration_days: "60",
   marketing_included: true,
   features: [

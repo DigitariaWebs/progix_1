@@ -291,7 +291,7 @@ export function CalendrierDocument({ estimate }: { estimate?: ClientEstimate }) 
 
   const badges = estimate
     ? [
-        { l: "Durée totale", v: `${estimate.delivery_days}`, u: " j" },
+        { l: "Durée totale", v: `${estimate.delivery_days ?? "90"}`, u: " j" },
         { l: "Sprints", v: "6", u: "" },
         { l: "Phases", v: "5", u: "" },
         { l: "Jalons", v: "3", u: "" },
@@ -308,7 +308,7 @@ export function CalendrierDocument({ estimate }: { estimate?: ClientEstimate }) 
           titleLight="livraison, sprint par sprint"
           subtitle={
             estimate
-              ? `Découpage détaillé de la réalisation de ${estimate.project_name} sur ${estimate.delivery_days} jours. Livraison itérative avec validation à chaque étape, alignée sur l’échéancier du devis.`
+              ? `Découpage détaillé de la réalisation de ${estimate.project_name} sur ${estimate.delivery_days ?? "90"} jours. Livraison itérative avec validation à chaque étape, alignée sur l’échéancier du devis.`
               : "Découpage détaillé de la réalisation de Trajeo sur 90 jours — 60 jours de développement puis 30 jours de production et de publication sur les stores. Livraison itérative avec validation à chaque étape, alignée sur l’échéancier du devis."
           }
           badges={badges}

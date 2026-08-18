@@ -20,7 +20,6 @@ const SYSTEM_PROMPT = `According to the following text, generate a JSON object f
   price: string (digits only, no currency symbol or spaces, e.g. "12480"),
   fullDescription: string,
   paymentModalities: "1x" or "2x" or "3x" or "mensualité",
-  timeRecommanded: "30" or "45" or "60" or "90" (days),
   functionalities: up to 6 items, at least 4, 12 to 15 words each
 }
 
@@ -34,7 +33,6 @@ const aiDevisDraftSchema = z.object({
   price: z.string(),
   fullDescription: z.string(),
   paymentModalities: z.enum(["1x", "2x", "3x", "mensualité", ""]),
-  timeRecommanded: z.enum(["30", "45", "60", "90", ""]),
   functionalities: z.array(z.string()),
 });
 
