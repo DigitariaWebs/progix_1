@@ -62,6 +62,10 @@ export interface ClientEstimate {
   signature: SignatureData | null;
   locked: boolean;
   pdf_email_sent_at: string | null;
+  /** Raw text the closer pasted into "Depuis un prompt" to generate this
+   *  devis, kept as a read-only reference. Null for "Vierge" devis and rows
+   *  predating this field. */
+  closer_prompt: string | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -268,4 +272,5 @@ export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
   signature: null,
   locked: false,
   pdf_email_sent_at: null,
+  closer_prompt: null,
 };

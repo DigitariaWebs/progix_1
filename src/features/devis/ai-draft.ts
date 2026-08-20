@@ -269,7 +269,10 @@ export function buildPaymentFields(
  * gets a sensible default the closer can still adjust afterward on
  * /admin/devis/[slug], which shows the same full editor as any other devis.
  */
-export function buildEstimateFromPromptForm(form: CloserPromptFormState): ClientEstimate {
+export function buildEstimateFromPromptForm(
+  form: CloserPromptFormState,
+  rawPrompt?: string
+): ClientEstimate {
   const priceNum = parseAmount(form.price);
   const clientName = form.clientName.trim();
   const projectName = form.projectName.trim();
@@ -298,5 +301,6 @@ export function buildEstimateFromPromptForm(form: CloserPromptFormState): Client
     signature: null,
     locked: false,
     pdf_email_sent_at: null,
+    closer_prompt: rawPrompt?.trim() || null,
   };
 }

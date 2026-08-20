@@ -84,6 +84,7 @@ const estimateInputSchema = z.object({
   payment_schedule_type: z.enum(["monthly", "installments"]),
   payment_months: z.number().int().min(1),
   payment_installments: z.array(installmentItemSchema),
+  closer_prompt: z.string().nullable().optional(),
 });
 
 const signInputSchema = z.object({
@@ -178,6 +179,7 @@ export async function saveEstimateAction(input: unknown): Promise<SaveEstimateRe
       payment_schedule_type: parsed.data.payment_schedule_type,
       payment_months: parsed.data.payment_months,
       payment_installments: parsed.data.payment_installments,
+      closer_prompt: parsed.data.closer_prompt || null,
       updated_at: new Date().toISOString(),
     };
 

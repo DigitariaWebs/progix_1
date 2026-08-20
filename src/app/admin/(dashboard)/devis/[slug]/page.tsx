@@ -187,7 +187,7 @@ export default function AdminDevisEditorPage({
     setSaving(true);
     setError(null);
 
-    const estimate = buildEstimateFromPromptForm(promptForm);
+    const estimate = buildEstimateFromPromptForm(promptForm, closerPrompt);
     const res = await saveEstimateAction(estimate);
     setSaving(false);
 
@@ -988,6 +988,26 @@ export default function AdminDevisEditorPage({
             </div>
           )}
         </div>
+
+        {/* Prompt original — lecture seule, conservé à titre de référence */}
+        {form.closer_prompt && (
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
+            <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#67c8ff]">
+              <FileText className="size-4" />
+              <h2>Prompt original (non modifiable)</h2>
+            </div>
+            <p className="mb-4 text-xs text-white/50">
+              Texte collé par le closer ayant servi à générer ce devis — conservé à titre de
+              référence.
+            </p>
+            <textarea
+              readOnly
+              rows={8}
+              value={form.closer_prompt}
+              className="w-full resize-y rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white/70 focus:outline-none"
+            />
+          </div>
+        )}
             </div>
           </fieldset>
         </form>
