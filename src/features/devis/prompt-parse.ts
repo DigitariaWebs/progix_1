@@ -2,6 +2,7 @@ import "server-only";
 import { z } from "zod";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { getOpenAiClient, getOpenAiModel } from "@/lib/ai/openai";
+import { deepSanitizeUnicode, hasUnicodeCorruption } from "@/lib/sanitize";
 
 // Mirrors the boss's validated prompt verbatim (see spec), plus the explicit
 // "leave it blank rather than guess" instruction: a strict json_schema
@@ -40,6 +41,17 @@ export type AiDevisDraft = z.infer<typeof aiDevisDraftSchema>;
 
 export class AiParseError extends Error {}
 
+// gpt-4.1-mini frequently (non-deterministically, ~2 in 3 calls in testing)
+// replaces every accented French character in its structured output with a
+// literal NUL byte — Postgres's jsonb_in rejects that outright on save, and
+// simply stripping it leaves words mangled ("jusqu'à" → "jusqu'a", losing
+// the space too). It's non-deterministic per-call, so retrying is far more
+// likely to land clean than the mangled text is to become readable through
+// sanitizing alone — but the failure rate is high enough that a low retry
+// budget (e.g. 2-3) still has a real chance of exhausting without a clean
+// result, hence 5.
+const MAX_ATTEMPTS = 5;
+
 /**
  * Sends the closer's pasted text to OpenAI and returns the structured devis
  * draft. Never touches the database or React state — that's ai-draft.ts's
@@ -48,19 +60,28 @@ export class AiParseError extends Error {}
  */
 export async function parseCloserPrompt(rawText: string): Promise<AiDevisDraft> {
   const client = getOpenAiClient();
+  let lastParsed: AiDevisDraft | undefined;
 
-  const completion = await client.chat.completions.parse({
-    model: getOpenAiModel(),
-    messages: [
-      { role: "system", content: SYSTEM_PROMPT },
-      { role: "user", content: rawText },
-    ],
-    response_format: zodResponseFormat(aiDevisDraftSchema, "devis_draft"),
-  });
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const completion = await client.chat.completions.parse({
+      model: getOpenAiModel(),
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: rawText },
+      ],
+      response_format: zodResponseFormat(aiDevisDraftSchema, "devis_draft"),
+    });
 
-  const parsed = completion.choices[0]?.message.parsed;
-  if (!parsed) {
+    const parsed = completion.choices[0]?.message.parsed;
+    if (!parsed) continue;
+    if (!hasUnicodeCorruption(parsed)) return parsed;
+    lastParsed = parsed;
+  }
+
+  if (!lastParsed) {
     throw new AiParseError("Réponse IA illisible, réessaie.");
   }
-  return parsed;
+  // Every attempt came back corrupted — fall back to a sanitized copy so the
+  // save still succeeds, rather than blocking the closer entirely.
+  return deepSanitizeUnicode(lastParsed);
 }

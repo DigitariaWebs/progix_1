@@ -22,6 +22,7 @@ import { renderDevisPdf } from "@/lib/pdf/renderDevisPdf";
 import { sendLeadEmail } from "@/lib/email/sendLeadEmail";
 import { parseCloserPrompt, AiDevisDraft, AiParseError } from "./prompt-parse";
 import { MissingOpenAiKeyError } from "@/lib/ai/openai";
+import { deepSanitizeUnicode } from "@/lib/sanitize";
 
 export async function fetchEstimatesAction(): Promise<ClientEstimate[]> {
   await requireAdmin();
@@ -140,11 +141,15 @@ export async function saveEstimateAction(input: unknown): Promise<SaveEstimateRe
     return { ok: false, error: "Non autorisé." };
   }
 
-  const parsed = estimateInputSchema.safeParse(input);
-  if (!parsed.success) {
-    const errorMsg = parsed.error.issues.map((i) => i.message).join(", ");
+  const parsedInput = estimateInputSchema.safeParse(input);
+  if (!parsedInput.success) {
+    const errorMsg = parsedInput.error.issues.map((i) => i.message).join(", ");
     return { ok: false, error: errorMsg };
   }
+  // Strips NUL bytes / unpaired surrogates (broken emoji, stray control
+  // chars from a paste or an LLM draft) — Postgres's jsonb_in rejects them
+  // with "unsupported Unicode escape sequence" on the upsert below.
+  const parsed = { ...parsedInput, data: deepSanitizeUnicode(parsedInput.data) };
 
   const existing = await getEstimateBySlug(parsed.data.slug);
   if (existing?.locked) {
