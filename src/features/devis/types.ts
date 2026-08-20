@@ -75,11 +75,13 @@ export interface ClientEstimate {
  * client" tree — anything passed into it as a prop is serialized into the
  * page's RSC payload and shipped to the browser, unlocked or not (the gate is
  * enforced upstream of this, in layout.tsx/page.tsx, before these components
- * are ever reached). None of them display access_code; redact it before
- * handing an estimate down so the real value never leaves the server.
+ * are ever reached). None of them display access_code or closer_prompt (the
+ * latter is internal closer/admin context — negotiation notes, pricing
+ * strategy — never meant for the client); redact both before handing an
+ * estimate down so neither value leaves the server.
  */
 export function redactAccessCode(estimate: ClientEstimate): ClientEstimate {
-  return { ...estimate, access_code: "" };
+  return { ...estimate, access_code: "", closer_prompt: null };
 }
 
 export const DEFAULT_ESTIMATE: Omit<ClientEstimate, "id"> = {
